@@ -1,0 +1,100 @@
+
+\chapter*{Notation}
+\addcontentsline{toc}{chapter}{Notation}
+\begin{itemize}
+  \item Scalars are denoted by normal-faced minuscule characters ($a$)
+  \item Column vectors are represented by bold-faced characters ($\vec{x}$, $\vec{U}$)
+  \item Matrices are denoted by normal-faced capital characters ($A$)
+  \item Sets are denoted by calligraphic capital characters ($\set{A}$).
+        \\Some special sets are denoted using blackboard bold-faced capital characters ($\N$)
+  \item For matrix calculus, we use the numerator-layout convention such as $\frac{\partial A\vec{x}}{\partial\vec{x}}=A$.
+\end{itemize}
+
+\setlist[description]{labelindent=\parindent,style=multiline,leftmargin=3cm,font=\normalfont}
+\section*{Set Theory}
+\begin{description}
+  \item[$\emptyset$] Empty set
+  \item[$\forall$ $\exists$] Universal quantifier, Existential quantifier
+  \item[$(x_{1},\dots,x_{n})$] An ordered n-tuple
+  \item[$:$\quad ( $\mid$ ) ] Such that (in set builder)
+  \item[$\{\dots\}$] Set builder
+  \item[$\setbuild{\cdot}{\dots}$] Set builder defined by predicate.
+  \item[$\setminus$ $\cup$ $\cap$] Set difference, union and intersection, respectively
+  \item[$\in$ $\subset$ $\subseteq$] Set membership, proper subset, subset, respectively
+  \item[$\ni$ $\supset$ $\supseteq$] And their respective converses
+  \item[$\times$] Cartesian product, $\set{S}_{1}\times\dots\times\set{S}_{n}=\setbuild{(s_{1},\dots,s_{n})}{s_{i}\in\set{S}_{i},\forall i\in\{1:n\}}$
+  \item[$\set{S}^{n}$] Cartesian power, $\set{S}^{n}=\underbrace{\set{S}\times\dots\times\set{S}}_{n}=\setbuild{(s_{1},\dots,s_{n})}{s_{i}\in\set{S},\forall i\in\{1:n\}} $
+
+  \item[$\card{\set{A}}$] Cardinality of the set $\set{A}$
+  \item[$\Z$] Set of integer numbers
+  \item[$\R$ ($\R_{+}$)] Set of (nonnegative) real numbers
+  \item[$\N$ ($\N_{+}$)] Set of (nonnegative) natural numbers
+  \item[$\N_{\emptyset}$] Set of natural numbers without zero
+
+\end{description}
+\section*{General Operators, functions, and relations}
+\begin{description}
+  \item[$A\implies B$] A implies B, i.e., if A is true than B must also be true
+  \item[$A\iff B$] A implies B and B implies A, i.e., A is true if and only if (iff) B is true
+\item[$f:\set{A}\to\set{B}$] A $\set{B}$-valued function on some subset of $\set{A}$, its domain
+\item[$\dom f$] Domain of $f$
+\item[$f(x)$] The value of function $f$ at $x$, $x\in\dom f$
+\item[$f:x\mapsto f(x)$] The mapping of element $x\in\dom f$ in function $f$
+\item[$\lceil x\rceil$ $\lfloor x\rfloor$] Ceiling and floor functions
+  \item[$\fix:\R\to\Z$] $\fix:x\mapsto
+        \begin{cases}
+          \lfloor x\rfloor&\text{if $x\geq0$}\\
+          \lceil x\rceil&\text{if $x<0$}\\
+        \end{cases}
+        $
+  \item[$n:i:j$] Row vector builder with elements ${\{n,n+i,\dots,n+mi\}}$
+        \\where $m=\fix(\frac{j-n}{i})$
+  \item[$n:j$] Similar to ${n:1:j}$
+\end{description}
+
+\section*{Linear Algebra}
+\begin{description}
+
+  \item[${\elem[i]{\vec{v}}}$] The $i$-th element of vector $\vec{v}$
+  \item[${\elem[i,j]{M}}$] The element in the $i$-th row and $j$-th column of matrix $M$
+  \item[${\elem[i,*]{M}}$ ${\elem[*,j]{M}}$] Row $i$ and column $j$ of matrix $M$
+  \item[$\0$ $\1$] 0 and 1 filled vectors of adequate size
+  \item[$0_{m\times n}$ $1_{m\times n}$] 0 and 1 filled matrices of order $m\times n$
+  \item[$I_{m}$] Identity of order $m\times m$
+  \item[$\R^{m\times n}$] Set of real matrices of order $m\times n$
+  \item[$\symmetric$ ($\symmetric^{n}$)] Set of symmetric real matrices (of order $n$)
+  \item[$\semidefpos^{n}$ $\defpos^{n}$] Set of positive semidefinite and positive definite matrices of order $n$
+  \item[$\prec$ $\preceq$] Component-wise less and less or equal for vectors \\and matrix inequality for matrices in $\symmetric$
+  \item[$\succ$ $\succeq$] And their converses
+
+  \item[$\card{\vec{x}}$] Number of elements in vector, i.e., if $\vec{x}:\R^{n}$, then $\card{\vec{x}}=n$
+  \item[$\vec{x}'$ $A'$] Transposes of vector $\vec{x}$ and matrix $A$
+  \item[$\langle \vec{x},\vec{y}\rangle$] Inner product between vectors $\vec{x}$ and $\vec{y}$, same as $\vec{x}'\vec{y}$
+  % \item[$\vector0{s} (\cdot)$]
+  \item[$\hadamard{}{}$ ] Hadamard product, i.e., for $A,B\in\R^{m\times n}$, $\elem[i,j]{(\hadamard{A}{B})}=\elem[i,j]{A}\elem[i,j]{B}$
+  \item[$\kron{}{}$] Kronecker product, i.e., $\kron{A}{B}=
+        \left(\begin{smallmatrix}
+            \elem[1,1]{A}B& \cdots &\elem[1,n]{A}B\\
+            \vdots&\ddots&\vdots\\
+            \elem[m,1]{A}B&\cdots&\elem[m,n]{A}B
+        \end{smallmatrix}\right)
+        $
+
+  \item[$\abs{\cdot}$ $\norm{\cdot}$ $\norm{\cdot}_{F}$] Absolute value, and $\ell_{2}$ and Frobenius norms. \item[$\norm{\vec{v}}_{Y}$] Weighted norm $\norm{Y^{\frac{1}{2}}\vec{v}}$, where ${Y\in\symmetric}$
+  \item[$\Proj^{\set{T}}(\cdot)$] Euclidean projection onto set $\set{T}$.
+  \item[$\langle_{\vec{y}}^{\vec{x}}$] Angle between vectors $\vec{x}$ and $\vec{y}$, i.e., ${\langle    _{\vec{y}}^{\vec{x}}}=\arccos\frac{\langle\vec{x},\vec{y}\rangle}{\norm{x}\norm{y}}$
+
+
+
+\end{description}
+
+\section*{Control Systems}
+
+\begin{description}
+
+  \item[$\vec{v}_{i}$ $M_{i}$] Vector $\vec{v}$ and matrix $M$ of $i$-th agent
+  \item[${\vec{v}[k+i|k]}$] Prediction of vector $\vec{v}$ for time ${k+i}$ predicted at time $k$
+  \item[${\vec{v}[k:i|k]}$] Sequence of predictions of vector $\vec{v}$ for times $k:i$ predicted at time $k$
+  \item[$\vec{v}^{(p)}$ ] Vector $\vec{v}$ at the $p$-th iteration in a algorithm
+\end{description}
+

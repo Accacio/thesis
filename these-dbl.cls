@@ -49,6 +49,19 @@
 \RequirePackage{wallpaper}
 \RequirePackage[inner=30mm,outer=20mm,top=30mm,bottom=20mm]{geometry}
 \RequirePackage{setspace}
+\RequirePackage{xargs}
+\RequirePackage[acronym,toc]{glossaries}\makeglossaries
+
+\RequirePackage{enumitem}
+
+\RequirePackage{mathtools}
+\RequirePackage{amsmath}
+\RequirePackage{amsthm}
+\RequirePackage{amssymb}
+\RequirePackage{mathrsfs}
+\RequirePackage{eucal}
+
+
 %Ou bien : \RequirePackage[top=4 cm, bottom=4 cm, left=3 cm, right=3 cm]{geometry} % On peut modifier ces valeurs pour augmenter ou r\'{e}duire les marges. Attention aux en-têtes de chapitres. 
 \RequirePackage{epigraph} % \cleartoevenpage
 
@@ -84,6 +97,7 @@
 \makeatletter
 \def\thickhrulefill{\leavevmode \leaders \hrule height 1ex \hfill \kern \z@}
 \def\@makechapterhead#1{%
+  \cleartooddpage[\thispagestyle{empty}]
   \vspace*{-30\p@}%
   {\parindent \z@ \raggedleft \reset@font
             \scshape \@chapapp{} \thechapter
@@ -96,6 +110,7 @@
     \vskip 50\p@
   }}
 \def\@makeschapterhead#1{%
+  \cleartooddpage[\thispagestyle{empty}]
  \vspace*{-50\p@}%
   {\parindent \z@ \raggedleft \reset@font
             \scshape \vphantom{\@chapapp{} \thechapter}
@@ -113,10 +128,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%% Tete de parties %%%%%%%%%%%%%%%%
 \usetikzlibrary{svg.path}
+\usetikzlibrary {graphs}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{calc,shapes,positioning}
+\usetikzlibrary{overlay-beamer-styles}
+ \usetikzlibrary{plotmarks}
+  \usetikzlibrary{arrows.meta}
+
   \newcommand{\triskel}{
   \tikz{
-    \begin{scope}[scale=.002] % svg from https://commons.wikimedia.org/wiki/File:Hermine_(champ).svg
-    \draw[fill] svg "M4674.56,2710.82
+  \begin{scope}[scale=.005] % svg from https://commons.wikimedia.org/wiki/File:Hermine_(champ).svg
+  \draw[] svg "M4674.56,2710.82
 C4680.63,2723.27,4691.68,2735.86,4703.12,2743.68
 C4715.32,2752.01,4732.07,2757.87,4746.75,2759.51
 C4763.1,2761.33,4782.52,2758.74,4798.07,2753.34
@@ -339,16 +361,18 @@ C4657.44,2685.77,4668.48,2698.36,4674.56,2710.82Z";
 
   \newcommand{\hermine}{
   \tikz{
-    \begin{scope}[shift={(4cm,0)},rotate=180,scale=.45] % svg from https://commons.wikimedia.org/wiki/File:Hermine_(champ).svg
-    \draw[fill] svg "M -677.03085,9.87064 C -672.85574,15.04988 -684.53088,17.11095 -678.23623,22.01331 C -675.55166,23.67789 -669.28063,20.0745 -674.78974,15.64588 C -675.50156,15.26672 -672.31188,12.64853 -677.03085,9.87064 z";
-    \draw[fill] svg "M -670.0662,22.14958 C -671.11067,22.24789 -672.11728,22.89249 -673.06767,24.5372 C -674.25962,27.29458 -669.01807,32.07701 -665.49063,26.19762 C -665.24103,25.48008 -661.73978,27.77808 -659.80279,22.96348 C -663.12343,26.45183 -666.5197,22.28773 -669.60305,22.14963 C -669.75387,22.14287 -669.917,22.13554 -670.0662,22.14958 z";
-    \draw[fill] svg "M -682.97894,22.19914 C -686.06235,22.33667 -689.45943,26.51702 -692.77936,23.02803 C -690.84333,27.843 -687.30454,25.54569 -687.05509,26.26327 C -683.52879,32.14335 -678.32337,27.36193 -679.51478,24.60432 C -680.60058,22.72445 -681.77241,22.14533 -682.97894,22.19914 z";
-    \draw[fill] svg "M -676.03196,25.55305 C -678.7484,37.88993 -683.80019,46.62352 -689.29934,52.90266 C -687.01361,52.27607 -684.42856,50.49932 -681.94407,48.94045 C -683.4637,52.17543 -685.00131,54.97666 -686.52089,57.83117 C -685.61372,57.52375 -682.72332,54.6411 -678.81329,50.41415 C -678.20092,56.22577 -677.36589,58.97212 -676.12821,62.91283 C -675.14218,58.97863 -674.42731,56.29194 -673.64448,50.31303 C -671.28774,52.98695 -669.01605,55.67485 -665.82718,57.96865 L -670.29109,48.77223 C -667.97937,50.2502 -665.40668,52.18202 -662.95514,53.00682 C -668.76732,46.41323 -673.68621,37.89174 -676.03196,25.55305 z";
+    \begin{scope}[shift={(4cm,0)},rotate=180,scale=.5] % svg from https://commons.wikimedia.org/wiki/File:Hermine_(champ).svg
+    \draw[] svg "M -677.03085,9.87064 C -672.85574,15.04988 -684.53088,17.11095 -678.23623,22.01331 C -675.55166,23.67789 -669.28063,20.0745 -674.78974,15.64588 C -675.50156,15.26672 -672.31188,12.64853 -677.03085,9.87064 z";
+    \draw[] svg "M -670.0662,22.14958 C -671.11067,22.24789 -672.11728,22.89249 -673.06767,24.5372 C -674.25962,27.29458 -669.01807,32.07701 -665.49063,26.19762 C -665.24103,25.48008 -661.73978,27.77808 -659.80279,22.96348 C -663.12343,26.45183 -666.5197,22.28773 -669.60305,22.14963 C -669.75387,22.14287 -669.917,22.13554 -670.0662,22.14958 z";
+    \draw[] svg "M -682.97894,22.19914 C -686.06235,22.33667 -689.45943,26.51702 -692.77936,23.02803 C -690.84333,27.843 -687.30454,25.54569 -687.05509,26.26327 C -683.52879,32.14335 -678.32337,27.36193 -679.51478,24.60432 C -680.60058,22.72445 -681.77241,22.14533 -682.97894,22.19914 z";
+    \draw[] svg "M -676.03196,25.55305 C -678.7484,37.88993 -683.80019,46.62352 -689.29934,52.90266 C -687.01361,52.27607 -684.42856,50.49932 -681.94407,48.94045 C -683.4637,52.17543 -685.00131,54.97666 -686.52089,57.83117 C -685.61372,57.52375 -682.72332,54.6411 -678.81329,50.41415 C -678.20092,56.22577 -677.36589,58.97212 -676.12821,62.91283 C -675.14218,58.97863 -674.42731,56.29194 -673.64448,50.31303 C -671.28774,52.98695 -669.01605,55.67485 -665.82718,57.96865 L -670.29109,48.77223 C -667.97937,50.2502 -665.40668,52.18202 -662.95514,53.00682 C -668.76732,46.41323 -673.68621,37.89174 -676.03196,25.55305 z";
     \end{scope}
 }}
 \newcommand{\chapterEndOrnament}{\vfill \noindent \hrulefill \vfill \vfill}
 
 
+\let\originalpart=\part%
+\def\part{\cleartooddpage[\thispagestyle{empty}]\originalpart}
 \makeatletter
 \newcommand*{\jolipart}[1]{%
 	\begin{center}
@@ -358,10 +382,7 @@ C4657.44,2685.77,4668.48,2698.36,4674.56,2710.82Z";
 		\end{center}
 		\vspace{1cm}		
 	\begin{center}
-%\begin{Huge}
-		%\ding{167}
-	%\end{Huge}	
-  \noindent \hrulefill~\raisebox{-5pt}{\triskel}~\hrulefill
+  \noindent \hrulefill~\raisebox{-10pt}{\triskel}~\hrulefill
 	\end{center}		
 	}
 
@@ -382,9 +403,11 @@ C4657.44,2685.77,4668.48,2698.36,4674.56,2710.82Z";
 \RequirePackage[hyperref,backend=biber,
   % Exemples de styles: alphabetic, ieee, nature, numeric, verbose-trad1 (en utilisant \footcite{}).
   % https://www.overleaf.com/learn/latex/Biblatex_bibliography_styles
-  style=verbose-trad1
+style=alphabetic,
+backref=true,
+backrefstyle=three,
+refsection=chapter,
   ]{biblatex}
-
 % Style biblatex avec gestion des mots cl\'{e}s des entr\'{e}es bibliographiques
 % + les abbr\'{e}viations idem, ibidem, op cit. Pr\'{e}voir un fichier bib
 % contenant ces mots-cl\'{e}s, ici primary et secondary.
@@ -401,6 +424,7 @@ C4657.44,2685.77,4668.48,2698.36,4674.56,2710.82Z";
 %\DeclareFieldFormat{pages}{page(s): #1} % page(s) en toutes lettres, si on veut...
 
 % Locutions latines en italique (comme ibid, loc.cit. , etc.) Merci \`{a} Josquin Debaz
+\providecommand{\mkibid}{}
 \renewcommand{\mkibid}[1]{\emph{#1}}
 
 % Et pour mettre le in en italique dans la ref\'{e}rence biblio (merci encore \`{a} Josquin Debaz)
@@ -563,69 +587,77 @@ C4657.44,2685.77,4668.48,2698.36,4674.56,2710.82Z";
 \def\maketitle{%
   \thispagestyle{empty}
   \clearpage
-  %background image of the front cover
-  \AddToShipoutPicture*{%
-    \put(0,0){%
-    \parbox[b][42.6cm]{\paperwidth}{%
-        \vfill
-        \includegraphics[width=\paperwidth,keepaspectratio,trim={0 5pt 0 0}]{\vdirecole/image-fond-garde} % Must trim white border off of bottom
-        \begin{tikzpicture}
-            \fill[color-ecole] (0,0) rectangle (\paperwidth,4.4);
-        \end{tikzpicture}
-        \vfill
-  }}}
+    \begin{tikzpicture}[remember picture,overlay,line width=0mm]
+      \selectfontfrontcover % Set font style for front cover page
+      \begin{scope}[x={(current page.north west)},y={(current page.east)}]
+        \node at (.5,.5) {
+          \includegraphics[width=\paperwidth,keepaspectratio,trim={0 5pt 0 0}]{\vdirecole/image-fond-garde}
+        };
+        \node at (.35,.25) {{\HugeTwelve \textsc{Th\`{e}se de doctorat de} \\}};
+      \end{scope}
+      \fill[color-ecole] (-3.625,-14) rectangle ++(\paperwidth,-2);
+
+      \node[align=left,anchor=west] at (-2,-4.5) {
+        {\normalTwelve \if\@nomecoleB\empty ~\\ \else \fi} % To compensate the 2 lines of MathSTIC
+          {\largeTwelve \if\vnometablissementA\empty ~ \else \vnometablissementA \fi} \\
+          {\largeTwelve \if\vnometablissementB\empty ~ \else \vnometablissementB \fi} \\
+          {\largeTwelve \if\vnometablissementC\empty ~ \else \vnometablissementC \fi} \\
+          {\largeTwelve \if\vnometablissementD\empty ~ \else \vnometablissementD \fi} \\
+          {\largeTwelve \vnometablissementE} \\
+
+      };
+      \node[align=left,anchor=west] at (-2,-7.5) {
+        \smallTwelve \textsc{\'{E}cole Doctorale \No \@numeroecole}\\
+         \textit{\@nomecoleA} \\
+         \if\@nomecoleB\empty \else \textit{\@nomecoleB} \\ \fi
+         Sp\'{e}cialit\'{e} : \textit{\@spec}
+      };
+      \node[align=left,anchor=north west] at (-2,-9.5) {
+        \hspace{0.6cm}{\normalTwelve Par}\\
+        \hspace{0.6cm}{\LARGETwelve \textbf{\@author}}\\[.5cm]
+        {\LargeTwelve \textbf{\@title}} \\[0.25cm]
+        {\largeTwelve \@lesoustitre} \\[0.5cm]
+        	 \smallTwelve
+           \textbf{Th\`{e}se pr\'{e}sent\'{e}e et soutenue \`{a} \@lieu, le \@date} \\
+           \textbf{Unit\'{e} de recherche : \@uniterecherche} \\
+           \textbf{\if\@numthese\empty \else Th\`{e}se \No : \@numthese \fi} % Hide line if no number provided
+      };
+
+      \node[align=left,anchor=north west] at (-2,-16.5) {
+          \@jury
+      };
+
+    \end{tikzpicture}
+
+
+    % background image of the front cover
+  % \AddToShipoutPicture*{%
+  %   \put(0,0){%
+  %   \parbox[b][42.6cm]{\paperwidth}{%
+  %       \vfill
+  %       \includegraphics[width=\paperwidth,keepaspectratio,trim={0 5pt 0 0}]{\vdirecole/image-fond-garde} % Must trim white border off of bottom
+  %       \begin{tikzpicture}
+  %           \fill[color-ecole] (0,0) rectangle (\paperwidth,4.4);
+  %       \end{tikzpicture}
+  %       \vfill
+  % }}}
   \displayLogos
   %
-  \begin{tikzpicture}[remember picture,overlay,line width=0mm]
-    \node (2,3) {oi}
-   \node at (current page.center)
-{\parbox{17.6cm}{
-\vspace{3.6cm}
+%   \begin{tikzpicture}[remember picture,overlay,line width=0mm]
+%    \node at (current page.center)
 
-\selectfontfrontcover % Set font style for front cover page
-
-{\HugeTwelve \textsc{Th\`{e}se de doctorat de} \\}
-
-% \vspace{5mm}
-{\normalTwelve \if\@nomecoleB\empty ~\\ \else \fi} % To compensate the 2 lines of MathSTIC
-{\setlength{\baselineskip}{0.9\baselineskip}
-{\largeTwelve \if\vnometablissementA\empty ~ \else \vnometablissementA \fi} \\
-{\largeTwelve \if\vnometablissementB\empty ~ \else \vnometablissementB \fi} \\
-{\largeTwelve \if\vnometablissementC\empty ~ \else \vnometablissementC \fi} \\
-{\largeTwelve \if\vnometablissementD\empty ~ \else \vnometablissementD \fi} \\
-{\largeTwelve \vnometablissementE} \\
-\par}
-\vspace{0.01cm}
-{\setlength{\baselineskip}{0.7\baselineskip}
-{\smallTwelve \textsc{\'{E}cole Doctorale \No \@numeroecole}} \\
-{\normalTwelve \textit{\@nomecoleA}} \\
-{\normalTwelve \if\@nomecoleB\empty \else \textit{\@nomecoleB} \\ \fi}
-{\normalTwelve Sp\'{e}cialit\'{e} : \textit{\@spec}}
-
-%\fontsize{12}{10}\selectfont
-\vspace{0.5cm}
-\hspace{0.6cm}{\normalTwelve Par \vspace{0.15cm}}
-\par}
-\hspace{0.6cm}{\LARGETwelve \textbf{\@author}} \vspace{0.5cm}
-
-{\LargeTwelve \textbf{\@title}} \vspace{0.5cm}
-	
-{\largeTwelve \@lesoustitre} \vspace{0.5cm}
-\begin{spacing}{1}
-	 \smallTwelve
-	 \textbf{Th\`{e}se pr\'{e}sent\'{e}e et soutenue \`{a} \@lieu, le \@date} \\
-	 \textbf{Unit\'{e} de recherche : \@uniterecherche} \\
-	 \textbf{\if\@numthese\empty \else Th\`{e}se \No : \@numthese \fi} % Hide line if no number provided
-\end{spacing}
-\vspace{1.3cm}
-	\begin{small}
-	\begin{spacing}{1}
-		 \@jury
-	\end{spacing}
-	\end{small}
-}
-};
-\end{tikzpicture}
+% \begin{spacing}{1}
+% 	 \smallTwelve
+% \end{spacing}
+% \vspace{1.3cm}
+% 	\begin{small}
+% 	\begin{spacing}{1}
+% 		 \@jury
+% 	\end{spacing}
+% 	\end{small}
+% }
+% };
+% \end{tikzpicture}
 }
 
 \makeatother
@@ -772,7 +804,7 @@ C4657.44,2685.77,4668.48,2698.36,4674.56,2710.82Z";
 }
 
 %%%%%% boitesimple %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand*{\boitesimple}[1]{%
+\newcommand*{\simplebox}[1]{%
 \begin{center}
 \begin{minipage}{12cm}
 \begin{shaded}
@@ -780,4 +812,378 @@ C4657.44,2685.77,4668.48,2698.36,4674.56,2710.82Z";
 \end{shaded}
 \end{minipage}
 \end{center}
+}
+
+
+
+%%% Switch case in latex
+%%% https://tex.stackexchange.com/a/343306
+\makeatletter
+\newcommand\addcase[3]{\expandafter\def\csname\string#1@case@#2\endcsname{#3}}
+\newcommand\makeswitch[2][]{%
+  \newcommand#2[1]{%
+    \ifcsname\string#2@case@##1\endcsname\csname\string#2@case@##1\endcsname\else#1\fi%
+  }%
+}
+\makeatother
+
+%%%% Il faut adapter la taille des logos dans certains cas (e.g., EGAAL, 2 etablissements)
+\newcommand\hauteurlogos[3]{
+    \hauteurlogoecole{#1}
+    \hauteurlogoetablissementA{#2}
+    \hauteurlogoetablissementB{#3}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%% ECOLES DOCTORALES %%%%%%%%%%%%%%%%
+
+%%%% #1: dossier des images, #2: numero ED, #3: couleur ED, #4-#5: nom complet sur plusieurs lignes
+\newcommand\addecoledoctorale[5]{\direcole{#1}\numeroecole{#2}\definecolor{color-ecole}{RGB}{#3}\nomecoleA{#4}\nomecoleB{#5}}
+
+\makeswitch[default]\ecoledoctorale{}
+
+\addcase\ecoledoctorale{3M}{\addecoledoctorale
+    {3M}
+    {596}
+    {193,192,183}
+    {Mati\`{e}re, Mol\'{e}cules, Mat\'{e}riaux}
+    {}
+}
+\addcase\ecoledoctorale{ALL}{\addecoledoctorale
+    {ALL}
+    {595}
+    {240,209,134}
+    {Arts, Lettres, Langues}
+    {}
+}
+\addcase\ecoledoctorale{BS}{\addecoledoctorale
+    {BS}
+    {605}
+    {163,219,208}
+    {Biologie, Sant\'{e}}
+    {}
+}
+\addcase\ecoledoctorale{DSP}{\addecoledoctorale
+    {DSP}
+    {599}
+    {188,208,220}
+    {Droit et Science politique}
+    {}
+}
+\addcase\ecoledoctorale{EDGE}{\addecoledoctorale
+    {EDGE}
+    {597}
+    {216,178,210}
+    {Sciences \'{E}conomiques et sciences De Gestion}
+    {}
+}
+\addcase\ecoledoctorale{EGAAL}{\addecoledoctorale
+    {EGAAL}
+    {600}
+    {146,213,182}
+    {\'{E}cologie, G\'{e}osciences, Agronomie et Alimentation}
+    {}
+    \hauteurlogos{2cm}{2cm}{2cm}
+}
+\addcase\ecoledoctorale{ELICC}{\addecoledoctorale
+    {ELICC}
+    {603}
+    {249,201,188}
+    {\'{E}ducation, Langages, Interactions, Cognition, Clinique}
+    {}
+    \hauteurlogos{2cm}{2cm}{2cm}
+}
+\addcase\ecoledoctorale{MathSTIC}{\addecoledoctorale
+    {MathSTIC}
+    {601}
+    {236,115,127}
+    {Math\'{e}matiques et Sciences et Technologies}
+    {de l'Information et de la Communication}
+}
+\addcase\ecoledoctorale{SML}{\addecoledoctorale
+    {SML}
+    {598}
+    {162,225,230}
+    {Sciences de la Mer et du Littoral}
+    {}
+}
+\addcase\ecoledoctorale{SPI}{\addecoledoctorale
+    {SPI}
+    {602}
+    {159,182,217}
+    {Sciences pour l'Ing\'{e}nieur}
+    {}
+}
+\addcase\ecoledoctorale{STT}{\addecoledoctorale
+    {STT}
+    {604}
+    {172,184,192}
+    {Soci\'{e}t\'{e}s, temps, territoires}
+    {}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%% ETABLISSEMENTS %%%%%%%%%%%%%%%%
+
+%%%% #1 nom du logo, #2-#4: nom complet sur plusieurs lignes
+\newcommand\addetablissement[4]{\logoetablissementB{#1}\nometablissementC{#2}\nometablissementD{#3}\nometablissementE{#4}}
+
+\makeswitch[default]\etablissement{}
+
+\addcase\etablissement{CS}{\addetablissement
+    {CS}
+    {}
+    {}
+    {CENTRALESUP\'{E}LEC}
+}
+\addcase\etablissement{ECN}{\addetablissement
+    {ECN}
+    {}
+    {}
+    {L'\'{E}COLE CENTRALE DE NANTES}
+}
+\addcase\etablissement{EHESP}{\addetablissement
+    {EHESP}
+    {}
+    {L'\'{E}COLE DES HAUTES \'{E}TUDES}
+    {EN SANT\'{E} PUBLIQUE DE RENNES}
+}
+\addcase\etablissement{ENIB}{\addetablissement
+    {ENIB}
+    {}
+    {L'\'{E}COLE NATIONALE}
+    {D'ING\'{E}NIEURS DE BREST}
+}
+\addcase\etablissement{ENS}{\addetablissement
+    {ENS}
+    {}
+    {L'\'{E}COLE NORMALE}
+    {SUP\'{E}RIEURE RENNES}
+}
+\addcase\etablissement{ENSA}{\addetablissement
+    {ENSA}
+    {}
+    {L'\'{E}COLE NORMALE SUP\'{E}RIEURE}
+    {D'ARCHITECTURE DE NANTES}
+}
+\addcase\etablissement{ENSAB}{\addetablissement
+    {ENSAB}
+    {}
+    {L'\'{E}COLE NORMALE SUP\'{E}RIEURE}
+    {D'ARCHITECTURE DE BRETAGNE}
+}
+\addcase\etablissement{ENSAI}{\addetablissement
+    {ENSAI}
+    {}
+    {L'\'{E}COLE NATIONALE DE LA STATISTIQUE}
+    {ET DE L'ANALYSE DE L'INFORMATION}
+}
+\addcase\etablissement{ENSCR}{\addetablissement
+    {ENSCR}
+    {}
+    {L'\'{E}COLE NATIONALE SUP\'{E}RIEURE}
+    {DE CHIMIE RENNES}
+}
+\addcase\etablissement{ENSTA}{\addetablissement
+    {ENSTA}
+    {}
+    {L'\'{E}COLE NATIONALE SUP\'{E}RIEURE}
+    {DE TECHNIQUES AVANC\'{E}ES BRETAGNE}
+}
+\addcase\etablissement{IMTA}{\addetablissement
+    {IMTA}
+    {L'\'{E}COLE NATIONALE SUP\'{E}RIEURE}
+    {MINES-T\'{E}L\'{E}COM ATLANTIQUE BRETAGNE}
+    {PAYS-DE-LA-LOIRE - IMT ATLANTIQUE}
+}
+\addcase\etablissement{INSA}{\addetablissement
+    {INSA}
+    {}
+    {L'INSTITUT NATIONAL DES}
+    {SCIENCES APPLIQU\'{E}ES RENNES}
+}
+\addcase\etablissement{InstitutAgro}{\addetablissement
+    {InstitutAgro}
+    {L'INSTITUT NATIONAL D'ENSEIGNEMENT SUP\'{E}RIEUR}
+    {POUR L'AGRICULTURE, L'ALIMENTATION ET}
+    {L'ENVIRONNEMENT - ECOLE INTERNE AGROCAMPUS OUEST}
+}
+\addcase\etablissement{LMU}{\addetablissement
+    {LMU}
+    {}
+    {}
+    {LE MANS UNIVERSIT\'{E}}
+}
+\addcase\etablissement{Oniris}{\addetablissement
+    {Oniris}
+    {}
+    {}
+    {ONIRIS}
+}
+\addcase\etablissement{UA}{\addetablissement
+    {UA-couleur}
+    {}
+    {}
+    {L'UNIVERSIT\'{E} D'ANGERS}
+}
+\addcase\etablissement{UB}{\addetablissement
+    {UB}
+    {}
+    {}
+    {L'UNIVERSIT\'{E} DE BREST}
+}
+\addcase\etablissement{UBO}{\addetablissement
+    {UBO}
+    {}
+    {}
+    {L'UNIVERSIT\'{E} DE BRETAGNE OCCIDENTALE}
+}
+\addcase\etablissement{UBS}{\addetablissement
+    {UBS}
+    {}
+    {}
+    {L'UNIVERSIT\'{E} DE BRETAGNE SUD}
+}
+\addcase\etablissement{UN}{\addetablissement
+    {UN-noir}
+    {}
+    {}
+    {L'UNIVERSIT\'{E} DE NANTES}
+}
+\addcase\etablissement{UR1}{\addetablissement
+    {UR1-noir}
+    {}
+    {}
+    {L'UNIVERSIT\'{E} DE RENNES 1}
+}
+\addcase\etablissement{UR2}{\addetablissement
+    {UR2}
+    {}
+    {}
+    {L'UNIVERSIT\'{E} DE RENNES 2}
+}
+
+
+%%%% #1-#2: nom des deux logos, #3-#7: nom complet de la double affiliation sur plusieurs lignes
+\newcommand\addpairetablissements[7]{
+    \logoetablissementA{#1}
+    \logoetablissementB{#2}
+    \nometablissementA{#3}
+    \nometablissementB{#4}
+    \nometablissementC{#5}
+    \nometablissementD{#6}
+    \nometablissementE{#7}
+}
+
+% ALL, STT: UR2-ENSAB
+\addcase\etablissement{UR2-ENSAB}{\addpairetablissements
+    {ENSAB}
+    {UR2}
+    {}
+    {L'\'{E}COLE NORMALE SUP\'{E}RIEURE}
+    {D'ARCHITECTURE DE BRETAGNE}
+    {D\'{E}LIVR\'{E}E CONJOINTEMENT AVEC}
+    {L'UNIVERSIT\'{E} DE RENNES 2}
+    \hauteurlogos{2cm}{1.2cm}{2cm}
+}
+% BS, DSP, MathSTIC: UR1-UR2
+\addcase\etablissement{UR1-UR2}{\addpairetablissements
+    {UR2}
+    {UR1-noir}
+    {}
+    {}
+    {L'UNIVERSIT\'{E} DE RENNES 2}
+    {D\'{E}LIVR\'{E}E CONJOINTEMENT AVEC}
+    {L'UNIVERSIT\'{E} DE RENNES 1}
+    \hauteurlogos{2cm}{2cm}{2cm}
+}
+% DSP, EDGE: UR1-EHESP
+\addcase\etablissement{UR1-EHESP}{\addpairetablissements
+    {EHESP}
+    {UR1-noir}
+    {}
+    {L'UNIVERSIT\'{E} DE RENNES 1}
+    {D\'{E}LIVR\'{E}E CONJOINTEMENT AVEC}
+    {L'\'{E}COLE DES HAUTES \'{E}TUDES}
+    {EN SANT\'{E} PUBLIQUE DE RENNES}
+    \hauteurlogos{2cm}{2cm}{2cm}
+}
+% EGAAL: UA-LMU
+\addcase\etablissement{UA-LMU}{\addpairetablissements
+    {LMU}
+    {UA-couleur}
+    {}
+    {}
+    {LE MANS UNIVERSIT\'{E}}
+    {D\'{E}LIVR\'{E}E CONJOINTEMENT AVEC}
+    {L'UNIVERSIT\'{E} D'ANGERS}
+    \hauteurlogos{2cm}{1cm}{2cm}
+}
+% MathSTIC: UR1-InstitutAgro
+\addcase\etablissement{UR1-InstitutAgro}{\addpairetablissements
+    {InstitutAgro}
+    {UR1-noir}
+    {L'INSTITUT NATIONAL D'ENSEIGNEMENT SUP\'{E}RIEUR}
+    {POUR L'AGRICULTURE, L'ALIMENTATION ET}
+    {L'ENVIRONNEMENT - ECOLE INTERNE AGROCAMPUS OUEST}
+    {D\'{E}LIVR\'{E}E CONJOINTEMENT AVEC}
+    {L'UNIVERSIT\'{E} DE RENNES 1}
+    \hauteurlogos{1.8cm}{1.3cm}{1.5cm}
+}
+% SML: UBO-IMTA
+\addcase\etablissement{UBO-IMTA}{\addpairetablissements
+    {IMTA}
+    {UBO}
+    {L'\'{E}COLE NATIONALE SUP\'{E}RIEURE}
+    {MINES-T\'{E}L\'{E}COM ATLANTIQUE BRETAGNE}
+    {PAYS-DE-LA-LOIRE - IMT ATLANTIQUE}
+    {D\'{E}LIVR\'{E}E CONJOINTEMENT AVEC}
+    {L'UNIVERSIT\'{E} DE BRETAGNE OCCIDENTALE}
+    \hauteurlogos{2cm}{1.8cm}{1.8cm}
+}
+% SPI: ECN-ENSA
+\addcase\etablissement{ECN-ENSA}{\addpairetablissements
+    {ENSA}
+    {ECN}
+    {}
+    {L'\'{E}COLE NORMALE SUP\'{E}RIEURE}
+    {D'ARCHITECTURE DE NANTES}
+    {D\'{E}LIVR\'{E}E CONJOINTEMENT AVEC}
+    {L'\'{E}COLE CENTRALE DE NANTES}
+    \hauteurlogos{2cm}{1.8cm}{1.8cm}
+}
+% SPI: UBO-ENIB
+\addcase\etablissement{UBO-ENIB}{\addpairetablissements
+    {ENIB}
+    {UBO}
+    {}
+    {L'\'{E}COLE NATIONALE}
+    {D'ING\'{E}NIEURS DE BREST}
+    {D\'{E}LIVR\'{E}E CONJOINTEMENT AVEC}
+    {L'UNIVERSIT\'{E} DE BRETAGNE OCCIDENTALE}
+    \hauteurlogos{2cm}{1.8cm}{1.6cm}
+}
+% SPI: UN-Oniris
+\addcase\etablissement{UN-Oniris}{\addpairetablissements
+    {Oniris}
+    {UN-noir}
+    {}
+    {}
+    {ONIRIS}
+    {D\'{E}LIVR\'{E}E CONJOINTEMENT AVEC}
+    {L'UNIVERSIT\'{E} DE NANTES}
+    \hauteurlogos{2cm}{2cm}{2cm}
+}
+% STT: ENSA-UN
+\addcase\etablissement{ENSA-UN}{\addpairetablissements
+    {ENSA}
+    {UN-noir}
+    {}
+    {L'\'{E}COLE NORMALE SUP\'{E}RIEURE}
+    {D'ARCHITECTURE DE NANTES}
+    {D\'{E}LIVR\'{E}E CONJOINTEMENT AVEC}
+    {L'UNIVERSIT\'{E} DE NANTES}
+    \hauteurlogos{2cm}{2cm}{2cm}
 }

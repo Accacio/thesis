@@ -1,0 +1,26 @@
+\newcommandx\acr[5][4=,5=]{
+  \ifthenelse{\equal{#5}{}}
+  {
+    \acrSing{#1}{#2}{#3}
+  }
+  {
+    \acrPl{#1}{#2}{#3}{#4}{#5}
+  }
+  }
+
+\newcommand{\acrSing}[3]{\newacronym{#1}{#2}{#3}
+  \expandafter\newcommand\csname #1\endcsname{\gls{#1}}}
+
+\newcommand{\acrPl}[5]{
+  \newacronym[plural=#4,firstplural=#5 (#4)]{#1}{#2}{#3}
+  \expandafter\newcommand\csname #1\endcsname{\gls{#1}}
+  \expandafter\newcommand\csname #4\endcsname{\glspl{#1}}
+}
+
+\newcommand{\symbl}[3]{\newglossaryentry{#1}{name ={#2},	description ={#3}}
+  \expandafter\newcommand\csname #1\endcsname{\gls{#1}}
+}
+
+\symbl{latex}{\LaTeX}{Is a mark up language specially suited for scientific documents}
+
+\acr{dmpc}{dMPC}{distributed Model based Predictive Control}

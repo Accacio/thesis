@@ -1,8 +1,142 @@
 \documentclass{these-dbl}
+% \graphicspath{{./figures/}{../figures}}
+% \input{preamble}
+\input{glossary_symbol}
+% \setlength\LTleft{0pt}
+% \setlength\LTright{0pt}
+% \setlength\glsdescwidth{0.8\hsize}
+\input{math.tex}
 
+% \bibliography{./biblio/biblio.bib}
+\bibliography{./bibliography}
+
+\ecoledoctorale{MathSTIC}
+\etablissement{CS}
+\spec{Automatique, Productique, Robotique}
+\uniterecherche{AUT - IETR}
+
+\author{Rafael Accácio NOGUEIRA}
+\title{Cyber-security of distributed Model Predictive Control Frameworks}
+% \lesoustitre{« Sous-titre de la th\`{e}se »}
+\date{« date »}
+\lieu{« Lieu »}
+\numthese{« si pertinent »} % \numthese{}
+\jury{
+{\normalTwelve \textbf{Rapporteurs avant soutenance :}}\\[.2cm]
+\footnotesizeTwelve
+\hspace{.6cm}
+\begin{tabular}{@{}ll}
+Pr\'{e}nom NOM & Fonction et \'{e}tablissement d'exercice \\
+Pr\'{e}nom NOM & Fonction et \'{e}tablissement d'exercice \\
+Pr\'{e}nom NOM & Fonction et \'{e}tablissement d'exercice \\
+\end{tabular}\\[.2cm]
+
+{\normalTwelve \textbf{Composition du Jury :}}\\[.2cm]
+\footnotesizeTwelve
+~\begin{tabular}{@{}lll}
+Pr\'{e}sident :        & Pr\'{e}nom NOM & Fonction et \'{e}tablissement d'exercice \textit{(à préciser après la soutenance)} \\
+Examinateurs :         & Pr\'{e}nom NOM & Fonction et \'{e}tablissement d'exercice \\
+                       & Pr\'{e}nom NOM & Fonction et \'{e}tablissement d'exercice \\
+                       & Pr\'{e}nom NOM & Fonction et \'{e}tablissement d'exercice \\
+                       & Pr\'{e}nom NOM & Fonction et \'{e}tablissement d'exercice \\
+Dir. de thèse :    & Hervé GUÉGUEN  & Professeur CentraleSupélec \\
+Co-dir. de thèse : & Romain BOURDAIS & MCF CentraleSupélec \\
+\end{tabular}\\[.2cm]
+
+{\normalTwelve \textbf{Invit\'{e}(s) :}}\\[.2cm]
+\footnotesizeTwelve
+\begin{tabular}{@{}ll}
+Pr\'{e}nom NOM & Fonction et \'{e}tablissement d'exercice \\
+\end{tabular}
+}
+
+% \dominitoc
 \begin{document}
+\maketitle
 
-One day this should be a thesis
+% % Page de garde avec commande \maketitle
+% % Front cover calling \maketitle
+% \input{./Couverture-these/pagedegarde}
+
+\selectlanguage{english}
+
+% % Inclusion du chapitre remerciement
+% % Input acknowledgement chapter
+
+% \frontmatter
+% \subfile{acknowledgement}
+
+% \cleartooddpage[\thispagestyle{empty}]
+% \renewcommand{\contentsname}{Table of Contents}
+% \tableofcontents %sommaire %table of content
+% % \shorttableofcontents{Sommaire}{0}
+
+% \subfile{./front_matter/front_matter}
+% One day this should be a thesis
+
+\cleartooddpage[\thispagestyle{empty}]
+\printglossary[type=\acronymtype,title=List of Acronyms]
+
+\cleartooddpage[\thispagestyle{empty}]
+\listoffigures
+\addcontentsline{toc}{chapter}{List of Figures}
+\cleartooddpage[\thispagestyle{empty}]
+\addcontentsline{toc}{chapter}{List of Tables}
+\listoftables
+
+\cleartooddpage[\thispagestyle{empty}]
+\printglossary
+\input{notation.tex}
+% \cleartooddpage[\thispagestyle{empty}]
+% \subfile{./Introduction/introduction}
+
+% \mainmatter
+
+% \cleartooddpage[\thispagestyle{empty}]
+% \subfile{main_matter/main_matter}
+
+% \backmatter
+% \cleartooddpage[\thispagestyle{empty}]
+% \phantomsection % To have a correct link in the table of contents
+% \addcontentsline{toc}{chapter}{Bibliography}
+% \addstarredchapter{Title of chapter}
+% \nocite{*}
+% \cleartooddpage[\thispagestyle{empty}]
+\part{Background}
+\chapter{MPC}
+There are few people, however, who, if you told them a result, would be able to evolve from their own inner consciousness what the steps were which led up to that result.
+A Study in Scarlet
+Sir Arthur Conan Doyle
+\gls{dmpc}
+
+% \setlength{\epigraphwidth}{.3\textwidth}\epigraph{th}
+\cite{YangEtAl2022}
+\printbibliography%
+
+
+\defbibheading{subbibliography}{%
+\section*{References for Chapter \ref{refsegment:\therefsection\therefsegment}}}
+\chapter{Test}
+\cite{AlessioBemporad2009}
+\cite{YangEtAl2022}
+\printbibliography%
+
+
+\appendix
+\part{Appendices}
+\chapter{Tools}
+\begin{itemize}
+  \item This thesis was typeset using \gls{latex}
+
+\end{itemize}
+
+% \newpage
+% \blindtext
+
+% \clearemptydoublepage
+% % Pour avoir la quatrième de couverture sur une page paire
+% % To have the back cover on an even page
+% \cleartoevenpage[\thispagestyle{empty}]
+% \input{./Couverture-these/resume}
 
 \end{document}
-
