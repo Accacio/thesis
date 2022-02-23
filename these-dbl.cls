@@ -497,12 +497,13 @@ refsection=chapter,
 \logoetablissementB{}
 
 %%%% Hauteur des logos, variable selon les (double) affiliations
-\newcommand*{\hauteurlogoecole}[1]{\gdef\vhauteurlogoecole{#1}}
-\hauteurlogoecole{2.4cm}
+\newlength{\vhauteurlogoecole}
+\newcommand*{\hauteurlogoecole}[1]{\setlength{\vhauteurlogoecole}{#1}}
+\hauteurlogoecole{2.3cm}
 \newcommand*{\hauteurlogoetablissementA}[1]{\gdef\vhauteurlogoetablissementA{#1}}
 \hauteurlogoetablissementA{}
 \newcommand*{\hauteurlogoetablissementB}[1]{\gdef\vhauteurlogoetablissementB{#1}}
-\hauteurlogoetablissementB{2.4cm}
+\hauteurlogoetablissementB{3.0cm}
 
 %%%% Eventuel sous-titre
 \newcommand{\lesoustitre}[1]{\gdef\@lesoustitre{#1}}
@@ -547,39 +548,69 @@ refsection=chapter,
 \newcommand{\footnotesizeTwelve}{\fontsize{9.5}{11}\selectfont} % 12pt \footnotesize
 
 % Affiche les logos sur les pages de couverture
-\newcommand{\displayLogos}{%
-  \thispagestyle{empty}
-  \begin{tikzpicture}[remember picture,overlay,line width=0mm]
-    \node[xshift=6.2cm,yshift=2cm] {%
-    \parbox{\textwidth}{%
-      % Quand UR1 est l'unique etablissement, il ne faut afficher que son logo
-      {\ifthenelse{\equal{\vlogoetablissementA}{}\and\equal{\vlogoetablissementB}{UR1-noir}}{
-        $\vcenter{\hbox{%
-          \includegraphics[keepaspectratio,height=\vhauteurlogoetablissementB,width=7cm
-          ]{./Couverture-these/logos-etablissements/\vlogoetablissementB}%
-        }}$
-      }{%
-        $\vcenter{\hbox{%
-          \includegraphics[keepaspectratio,height=\vhauteurlogoecole,%width=7cm
-          ]{\vdirecole/logo}%
-        }}$
-        \hfill
-        {\if\vlogoetablissementA\empty \else
-          $\vcenter{\hbox{%
-            \includegraphics[keepaspectratio,height=\vhauteurlogoetablissementA,width=7cm
-            ]{./Couverture-these/logos-etablissements/\vlogoetablissementA}%
-          }}$
-        \fi}%
-        \hspace{3mm}
-        $\vcenter{\hbox{%
-          \includegraphics[keepaspectratio,height=\vhauteurlogoetablissementB,width=7cm
-          ]{./Couverture-these/logos-etablissements/\vlogoetablissementB}%
-        }}$
-      }}%
-    }%
-  };
-  \end{tikzpicture}
-  \par\nobreak
+% \newcommand{\displayLogos}{%
+%   \begin{tikzpicture}[remember picture,overlay,line width=0mm]
+%     \node[anchor=north] at (current page.north) {%
+%     \parbox{\textwidth}{%
+%       % Quand UR1 est l'unique etablissement, il ne faut afficher que son logo
+%       {\ifthenelse{\equal{\vlogoetablissementA}{}\and\equal{\vlogoetablissementB}{UR1-noir}}{
+%         $\vcenter{\hbox{%
+%           \includegraphics[keepaspectratio,height=\vhauteurlogoetablissementB,width=7cm
+%           ]{./Couverture-these/logos-etablissements/\vlogoetablissementB}%
+%         }}$
+%       }{%
+%         $\vcenter{\hbox{%
+%           \includegraphics[keepaspectratio,height=\vhauteurlogoecole,%width=7cm
+%           ]{\vdirecole/logo}%
+%         }}$
+%         \hfill
+%         {\if\vlogoetablissementA\empty \else
+%           $\vcenter{\hbox{%
+%             \includegraphics[keepaspectratio,height=\vhauteurlogoetablissementA,width=7cm
+%             ]{./Couverture-these/logos-etablissements/\vlogoetablissementA}%
+%           }}$
+%         \fi
+%       }%
+%         \hspace{3mm}
+%         $\vcenter{\hbox{%
+%           \includegraphics[keepaspectratio,height=\vhauteurlogoetablissementB,width=7cm
+%           ]{./Couverture-these/logos-etablissements/\vlogoetablissementB}%
+%         }}$
+%       }}%
+%     }%
+%   };
+%   \end{tikzpicture}
+%   \par\nobreak
+% }
+\newcommand{\displayLogos}[1]{%
+  \ifthenelse{\equal{\vlogoetablissementA}{}\and\equal{\vlogoetablissementB}{UR1-noir}}
+  {
+    \node[anchor=center] at (#1) {
+      \includegraphics[keepaspectratio,height=\vhauteurlogoetablissementB,width=7cm
+      ]{./Couverture-these/logos-etablissements/\vlogoetablissementB}%
+    };
+  }
+  {
+        \node[align=center,anchor=center] at ($(#1)+(0,-2.5)$) {
+          \parbox[c][\vhauteurlogoetablissementB]{\paperwidth}{
+            \hfill
+            \includegraphics[keepaspectratio,height=\vhauteurlogoecole,%width=7cm
+            ]{\vdirecole/logo}%
+            \hfill \hfill \hfill
+      \includegraphics[keepaspectratio,height=\vhauteurlogoetablissementB,width=7cm]{./Couverture-these/logos-etablissements/\vlogoetablissementB}%
+            \hfill\hfill}
+          };
+
+    % \node[anchor=center] at ($(#1-| .7,0)+(0,-2.5)$) {
+    %   \includegraphics[keepaspectratio,height=\vhauteurlogoecole,%width=7cm
+    %   ]{\vdirecole/logo}%
+    % };
+
+    % \node[anchor=center] at ($(#1-| -2.5,0)+(\textwidth,-2.5)$) {
+    %   \includegraphics[keepaspectratio,height=\vhauteurlogoetablissementB,width=7cm]{./Couverture-these/logos-etablissements/\vlogoetablissementB}%
+    % };
+
+  }
 }
 
 %mise en page de la page de garde
@@ -588,16 +619,20 @@ refsection=chapter,
   \thispagestyle{empty}
   \clearpage
     \begin{tikzpicture}[remember picture,overlay,line width=0mm]
+      \node (logoposition) at (current page.north){};
+      \displayLogos{logoposition}
+        \setlength{\baselineskip}{0.8\baselineskip}
       \selectfontfrontcover % Set font style for front cover page
       \begin{scope}[x={(current page.north west)},y={(current page.east)}]
-        \node at (.5,.5) {
+        \node[yshift=-1cm] at (.5,.5) {
           \includegraphics[width=\paperwidth,keepaspectratio,trim={0 5pt 0 0}]{\vdirecole/image-fond-garde}
         };
-        \node at (.35,.25) {{\HugeTwelve \textsc{Th\`{e}se de doctorat de} \\}};
       \end{scope}
-      \fill[color-ecole] (-3.625,-14) rectangle ++(\paperwidth,-2);
+      \node[align=left,anchor=west] at (-2,-2.5) {\HugeTwelve \textsc{Thèse de doctorat de} \\};
 
-      \node[align=left,anchor=west] at (-2,-4.5) {
+      \fill[color-ecole] (-3.625,-14) rectangle ++(\paperwidth,-1);
+
+      \node[align=left,anchor=west] at (-2,-5.) {
         {\normalTwelve \if\@nomecoleB\empty ~\\ \else \fi} % To compensate the 2 lines of MathSTIC
           {\largeTwelve \if\vnometablissementA\empty ~ \else \vnometablissementA \fi} \\
           {\largeTwelve \if\vnometablissementB\empty ~ \else \vnometablissementB \fi} \\
@@ -613,7 +648,7 @@ refsection=chapter,
          Sp\'{e}cialit\'{e} : \textit{\@spec}
       };
       \node[align=left,anchor=north west] at (-2,-9.5) {
-        \hspace{0.6cm}{\normalTwelve Par}\\
+        \hspace{0.6cm}{\normalTwelve Par}\\[.2cm]
         \hspace{0.6cm}{\LARGETwelve \textbf{\@author}}\\[.5cm]
         {\LargeTwelve \textbf{\@title}} \\[0.25cm]
         {\largeTwelve \@lesoustitre} \\[0.5cm]
@@ -630,45 +665,56 @@ refsection=chapter,
     \end{tikzpicture}
 
 
-    % background image of the front cover
-  % \AddToShipoutPicture*{%
-  %   \put(0,0){%
-  %   \parbox[b][42.6cm]{\paperwidth}{%
-  %       \vfill
-  %       \includegraphics[width=\paperwidth,keepaspectratio,trim={0 5pt 0 0}]{\vdirecole/image-fond-garde} % Must trim white border off of bottom
-  %       \begin{tikzpicture}
-  %           \fill[color-ecole] (0,0) rectangle (\paperwidth,4.4);
-  %       \end{tikzpicture}
-  %       \vfill
-  % }}}
-  \displayLogos
-  %
-%   \begin{tikzpicture}[remember picture,overlay,line width=0mm]
-%    \node at (current page.center)
-
-% \begin{spacing}{1}
-% 	 \smallTwelve
-% \end{spacing}
-% \vspace{1.3cm}
-% 	\begin{small}
-% 	\begin{spacing}{1}
-% 		 \@jury
-% 	\end{spacing}
-% 	\end{small}
-% }
-% };
-% \end{tikzpicture}
 }
-
 \makeatother
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%% QUATRIEME DE COUVERTURE %%%%%%%%%%%%%%%%
+\makeatletter
+\newcommand{\titleEN}[1]{\gdef\@titleEN{#1}}
+\titleEN{}
+\makeatother
 
-\newcommand{\backcoverheader}{%
+\makeatletter
+\newcommand{\abstractEN}[1]{\gdef\@abstractEN{#1}}
+\abstractEN{}
+\makeatother
+
+\makeatletter
+\newcommand{\keywordsEN}[1]{\gdef\@keywordsEN{#1}}
+\keywordsEN{}
+\makeatother
+
+\makeatletter
+\newcommand{\abstractFR}[1]{\gdef\@abstractFR{#1}}
+\abstractEN{}
+\makeatother
+
+\makeatletter
+\newcommand{\keywordsFR}[1]{\gdef\@keywordsFR{#1}}
+\keywordsFR{}
+\makeatother
+
+\makeatletter
+\newcommand{\titleFR}[1]{\gdef\@titleFR{#1}}
+\titleFR{}
+\makeatother
+
+
+\makeatletter
+\newcommand{\makebackcover}{%
+  \cleartooddpage[\thispagestyle{empty}]
+  % \newgeometry{inner=30mm,outer=20mm,top=40mm,bottom=20mm}
+  \selectfontbackcover
 \thispagestyle{empty}
+\clearpage
+\begin{tikzpicture}[remember picture,overlay,line width=0mm]
+      \node (logoposition) at (current page.north){};
+      \displayLogos{logoposition}
+\end{tikzpicture}
+
 \AddToShipoutPicture*{%
     \put(0,0){%
     \parbox[t][\paperheight]{\paperwidth}{%
@@ -678,58 +724,43 @@ refsection=chapter,
     \put(0,0){%
     \parbox[t][\paperheight]{\paperwidth}{%
         \vspace{-14.5cm}
-        \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{\vdirecole/image-fond-dos2}%
+        \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{\vdirecole/image-fond-dos}%
     }}
 }
-\hspace{9mm}
-\displayLogos
-}
-
-\newcommand{\titleFR}[1]{%
 \vspace{1cm}
 {\centering \noindent \textcolor{color-ecole}{\rule{\textwidth}{0.2cm}}}
 \vspace{-1cm}
 \selectlanguage{french}
-\section*{\selectfontbackcover\smallTwelve \textcolor{color-ecole}{Titre : }{\selectfontbackcover\mdseries{#1}}} % In this particular case, font style needs to get re-selected locally
-}
-
-\newcommand{\keywordsFR}[1]{%
+\section*{\selectfontbackcover\smallTwelve \textcolor{color-ecole}{Titre : }{\selectfontbackcover\mdseries{\@titleFR}}}
 \vspace{-0.2cm}
-\noindent{\smallTwelve \textbf{Mot cl\'{e}s : }#1}
-}
+\noindent{\smallTwelve \textbf{Mot cl\'{e}s : }\@keywordsFR}
 
-\newcommand{\abstractFR}[1]{%
 \vspace{-0.2cm}
 \begin{multicols}{2}
 \begin{spacing}{1}
-	\noindent\smallTwelve \textbf{R\'{e}sum\'{e} : }#1
+	\noindent\smallTwelve \textbf{R\'{e}sum\'{e} : } \@abstractFR
 \end{spacing}
 \end{multicols}
-}
 
-\newcommand{\titleEN}[1]{%
-\vspace{0.5cm}
+
+\vspace{1cm}
 {\centering \noindent \textcolor{color-ecole}{\rule{\textwidth}{0.2cm}}}
 \vspace{-1cm}
 \selectlanguage{english}
-\section*{\selectfontbackcover\smallTwelve \textcolor{color-ecole}{Title: }{\selectfontbackcover\mdseries{#1}}} % In this particular case, font style needs to get re-selected locally
-}
-
-\newcommand{\keywordsEN}[1]{%
+\section*{\selectfontbackcover\smallTwelve \textcolor{color-ecole}{Title : }{\selectfontbackcover\mdseries{\@titleEN}}}
 \vspace{-0.2cm}
-\noindent{\smallTwelve \textbf{Keywords: }#1}
-}
+\noindent{\smallTwelve \textbf{Keywords: }\@keywordsEN}
 
-\newcommand{\abstractEN}[1]{%
 \vspace{-0.2cm}
 \begin{multicols}{2}
 \begin{spacing}{1}
-	\noindent\smallTwelve \textbf{Abstract: }#1
+	\noindent\smallTwelve \textbf{Abstract: } \@abstractEN
 \end{spacing}
 \end{multicols}
+
+\restoregeometry
 }
-
-
+\makeatother
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%% EN-TETES PAGES %%%%%%%%%%%%%%%%

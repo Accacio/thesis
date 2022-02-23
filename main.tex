@@ -1,4 +1,6 @@
 \documentclass{these-dbl}
+
+\usepackage[math]{blindtext}
 % \graphicspath{{./figures/}{../figures}}
 % \input{preamble}
 \input{glossary_symbol}
@@ -40,7 +42,7 @@ Examinateurs :         & Pr\'{e}nom NOM & Fonction et \'{e}tablissement d'exerci
                        & Pr\'{e}nom NOM & Fonction et \'{e}tablissement d'exercice \\
                        & Pr\'{e}nom NOM & Fonction et \'{e}tablissement d'exercice \\
 Dir. de thèse :    & Hervé GUÉGUEN  & Professeur CentraleSupélec \\
-Co-dir. de thèse : & Romain BOURDAIS & MCF CentraleSupélec \\
+Co-dir. de thèse : & Romain BOURDAIS & Maître de conférence, CentraleSupélec \\
 \end{tabular}\\[.2cm]
 
 {\normalTwelve \textbf{Invit\'{e}(s) :}}\\[.2cm]
@@ -49,6 +51,14 @@ Co-dir. de thèse : & Romain BOURDAIS & MCF CentraleSupélec \\
 Pr\'{e}nom NOM & Fonction et \'{e}tablissement d'exercice \\
 \end{tabular}
 }
+
+\titleFR{titre (en fran\c cais)..............}
+\keywordsFR{de 3 \`{a} 6 mots clefs}
+\abstractFR{\blindtext}
+\titleEN{titre (en anglais)..............}
+\keywordsEN{de 3 \`{a} 6 mots clefs}
+\abstractEN{\blindtext}
+
 
 % \dominitoc
 \begin{document}
@@ -136,7 +146,8 @@ Sir Arthur Conan Doyle
 % \clearemptydoublepage
 % % Pour avoir la quatrième de couverture sur une page paire
 % % To have the back cover on an even page
-% \cleartoevenpage[\thispagestyle{empty}]
-% \input{./Couverture-these/resume}
+
+
+\makebackcover
 
 \end{document}
