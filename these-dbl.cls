@@ -842,7 +842,7 @@ refsection=chapter,
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%% FAIRE DES ENCARTS %%%%%%%%%%%%%%%%
-
+\definecolor{linkcolor}{RGB}{7, 109, 174}
 \definecolor{fondtitre}{RGB}{85,85,85}
 \definecolor{fonddeboite}{RGB}{232,232,232}
 \definecolor{shadecolor}{RGB}{232,232,232}
