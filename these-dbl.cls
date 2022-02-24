@@ -66,6 +66,7 @@
 \RequirePackage{mathrsfs}
 \RequirePackage{eucal}
 
+\RequirePackage{array}
 
 %Ou bien : \RequirePackage[top=4 cm, bottom=4 cm, left=3 cm, right=3 cm]{geometry} % On peut modifier ces valeurs pour augmenter ou r\'{e}duire les marges. Attention aux en-têtes de chapitres. 
 \RequirePackage{epigraph} % \cleartoevenpage
@@ -513,9 +514,6 @@ refsection=chapter,
 \newcommand{\discipline}[1]{\gdef\@discipline{#1}}
 \discipline{}
 
-%%%% Jury
-\newcommand{\jury}[1]{\gdef\@jury{#1}}
-\jury{}
 
 %%%%% Sp\'{e}cialit\'{e}
 \newcommand{\spec}[1]{\gdef\@spec{#1}}
@@ -537,6 +535,109 @@ refsection=chapter,
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%% PAGE DE GARDE %%%%%%%%%%%%%%%%
+\def\tand{&}
+\newcount\@examiner\@examiner0
+\newcommand\examiner[3]{%
+  \global\@namedef{Examiner:\expandafter\the\@examiner}{#1 & #2, #3}
+  \global\advance\@examiner by 1
+}
+\newcount\@invited\@invited0
+\newcommand\invited[3]{%
+  \global\@namedef{Invited:\expandafter\the\@invited}{#1 & #2, #3}
+  \global\advance\@invited by 1
+}
+\newcount\@director\@director0
+\newcommand\director[3]{%
+  \global\@namedef{Director:\expandafter\the\@director}{#1 & #2, #3}
+  \global\advance\@director by 1
+}
+
+\newcount\@reporter\@reporter0
+\newcommand\reporter[3]{%
+  \global\@namedef{Reporter:\expandafter\the\@reporter}{#1 & #2, #3}
+  \global\advance\@reporter by 1
+}
+
+\newcommand\president[3]{\gdef\@president{#1 & #2,#3}}
+
+\newcolumntype{y}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+
+%%%% Jury
+\newcommand{\jury}[1]{\gdef\@jury{#1}}
+\jury{
+
+  \newcounter{it}
+\ifnum0=\the\@reporter
+\else
+{\normalTwelve \textbf{Rapporteurs avant soutenance :}}\\[.2cm]
+\footnotesizeTwelve
+\quad
+\begin{tabular}{@{}y{75pt}y{90pt}l}
+  \setcounter{it}{0}
+  \@whilenum\theit<\@reporter\do{%
+  \tand \protect\csname Reporter:\theit \endcsname
+  \stepcounter{it}%
+  \ifnum\theit<\@reporter
+    \\
+  \fi
+  }%
+\end{tabular}\\[.2cm]
+\fi
+
+{\normalTwelve \textbf{Composition du Jury :}}\\[.2cm]
+\footnotesizeTwelve
+\quad
+
+\begin{tabular}{@{}y{75pt}y{90pt}l}
+  Pr\'{e}sident : & \@president\\
+  \ifnum0=\the\@examiner
+  \errmessage{NO EXAMINERS, at least one examiner is needed}
+  \fi
+  \setcounter{it}{0}%
+  Examinateurs : &
+  \protect\csname Examiner:\theit \endcsname  \\
+  \stepcounter{it}%
+  \@whilenum\theit<\@examiner\do{%
+  \tand \protect\csname Examiner:\theit \endcsname  \\
+  \stepcounter{it}%
+  }%
+                   % \end{tabular}\\
+  Dir. de thèse : &
+                   \setcounter{it}{0}%
+                    \protect\csname Director:\theit \endcsname  \\
+
+  \ifnum1<\the\@director
+  \stepcounter{it}%
+  Co-dir. de thèse : &
+  \protect\csname Director:\theit \endcsname  \\
+  \stepcounter{it}%
+  \@whilenum\theit<\@director\do{%
+  \tand \protect\csname Director:\theit \endcsname
+  \stepcounter{it}%
+  \ifnum\theit<\@director
+  \\
+  \fi
+  }%
+  \fi
+\end{tabular}\\[.2cm]
+
+\ifnum0=\the\@invited
+\else
+{\normalTwelve \textbf{Invit\'{e}(s) :}}\\[.2cm]
+\footnotesizeTwelve
+\quad
+\begin{tabular}{@{}y{75pt}y{90pt}l}
+  \setcounter{it}{0}%
+  \setcounter{it}{0}%
+  \@whilenum\theit<\@invited\do{%
+  \tand \protect\csname Invited:\theit \endcsname  \\
+  \stepcounter{it}%
+  }%
+\end{tabular}
+  \fi
+}
+
+
 
 % Define some font sizes specific to the covers, supposed to be in 12pt
 \newcommand{\HugeTwelve}{\fontsize{26}{31}\selectfont} % 12pt \Huge
