@@ -52,6 +52,8 @@
 \RequirePackage{xargs}
 \RequirePackage[acronym,toc]{glossaries}\makeglossaries
 
+\RequirePackage{minitoc}
+
 \RequirePackage{enumitem}
 
 \RequirePackage{mathtools}
@@ -80,6 +82,8 @@
 % \frenchspacing
 % \FrenchFootnotes
 
+\makeatletter
+
 % Define commands to set fonts throughout the document
 \newcommand*{\selectfontfrontcover}{\fontfamily{phv}\selectfont}  % Font style used in front cover 
 \newcommand*{\selectfontbackcover}{\fontfamily{phv}\selectfont}   % Font style used in back cover 
@@ -94,7 +98,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%% En-tete chap %%%%%%%%%%%%%%%%
 
-\makeatletter
 \def\thickhrulefill{\leavevmode \leaders \hrule height 1ex \hfill \kern \z@}
 \def\@makechapterhead#1{%
   \cleartooddpage[\thispagestyle{empty}]
@@ -122,8 +125,6 @@
     \par\nobreak
     \vskip 30\p@
   }}
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%% Tete de parties %%%%%%%%%%%%%%%%
@@ -373,17 +374,16 @@ C4657.44,2685.77,4668.48,2698.36,4674.56,2710.82Z";
 
 \let\originalpart=\part%
 \def\part{\cleartooddpage[\thispagestyle{empty}]\originalpart}
-\makeatletter
 \newcommand*{\jolipart}[1]{%
 	\begin{center}
 		\begin{Huge}\color{black}
 			#1
 		\end{Huge}
 		\end{center}
-		\vspace{1cm}		
+		\vspace{1cm}
 	\begin{center}
   \noindent \hrulefill~\raisebox{-10pt}{\triskel}~\hrulefill
-	\end{center}		
+	\end{center}
 	}
 
 \parttitlefont{\jolipart}
@@ -440,7 +440,6 @@ refsection=chapter,
 % Copyright (C) 2002 Mike Nolta <mrnolta@princeton.edu>, GPL V. 2.0 and
 % later version. http://www.physics.princeton.edu/cosmology/computing/PrincetonThesis.cls
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \let\orig@quote\quote
 \let\endorig@quote\endquote
 \renewenvironment*{quote}
@@ -458,8 +457,6 @@ refsection=chapter,
 \renewenvironment*{verse}
 	{\begin{old@verse}\begin{singlespace}}
         {\end{singlespace}\end{old@verse}}
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%% VARIABLES PAGE DE GARDE %%%%%%%%%%%%%%%%
@@ -614,7 +611,6 @@ refsection=chapter,
 }
 
 %mise en page de la page de garde
-\makeatletter
 \def\maketitle{%
   \thispagestyle{empty}
   \clearpage
@@ -666,44 +662,30 @@ refsection=chapter,
 
 
 }
-\makeatother
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%% QUATRIEME DE COUVERTURE %%%%%%%%%%%%%%%%
-\makeatletter
 \newcommand{\titleEN}[1]{\gdef\@titleEN{#1}}
 \titleEN{}
-\makeatother
 
-\makeatletter
 \newcommand{\abstractEN}[1]{\gdef\@abstractEN{#1}}
 \abstractEN{}
-\makeatother
 
-\makeatletter
 \newcommand{\keywordsEN}[1]{\gdef\@keywordsEN{#1}}
 \keywordsEN{}
-\makeatother
 
-\makeatletter
 \newcommand{\abstractFR}[1]{\gdef\@abstractFR{#1}}
 \abstractEN{}
-\makeatother
 
-\makeatletter
 \newcommand{\keywordsFR}[1]{\gdef\@keywordsFR{#1}}
 \keywordsFR{}
-\makeatother
 
-\makeatletter
 \newcommand{\titleFR}[1]{\gdef\@titleFR{#1}}
 \titleFR{}
-\makeatother
 
 
-\makeatletter
 \newcommand{\makebackcover}{%
   \cleartooddpage[\thispagestyle{empty}]
   % \newgeometry{inner=30mm,outer=20mm,top=40mm,bottom=20mm}
@@ -760,7 +742,6 @@ refsection=chapter,
 
 \restoregeometry
 }
-\makeatother
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%% EN-TETES PAGES %%%%%%%%%%%%%%%%
@@ -769,7 +750,55 @@ refsection=chapter,
 \newcommand{\clearemptydoublepage}{%
    \newpage{\pagestyle{empty}\cleardoublepage}}
 %%%% .... et utiliser la commande \clearemptydoublepage juste avant le \chapter
+\let\oldchapter\chapter
+\def\chapter{\clearemptydoublepage\oldchapter}
 
+%%%%
+
+\addto\captionsenglish{
+  \renewcommand{\contentsname}{Table of Contents}
+}
+
+\let\oldglossary\printglossary
+\def\printglossary{
+\cleartooddpage[\thispagestyle{empty}]
+\oldglossary\adjustmtc
+}
+
+\providecommand{\listacronymsname}{}
+
+\addto\captionsenglish{
+  \renewcommand{\listacronymsname}{List of Acronyms}
+}
+\addto\captionsfrench{
+  \renewcommand{\listacronymsname}{Liste des abréviations}
+}
+
+\def\listofacronyms{
+\cleartooddpage[\thispagestyle{empty}]
+% \addcontentsline{toc}{chapter}{\listacronymsname}\adjustmtc
+\oldglossary[type=\acronymtype,title=\listacronymsname]\adjustmtc
+}
+
+\let\oldlistoftables\listoftables
+\def\listoftables{
+\cleartooddpage[\thispagestyle{empty}]
+\addcontentsline{toc}{chapter}{\listtablename}\adjustmtc
+\oldlistoftables
+}
+
+\let\oldlistoffigures\listoffigures
+\def\listoffigures{
+\cleartooddpage[\thispagestyle{empty}]
+\addcontentsline{toc}{chapter}{\listfigurename}\adjustmtc
+\oldlistoffigures
+}
+
+
+
+% \cleartooddpage[\thispagestyle{empty}]
+% \addcontentsline{toc}{chapter}{\listfigurename}\adjustmtc
+% \listoffigures
 
 \fancyhf{}                       % on annule le fancy automatique
    
@@ -849,14 +878,12 @@ refsection=chapter,
 
 %%% Switch case in latex
 %%% https://tex.stackexchange.com/a/343306
-\makeatletter
 \newcommand\addcase[3]{\expandafter\def\csname\string#1@case@#2\endcsname{#3}}
 \newcommand\makeswitch[2][]{%
   \newcommand#2[1]{%
     \ifcsname\string#2@case@##1\endcsname\csname\string#2@case@##1\endcsname\else#1\fi%
   }%
 }
-\makeatother
 
 %%%% Il faut adapter la taille des logos dans certains cas (e.g., EGAAL, 2 etablissements)
 \newcommand\hauteurlogos[3]{
@@ -1218,3 +1245,5 @@ refsection=chapter,
     {L'UNIVERSIT\'{E} DE NANTES}
     \hauteurlogos{2cm}{2cm}{2cm}
 }
+
+\makeatother
