@@ -40,6 +40,9 @@
 \RequirePackage{fix-cm}
 \RequirePackage{abstract}
 \RequirePackage{graphicx} % Pour ins\'{e}rer des images. Utiliser le format jpg pour plus de simplicit\'{e}.
+
+\graphicspath{{./fig/}{./img}}
+
 \RequirePackage{sectsty} % obligatoire, pour jouer avec l'apparence des titres
 \RequirePackage{shorttoc} % pour le sommaire, au debut.
 \RequirePackage{fancyhdr} % Afin de r\'{e}aliser soi-même les en-têtes et pieds de page, voir chaque d\'{e}but de chapitre.
@@ -462,7 +465,7 @@ refsection=chapter,
 %%%%%%%%%%%%%%%% VARIABLES PAGE DE GARDE %%%%%%%%%%%%%%%%
 
 %%%%% Dossier contenant les info de l'ecole doctorale
-\newcommand*{\direcole}[1]{\gdef\vdirecole{./Couverture-these/ecoles-doctorales/#1}}
+\newcommand*{\direcole}[1]{\gdef\vdirecole{./covers/ecoles-doctorales/#1}}
 \direcole{}
 
 %%%%% Nom ecole, une variable par ligne
@@ -553,7 +556,7 @@ refsection=chapter,
 %       {\ifthenelse{\equal{\vlogoetablissementA}{}\and\equal{\vlogoetablissementB}{UR1-noir}}{
 %         $\vcenter{\hbox{%
 %           \includegraphics[keepaspectratio,height=\vhauteurlogoetablissementB,width=7cm
-%           ]{./Couverture-these/logos-etablissements/\vlogoetablissementB}%
+%           ]{./covers/logos-etablissements/\vlogoetablissementB}%
 %         }}$
 %       }{%
 %         $\vcenter{\hbox{%
@@ -564,14 +567,14 @@ refsection=chapter,
 %         {\if\vlogoetablissementA\empty \else
 %           $\vcenter{\hbox{%
 %             \includegraphics[keepaspectratio,height=\vhauteurlogoetablissementA,width=7cm
-%             ]{./Couverture-these/logos-etablissements/\vlogoetablissementA}%
+%             ]{./covers/logos-etablissements/\vlogoetablissementA}%
 %           }}$
 %         \fi
 %       }%
 %         \hspace{3mm}
 %         $\vcenter{\hbox{%
 %           \includegraphics[keepaspectratio,height=\vhauteurlogoetablissementB,width=7cm
-%           ]{./Couverture-these/logos-etablissements/\vlogoetablissementB}%
+%           ]{./covers/logos-etablissements/\vlogoetablissementB}%
 %         }}$
 %       }}%
 %     }%
@@ -584,7 +587,7 @@ refsection=chapter,
   {
     \node[anchor=center] at (#1) {
       \includegraphics[keepaspectratio,height=\vhauteurlogoetablissementB,width=7cm
-      ]{./Couverture-these/logos-etablissements/\vlogoetablissementB}%
+      ]{./covers/logos-etablissements/\vlogoetablissementB}%
     };
   }
   {
@@ -594,7 +597,7 @@ refsection=chapter,
             \includegraphics[keepaspectratio,height=\vhauteurlogoecole,%width=7cm
             ]{\vdirecole/logo}%
             \hfill \hfill \hfill
-      \includegraphics[keepaspectratio,height=\vhauteurlogoetablissementB,width=7cm]{./Couverture-these/logos-etablissements/\vlogoetablissementB}%
+      \includegraphics[keepaspectratio,height=\vhauteurlogoetablissementB,width=7cm]{./covers/logos-etablissements/\vlogoetablissementB}%
             \hfill\hfill}
           };
 
@@ -604,7 +607,7 @@ refsection=chapter,
     % };
 
     % \node[anchor=center] at ($(#1-| -2.5,0)+(\textwidth,-2.5)$) {
-    %   \includegraphics[keepaspectratio,height=\vhauteurlogoetablissementB,width=7cm]{./Couverture-these/logos-etablissements/\vlogoetablissementB}%
+    %   \includegraphics[keepaspectratio,height=\vhauteurlogoetablissementB,width=7cm]{./covers/logos-etablissements/\vlogoetablissementB}%
     % };
 
   }
