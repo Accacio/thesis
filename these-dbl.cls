@@ -75,7 +75,7 @@
 
 \RequirePackage{hyperref} %Utiliser pour une bibliographie interactive + sommaire et TOC interactifs (pour une sortie PDF, par exemple).
 
-\AtBeginDocument{
+\BeforeBeginEnvironment{document}{
 \makeatletter
 \hypersetup{
    pdfauthor   = {\@author},
