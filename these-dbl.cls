@@ -103,7 +103,6 @@
 % \frenchspacing
 % \FrenchFootnotes
 
-\makeatletter
 
 % Define commands to set fonts throughout the document
 \newcommand*{\selectfontfrontcover}{\fontfamily{phv}\selectfont}  % Font style used in front cover 
@@ -738,26 +737,29 @@ refsection=chapter,
   \thispagestyle{empty}
   \clearpage
     \begin{tikzpicture}[remember picture,overlay,line width=0mm]
-      \node (logoposition) at (current page.north){};
-      \displayLogos{logoposition}
         \setlength{\baselineskip}{0.8\baselineskip}
       \selectfontfrontcover % Set font style for front cover page
-      \begin{scope}[x={(current page.north west)},y={(current page.east)}]
-        \node[yshift=-1cm] at (.5,.5) {
+      \begin{scope}[blend mode = normal]
+      % \begin{scope}[blend mode = color]
+        % TODO this image should be created using TiKz comands, extract svg paths and use ecole-color to fill paths
+        \node[anchor=center,yshift=.22\paperheight] (fond) at (current page.center) {
           \includegraphics[width=\paperwidth,keepaspectratio,trim={0 5pt 0 0}]{\vdirecole/image-fond-garde}
         };
       \end{scope}
-      \node[align=left,anchor=west] at (-2,-2.5) {\HugeTwelve \textsc{Thèse de doctorat de} \\};
-
       \fill[color-ecole] (-3.625,-14) rectangle ++(\paperwidth,-1);
 
+      \node (logoposition) at (current page.north){};
+      \displayLogos{logoposition}
+      \node[align=left,anchor=west] at (-2,-2.5) {\HugeTwelve \textsc{Thèse de doctorat de} \\};
+
       \node[align=left,anchor=west] at (-2,-5.) {
-        {\normalTwelve \if\@nomecoleB\empty ~\\ \else \fi} % To compensate the 2 lines of MathSTIC
+        \parbox{\paperwidth}{{\normalTwelve \if\@nomecoleB\empty ~\\ \else \fi} % To compensate the 2 lines of MathSTIC
           {\largeTwelve \if\vnometablissementA\empty ~ \else \vnometablissementA \fi} \\
           {\largeTwelve \if\vnometablissementB\empty ~ \else \vnometablissementB \fi} \\
           {\largeTwelve \if\vnometablissementC\empty ~ \else \vnometablissementC \fi} \\
           {\largeTwelve \if\vnometablissementD\empty ~ \else \vnometablissementD \fi} \\
           {\largeTwelve \vnometablissementE} \\
+          }
 
       };
       \node[align=left,anchor=west] at (-2,-7.5) {
