@@ -74,7 +74,24 @@
 \RequirePackage{setspace} % permet d'utiliser les commandes \spacing, doublespace (double interligne), singlespace (simple interligne) et onehalfspace (un interligne et demi)
 
 \RequirePackage{hyperref} %Utiliser pour une bibliographie interactive + sommaire et TOC interactifs (pour une sortie PDF, par exemple).
-\hypersetup{colorlinks=true, citecolor=black, filecolor=black, linkcolor=black, urlcolor=black}
+
+\AtBeginDocument{
+\makeatletter
+\hypersetup{
+   pdfauthor   = {\@author},
+   pdfcreator   = {\@author},
+   pdftitle    = {\@title},
+   pdfkeywords    = {\@keywordsEN},
+   pdfsubject = {\@subject},
+   colorlinks=true,
+   linkcolor=black,
+   citecolor=color-ecole,
+   urlcolor=linkcolor,
+}
+\makeatother
+}
+
+
 
 \RequirePackage{eso-pic} % For \AddToShipoutPicture used for cover backgrounds
 \RequirePackage{framed} % utilise pour coloriser les encarts
@@ -514,6 +531,8 @@ refsection=chapter,
 \newcommand{\discipline}[1]{\gdef\@discipline{#1}}
 \discipline{}
 
+\newcommand{\subject}[1]{\gdef\@subject{#1}}
+\subject{}
 
 %%%%% Sp\'{e}cialit\'{e}
 \newcommand{\spec}[1]{\gdef\@spec{#1}}
