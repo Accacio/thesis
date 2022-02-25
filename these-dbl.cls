@@ -824,12 +824,7 @@ refsection=chapter,
     \put(0,0){%
     \parbox[t][\paperheight]{\paperwidth}{%
         \vspace{-29.6cm}
-        \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{\vdirecole/image-fond-dos}%
-    }}
-    \put(0,0){%
-    \parbox[t][\paperheight]{\paperwidth}{%
-        \vspace{-14.5cm}
-        \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{\vdirecole/image-fond-dos}%
+        \includegraphics[width=\paperwidth,height=\paperheight]{\vdirecole/image-fond-dos}%
     }}
 }
 \vspace{1cm}
