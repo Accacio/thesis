@@ -6,16 +6,30 @@
 \usepackage[math]{blindtext}
 % \graphicspath{{./figures/}{../figures}}
 % \input{preamble}
+
+\newif\ifdebug%
+\newcommand{\draft}{\debugtrue}
+\newcommand{\final}{\debugfalse}
+\newcommand{\todo}[2][FORGOT TO DO SOMETHING]{\ifdebug%
+  {%
+    \color{red}
+    #2}\else \PackageError{}{#1}{#2}#2\fi}%
+\newcommand\doing[2][FORGOT TO DO SOMETHING]{\ifdebug%
+  {%
+    \color{blue}
+    #2}\else \PackageError{}{#1}{#2}#2\fi}%
+\newcommand\warning[1]{\ifdebug%
+  {%
+    \color{red}
+    #1}\fi}
+
+\draft
+% \final
+
 \input{glossary_symbol}
-% \setlength\LTleft{0pt}
-% \setlength\LTright{0pt}
-% \setlength\glsdescwidth{0.8\hsize}
 \input{math.tex}
 
-% \bibliography{./biblio/biblio.bib}
 \bibliography{./bibliography}
-
-
 
 \ecoledoctorale{MathSTIC}
 \etablissement{CS}
@@ -26,6 +40,33 @@
 \author{Rafael Accácio NOGUEIRA}
 \title{Cyber-security of distributed Model Predictive Control Frameworks}
 % \lesoustitre{« Sous-titre de la th\`{e}se »}
+
+\titleFR{Cyber-sécurité de structures basées sur Commande Prédictive distribuée}
+\keywordsFR{Systèmes cyber-physiques, Grandes systèmes, Commande Prédictive, Optimisation distribuée}
+\abstractFR{%
+\todo[Write Abstract]{
+  Controlling large-scale systems sometimes requires decentralized computation.
+  Communication among agents is crucial to achieving consensus and optimal global behavior.
+  These negotiation mechanisms are sensitive to attacks on those exchanges.
+  This paper proposes an algorithm based on Expectation Maximization to mitigate the effects of attacks in a resource allocation based distributed model predictive control.
+  The performance is assessed through an academic example of the temperature control of multiple rooms under input power constraints.
+}}
+
+\makeatletter
+\titleEN{\@title}
+\makeatother
+\keywordsEN{Cyber-physical systems, Large-scale systems, Model Predictive Control, Distributed Optimisation}
+\abstractEN{%
+  \todo[Write Abstract]{
+  Controlling large-scale systems sometimes requires decentralized computation.
+  Communication among agents is crucial to achieving consensus and optimal global behavior.
+  These negotiation mechanisms are sensitive to attacks on those exchanges.
+  This paper proposes an algorithm based on Expectation Maximization to mitigate the effects of attacks in a resource allocation based distributed model predictive control.
+  The performance is assessed through an academic example of the temperature control of multiple rooms under input power constraints.
+}}
+
+
+
 \day31
 \month10
 \year2022
@@ -45,15 +86,8 @@
 
 \invited{Romain Bourdais}{Maitre de conférence}{CentraleSupélec}
 
-\titleFR{titre (en fran\c cais)..............}
-\keywordsFR{de 3 \`{a} 6 mots clefs}
-\abstractFR{\blindtext}
-\titleEN{titre (en anglais)..............}
-\keywordsEN{de 3 \`{a} 6 mots clefs}
-\abstractEN{\blindtext}
 
 \begin{document}
-
 \dominitoc
 
 \maketitle
@@ -80,10 +114,8 @@
 
 % \subfile{main_matter/main_matter}
 
-% \backmatter
 
 \part{Background}
-\minitoc
 \chapter{Model Predictive Control}
 \epigraph{\centering There are few people, however, who, if you told them a result, would be able to evolve from their own inner consciousness what the steps were which led up to that result.}
 {\textit{A Study in Scarlet}\\ \textsc{Sir Arthur Conan Doyle}}
@@ -115,6 +147,7 @@
 \cite{YangEtAl2022}
 \printbibliography%
 
+\backmatter
 
 \appendix
 \part{Appendices}

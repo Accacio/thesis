@@ -88,7 +88,6 @@
    citecolor=color-ecole,
    urlcolor=linkcolor,
 }
-\makeatother
 }
 
 
@@ -833,7 +832,7 @@ refsection=chapter,
 {\centering \noindent \textcolor{color-ecole}{\rule{\textwidth}{0.2cm}}}
 \vspace{-1cm}
 \selectlanguage{french}
-\section*{\selectfontbackcover\smallTwelve \textcolor{color-ecole}{Titre : }{\selectfontbackcover\mdseries{\@titleFR}}}
+\section*{\selectfontbackcover\smallTwelve \textcolor{color-ecole}{Titre : }{\selectfontbackcover\mdseries{\bfseries\@titleFR}}}
 \vspace{-0.2cm}
 \noindent{\smallTwelve \textbf{Mot cl\'{e}s : }\@keywordsFR}
 
@@ -849,7 +848,7 @@ refsection=chapter,
 {\centering \noindent \textcolor{color-ecole}{\rule{\textwidth}{0.2cm}}}
 \vspace{-1cm}
 \selectlanguage{english}
-\section*{\selectfontbackcover\smallTwelve \textcolor{color-ecole}{Title : }{\selectfontbackcover\mdseries{\@titleEN}}}
+\section*{\selectfontbackcover\smallTwelve \textcolor{color-ecole}{Title : }{\selectfontbackcover\mdseries{\bfseries\@titleEN}}}
 \vspace{-0.2cm}
 \noindent{\smallTwelve \textbf{Keywords: }\@keywordsEN}
 
