@@ -951,7 +951,7 @@ refsection=chapter,
 \ProcessOptions
 
 %%%%%%%%%% Boitemagique  %%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand*{\boitemagique}[2]{
+\newcommand*{\magicbox}[2]{
 \begin{center}
 \begin{tikzpicture}
 % la boite
@@ -962,7 +962,7 @@ refsection=chapter,
 \end{minipage}
 };
 % le titre de la boite
-\node[fill=fondtitre!100, text=white, rectangle] at (mabox.north) {\sffamily\textbf{#1}};
+\node[fill=fondtitre!80, text=white, rectangle] at (mabox.north) {\sffamily\textbf{#1}};
 \end{tikzpicture}
 \end{center}
 }

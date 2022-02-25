@@ -1,5 +1,7 @@
 \documentclass{these-dbl}
 
+\usepackage{subfiles}
+
 \usepackage[math]{blindtext}
 % \graphicspath{{./figures/}{../figures}}
 % \input{preamble}
@@ -56,16 +58,16 @@ urlcolor=linkcolor,
 \abstractEN{\blindtext}
 
 \begin{document}
-\selectlanguage{english}
+
 \dominitoc
 
 \maketitle
+\selectlanguage{english}
 
-
-% \frontmatter
+\frontmatter
 % \subfile{acknowledgement}
 
-\tableofcontents %sommaire %table of content
+\tableofcontents
 % \shorttableofcontents{Sommaire}{0}
 
 % \subfile{./front_matter/front_matter}
@@ -76,20 +78,14 @@ urlcolor=linkcolor,
 \listoftables
 \printglossary
 
-\input{notation.tex}
-% \subfile{./Introduction/introduction}
-%
+\subfile{notation.tex}
+\subfile{./Introduction/introduction}
 
 \mainmatter
 
 % \subfile{main_matter/main_matter}
 
 % \backmatter
-%
-% \phantomsection % To have a correct link in the table of contents
-% \addcontentsline{toc}{chapter}{Bibliography}
-% \addstarredchapter{Title of chapter}
-% \nocite{*}
 
 \part{Background}
 \minitoc
@@ -141,15 +137,6 @@ urlcolor=linkcolor,
 \chapter{Proofs}
 \minitoc
 \section{sdfs}
-
-
-% \newpage
-% \blindtext
-
-% \clearemptydoublepage
-% % Pour avoir la quatrième de couverture sur une page paire
-% % To have the back cover on an even page
-
 
 \makebackcover
 
