@@ -1,0 +1,40 @@
+
+# latex log files
+*.log
+
+# minitoc files
+*.mtc*
+*.maf*
+
+# index files
+*.ist
+*.glg
+*.alg
+
+# glossary files
+*.acn
+*.acr
+*.glo
+*.gls
+
+# lists (tables figures) files
+*.lot
+*.lof
+*.toc
+
+# aux files
+*.aux
+*.out
+
+# biblatex
+*.run.xml
+*.blg
+*.bcf
+*.bbl
+
+# synctex
+*.synctex*
+
+*.pdf
+
+*.el
