@@ -36,7 +36,11 @@
 \RequirePackage{multicol}
 \RequirePackage[T1]{fontenc} % permet de sp\'{e}cifier \`{a} LaTeX l'utilisation du codage de caract\`{e}res T1, nouvelle norme LaTeX non utilis\'{e}e par d\'{e}faut pour des raisons de compatibilit\'{e} avec les anciens documents LaTeX.
 \RequirePackage{lmodern} % Assurer une bonne impression!
+
 \RequirePackage{tikz} % tikz est utilise pour tracer des boites, par exemple
+\RequirePackage{circuitikz}
+\RequirePackage{pgfplots}
+
 \RequirePackage{fix-cm}
 \RequirePackage{abstract}
 \RequirePackage{graphicx} % Pour ins\'{e}rer des images. Utiliser le format jpg pour plus de simplicit\'{e}.
@@ -68,8 +72,14 @@
 
 \RequirePackage{array}
 
+\RequirePackage{xr}
+\RequirePackage{subfiles}
+\RequirePackage[math]{blindtext}
+
+
 %Ou bien : \RequirePackage[top=4 cm, bottom=4 cm, left=3 cm, right=3 cm]{geometry} % On peut modifier ces valeurs pour augmenter ou r\'{e}duire les marges. Attention aux en-têtes de chapitres. 
 \RequirePackage{epigraph} % \cleartoevenpage
+\setlength{\epigraphwidth}{.3\textwidth}
 
 \RequirePackage{setspace} % permet d'utiliser les commandes \spacing, doublespace (double interligne), singlespace (simple interligne) et onehalfspace (un interligne et demi)
 
@@ -147,6 +157,8 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%% Tete de parties %%%%%%%%%%%%%%%%
+
+
 \usetikzlibrary{svg.path}
 \usetikzlibrary {graphs}
 \usetikzlibrary{arrows.meta}
@@ -154,6 +166,7 @@
 \usetikzlibrary{overlay-beamer-styles}
  \usetikzlibrary{plotmarks}
   \usetikzlibrary{arrows.meta}
+\usetikzlibrary{babel} % to correct problem with babel
 
   \newcommand{\triskel}{
   \tikz{
@@ -925,6 +938,9 @@ refsection=chapter,
 %%%%%%%%%% Gerer les en tetes dans les frontmatter mainmatter et backmatter
 \RequirePackage{geometry}
 \RequirePackage{etoolbox}
+\RequirePackage[framemethod=TikZ]{mdframed}
+
+
 
 \appto\frontmatter{\pagestyle{fancy}
 \renewcommand{\sectionmark}[1]{}
@@ -1008,6 +1024,52 @@ refsection=chapter,
 \end{minipage}
 \end{center}
 }
+
+\newcounter{theorem}[section]
+\newenvironment{theorem}[1][]{%
+\stepcounter{theorem}%
+\ifstrempty{#1}%
+ {\mdfsetup{%
+   frametitle={%
+    \tikz[baseline=(current bounding box.east),outer sep=0pt]
+    \node[rectangle,fill=fondtitre!80,text=white,anchor=center]
+         {\sffamily\textbf{\strut Theorem~\thetheorem}};}}
+ }%
+{\mdfsetup{%
+  frametitle={%
+   \tikz[baseline=(current bounding box.east),outer sep=0pt]
+   \node[rectangle,fill=fondtitre!80,text=white,anchor=center]
+        {\sffamily\textbf{\strut Theorem~\thetheorem:~#1}};}}%
+ }%
+\mdfsetup{innertopmargin=10pt,linecolor=fondtitre!100,backgroundcolor=fonddeboite!100,%
+       linewidth=1pt,topline=true,
+       frametitleaboveskip=\dimexpr-\ht\strutbox\relax,}
+   \begin{mdframed}[]\relax%
+}
+{\end{mdframed}}
+
+\newcounter{remark}[section]
+\newenvironment{remark}[1][]{%
+\stepcounter{remark}%
+\ifstrempty{#1}%
+ {\mdfsetup{%
+   frametitle={%
+    \tikz[baseline=(current bounding box.east),outer sep=0pt]
+    \node[rectangle,fill=fondtitre!80,text=white,anchor=center] at (.5,.5)
+         {\sffamily\textbf{\strut Remark~\theremark}};}}
+ }%
+{\mdfsetup{%
+  frametitle={%
+   \tikz[baseline=(current bounding box.east),outer sep=0pt]
+   \node[rectangle,fill=fondtitre!80,text=white,anchor=center]
+        {\sffamily\textbf{\strut Remark~\theremark:~#1}};}}%
+ }%
+\mdfsetup{innertopmargin=10pt,linecolor=fondtitre!100,backgroundcolor=fonddeboite!100,%
+       linewidth=1pt,topline=true,
+       frametitleaboveskip=\dimexpr-\ht\strutbox\relax,}
+   \begin{mdframed}[]\relax%
+}
+{\end{mdframed}}
 
 
 
@@ -1382,3 +1444,20 @@ refsection=chapter,
 }
 
 \makeatother
+
+%% TODOS doing, warning
+\newif\ifdebug%
+\newcommand{\draft}{\debugtrue}
+\newcommand{\final}{\debugfalse}
+\newcommand{\todo}[2][FORGOT TO DO SOMETHING]{\ifdebug%
+  {%
+    \color{red}
+    #2}\else \PackageError{}{#1}{#2}#2\fi}%
+\newcommand\doing[2][FORGOT TO DO SOMETHING]{\ifdebug%
+  {%
+    \color{blue}
+    #2}\else \PackageError{}{#1}{#2}#2\fi}%
+\newcommand\warning[1]{\ifdebug%
+  {%
+    \color{red}
+    #1}\fi}

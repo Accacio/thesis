@@ -1,0 +1,201 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\chapter{Expectation Maximization}
+\epigraph{\centering And now\\ for something completely different.}
+{\textit{Continuity Announcer}\\\textsc{Monty Python's\\ Flying Circus}}
+\minitoc
+\label{sec:expect-maxim-algo}
+
+The main objective of the \EM{} algorithm, seen in~\cite{DempsterEtAl1977}, is to find maximum likelihood estimators for models with latent variables.
+
+We will use our estimation problem to illustrate how the algorithm works, and
+we will concentrate on the estimation of the parameters for a single agent in a single step $k$, so we drop the subscript $i$ and the time dependency $[k]$ to simplify the notation.
+
+As in~\eqref{eq:lambdafuntheta},  any response variable $\tilde{\vec{\lambda}}$, is a function of an input $\vec{\theta}$, which belongs to a unknown zone ${\set{Z}=\{1\mathbin{:}Z\}}$, Challenge~\ref{ch:zone_unknown}.
+The relationship between the input and the response is given by a set of parameters we want to estimate ${\set{P}=\setbuild{(\tilde{P}^{z},\tilde{\vec{s}}^{z})}{z\in\set{Z}}}$.
+
+For an observation ${o\in\set{O}=\{1\mathbin{:}O\}}$, we observe the input and response variables, identified as  ${\random{\vec{\theta}}_{o}}$ and ${\random{\vec{\lambda}}_{o}}$.
+As~\eqref{eq:linear_cheating} gives us a multidimensional \pwa{} function, we propose to use a expansion of the model referred as \emph{mixture of switching regressions} in~\cite{QuandtRamsey1978} and \emph{mixture of linear regressions} in~\cite{FariaSoromenho2010}, which we will call \emph{mixture of affine regressions}, since our regressors have a linear term (matrices $\tilde{P}^{z}$) and a constant term (vectors $\tilde{\vec{s}}^{z}$):
+% TODO(accacio): change subscript n
+\begin{equation}
+  \label{eq:linear_cheating_random}
+  \randomvec{\lambda}_{o}=
+  \begin{cases}
+    -\tilde{P}^{1}\randomvec{\theta}_{o}-\tilde{\vec{s}}^{1}&\text{with probability}\ \pi_{1} \\
+    \qquad\quad \vdots&\qquad\quad \vdots\\
+    -\tilde{P}^{Z}\randomvec{\theta}_{o}-\tilde{\vec{s}}^{Z}&\text{with probability}\ \pi_{Z} \\
+  \end{cases}.
+\end{equation}
+
+Each couple of observed input and response variables $(    \randomvec{\lambda}_{o}, \randomvec{\theta}_{o})$ is associated in this model to a latent unobserved random variable ${\random{z}_{o}\in\set{Z}}$ that indicates from which of the $Z$ affine regression models in~\eqref{eq:linear_cheating_random} the response variable was obtained.
+The latent variable $\random{z}_{o}$ follows a categorical prior distribution, with associated probabilities ${\Pi=\{\pi_{1},\dots,\pi_{Z}\}}$:
+\begin{equation}
+  \label{eq:prob_zo_equal_z}
+  \probability{\random{z}_{o}=z}=\pi_{z} \in [0,1], \qquad \sum_{z=1}^{Z} \pi_{z} = 1.
+\end{equation}
+Since $\vec{\theta}$ is our input,
+we consider a non-informative improper probability density function~\cite{ChristensenEtAl2010}
+% SL: BTW, maybe we should use different notations for "the probability that some discrete random variable (e.g. z_0) is equal to something, and the probability density function of a continuous random variable (e.g. theta_0 and lambda_0).
+
+\begin{equation}
+  \label{eq:theta_almost_surely}
+  \probability{\randomvec{\theta}_{o}} \,\propto \,1.
+\end{equation}
+
+Given the input and latent variables, the response variable $\random{\lambda}_{o}$ is modeled as a multivariate normal random variable with probability density function
+\begin{equation}
+  \label{eq:multivariate_gaussian}
+  \probability{\randomvec{\lambda}_{o}|\randomvec{\theta}_{o},\random{z}_{o}=z; \set{P}^{z}} = \mathcal{N}(\randomvec{\lambda}_{o};f(\randomvec{\theta}_{o};\set{P}^{z}),{\Sigma^{z}}),
+\end{equation}
+where, following~\eqref{eq:linear_cheating_random}, the mean vector is defined by
+\[f(\randomvec{\theta}_{o};(P,\vec{s}))=-{P}\randomvec{\theta}_{o}-{\vec{s}},\]
+and the covariance matrix ${\Sigma^{z}}$ tends to $0$.
+
+This mixture of affine regression model is represented as a probabilistic graphical model in Fig.~\ref{fig:model}, and it corresponds to the following factorization of the complete-data (i.e., observed and latent data) likelihood, \cite{Bishop2006}:
+\begin{align}\label{eq:completedataLikelihood}
+  \probability{\random{\Theta},\random{\Lambda},\random{Z};\set{P}}= \prod_{o=1}^{O}\prod_{z=1}^{Z}\big[&\probability{\randomvec{\lambda}_{o}|\randomvec{\theta}_{o},\random{z}_{o}=z;\set{P}^{z}} \nonumber \\
+                                                                                     & \times \probability{\random{z}_{o}=z}\probability{\randomvec{\theta}_{o}}\big]^{\indicator{\random{z}_{o}=z}},
+\end{align}
+
+Ideally, we would like to estimate the unknown model parameters $\set{P}$ by maximizing the log-marginal likelihood $\ln \probability{\random{\Theta},\random{\Lambda};\set{P}}$, computed by marginalizing the latent variables $\random{Z}$ in~\eqref{eq:completedataLikelihood}.
+Unfortunately, this optimization problem does not admit a closed-form analytical solution.
+Instead, we can exploit the latent-variable structure of the model to derive an \EM{} algorithm,~\cite{DempsterEtAl1977}, which is a convergence-guaranteed iterative algorithm ensuring at each iteration a monotonic increase of the log-marginal likelihood.
+
+\begin{figure}[b]
+  \centering
+  \begin{tikzpicture}
+    \draw[thick,blue,rounded corners=10pt] (-1.7,1.2) rectangle (1.7,-1.7);
+    \node at (1.2,-1.3) {O};
+    \node (pi) at (-2.5,.5) {$\Pi$};
+    \node (phi) at (2.5,-1.) {$\set{P}$};
+
+    \graph [edge quotes={fill=white,inner sep=1pt},
+    clockwise=3,nodes={circle,draw,rotate=-60,minimum width=1cm}] {
+      a/"${\randomvec{\theta}_{o}}$"[rotate=60,fill=lightgray],b/"${\random{\vec{\lambda}}_{o}}$"[rotate=60,fill=lightgray],c/"${\random{z}}_{o}$"[rotate=60];
+      {a,c} ->[-latex] b;
+      (pi) ->[thick,{Circle[length=3.pt]}-latex] c;
+      (phi) ->[thick,{Circle[length=3.pt]}-latex] b;
+    };
+  \end{tikzpicture}
+  \caption{Graph representation of model proposed.}\label{fig:model}
+\end{figure}
+
+Now we can formalize the \EM{} problem.
+\begin{problem}{Expectation Maximization Problem}\label{pb:EM}
+
+  Given a set of observed data $(\random{\Theta},\random{\Lambda})$, estimate the unknown latent variables $\random{Z}$ and parameter set $\set{P}$ by iteratively maximizing \todo{a function of} the complete-data log likelihood $\ln\probability{\random{\Theta},\random{\Lambda},\random{Z};\set{P}}$.
+\end{problem}
+
+Using~\eqref{eq:prob_zo_equal_z},~\eqref{eq:theta_almost_surely}, and~\eqref{eq:multivariate_gaussian} in~\eqref{eq:completedataLikelihood} yields {\color{blue}the following expression of the complete-data log-likelihood:}
+\begin{equation}\label{eq:completedataLogLikelihood_complete}
+  \ln\probability{\random{\Theta},\random{\Lambda},\random{Z};\set{P}}=  \sum_{o=1}^{O}\sum_{z=1}^{Z}{\indicator{\random{z}_{o}=z}}
+  \alpha_{zo},
+\end{equation}
+where ${\alpha_{zo}=\ln{\pi_{z}}+\ln{\mathcal{N}(\randomvec{\lambda}_{o};f(\randomvec{\theta}_{o};\set{P}^{z}),{\Sigma^{z}})}}$.
+
+But as mentioned, we do not observe the complete data $(\random{\Theta},\random{\Lambda},\random{Z})$, instead we observe only $(\random{\Theta},\random{\Lambda})$ and all the information on $\random{Z}$ given these observations is carried by the posterior probabilities  ${\zeta(z_{zo};\set{P})=\probability{\random{z}_{o}=z|\randomvec{\lambda}_{o},\randomvec{\theta}_{o};\set{P}}}$, also called \emph{responsibilities}, which can be calculated as
+\todo[Change Notation?]{Change Notation?}
+% SL: the notation z_{zo} is a bit confusing and I am not sure it was defined. It's actually related to the fact that you use z_0 as the latent variable and $z$ as the values it can take in \mathcal{Z}. Using another variable for the latter may help clarifying.
+
+\begin{align}
+  \label{eq:responsibilities}
+  \zeta(z_{zo};\set{P})&=\frac{\probability{\random{z}_{o}=z}\probability{\randomvec{\lambda}_{o}|\randomvec{\theta}_{o};\set{P}^{z}}}{\sum\limits_{j=1}^{Z}\probability{\random{z}_{o}=j}\probability{\randomvec{\lambda}_{o}|\randomvec{\theta}_{o};\set{P}^{j}}}\nonumber\\
+                       &=\frac{\pi_{z}{\mathcal{N}(\randomvec{\lambda}_{o};f(\randomvec{\theta}_{o};\set{P}^{z}),{\Sigma^{z}})}}{\sum\limits_{j=1}^{Z}\pi_{j}\mathcal{N}(\randomvec{\lambda}_{o};f(\randomvec{\theta}_{o};\set{P}^{j}),{\Sigma^{j}})}.
+\end{align}
+
+Observe that by taking
+\todo[Change Notation?]{Change Notation?}
+\begin{equation}\label{eq:argmaxz}
+  \arg\underset{z}{\max}\ {\zeta_{zo}(;\set{P})},
+\end{equation}
+we can get the most probable $z$-zone which generated the observation $\randomvec{\lambda}_{o}$.
+
+
+So, rather than using the complete data log-likelihood~\eqref{eq:completedataLogLikelihood_complete}, which we do not have, since the latent variables are not observed by definition, the \EM{} algorithm uses its expectation with respect to the posterior calculated using a given set of parameter estimates $\set{P}_{\mathrm{cur}}$:
+\begin{align}
+  \label{eq:completedataLogLikelihood_expectation}
+  Q\left(\set{P},\set{P}_{\mathrm{cur}}\right) &= \expectation[{\zeta(z_{zo};\set{P}_{\mathrm{cur}})}]{\ln\probability{\random{\Theta},\random{\Lambda},\random{Z};\set{P}}}
+\end{align}
+and since \[\expectation[{\zeta(z_{zo};\set{P}_{\mathrm{cur}})}]{\indicator{\random{z}_{o}=z}}=\zeta(z_{zo};\set{P}_{\mathrm{cur}}),\]
+we can rewrite~\eqref{eq:completedataLogLikelihood_expectation}:
+\begin{align}
+  \label{eq:completedataLogLikelihood_expectation_developed}
+  Q\left(\set{P},\set{P}_{\mathrm{cur}}\right) &= \sum_{o=1}^{O}\sum_{z=1}^{Z}  \zeta(z_{zo};\set{P}_{\mathrm{cur}})\alpha_{zo},
+\end{align}
+\todo{\begin{remark}
+    For the first iteration, the model parameters must be initialized. A discussion about the initialization of the parameters is beyond the scope of this article, and we refer the reader to~\cite{Bishop2006},~\cite{DempsterEtAl1977} and their references.
+  \end{remark}}
+
+Then we can find a new estimate of $\set{P}$ that maximizes $Q(\set{P},\set{P}_{\mathrm{cur}})$:
+\begin{equation} \label{eq:Mstep}
+  \set{P}_{\mathrm{new}}=\underset{\set{P}}{\argmax}\ Q(\set{P},\set{P}^{\mathrm{cur}}).
+\end{equation}
+For the next iteration of the algorithm, this new estimate $\set{P}_{\mathrm{new}}$ will be used as $\set{P}^{\mathrm{cur}}$.
+
+With this information we can describe the \EM{} algorithm in two parts, first calculate the responsibilities $\zeta(z_{zo};\set{P}_{\mathrm{cur}})$, and then update the parameters.
+Algorithm~\ref{alg:em} adapted from~\mbox{\cite[Chapter 9]{Bishop2006}} describes the steps.
+
+\begin{algorithm2e}[h]
+  \DontPrintSemicolon%
+  Initialize parameters $\set{P}_{\mathrm{new}}$\;
+  \Repeat{$\set{P}_{\mathrm{cur}}$ converge}{
+    $\set{P}_{\mathrm{cur}}=\set{P}_{\mathrm{new}}$\;
+    \textbf{E step} Evaluate responsibilities~\eqref{eq:responsibilities}\;
+    \textbf{M step} Reestimate parameters~\eqref{eq:Mstep}\;
+  }
+  \caption{Expectation Maximization}\label{alg:em}
+\end{algorithm2e}
+
+Here we introduce a variable ${\vec{\phi}^{z}={[\vectorize{\tilde{P}^{z}}^{T}\ {(\tilde{\vec{s}}^{z})}^{T} ]}^{T}}$ so we can calculate the new estimates of $\set{P}$ from~\eqref{eq:Mstep}. Using the KKT conditions~\cite{BoydVandenberghe2004}, we can find an optimal solution for the problem in~\eqref{eq:Mstep}, by
+taking the gradients of~\eqref{eq:completedataLogLikelihood_expectation} with respect to vectors $\vec{\phi}^{z}$ and making them vanish.
+Because of the multidimensional nature of the problem, some matrix operations are needed to synthesize the results.
+After those operations, we have a matricial solution that yields the optimal estimates $\vec{\phi}_{z}^{\mathrm{new}}$:
+\begin{equation}
+  \label{eq:mstepestimation}
+  \vec{\phi}_{z}^{\mathrm{new}}=\pseudoinv{(\Xi_{z}\random{\Omega})}\Xi_{z}\vectorize{\random{\Lambda}},
+\end{equation}
+where
+${\random{\Omega}=[\hadamard{(\Upsilon \random{\Theta}\Delta)}{Y};G]}$,
+with matrices
+${\Upsilon=\kron{\1_{n}^{T}}{I_{n}}}$,
+${\Delta=\kron{I_{N}}{\1_{n}^{T}}}$,
+${Y=\kron{G}{\1_{n}}}$,
+${G=\kron{\1_{N}^{T}}{I_{n}}}$,
+and
+\[{\Xi_{z}={\diag(\sqrt{{\zeta(z_{z1};\set{P}_{\mathrm{cur}})}}I_{n},\cdots,\sqrt{{\zeta(z_{zO};\set{P}_{\mathrm{cur}})}}I_{n})}}.\]
+% SL: I find it surprising that you have square roots of the responsabilities in this equation. Are you sure it is correct?
+
+As we can see,~\eqref{eq:mstepestimation} is the solution of a weighted Least-Squares, having the responsibilities as weights, adjusting the contribution of all observations to the regression model of index $z$.
+We can see some similarities to the K-planes algorithm (see~\cite{BradleyMangasarian2000}), but \EM{} is more compromising.
+Instead of affecting the observed data to a zone with 100\% of certainty (\emph{hard assignment}), \EM{} uses the responsibilities (\emph{soft assignment}) for each zone.
+Then, when we solve the \textbf{M Step}, rather than using only the data assigned to update the parameters of a certain zone, we take into account all data, whose contribution to the update is weighted by their associated responsibilities.
+
+
+Once the estimates $\vec{\phi}_{z}^{\mathrm{new}}$ converge, we can reconstruct the estimates $\tilde{P}^{z}$ and $\tilde{\vec{s}}^{z}$, and use in our mitigation scheme proposed in \S\ref{sec:attack}.
+
+\todo {
+  Observe that not necessarily the parameters estimated associated to a value z corresponds to the z shown in
+}
+% \begin{equation*}
+%   p(\randomvec{x})=\sum_{i=0}^{N}\pi_{i} \mathcal{N}(\random{y};f_{i}(\randomvec{x}),\Sigma_{i})
+% \end{equation*}
+
+% \begin{equation}
+%   \mathcal{N}(\random{y}; {\mu}_{i},\Sigma_{i})=\frac{1}{{\sqrt{2\pi\sigma_{i}^{2}}}}e^{-\frac{(\random{y}-{\mu}_{i})^{2}}{2\sigma^{2}}}
+% \end{equation}
+
+% for a $D-$dimensional gaussian we have:
+% \begin{equation}
+%   \mathcal{N}(\randomvec{y}; \vec{\mu}_{i},\Sigma_{i})=\frac{1}{{{(2\pi)}^{D/2}}{|\Sigma_{i}|^{\frac{1}{2}}}}e^{-\frac{1}{2}\norm{\randomvec{y}-\vec{\mu}_{i}}^{2}_{\Sigma_{i}^{-1}}}
+% \end{equation}
+
+% \begin{figure}[b]
+%   \centering
+%   \scriptsize \def\svgwidth{0.49\textwidth}
+%   \includegraphics[width=\columnwidth]{pwagaussian.pdf}
+%   \caption{Example of Gaussian Probability density functions used in mixture for identification of a 2D Piecewise Affine function with 2 modes, where \todo[verify colormap]{black represents 0 probability and white maximum }}\label{fig:pwagaussian}
+% \end{figure}
+\todo{Simulated annealing as in \cite{OzerovFevotte2010}}
+\printbibliography
+\end{document}

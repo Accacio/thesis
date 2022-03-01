@@ -1,35 +1,16 @@
 \documentclass[ornaments]{these-dbl}
 % optional ornaments with ornaments option
 
-\usepackage{subfiles}
-
-\usepackage[math]{blindtext}
+\externaldocument[]{\subfix{main}}
 % \graphicspath{{./figures/}{../figures}}
 % \input{preamble}
-
-\newif\ifdebug%
-\newcommand{\draft}{\debugtrue}
-\newcommand{\final}{\debugfalse}
-\newcommand{\todo}[2][FORGOT TO DO SOMETHING]{\ifdebug%
-  {%
-    \color{red}
-    #2}\else \PackageError{}{#1}{#2}#2\fi}%
-\newcommand\doing[2][FORGOT TO DO SOMETHING]{\ifdebug%
-  {%
-    \color{blue}
-    #2}\else \PackageError{}{#1}{#2}#2\fi}%
-\newcommand\warning[1]{\ifdebug%
-  {%
-    \color{red}
-    #1}\fi}
 
 \draft
 % \final
 
 \input{glossary_symbol}
 \input{math.tex}
-
-\bibliography{./bibliography}
+\bibliography{\subfix{bibliography.bib}}
 
 \ecoledoctorale{MathSTIC}
 \etablissement{CS}
@@ -65,8 +46,6 @@
   The performance is assessed through an academic example of the temperature control of multiple rooms under input power constraints.
 }}
 
-
-
 \day31
 \month10
 \year2022
@@ -86,85 +65,22 @@
 
 \invited{Romain Bourdais}{Maitre de conférence}{CentraleSupélec}
 
-
 \begin{document}
 \dominitoc
 
+\selectlanguage{french}
 \maketitle
 \selectlanguage{english}
 
 \frontmatter
-% \subfile{acknowledgement}
-
-\tableofcontents
-% \shorttableofcontents{Sommaire}{0}
-
-% \subfile{./front_matter/front_matter}
-% One day this should be a thesis
-
-\listofacronyms
-\listoffigures
-\listoftables
-\printglossary
-
-\subfile{notation.tex}
-\subfile{./Introduction/introduction}
+\subfile{front_matter/front_matter}
 
 \mainmatter
-
-% \subfile{main_matter/main_matter}
-
-
-\part{Background}
-\chapter{Model Predictive Control}
-\epigraph{\centering There are few people, however, who, if you told them a result, would be able to evolve from their own inner consciousness what the steps were which led up to that result.}
-{\textit{A Study in Scarlet}\\ \textsc{Sir Arthur Conan Doyle}}
-\minitoc
-
-\section{Test section}
-
-\subsection{Test section}
-\section{Test section}
-\section{Test section}
-\section{Test section}
-
-\gls{dmpc}
-
-% \setlength{\epigraphwidth}{.3\textwidth}\epigraph{th}
-\cite{YangEtAl2022}
-\printbibliography%
-
-
-\defbibheading{subbibliography}{%
-\section*{References for Chapter \ref{refsegment:\therefsection\therefsegment}}}
-\chapter{Test}
-\minitoc
-\section{isdf}
-
-\section{sdf}
-
-\cite{AlessioBemporad2009}
-\cite{YangEtAl2022}
-\printbibliography%
+\subfile{main_matter/main_matter}
 
 \backmatter
-
 \appendix
-\part{Appendices}
-\chapter{Tools}
-\minitoc
-\begin{itemize}
-  \item This thesis was typeset using \gls{latex}
-
-\end{itemize}
-
-\section{Hardware}
-\section{Programming}
-\section{Writing}
-\section{}
-\chapter{Proofs}
-\minitoc
-\section{sdfs}
+\subfile{back_matter/back_matter}
 
 \makebackcover
 
