@@ -71,6 +71,8 @@
 \RequirePackage{mathrsfs}
 \RequirePackage{eucal}
 
+\RequirePackage{subcaption}
+\RequirePackage{float}
 \RequirePackage{array}
 
 \RequirePackage{xr}
@@ -447,6 +449,7 @@ refsection=chapter,
 \defbibheading{primary}{\section*{Sources primaires}}
 \defbibheading{secondary}{\section*{Sources secondaires}}
 
+\RequirePackage{microtype}
 
 %%%% Ajustements pour la bibliographie
 
