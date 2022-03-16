@@ -4,10 +4,100 @@
 
 \subfile{introduction}
 
-\subfile{dmpc}
+\part{Model Predictive Control: Decomposition and Security}
 
-\part{Security in dMPC framework}
-\chapter{Analysis of Non-conforming behaviors}
+\chapter[Decomposing the Model Predictive Control]{Decomposing the\\ Model Predictive Control}
+\epigraph{\centering The mystery of the universe \\ is not time but size.}
+{\textit{The Gunslinger}\\\textsc{Stephen King}}
+
+\minitoc
+
+In this chapter we present the Model Predictive Control strategy and how it can be decomposed.
+
+\section{Model Predictive Control}
+Model Predictive Control, or even \mpc, is a closed-loop control strategy based
+on the solution of optimization problems.
+Given a system model and an objective function, this strategy uses the system model to predict future states and compute a control sequence that optimizes the given objective function.
+Since the solution is found by using optimization problems, it is natural to add some restrictions on the system, which are usually defined as (in)equality constraints.
+
+The fact that constraints can be easily added to the specifications gave it a special place in the industry, where is largely used in a plethora of applications (\todo{add uses of MPC in the industry}).
+
+As it is generally implemented through a digital computer, we assume the system we want to control to be modeled in discrete time with dynamics
+\begin{equation}
+\vec{x}[k+1]=f(\vec{x}[k],\vec{u}[k]),
+\end{equation}
+where $\vec{x}[k]:\R^{n_{x}}$ is the state of the system and $\vec{u}[k]:\R^{n_{u}}$ is the input of the system.
+
+The system can be under constraints
+\begin{equation}
+ h(\vec{x}[k],\vec{u}[k])\preceq\0,
+\end{equation}
+with $h:\R^{n_{x}}\times\R^{n_{u}}\to\R^{n_{c}}$. Observe that mathematically equality constraints can be created with a couple of inequality constraints, although for implementation in computers it can lead to poor numerical conditioning, resulting unexpected behavior~\cite{BorrelliEtAl2017}.
+
+Given an objective function $J:\R^{n_{x}}\times\R^{N\cdot n_{u}}\to \R$, we can optimize this objective for a given horizon of size $N$ to generate a control sequence $\vec{U}[k]=[\vec{u}[k|k]\T \dots \vec{u}[k+N-1|k]\T]$ solving the problem
+\begin{equation}
+  \begin{matrix}
+    \underset{\vec{U}[k]}{\mathrm{minimize}}& J(\vec{x}[k],\vec{U}[k])&\\
+    \mathrm{s.t.}& \vec{x}[k+1]=f(\vec{x}[k],\vec{u}[k]),&\quad\text{for }k\in\{0:N-1\}\\
+                 &  h(\vec{x}[k],\vec{u}[k])\preceq\0,&\quad\text{for }k\in\{0:N-1\}
+.
+\end{matrix}
+\label{eq:}
+\end{equation}
+After solving this problem, we have an optimal control sequence $\vec{U}^{\star}[k]$ and only the first element $\vec{u}^{\star}[k|k]$ is applied in the system. The process is repeated for $k+1$ following a receding horizon strategy.
+
+Although this is a general model for this problem, it can be hard to solve it, specially online.
+\todo{falar de sistema linear e quadratico, falar também de programação linear que é resolvidacom duplex}
+% \epigraph{\centering There are few people, however, who, if you told them a result, would be able to evolve from their own inner consciousness what the steps were which led up to that result.}
+% {\textit{A Study in Scarlet}\\ \textsc{Sir Arthur Conan Doyle}}
+
+\begin{description}
+  \item[System] Discrete-time linear time-invariant
+  \item[Prediction] Prediction horizon, prediction matrices \ldots
+  \item[Optimization Problems to solve] Show only general quadprog?
+  \item[Applying control and Recursive Horizon Strategy]
+\end{description}
+
+\section{Decomposition Frameworks}
+\label{sec:decomp-fram}
+
+
+
+        \todo{multiple computing units}
+\begin{description}
+  \item[Problem with size] the problem with solving a centralized MPC is blabla big blabla computationally expensive
+  \item[State of the art] \cite{ChristofidesEtAl2013,ArauzEtAl2021,NotarnicolaNotarstefano2020, MaestreEtAl2014} as base for discussion,
+        present the nomenclatures for dMPC frameworks, centralization and so not, and finally a summary table showing where we want to focus:
+        \begin{itemize}
+          \item linear discrete-time;
+          \item constraint-coupled;
+          \item decomposable;
+          \item non-cooperative;
+          \item decentralized;
+          \item inter-agent attacks;
+        \end{itemize}
+        \todo{As \cite{ArauzEtAl2021} comments, inter-agent attacks are not much studied and sometimes are considered as insider attacks}
+\end{description}
+
+\begin{remark}
+  Usually in \dmpc\ literature the term «decentralized control» refers to frameworks where the agents do not communicate~\cite[\S 4]{ChristofidesEtAl2013}. In this work we propose a more adequate nomenclature, calling those kinds of frameworks as «uncoordinated control», since there is no coordination between agents nor a coordinator agent to referee. We use the terms centralized and decentralized to describe the topology of the frameworks.
+\end{remark}
+
+\printbibliography%
+
+\chapter{Primal Decomposition-based distributed Model Predictive Control}
+\begin{description}
+  \item[decomposition] Separable problem, but constrained coupled
+  \item[negotiation] Solve separately and find consensus for coupling (complicating) constraints
+  \item[simple example to illustrate convergence]
+  \item[Interpretation of variables] allocated resources and dissatisfaction index
+\end{description}
+
+
+\printbibliography%
+
+
+\chapter[Non-conforming behaviors in Primary Decomposition]{Non-conforming behaviors\\ in Primary Decomposition}
 
 \epigraph{\centering All the world\\ is birthday cake,\\ so take a piece, \\but not too much.}
 {\textit{It's All Too Much}\\\textsc{George Harrison}}
@@ -15,16 +105,160 @@
 \minitoc
 
 \begin{description}
-  \item[False data injection] Maybe review attacks shown in \cite{VelardeEtAl2017} and how they can be viewed as a false data injection attack
+  \item[Relation between Attacks and Faults] Both are non-conforming behaviors, one is intentional the other not
+  \item[Show examples of Attacks]
+  \item[False data injection/communication corruption] Maybe review attacks shown in \cite{VelardeEtAl2017} and how they can be viewed as false data injection attacks (corruption on sent values), \todo{show that since coordinator is oblivious to what happen inside each agent what matters is what it receives, no need to specify exactly the responsible part which generated attack}
   \item[Negotiation Stability] Show example and how cheating can destabilize negotiation
         \begin{enumerate}
           \item Analysis of eigenvalues of negotiation
         \end{enumerate}
   \item[Example of how attacker can drive negotiation to other points]
 \end{description}
+        \begin{figure}[h]
+\centering
+\begin{subfigure}{.45\textwidth}
+  \includegraphics[width=\textwidth]{../img/original-minimum.png}
+    \caption{Original minimum.}
+    \label{fig:first}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\textwidth]{../img/new-minimum-selfish.png}
+    \caption{Minimum after non-conforming behavior.}
+    \label{fig:second}
+\end{subfigure}
+\caption{Effects of non-conforming behaviors on optimal value. \todo{Refaire les images}}
+\label{fig:figures}
+\end{figure}
 
-\section{Non-conforming behaviors}
+
 
 \printbibliography
+
+\chapter{Towards Safe algorithms}
+
+\epigraph{\centering Trust is an illusion, \\M'Lady. \\I believe only in \\mutual self-interest.}
+{\textit{Jupiter Ascending}\\\textsc{The Wachowskis}}
+
+\minitoc
+General discussion about ways to secure negotiation, here we discuss what
+\begin{description}
+  \item[Discussion about Methods]
+  \item[Discussion about Detection and Isolation]
+        \begin{description}
+          \item[Learning methods] Use input labeled data to train detector
+          \item[Analytical methods] Use model of the system and residuals
+        \end{description}
+  \item[Discussion about Recovery] Could show different cases
+        \begin{description}
+          \item[Active methods] Need detection
+          \item[Passive methods] Robust control
+        \end{description}
+
+
+\end{description}
+
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\textwidth]{../img/ignoreX.png}
+    \caption{Optimal value after ignoring attacker.}
+    \label{fig:third}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\textwidth]{../img/correctX.png}
+    \caption{Optimal value after trying to recover original behavior.}
+    \label{fig:third}
+\end{subfigure}
+
+\caption{Recovering options.}
+\label{fig:figures}
+\end{figure}
+
+
+Model 3R-2C \cite{GoudaEtAl2002}
+\begin{figure}[h]
+  \centering
+  \begin{circuitikz}[european]
+    \draw (0,0) node[tlground]{} to[isource, l=$P^{\text{heat}}$] ++(0,2)
+    to[short, -*] ++(1.5,0) coordinate (a);
+
+    \draw (a) node[above]{$T^{\text{in}}$}  to[C=$C^{\text{air}}$] ++(0,-2) node[tlground]{};
+    \draw (0,-3) node[tlground]{} to[isource, l=$I^{\text{sol}}$] ++(0,2)
+    to[short, -*] ++(1.5,0) coordinate (b);
+    \draw (b) to[C=$C^{\text{walls}}$] ++(0,-2) node[tlground]{};
+
+    \draw (a) -- ++(2,0) coordinate (c) -- ++(0,-.5) to[R=$R^{\text{iw/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (d);
+
+    \draw (b) node[above]{$T^{\text{walls}}$} to[short,-*] (d);
+
+    \draw (c) --  ++(2.5,0) -- ++(0,-.5) to[R=$R^{\text{oa/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (e);
+
+    \draw (d) to[R=$R^{\text{ow/oa}}$] (e) to[battery,l=$T^{\text{out}}$] ++(0,-2) node[tlground]{};
+  \end{circuitikz}
+  \caption{Thermic Model 3R-2C of a room.}
+  \label{fig:3R2C_model}
+\end{figure}
+
+The state-space model of each subsystem is given by:
+\begin{equation}
+  \begin{matrix}
+    \label{eq:systems_cont}
+    \dot{\vec{x}}_{i}(t)&=&{A_{c}}_{i}\vec{x}_{i}(t) &+& {B_{c}}_{i}\vec{u}_{i}(t)\\
+    \vec{y}_{i}(t)&=&{C_{c}}_{i}\vec{x}_{i}(t) &&
+  \end{matrix},
+\end{equation}
+where
+\begin{equation}
+  \label{eq:4}
+  \begin{matrix}
+    A_{\mathrm{c}_{i}}=\left[
+      \begin{matrix}
+        -\frac{1}{C^{\text{walls}}_{i}R^{\text{oa/ia}}_{i}}-\frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}& \frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}\\
+        \frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}} &-\frac{1}{C^{\text{air}}_{i}R^{\text{ow/oa}}o_{i}}-\frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}}
+      \end{matrix}\right]\\
+    \begin{matrix}
+      B_{\mathrm{c}_{i}}=\left[
+        \begin{matrix}  \frac{10}{C^{\text{walls}}_{i}}& 0\end{matrix}
+      \right]\T&C_{\mathrm{c}_{i}}=\left[\begin{matrix}1 & 0\end{matrix}\right]
+    \end{matrix}
+  \end{matrix}
+\end{equation}
+where ${\vec{x}_{i}=[{{x}_{A}}_{i}\T\ {{x}_{W}}_{i}\T]\T}$. ${x_A}_i$ and ${x_W}_i$ are the mean temperatures of the air and walls inside room~$i$. $\vec{u}_{i}$ is the input (the heating power)
+for the corresponding room. The inputs are constraint by ${\sum_{i=1}^{4}\vec{u}_{i}(t)\preceq 4\mathrm{kW}}$.
+
+\begin{table}[b]
+  \centering
+  \caption{Model Parameters}\label{tab:modelParamMeaning}
+  \begin{tabular}[b]{cl}
+    \toprule
+    Symbol&Meaning\\
+    \midrule
+    $C^{\text{air}}_{i}$&Heat Capacity of Inside Air\\
+    $C^{\text{walls}}_{i}$&Heat Capacity of External Walls\\
+    $R^{\text{iw/ia}}_{i}$&Resist. Between Inside Air and Inside Walls\\
+    $R^{\text{ow/oa}}_{i}$&Resist. Between Outside Air and Outside Walls\\
+    $R^{\text{oa/ia}}_{i}$&Resist. Between Inside and Out.\ Air (from windows)\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[b]
+  \centering
+  \caption{
+    Parameters for each agent}\label{tab:modelParam}
+  \begin{tabular}[t]{cccccc} \toprule
+    Symbol& I & II & III & IV &Unit\\
+    \midrule
+    $C^{\text{walls}}$    &$5.4$&$4.9$&$4.7$&$4.7$ &$10^{4}\mathrm{J/K}$ \\
+    $C^{\text{air}}$               &$7.5$ &$8.4 $&$8.2$ &$7.7$&$10^{4}\mathrm{J/K}$  \\
+    $R^{\text{oa/ia}}$               &$5.2$&$4.6$&$4.9$&$5.4$&$10^{-3}\mathrm{K/W}$ \\
+    $R^{\text{iw/ia}}$               &$2.3$&$2.4$&$2.3$&$2.9$&$10^{-4}\mathrm{K/W}$\\
+    $R^{\text{ow/oa}}$               &$1.5$&$0.6$&$0.7$&$0.7$& $10^{-4}\mathrm{K/W}$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \end{document}
