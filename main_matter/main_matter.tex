@@ -4,7 +4,7 @@
 
 \subfile{introduction}
 
-\part{Model Predictive Control: Decomposition and Security}
+\part{Model Predictive Control: Decomposition and Topology}
 
 \chapter[Decomposing the Model Predictive Control]{Decomposing the\\ Model Predictive Control}
 \epigraph{\centering The mystery of the universe \\ is not time but size.}
@@ -20,7 +20,8 @@ Since the solution is found by using optimization problems, it is natural to add
 
 The fact that constraints can be easily added to the specifications gave it a special place in the industry, where is largely used in a plethora of applications (\todo{add uses of MPC in the industry}).
 
-As it is generally implemented through a digital computer, we assume the system we want to control to be modeled in discrete time with dynamics
+\subsection{General discrete \mpc\ }
+As it is generally implemented through a digital computer and the transmission of continuous signals can potentially demand infinite bandwidth~\cite{HeEtAl2022}, we assume already the system we want to control to be modeled in discrete time with dynamics
 \begin{equation}
 \vec{x}[k+1]=f(\vec{x}[k],\vec{u}[k]),
 \end{equation}
@@ -55,10 +56,12 @@ we use states and input predictions of time $k+i$ calculated in a time $k$, repr
 \end{equation}
 After solving this problem, we have an optimal control sequence $\vec{U}^{\star}[k]$ and only the first element $\vec{u}^{\star}[k|k]$ is applied in the system. The process is repeated for $k+1$ following a \rhs.
 
-This formulation is as general as possible, but depending on its convexity it can be hard to solve it, specially online.
+This formulation is as general as possible, but depending on the problem's convexity it can be hard to solve it, specially online.
+Convex problems are the most widely studied, and strategies to solve them are extensively diffused. Some of those problems even have explicit solutions~\cite{BoydVandenberghe2004}.
 
-Convex problems are the most widely studied with many strategies to solve, some even with explicit solutions~\cite{BoydVandenberghe2004}. Thus, the \mpc\ community favors the use of convex problems when possible. Two families of problems that are broadly used are \qp\ and \lp.
-In this work we concentrate on the \qp\ problems, whose objective functions are quadratic and constraints are affine or linear, and also have numerous mathematical solvers apt to solve this kind of problem directly or through equivalent problems. We can cite solvers such as MATLAB internal QP solvers\footnote{\url{https://fr.mathworks.com/help/optim/ug/quadprog.html}}, OSQP\footnote{\url{https://osqp.org}}, MOSEK\footnote{\url{https://www.mosek.com}}, ECOS\footnote{\url{https://github.com/embotech/ecos}} and many others.
+\subsection{Convex \mpc\ (quadratic case) }
+The \mpc\ community favors the use of convex problems when possible. Two families of convex problems broadly used are \qp\ and \lp.
+In this work we concentrate on \qp\ problems, whose objective functions are quadratic and constraints are affine or linear. Numerous mathematical solvers are apt to solve this kind of problem directly or through equivalent problems. We can cite non-extensivily some solvers such as MATLAB internal QP solvers\footnote{\url{https://fr.mathworks.com/help/optim/ug/quadprog.html}}, OSQP\footnote{\url{https://osqp.org}}, MOSEK\footnote{\url{https://www.mosek.com}} and ECOS\footnote{\url{https://github.com/embotech/ecos}}.
 
 A commonly quadratic objective function used is
 \begin{equation}
@@ -97,7 +100,7 @@ which can be vectorized for an horizon in $\mathcal{H}$
 \end{equation}
 with ${ \bar{\Gamma}=\kron{I_{N}}{\Gamma} }$ and ${ \vec{U}_{\max}=\kron{\1_{N}}{\vec{u_{max}}} }$.
 
-For the control objectives, henceforth we only consider \emph{reference tracking}, as \emph{disturbance rejection} can be described as a \emph{reference tracking} when ${ C=I_{n_{x}} }$ and ${ \vec{w}[k]=\0_{n_{x}} }$.
+For the control objectives, henceforth we only consider \emph{reference tracking}, since \emph{disturbance rejection} can be described as a \emph{reference tracking} when ${ C=I_{n_{x}} }$ and ${ \vec{w}[k]=\0_{n_{x}} }$.
 
 Putting it all together we have
 \begin{equation}
@@ -189,15 +192,294 @@ By dividing the objective function by $2$ and ignoring the constant term $c[k]$ 
     \end{matrix}
   \end{aligned}.
 \end{equation}
-Observe that even if the problem in \eqref{eq:qp_standard_form} is equivalent (same solution) to the one in~\eqref{eq:quadratic_objective_compact_batch}, they are not the same problem, so we still need to recalculate the function in~\eqref{eq:quadratic_objective_compact_batch} using the optimal $\vec{U}^{\star}[k]$ found to obtain the correct value.
+Observe that even if the problem in \eqref{eq:qp_standard_form} is equivalent (same solution) to the one in~\eqref{eq:quadratic_objective_compact_batch}, they are not the same problem, so we still need to recalculate the function in~\eqref{eq:quadratic_objective_compact_batch} using the optimal $\vec{U}^{\star}[k]$ found to obtain the correct object function value.
 
 Although the solution of such problems can be straightforward, since solvers are widely known and the problem is well structured, it can be computationally intensive depending on the sizes of $n_{x}$, $n_{u}$ and $N$.
-For large-scale systems such as \todo{adicionar exemplos}, the computation time and memory needed to solve this problem makes it virtually infeasible to tract. So some decomposition techniques are developed to mitigate some of these problems.
+For large-scale systems such as \todo{(add 2/3 examples)}, the computation time and memory needed to solve their associated problems increase drastically. So some decomposition techniques based on optimization decomposition are used to make their solution more tractable.
 
-\section{Decomposition Frameworks}
+\section{Optimization Decomposition Frameworks}
 \label{sec:decomp-fram}
+In this section the objective is briefly describe the optimization decomposition frameworks and find what they have in common so we can decompose the \mpc\ problem proposed.
+As seen in~\cite{BoydVandenberghe2004}, maximization problems can be rewritten as minimization problems so we use only minimization problems henceforth.
+\subsection{Decomposable problems}
+As shown in~\cite{ConejoEtAl2006} and~\cite{BoydEtAl2015}, a decomposable optimization problem has more than 1 decision variable and can be decomposed into at least 2 sub-problems.
+For simplicity, the examples given in this section divide problems into 2 sub-problems.
+If the sub-problems variables can also be partitioned, we can partition the original problem even further.
 
-Similarly, the output can be computed as using
+\begin{remark}
+  The examples given in this section are decomposed used primal decomposition which is the most direct method, other methods exist and some will be shortly commented during this work.
+\end{remark}
+
+Be the following problem a general decomposable problem, i.e., decision variable $\vec{x}$ can be partitioned into two groups of variables $\vec{x}_{1}$ and $\vec{x}_{2}$:
+\begin{equation}\label{eq:general_decomposable_optimization_problem}
+  \small
+  \begin{aligned}
+    \begin{matrix}
+      \underset{\vec{x}_{1},\vec{x}_{2}}{\mathrm{minimize}}  &J(\vec{x}_{1},\vec{x}_{2})&\\
+      \mathrm{subject~ to} &
+
+           f_{i}(\vec{x}_{1},\vec{x}_{2}) \leq 0 \text{, } &i\in\set{M}=\{1\mathbin{:}m\}\\
+          & g_{i}(\vec{x}_{1},\vec{x}_{2}) = 0\text{, } &i\in\set{P}=\{1\mathbin{:}p\}\\
+    \end{matrix}
+  \end{aligned}
+\end{equation}
+
+Such family of problems can be divided into two categories:
+\begin{enumerate}
+  \item Uncoupled
+  \item Coupled
+\end{enumerate}
+
+\subsection{Uncoupled problems}
+The decomposition of uncoupled problems is straightforward and trivial, being so rare in the real world that it is frequently ignored.
+
+ For an uncoupled problem, the groups of variables $\vec{x}_{1}$ and $\vec{x}_{2}$ are disjoint, the function $J(\vec{x})$ can be rewritten  as $J(\vec{x})=J_{1}(\vec{x}_{1})+J_{2}(\vec{x}_{2})$, and the constraints can be divided into $2$ groups, one that depends only on $\vec{x}_{1}$ and other only on $\vec{x}_{2}$, i.e. $\set{M}_{1}$ and $\set{M}_{2}$ for the inequality constraints and $\set{P}_{1}$ and $\set{P}_{2}$ for the equality ones:
+\begin{equation}\label{eq:general_uncoupled_optimization_problem}
+  \small
+  \begin{aligned}
+    \begin{matrix}
+      \underset{\vec{x}_{1},\vec{x}_{2}}{\mathrm{minimize}}  &J_{1}(\vec{x}_{1})&+&J_{2}(\vec{x}_{2})&\\
+      \mathrm{subject~ to} &
+
+           f_{i}(\vec{x}_{1}) \leq 0 \text{, } i\in\set{M}_{1}& & f_{i}(\vec{x}_{2}) \leq 0 \text{, } i\in\set{M}_{2}\\
+          & g_{i}(\vec{x}_{1}) = 0\text{, } i\in\set{P}_{1}& & g_{i}(\vec{x}_{2}) = 0\text{, } i\in\set{P}_{2}\\
+    \end{matrix}
+  \end{aligned}.
+\end{equation}
+
+We can trivially rewrite~\eqref{eq:general_uncoupled_optimization_problem} as
+\begin{equation}\label{eq:general_uncoupled_optimization_problem_main_problem}
+  \small
+  \begin{aligned}
+    \begin{matrix}
+      \underset{\vec{x}_{1},\vec{x}_{2}}{\mathrm{minimize}}  &{J_{1}(\vec{x}_{1}^{\star})}+{J_{2}(\vec{x}_{2}^{\star})}
+    \end{matrix}
+  \end{aligned},
+\end{equation}
+where ${J_{1}(\vec{x}_{1}^{\star})}$ and ${J_{2}(\vec{x}_{2}^{\star})}$ can be found by solving
+\begin{subequations}\label{eq:general_uncoupled_optimization_problem_decomposed}
+\begin{equation}\label{eq:general_uncoupled_optimization_problem_decomposed_1}
+    {J_{1}(\vec{x}_{1}^{\star})}=\begin{matrix}
+      \underset{\vec{x}_{1}}{\mathrm{minimize}}  &J_{1}(\vec{x}_{1})\\
+      \mathrm{subject~ to} &
+
+           f_{i}(\vec{x}_{1}) \leq 0 \text{, } i\in\set{M}_{1}\\
+          & g_{i}(\vec{x}_{1}) = 0\text{, } i\in\set{P}_{1}\\
+    \end{matrix}
+\end{equation}
+\begin{equation}\label{eq:general_uncoupled_optimization_problem_decomposed_2}
+    {J_{2}(\vec{x}_{2}^{\star})}=\begin{matrix}
+      \underset{\vec{x}_{2}}{\mathrm{minimize}}  &J_{2}(\vec{x}_{2})\\
+      \mathrm{subject~ to} &
+
+           f_{i}(\vec{x}_{2}) \leq 0 \text{, } i\in\set{M}_{2}\\
+          & g_{i}(\vec{x}_{2}) = 0\text{, } i\in\set{P}_{2}\\
+    \end{matrix}
+\end{equation}
+\end{subequations}
+Each problem in~\eqref{eq:general_uncoupled_optimization_problem_decomposed} can be solved in parallel and when solutions $\vec{x}_{i}^{*}$ are found for each sub-problem, the problem in~\eqref{eq:general_uncoupled_optimization_problem_main_problem} is automatically solved ($J_{i}(\vec{x}_{i}^{\star})$ are constants).
+
+\subsection{Coupled problems}
+Coupled problems are more frequent in the real world.
+In this category, the sub-problems can not be entirely solved in parallel since the coupling implies an exchange of information between sup-problems (one sub-problem needs information of other sub-problem to solve itself).
+The coupling nature of the problem can be traced to two main sources
+\begin{enumerate}
+  \item Complicating variables
+  \item Complicating constraints
+\end{enumerate}
+We called them \emph{complicating} because without them the solution would be trivial (uncoupled category shown in the last section).
+
+\subsubsection{Complicating variables}
+For this sub-category, we suppose the variables $\vec{x}_{1}$ and $\vec{x}_{2}$ are not disjoint, there is some variables in common.
+To force disjointedness, we redivided $\vec{x}$ into $3$ disjoint groups $\vec{x}_{a}$ (present only in sub-problem $1$), $\vec{x}_{b}$ (present only in sub-problem $2$), and $\vec{x}_{ab}$ (present in both sub-problems).
+We suppose $J(\vec{x})$ can be rewritten  as ${J(\vec{x})=J_{1}(\vec{x}_{a},\vec{x}_{ab})+J_{2}(\vec{x}_{b},\vec{x}_{ab})}$, and the constraints can be divided into groups that depend on $\vec{x}_{a}$ and $\vec{x}_{b}$, i.e. $\set{M}_{a}$ and $\set{M}_{b}$ for the inequality constraints and $\set{P}_{a}$ and $\set{P}_{b}$ for the equality ones:
+\begin{equation}\label{eq:general_complicating_variables_optimization_problem}
+  \small
+  \begin{aligned}
+    \begin{matrix}
+      \underset{\vec{x}_{a},\vec{x}_{ab},\vec{x}_{b}}{\mathrm{minimize}}  &J_{1}(\vec{x}_{a},\vec{x}_{ab})&+&J_{2}(\vec{x}_{b},\vec{x}_{ab})&\\
+      \mathrm{subject~ to} &
+
+      f_{i}(\vec{x}_{a}) \leq 0 \text{, } i\in\set{M}_{a} & & f_{i}(\vec{x}_{b}) \leq 0 \text{, } i\in\set{M}_{b}\\
+      & g_{i}(\vec{x}_{a}) = 0\text{, } i\in\set{P}_{a}& & g_{i}(\vec{x}_{b}) = 0\text{, } i\in\set{P}_{b}\\
+    \end{matrix}
+  \end{aligned}.
+\end{equation}
+
+Similarly, we can rewrite~\eqref{eq:general_complicating_variables_optimization_problem} as
+\begin{equation}\label{eq:general_complicating_variables_optimization_main_problem}
+  \small
+  \begin{aligned}
+    \begin{matrix}
+      \underset{\vec{x}_{a},\vec{x}_{ab},\vec{x}_{b}}{\mathrm{minimize}}  &J_{1}(\vec{x}_{a}^{\star},\vec{x}_{ab})+{J_{2}(\vec{x}_{b}^{\star},\vec{x}_{ab})}
+    \end{matrix}
+  \end{aligned},
+\end{equation}
+where $J_{1}(\vec{x}_{a}^{\star},\vec{x}_{ab})$ and $J_{2}(\vec{x}_{b}^{\star},\vec{x}_{ab})$ can be found by solving
+\begin{subequations}\label{eq:general_complicating_variables_optimization_problem_decomposed}
+\begin{equation}\label{eq:general_complicating_variables_optimization_problem_decomposed_1}
+    J_{1}(\vec{x}_{a}^{\star},\vec{x}_{ab})=\begin{matrix}
+      \underset{\vec{x}_{a}}{\mathrm{minimize}}  &J_{1}(\vec{x}_{a},\vec{x}_{ab})&\\
+      \mathrm{subject~ to} &
+
+           f_{i}(\vec{x}_{a}) \leq 0 \text{, } &i\in\set{M}_{a}\\
+          & g_{i}(\vec{x}_{a}) = 0\text{, } &i\in\set{P}_{a}\\
+    \end{matrix}
+\end{equation}
+\begin{equation}\label{eq:general_complicating_variables_optimization_problem_decomposed_2}
+    J_{2}(\vec{x}_{b}^{\star},\vec{x}_{ab})=\begin{matrix}
+      \underset{\vec{x}_{b}}{\mathrm{minimize}}  &J_{2}(\vec{x}_{b},\vec{x}_{ab})&\\
+      \mathrm{subject~ to} &
+
+           f_{i}(\vec{x}_{b}) \leq 0 \text{, } &i\in\set{M}_{b}\\
+          & g_{j}(\vec{x}_{b}) = 0\text{, } &j\in\set{P}_{b}\\
+    \end{matrix}
+\end{equation}
+\end{subequations}
+Observe that the solutions of~\eqref{eq:general_complicating_variables_optimization_problem_decomposed} depend on a given value of $\vec{x}_{ab}$, thus a coordination between sub-problems is needed to find an optimal $\vec{x}_{ab}^{\star}$ to solve problem~\eqref{eq:general_complicating_variables_optimization_main_problem} and thus the original problem~\eqref{eq:general_complicating_variables_optimization_problem}.
+
+\subsubsection{Complicating Constraints}
+
+For complicating constraints as the name suggests, instead of variables we have constraints which prevent complete separation into sub-problems.
+
+The variables $\vec{x}_{1}$ and $\vec{x}_{2}$ are disjoint, $J(\vec{x})$ can be rewritten as ${J(\vec{x})=J_{1}(\vec{x}_{1})+J_{2}(\vec{x}_{2})}$ and besides the constraints in sets $\set{M}_{1}$ $\set{M}_{2}$ and $\set{P}_{1}$ $\set{P}_{2}$ we also have equality and inequality constraints which couple $\vec{x}_{1}$ and $\vec{x}_{2}$, denoted ${h_{i}(\vec{x}_{1},\vec{x}_{2})=h_{i_{1}}(\vec{x}_{1})+h_{i_{2}}(\vec{x}_{2}) \leq 0\text{, }i\in\set{O}}$
+and ${w_{i}(\vec{x}_{1},\vec{x}_{2})=w_{i_{1}}(\vec{x}_{1})+w_{i_{2}}(\vec{x}_{2}) =0\text{, }i\in\set{N}}$:
+
+\begin{equation}\label{eq:general_complicating_constraints_optimization_problem}
+  \small
+  \begin{aligned}
+    \begin{matrix}
+      \underset{\vec{x}_{1},\vec{x}_{2}}{\mathrm{minimize}}  &J_{1}(\vec{x}_{1})&+&J_{2}(\vec{x}_{2})&\\
+      \mathrm{subject~ to} &
+
+           f_{i}(\vec{x}_{1}) \leq 0 \text{, } i\in\set{M}_{1}& & f_{i}(\vec{x}_{2}) \leq 0 \text{, } i\in\set{M}_{2}\\
+          & g_{i}(\vec{x}_{1}) = 0\text{, } i\in\set{P}_{1}& & g_{i}(\vec{x}_{2}) = 0\text{, } i\in\set{P}_{2}\\
+          && h_{i_{1}}(\vec{x}_{1})+h_{i_{2}}(\vec{x}_{2}) \leq 0\text{, } i\in\set{O}\\
+          &&w_{i_{1}}(\vec{x}_{1})+w_{i_{2}}(\vec{x}_{2}) = 0\text{, }  i\in\set{N}
+
+    \end{matrix}
+  \end{aligned}
+\end{equation}
+Adding auxiliary variables $\vec{\theta}_{o}$ and $\vec{\theta}_{n}$ we can rewrite the problem as
+\begin{equation}\label{eq:general_complicating_constraints_optimization_main_problem}
+  \small
+  \begin{aligned}
+    \begin{matrix}
+      \underset{\vec{x}_{1},\vec{x}_{2},\vec{\theta_{o}},\vec{\theta}_{n}}{\mathrm{minimize}}  &J_{1}(\vec{x}_{1}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})+J_{2}(\vec{x}_{2}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})
+    \end{matrix}
+  \end{aligned},
+\end{equation}
+
+where $J_{1}(\vec{x}_{1}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})$ and $J_{2}(\vec{x}_{2}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})$ can be found by solving
+\begin{subequations}\label{eq:general_complicating_constraints_optimization_problem_decomposed}
+\begin{equation}\label{eq:general_complicating_constraints_optimization_problem_decomposed_1}
+    J_{1}(\vec{x}_{1}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})=\begin{matrix}
+      \underset{\vec{x}_{a}}{\mathrm{minimize}}  &J_{1}(\vec{x}_{1})&\\
+      \mathrm{subject~ to} &
+
+           f_{i}(\vec{x}_{a}) \leq 0 \text{, } &i\in\set{M}_{1}\\
+          & g_{j}(\vec{x}_{a}) = 0\text{, } &j\in\set{P}_{1}\\
+          & h_{m_{1}}(\vec{x}_{1}) \leq \vec{\theta}_{o}\text{, } &m\in\set{O}\\
+          & w_{n_{1}}(\vec{x}_{1}) = \vec{\theta}_{n} \text{, }  &i\in\set{N}
+
+    \end{matrix}
+\end{equation}
+\begin{equation}\label{eq:general_complicating_constraints_optimization_problem_decomposed_2}
+    J_{2}(\vec{x}_{2}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})=\begin{matrix}
+      \underset{\vec{x}_{b}}{\mathrm{minimize}}  &J_{2}(\vec{x}_{2})&\\
+      \mathrm{subject~ to} &
+
+           f_{i}(\vec{x}_{b}) \leq 0 \text{, } &i\in\set{M}_{2}\\
+          & g_{j}(\vec{x}_{b}) = 0\text{, } &j\in\set{P}_{2}\\
+          & h_{m_{2}}(\vec{x}_{2}) \leq -\vec{\theta}_{o}\text{, } &m\in\set{O}\\
+          & w_{n_{2}}(\vec{x}_{2}) = -\vec{\theta}_{n} \text{, }  &i\in\set{N}
+    \end{matrix}
+\end{equation}
+\end{subequations}
+
+Again, observe that the solutions of~\eqref{eq:general_complicating_constraints_optimization_problem_decomposed} depend on the values of $\vec{\theta}_{o}$ and $\vec{\theta}_{n}$, thus a coordination between sub-problems is needed to find their optimal values in order to solve problem~\eqref{eq:general_complicating_constraints_optimization_main_problem} and thus the original problem~\eqref{eq:general_complicating_constraints_optimization_problem}.
+
+This is the base of the methodology used in this work to decompose the \mpc, we will re-discuss the method and present examples of implementation in a further section (\todo[add primal decomposition section number]{\S??}).
+\begin{remark}
+  As seen in~\cite{BoydEtAl2015}, a complicating constraint problem can be transformed into a complicating variable and vice versa by the use of auxiliary variables.
+  For instance, we can substitute a complicating variable by two new local variables (one for each sub-problem) and add an equality constraints to force them to be equal.
+  We will use henceforth only complicating constraints.
+\end{remark}
+
+\subsection{Generalizing}
+If we observe all the examples given, we can see a pattern emerge:
+
+A problem
+\begin{equation}\label{eq:general_coupled_optimization_problem}
+  \small
+  \begin{aligned}
+    \begin{matrix}
+      \underset{\text{decision variables}}{\mathrm{minimize}}  &\text{objective}_{1}&+&\text{objective}_{2}&\\
+      \mathrm{subject~ to} & \text{constraints}_{1},&&  \text{constraints}_{2}\\
+      &&\text{coupling constraints}_{12}&
+    \end{matrix}
+  \end{aligned}
+\end{equation}
+is rewritten as
+\begin{equation}\label{eq:general_coupled_optimization_problem_decomposed_main_problem}
+  \small
+  \begin{aligned}
+    \begin{matrix}
+      \underset{\mathop{\operatorname{+}}\limits^{\text{decision variables}}_{\text{auxiliary variables}}}{\mathrm{minimize}}  &\text{objective}^{*}_{1}(\text{auxiliary variables})+\text{objective}^{*}_{2}(\text{auxiliary variables})&\\
+    \end{matrix}
+  \end{aligned}
+\end{equation}
+where $\text{objective}^{*}_{1}(\text{auxiliary variables})+\text{objective}^{*}_{2}(\text{auxiliary variables})$ are calculated by solving
+\begin{subequations}\label{eq:general_coupled_optimization_problem_decomposed}
+\begin{equation}\label{eq:general_coupled_optimization_problem_decomposed_1}
+    \begin{matrix}
+      \underset{\text{decision variables}_{1}}{\mathrm{minimize}}  &\text{objective}_{1}&\\
+
+      \mathrm{subject~ to} & \text{constraints}_{1}\\
+      &\text{coupling constraints}_{12_{1}}(\text{auxiliary variables})
+    \end{matrix}
+\end{equation}
+\begin{equation}\label{eq:general_coupled_optimization_problem_decomposed_2}
+    \begin{matrix}
+      \underset{\text{decision variables}_{2}}{\mathrm{minimize}}  &\text{objective}_{2}&\\
+
+      \mathrm{subject~ to} & \text{constraints}_{2}\\
+      &\text{coupling constraints}_{12_{2}}(\text{auxiliary variables})
+    \end{matrix}
+\end{equation}
+\end{subequations}
+and a coordination is needed to find optimal auxiliary variables. We can list the common properties:
+\begin{enumerate}
+  \item A problem equivalent to the original~\eqref{eq:general_coupled_optimization_problem_decomposed_main_problem} (which is solved by)
+  \item sub-problems~\eqref{eq:general_coupled_optimization_problem_decomposed} (whose solution depend on auxiliary variables and need some)
+  \item Coordination (to find the optimal value of such variables)
+\end{enumerate}
+
+The equivalent problem we call \emph{main problem}, while the sub-problems we call \emph{local problems}, which have some \emph{local constraints}, and part of the \emph{global (coupling) constraints} which depend on auxiliary variables that we call \emph{\todo[choose a better name]{interface variables}}.
+The coordination is usually an iterative method chosen to solve the \emph{main problem}.
+At an iteration, the coordination uses some information given after the solution of the sub-problems using a given value of \emph{interface variables} in order to update those variables for the next step.
+
+If we structure the coordination as an algorithm we have \autoref{alg:decomposition_coordination}.
+\begin{algorithm2e}[h]
+  \DontPrintSemicolon%
+  Initialize interface variables for all sub-problems\;
+  \Repeat{interface variables converge}{
+    Solve sub-problems and calculate information about the solution\;
+    Use information of solution to update interface variables\;
+  }
+  \caption{General coordination for distributed optimization}\label{alg:decomposition_coordination}
+\end{algorithm2e}
+
+So, in general, to have a decomposition method we need basically:
+\begin{itemize}
+  \item \emph{Local problems}
+  \item An update method to solve the \emph{main problem}
+\end{itemize}
+
+but in general is called \emph{negotiation}, since t.
+
+
+\cite{DaiEtAl2022}
 
 \begin{equation}\label{eq:GOP}
   \begin{matrix}
