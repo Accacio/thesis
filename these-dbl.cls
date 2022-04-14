@@ -1054,28 +1054,21 @@ refsection=chapter,
 {\end{mdframed}}
 
 \newcounter{remark}[section]
-\newenvironment{remark}[1][]{%
+\newenvironment{remark}[1][]
+{%
 \stepcounter{remark}%
-\ifstrempty{#1}%
- {\mdfsetup{%
-   frametitle={%
+\begin{infobox}[frametitle={%
     \tikz[baseline=(current bounding box.east),outer sep=0pt]
-    \node[rectangle,fill=fondtitre!80,text=white,anchor=center] at (.5,.5)
-         {\sffamily\textbf{\strut Remark~\theremark}};}}
- }%
-{\mdfsetup{%
-  frametitle={%
-   \tikz[baseline=(current bounding box.east),outer sep=0pt]
-   \node[rectangle,fill=fondtitre!80,text=white,anchor=center]
-        {\sffamily\textbf{\strut Remark~\theremark:~#1}};}}%
- }%
-\mdfsetup{innertopmargin=10pt,linecolor=fondtitre!100,backgroundcolor=fonddeboite!100,%
-       linewidth=1pt,topline=true,
-       frametitleaboveskip=\dimexpr-\ht\strutbox\relax,}
-   \begin{mdframed}[]\relax%
+    \node[rectangle,fill=fondtitre!80,text=white,anchor=center]{\sffamily\textbf{\strut Remark~\theremark}};
+  },
+ innertopmargin=10pt,linecolor=fondtitre!100,backgroundcolor=fonddeboite!100,%
+ frametitleaboveskip=\dimexpr-\ht\strutbox\relax,
+ linewidth=1pt,topline=true
+ ]
 }
-{\end{mdframed}}
-
+{
+\end{infobox}
+}
 
 
 %%% Switch case in latex
