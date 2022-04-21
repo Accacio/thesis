@@ -21,7 +21,7 @@ Since the solution is found by using optimization problems, it is natural to add
 The fact that constraints can be easily added to the specifications gave it a special place in the industry, where is largely used in a plethora of applications (\todo{add uses of MPC in the industry}).
 
 \subsection{General discrete \mpc\ }
-As it is generally implemented through a digital computer and the transmission of continuous signals can potentially demand infinite bandwidth~\cite{HeEtAl2022}, we assume already the system we want to control to be modeled in discrete time with dynamics
+As it is generally implemented through a digital computer and the transmission of continuous signals can potentially demand infinite bandwidth~\cite{HeEtAl2022}, it is natural to assume the system to be modeled with discrete-time dynamics
 \begin{equation}
 \vec{x}[k+1]=f(\vec{x}[k],\vec{u}[k]),
 \end{equation}
@@ -83,7 +83,7 @@ where $\bar{Q}=\kron{I_{N}}{Q}$ and
 $\bar{R}=\kron{I_{N}}{R}$.
 
 For the constraints in~\eqref{eq:general_mpc} to be affine or linear, first we suppose the system is linear and we use a linear time-invariant model
-\begin{equation}
+\begin{equation}\label{eq:large_scale_system_model}
   \begin{array}{rl}
     \vec{x}[k+1]&=A\vec{x}[k]+B\vec{u}[k]\\
     \vec{y}[k]&=C\vec{x}[k]
@@ -192,25 +192,27 @@ By dividing the objective function by $2$ and ignoring the constant term $c[k]$ 
     \end{matrix}
   \end{aligned}.
 \end{equation}
-Observe that even if the problem in \eqref{eq:qp_standard_form} is equivalent (same solution) to the one in~\eqref{eq:quadratic_objective_compact_batch}, they are not the same problem, so we still need to recalculate the function in~\eqref{eq:quadratic_objective_compact_batch} using the optimal $\vec{U}^{\star}[k]$ found to obtain the correct object function value.
+Observe that even if the problem in \eqref{eq:qp_standard_form} is equivalent (same solution) to the one in~\eqref{eq:quadratic_objective_compact_batch}, they are not the same problem, so we still need to recalculate the function in~\eqref{eq:quadratic_objective_compact_batch} using the optimal $\vec{U}^{\star}[k]$ found to obtain the correct objective function value.
 
 Although the solution of such problems can be straightforward, since solvers are widely known and the problem is well structured, it can be computationally intensive depending on the sizes of $n_{x}$, $n_{u}$ and $N$.
-For large-scale systems such as \todo{(add 2/3 examples)}, the computation time and memory needed to solve their associated problems increase drastically. So some decomposition techniques based on optimization decomposition are used to make their solution more tractable.
+For large-scale systems such as \todo{(add 2/3 examples)}, the computation time and memory needed to solve their associated problems increase drastically.
+Some decomposition methods can be used to make the solution of such problems more tractable, using different time-scales (\todo[hierarchical dmpc in ChristofidesEtAl2013, Abreu talvez??]{??}) for instance.
+In this work we will focus on decomposition techniques based on optimization decomposition.
 
 \section{Optimization Decomposition Frameworks}
 \label{sec:decomp-fram}
-In this section the objective is briefly describe the optimization decomposition frameworks and find what they have in common so we can decompose the \mpc\ problem proposed.
+In this section we briefly describe the optimization decomposition frameworks finding what they have in common so we can decompose the \mpc\ problem proposed.
 As seen in~\cite{BoydVandenberghe2004}, maximization problems can be rewritten as minimization problems so we use only minimization problems henceforth.
-\subsection{Decomposable problems}
+\subsection{Decomposable problems}\label{sec:decomposable_problems}
 As shown in~\cite{ConejoEtAl2006} and~\cite{BoydEtAl2015}, a decomposable optimization problem has more than 1 decision variable and can be decomposed into at least 2 sub-problems.
 For simplicity, the examples given in this section divide problems into 2 sub-problems.
 If the sub-problems variables can also be partitioned, we can partition the original problem even further.
 
-\begin{remark}
-  The examples given in this section are decomposed used primal decomposition which is the most direct method, other methods exist and some will be shortly commented during this work.
-\end{remark}
+% \begin{remark}
+The examples in this section are decomposed using the primal problem which is the most direct method, other methods exist and will be shortly commented during this work.
+% \end{remark}
 
-Be the following problem a general decomposable problem, i.e., decision variable $\vec{x}$ can be partitioned into two groups of variables $\vec{x}_{1}$ and $\vec{x}_{2}$:
+Be the following problem a general decomposable problem, i.e., the decision variable $\vec{x}$ can be partitioned into two groups of variables $\vec{x}_{1}$ and $\vec{x}_{2}$:
 \begin{equation}\label{eq:general_decomposable_optimization_problem}
   \small
   \begin{aligned}
@@ -218,8 +220,8 @@ Be the following problem a general decomposable problem, i.e., decision variable
       \underset{\vec{x}_{1},\vec{x}_{2}}{\mathrm{minimize}}  &J(\vec{x}_{1},\vec{x}_{2})&\\
       \mathrm{subject~ to} &
 
-           f_{i}(\vec{x}_{1},\vec{x}_{2}) \leq 0 \text{, } &i\in\set{M}=\{1\mathbin{:}m\}\\
-          & g_{i}(\vec{x}_{1},\vec{x}_{2}) = 0\text{, } &i\in\set{P}=\{1\mathbin{:}p\}\\
+           f_{i}(\vec{x}_{1},\vec{x}_{2}) \leq 0 \text{, } i\in\set{M}=\{1\mathbin{:}m\}\\
+          & g_{i}(\vec{x}_{1},\vec{x}_{2}) = 0\text{, } i\in\set{P}=\{1\mathbin{:}p\}\\
     \end{matrix}
   \end{aligned}
 \end{equation}
@@ -230,7 +232,7 @@ Such family of problems can be divided into two categories:
   \item Coupled
 \end{enumerate}
 
-\subsection{Uncoupled problems}
+\subsection{Uncoupled problems}\label{sec:uncoupled_problems}
 The decomposition of uncoupled problems is straightforward and trivial, being so rare in the real world that it is frequently ignored.
 
  For an uncoupled problem, the groups of variables $\vec{x}_{1}$ and $\vec{x}_{2}$ are disjoint, the function $J(\vec{x})$ can be rewritten  as $J(\vec{x})=J_{1}(\vec{x}_{1})+J_{2}(\vec{x}_{2})$, and the constraints can be divided into $2$ groups, one that depends only on $\vec{x}_{1}$ and other only on $\vec{x}_{2}$, i.e. $\set{M}_{1}$ and $\set{M}_{2}$ for the inequality constraints and $\set{P}_{1}$ and $\set{P}_{2}$ for the equality ones:
@@ -287,7 +289,7 @@ The coupling nature of the problem can be traced to two main sources
   \item Complicating variables
   \item Complicating constraints
 \end{enumerate}
-We called them \emph{complicating} because without them the solution would be trivial (uncoupled category shown in the last section).
+We called them \emph{complicating} because without them the solution would be trivial (uncoupled category shown in the last section)~\cite{ConejoEtAl2006}.
 
 \subsubsection{Complicating variables}
 For this sub-category, we suppose the variables $\vec{x}_{1}$ and $\vec{x}_{2}$ are not disjoint, there is some variables in common.
@@ -340,7 +342,7 @@ Observe that the solutions of~\eqref{eq:general_complicating_variables_optimizat
 
 \subsubsection{Complicating Constraints}
 
-For complicating constraints as the name suggests, instead of variables we have constraints which prevent complete separation into sub-problems.
+For complicating constraints, as the name suggests, instead of variables we have constraints which prevent complete separation into sub-problems.
 
 The variables $\vec{x}_{1}$ and $\vec{x}_{2}$ are disjoint, $J(\vec{x})$ can be rewritten as ${J(\vec{x})=J_{1}(\vec{x}_{1})+J_{2}(\vec{x}_{2})}$ and besides the constraints in sets $\set{M}_{1}$ $\set{M}_{2}$ and $\set{P}_{1}$ $\set{P}_{2}$ we also have equality and inequality constraints which couple $\vec{x}_{1}$ and $\vec{x}_{2}$, denoted ${h_{i}(\vec{x}_{1},\vec{x}_{2})=h_{i_{1}}(\vec{x}_{1})+h_{i_{2}}(\vec{x}_{2}) \leq 0\text{, }i\in\set{O}}$
 and ${w_{i}(\vec{x}_{1},\vec{x}_{2})=w_{i_{1}}(\vec{x}_{1})+w_{i_{2}}(\vec{x}_{2}) =0\text{, }i\in\set{N}}$:
@@ -399,10 +401,10 @@ where $J_{1}(\vec{x}_{1}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})$ and $J_{2}(
 
 Again, observe that the solutions of~\eqref{eq:general_complicating_constraints_optimization_problem_decomposed} depend on the values of $\vec{\theta}_{o}$ and $\vec{\theta}_{n}$, thus a coordination between sub-problems is needed to find their optimal values in order to solve problem~\eqref{eq:general_complicating_constraints_optimization_main_problem} and thus the original problem~\eqref{eq:general_complicating_constraints_optimization_problem}.
 
-This is the base of the methodology used in this work to decompose the \mpc, we will re-discuss the method and present examples of implementation in a further section (\todo[add primal decomposition section number]{\S??}).
+% This is the base of the methodology used in this work to decompose the \mpc, we will re-discuss the method and present examples of implementation in a further section (\todo[add primal decomposition section number]{\S??}).
 \begin{remark}
-  As seen in~\cite{BoydEtAl2015}, a complicating constraint problem can be transformed into a complicating variable and vice versa by the use of auxiliary variables.
-  For instance, we can substitute a complicating variable by two new local variables (one for each sub-problem) and add an equality constraints to force them to be equal.
+  As seen in~\cite{BoydEtAl2015}, a complicating constraint problem can be transformed into a complicating variable problem and vice versa by the use of auxiliary variables.
+  For instance, we can substitute a complicating variable by two new local variables (one for each sub-problem) and add equality constraints to each sub-problem to force them to be equal.
   We will use henceforth only complicating constraints.
 \end{remark}
 
@@ -456,11 +458,13 @@ and a coordination is needed to find optimal auxiliary variables. We can list th
 \end{enumerate}
 
 The equivalent problem we call \emph{main problem}, while the sub-problems we call \emph{local problems}, which have some \emph{local constraints}, and part of the \emph{global (coupling) constraints} which depend on auxiliary variables that we call \emph{\todo[choose a better name]{interface variables}}.
+
 The coordination is usually an iterative method chosen to solve the \emph{main problem}.
-At an iteration, the coordination uses some information given after the solution of the sub-problems using a given value of \emph{interface variables} in order to update those variables for the next step.
+At an iteration, the coordination uses some information from the solution of the sub-problems (given a value of \emph{interface variables} as input) in order to update the \emph{interface variables} to be used in the next step.
 
 If we structure the coordination as an algorithm we have \autoref{alg:decomposition_coordination}.
-\begin{algorithm2e}[h]
+
+\begin{algorithm2e}[H]
   \DontPrintSemicolon%
   Initialize interface variables for all sub-problems\;
   \Repeat{interface variables converge}{
@@ -470,17 +474,99 @@ If we structure the coordination as an algorithm we have \autoref{alg:decomposit
   \caption{General coordination for distributed optimization}\label{alg:decomposition_coordination}
 \end{algorithm2e}
 
-So, in general, to have a decomposition method we need basically:
+\subsection{Decomposition techniques}
+
+After choosing one of the forms for the problem (complicating constraints or complication variables), if we analyze \autoref{alg:decomposition_coordination} what we need to have a decomposition method is
 \begin{itemize}
   \item \emph{Local problems}
+  \item \emph{interface variables}
   \item An update method to solve the \emph{main problem}
 \end{itemize}
 
-but in general is called \emph{negotiation}, since t.
+The \emph{local problems} are obtained through equivalent problems.
+For instance, we can use the original (primal) problem itself~\cite{PaulenEtAl2016, CamisaEtAl2022} (examples shown in this section), the dual problem~\cite{MorosanEtAl2011, BourdaisEtAl2012,VelardeEtAl2017},  use some operator such as the proximal operator~\cite{Iiduka2019,OconnorVandenberghe2014}, or other strategies.
+
+The \emph{interface variables} depend on the equivalent problem chosen. For instance for the primal problem, usually the dual variables are used~\cite{Cohen1978}; for the dual problem, the constraint residuals~\cite{BoydEtAl2015}; and for \ADMM, primal variables and other multipliers (name is given by the alternating update of such multipliers)~\cite{BoydEtAl2011}.
+
+The update method is based on one optimization algorithm such as bisection, cutting-plane, or methods which use the (sub)gradient or their approximates. The last class is the most used and some examples can be the Arrow-Hurwicz-Uzawa iteration~\cite{BourdaisEtAl2012}, projected sub-gradient~\cite{BiegelEtAl2012}, and gradient ascent~\cite{BoydEtAl2011}.
+The exact form will depend on the topology used to solve the \emph{main problem} (to be yet discussed).
+
+In this work we will concentrate on a decomposition based on the primal problem, and the projected sub-gradient.
+This decomposition will be explained in a future section (\todo[add section for primal decomposition]{\S ??}).
+For other examples of decomposition the reader is referred to~\cite{MaestreEtAl2014} or~\cite{ConejoEtAl2006} and other articles cited throughout this work.
+
+Now, after having a decomposition method chosen, we need to know the topology of the problem. This topology can be chosen or imposed by some constraints (geographic or technological, for example). A brief discussion about different topologies follow.
+
+\subsection{Topologies, Trust and Responsivity}
+\todo{Add figures?}
+
+When computation can be divided into different computing units, some questions are raised: How to distribute the computation units? Do they communicate? How do they communicate? In this section we try to answer these questions.
+
+\subsubsection{How to distribute the computation units?}
+
+The distribution of the computation units depends on the system we want to control and the processing power/number of computation units needed to solve.
+
+For example, if the system is large but geographically in the same place, depending on the number of computation units or the processing needed, the units can be in the same hardware ( here \GPU, multiple cores, threads and other strategies are used).
+However, if the technical constraints (processing power) do not allow, multiple hardware must be used and a physical communication channel is needed to link the processing units.
+
+If the system is geographically diffused and we want to use computing units to control groups of sub-systems, it is straightforward to distribute the computing units in multiple hardware placed strategically to geographically correspond to their respective groups.
+
+For this work, we suppose that the large-scale system we want to control~\eqref{eq:large_scale_system_model} can be decomposed into geographically diffused sub-systems.
+Each sub-system will have states $\vec{x}_{i}$ and inputs $\vec{u}_{i}$ that are a partition of the states and inputs of the original $\vec{x}$ and $\vec{u}$.
+
+We suppose the optimization problem we want to use to control the system~\eqref{eq:qp_standard_form} is decomposable.
+Not necessarily the computing units used to solve the sub-problems will correspond to each one of the sub-systems.
+For instance, a sub-problem may solve a problem with a subset of states of two different sub-systems to find the subset of inputs of a third and fourth sub-systems.
+
+In the literature, it is not unusual to assume that we can choose the computing units in order to correspond to the sub-systems of the system (\todo[give examples of units]{??}), i.e., a computing unit computes the solution of a sub-problem to find the input of a corresponding sub-system.
+So, in this work we also use this assumption.
+Then, the terms sub-problems, sub-systems and agents can be used interchangeably.
+
+\subsubsection{Do the computing units communicate?}
+
+As shown in the last section (\S~\ref{sec:decomposable_problems}), the only case where communication is not needed to solve the optimization problem is in the uncoupled case (\S~\ref{sec:uncoupled_problems}).
+However, there are some decomposition methods for the \dmpc\ that even with coupled problems, they exploit the robustness properties of the MPC to compute the solution without communication~\cite{VahidNaghaviEtAl2014}.
+
+\begin{remark}
+  Usually in \dmpc\ literature the term «decentralized» refers to frameworks where the agents do not communicate~\cite[\S 4]{ChristofidesEtAl2013},\cite{NegenbornMaestre2014}.
+  The term can sometimes be confusing and be used even if the agents coordinate themselves.
+  In this work we propose a different nomenclature, calling those kinds of frameworks as «uncoordinated control», since there is no coordination between agents nor a coordinator agent to referee. We use the term decentralized as opposed to centralized (monolithic), i.e. to describe structure instead of communication.
+\end{remark}
+
+As the most part of the literature uses \emph{coordinated control}~\cite{NegenbornMaestre2014, ArauzEtAl2021}, in this work we will also use a method in which the agents communicate.
 
 
-\cite{DaiEtAl2022}
+\subsubsection{How do the computing units communicate?}
 
+Multiple communication schemes exist, which depend on the decomposition, topology and also trust/power.
+We can divide these schemes into two big groups, one where there is an \emph{hierarchy} (groups of agents are more important than others), and another where there is not (\emph{anarchy}).
+
+Sometimes the hierarchical structure may be implied by the decomposition. For instance, some decompositions (\todo[exemplos de sequential dado em ChristofidesEtAl2013]{??}) need the agents to solve their problems one after the other until the values converge.
+These schemes are called \emph{sequential}.
+We can see a hierarchy among the agents, since although a convergence is reached, one group of agents solve their problems disregard the others, giving them an initial position of power, even if temporary.
+In other decompositions (\todo[exemplos de parallel dado em ChristofidesEtAl2013]{??}), there is no hierarchy and all agents solve their problems independently of others and then share results until convergence is reached, iteratively or not.
+These structures are called \emph{parallel}.
+
+And in other decompositions the hierarchical structure can be chosen.
+For example, when negotiation between agents is needed, questions about trust and security can shape the presence or absence of hierarchy.
+One of these questions is: Can an agent trust in all other agents?
+
+This question is common in multiple areas where communication, exchanges or consensus between a large number of agents are needed (politics, economy, and others).
+If an agent distrusts the others it can treat itself the security issues or the agent can outsource it to another.
+Additional agents are included to serve as referees, coordinators or certifiers of the exchanges. It is done because it is easier to trust in a single agent or small group of agents than to trust in all agents.
+
+One real life example can be the \EFT\ between a seller and client. A seller instead of trusting the credit (capacity of paying in future date) of each of its clients, she or he trusts in a small group of credit card brands to fulfill the \EFT{}.
+Each credit card brand, in turn, trusts in a select group of credit-granting institutions, to which potentially these client are associated.
+This kind of arrangement creates a hierarchical tree-like structure called \emph{polytree} in graph theory terms. Seller and clients are leafs (terminal nodes), credit card-brands are branch vertex (intermediary) and the credit-granting institutions are roots (no parent nodes).
+Some other political/societal parallel views are stablished in~\cite{McNamaraEtAl2018} and~\cite{OlaruEtAl2018}.
+
+Although the hierarchical structure can help reducing the sources of distrust, it also reduce responsitivity and robustness.
+If a small number of the intermediary or most highly nodes in the hierarchical tree are compromised, there is a possibility that the complete system collapses since the communications will not be accomplished. On the other hand, for non-hierarchical structures, the system only perish if the majority of the nodes are compromised.
+So the compromise trust/robustness must be regarded when choosing the structure.
+
+In this work we opt to use the hierarchical approach, adding coordinators which referee the exchange between agents.
+
+\chapter{new chapter}
 \begin{equation}\label{eq:GOP}
   \begin{matrix}
     \underset{\useq}{\mathrm{minimize}}&\overbrace{\sum\limits_{i\in\set{M}} \overbrace{\sum_{j\in\set{H}}\norm{\mpcvec{v}[i][k+j][k]}^{2}_{Q_i}+\norm{\mpcvec{u}[i][k+j-1][k]}^{2}_{R_i}}^{\textstyle{} \obji}}^{\textstyle{} \globobj}\\
