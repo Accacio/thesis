@@ -490,12 +490,11 @@ For other examples of decomposition the reader is referred to~\cite{MaestreEtAl2
 
 Now, after having a decomposition method chosen, we need to know the topology of the problem. This topology can be chosen or imposed by some constraints (geographic or technological, for example). A brief discussion about different topologies follow.
 
-\subsection{Topologies, Trust and Responsivity}
-\todo{Add figures?}
+\section{Topologies, Trust and Responsivity}
 
 When computation can be divided into different computing units, some questions are raised: How to distribute the computation units? Do they communicate? How do they communicate? In this section we try to answer these questions.
 
-\subsubsection{How to distribute the computation units?}
+\subsection{How to distribute the computation units?}
 
 The distribution of the computation units depends on the system we want to control and the processing power/number of computation units needed to solve.
 
@@ -515,7 +514,7 @@ In the literature, it is not unusual to assume that we can choose the computing 
 So, in this work we also use this assumption.
 Then, the terms sub-problems, sub-systems and agents can be used interchangeably.
 
-\subsubsection{Do the computing units communicate?}
+\subsection{Do the computing units communicate?}
 
 As shown in the last section (\S~\ref{sec:decomposable_problems}), the only case where communication is not needed to solve the optimization problem is in the uncoupled case (\S~\ref{sec:uncoupled_problems}).
 However, there are some decomposition methods for the \dmpc\ that even with coupled problems, they exploit the robustness properties of the MPC to compute the solution without communication~\cite{VahidNaghaviEtAl2014}.
@@ -529,7 +528,7 @@ However, there are some decomposition methods for the \dmpc\ that even with coup
 As the most part of the literature uses \emph{coordinated control}~\cite{NegenbornMaestre2014, ArauzEtAl2021}, in this work we will also use a method in which the agents communicate.
 
 
-\subsubsection{How do the computing units communicate?}
+\subsection{How do the computing units communicate?}
 
 Multiple communication schemes exist, which depend on the decomposition, topology and also trust/power.
 We can divide these schemes into two big groups, one where there is an \emph{hierarchy} (groups of agents are more important than others), and another where there is not (\emph{anarchy}).
@@ -571,6 +570,7 @@ In this work we opt to use the hierarchical approach, adding coordinators which 
       \end{aligned}\right.,
   \end{matrix}
 \end{equation}
+\printbibliography
 
 
 
