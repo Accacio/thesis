@@ -1053,17 +1053,19 @@ refsection=chapter,
 }
 {\end{mdframed}}
 
+\newmdenv[innertopmargin=10pt,linecolor=fondtitre!100,backgroundcolor=fonddeboite!100,%
+ frametitleaboveskip=\dimexpr-\ht\strutbox\relax,
+ linewidth=1pt,topline=true]{infobox}
+
 \newcounter{remark}[section]
 \newenvironment{remark}[1][]
 {%
 \stepcounter{remark}%
-\begin{infobox}[frametitle={%
+\begin{infobox}[
+  frametitle={%
     \tikz[baseline=(current bounding box.east),outer sep=0pt]
     \node[rectangle,fill=fondtitre!80,text=white,anchor=center]{\sffamily\textbf{\strut Remark~\theremark}};
   },
- innertopmargin=10pt,linecolor=fondtitre!100,backgroundcolor=fonddeboite!100,%
- frametitleaboveskip=\dimexpr-\ht\strutbox\relax,
- linewidth=1pt,topline=true
  ]
 }
 {
