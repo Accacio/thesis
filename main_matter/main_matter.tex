@@ -196,7 +196,7 @@ Observe that even if the problem in \eqref{eq:qp_standard_form} is equivalent (s
 
 Although the solution of such problems can be straightforward, since solvers are widely known and the problem is well structured, it can be computationally intensive depending on the sizes of $n_{x}$, $n_{u}$ and $N$.
 For large-scale systems such as \todo{(add 2/3 examples)}, the computation time and memory needed to solve their associated problems increase drastically.
-Some decomposition methods can be used to make the solution of such problems more tractable, using different time-scales (\todo[hierarchical dmpc in ChristofidesEtAl2013, Abreu talvez??]{??}) for instance.
+Some decomposition methods can be used to make the solution of such problems more tractable, using different time-scales (\todo[hierarchical dmpc in ChristofidesEtAl2013, Abreu talvez??]{Citation?}) for instance.
 In this work we will focus on decomposition techniques based on optimization decomposition.
 
 \section{Optimization Decomposition Frameworks}
@@ -374,29 +374,22 @@ Adding auxiliary variables $\vec{\theta}_{o}$ and $\vec{\theta}_{n}$ we can rewr
 
 where $J_{1}(\vec{x}_{1}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})$ and $J_{2}(\vec{x}_{2}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})$ can be found by solving
 \begin{subequations}\label{eq:general_complicating_constraints_optimization_problem_decomposed}
-\begin{equation}\label{eq:general_complicating_constraints_optimization_problem_decomposed_1}
+  \begin{equation}
     J_{1}(\vec{x}_{1}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})=\begin{matrix}
-      \underset{\vec{x}_{a}}{\mathrm{minimize}}  &J_{1}(\vec{x}_{1})&\\
+      \underset{\vec{x}_{a}}{\mathrm{minimize}}  &&J_{1}(\vec{x}_{1})&\\
       \mathrm{subject~ to} &
-
-           f_{i}(\vec{x}_{a}) \leq 0 \text{, } &i\in\set{M}_{1}\\
-          & g_{j}(\vec{x}_{a}) = 0\text{, } &j\in\set{P}_{1}\\
-          & h_{m_{1}}(\vec{x}_{1}) \leq \vec{\theta}_{o}\text{, } &m\in\set{O}\\
-          & w_{n_{1}}(\vec{x}_{1}) = \vec{\theta}_{n} \text{, }  &i\in\set{N}
-
+      f_{i}(\vec{x}_{a}) \leq 0 \text{, } i\in\set{M}_{1} & & h_{m_{1}}(\vec{x}_{1}) \leq \vec{\theta}_{o}\text{, } m\in\set{O}\\
+      & g_{j}(\vec{x}_{a}) = 0\text{, } j\in\set{P}_{1} & & w_{n_{1}}(\vec{x}_{1}) = \vec{\theta}_{n} \text{, }  i\in\set{N}
     \end{matrix}
-\end{equation}
-\begin{equation}\label{eq:general_complicating_constraints_optimization_problem_decomposed_2}
+  \end{equation}\label{eq:general_complicating_constraints_optimization_problem_decomposed_1}%
+  \begin{equation}
     J_{2}(\vec{x}_{2}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})=\begin{matrix}
-      \underset{\vec{x}_{b}}{\mathrm{minimize}}  &J_{2}(\vec{x}_{2})&\\
+      \underset{\vec{x}_{b}}{\mathrm{minimize}}  &&J_{2}(\vec{x}_{2})&\\
       \mathrm{subject~ to} &
-
-           f_{i}(\vec{x}_{b}) \leq 0 \text{, } &i\in\set{M}_{2}\\
-          & g_{j}(\vec{x}_{b}) = 0\text{, } &j\in\set{P}_{2}\\
-          & h_{m_{2}}(\vec{x}_{2}) \leq -\vec{\theta}_{o}\text{, } &m\in\set{O}\\
-          & w_{n_{2}}(\vec{x}_{2}) = -\vec{\theta}_{n} \text{, }  &i\in\set{N}
+      f_{i}(\vec{x}_{b}) \leq 0 \text{, } i\in\set{M}_{2} & & \hspace{-1em}h_{m_{2}}(\vec{x}_{2}) \leq -\vec{\theta}_{o}\text{, } m\in\set{O}\\
+      & g_{j}(\vec{x}_{b}) = 0\text{, } j\in\set{P}_{2} & & \hspace{-1em}w_{n_{2}}(\vec{x}_{2}) = -\vec{\theta}_{n} \text{, }  i\in\set{N}
     \end{matrix}
-\end{equation}
+  \end{equation}\label{eq:general_complicating_constraints_optimization_problem_decomposed_2}%
 \end{subequations}
 
 Again, observe that the solutions of~\eqref{eq:general_complicating_constraints_optimization_problem_decomposed} depend on the values of $\vec{\theta}_{o}$ and $\vec{\theta}_{n}$, thus a coordination between sub-problems is needed to find their optimal values in order to solve problem~\eqref{eq:general_complicating_constraints_optimization_main_problem} and thus the original problem~\eqref{eq:general_complicating_constraints_optimization_problem}.
