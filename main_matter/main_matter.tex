@@ -507,10 +507,23 @@ For this work, we suppose that the large-scale system we want to control~\eqref{
 Each sub-system will have states $\vec{x}_{i}$ and inputs $\vec{u}_{i}$ that are a partition of the states and inputs of the original $\vec{x}$ and $\vec{u}$.
 
 We suppose the optimization problem we want to use to control the system~\eqref{eq:qp_standard_form} is decomposable.
-Not necessarily the computing units used to solve the sub-problems will correspond to each one of the sub-systems.
+Not necessarily the computing units used to solve the sub-problems will correspond to each one of the sub-systems (Fig.~\ref{fig:noncorresponding_division_system_problem}).
 For instance, a sub-problem may solve a problem with a subset of states of two different sub-systems to find the subset of inputs of a third and fourth sub-systems.
 
-In the literature, it is not unusual to assume that we can choose the computing units in order to correspond to the sub-systems of the system (\todo[give examples of units]{??}), i.e., a computing unit computes the solution of a sub-problem to find the input of a corresponding sub-system.
+\begin{figure}[h] \centering
+  \begin{subfigure}{.4\textwidth}
+    \includegraphics[width=\textwidth]{../img/noncorresponding_system_problem.png}
+    \caption{Non-correspondending.}\label{fig:noncorresponding_division_system_problem}
+  \end{subfigure} \hfill
+  \begin{subfigure}{.4\textwidth} \centering
+    \includegraphics[width=\textwidth]{../img/corresponding_system_problem.png}
+    \caption{Correspondending.}\label{fig:corresponding_division_system_problem}
+  \end{subfigure}
+  \caption{Correspondence of decompositions of sub-problems and
+    sub-systems.\todo[improve image, add nodes]{}}
+\end{figure}
+
+In the literature, it is not unusual to assume that we can choose the computing units in order to correspond to the sub-systems of the system as in Fig.~\ref{fig:corresponding_division_system_problem} (\todo[give examples of units]{Citation?}), i.e., a computing unit computes the solution of a sub-problem to find the input of a corresponding sub-system.
 So, in this work we also use this assumption.
 Then, the terms sub-problems, sub-systems and agents can be used interchangeably.
 
@@ -531,13 +544,46 @@ As the most part of the literature uses \emph{coordinated control}~\cite{Negenbo
 \subsection{How do the computing units communicate?}
 
 Multiple communication schemes exist, which depend on the decomposition, topology and also trust/power.
-We can divide these schemes into two big groups, one where there is an \emph{hierarchy} (groups of agents are more important than others), and another where there is not (\emph{anarchy}).
+We can divide these schemes into two big groups (Fig.~\ref{fig:hierarchic_anarchic}), one where groups of agents are more important than others (\emph{hierarchy}), and another where there is not (\emph{anarchy}).
 
-Sometimes the hierarchical structure may be implied by the decomposition. For instance, some decompositions (\todo[exemplos de sequential dado em ChristofidesEtAl2013]{??}) need the agents to solve their problems one after the other until the values converge.
+\begin{figure}[h]
+\begin{subfigure}{.45\textwidth}
+  \centering
+  \includegraphics[height=.5\textwidth]{../img/hierarchy.png}
+  \caption{Hierarchy.}\label{fig:hierarchy_topology}
+\end{subfigure}
+\hfill
+\begin{subfigure}{.45\textwidth}
+  \centering
+  \includegraphics[height=.5\textwidth]{../img/anarchy.png}
+  \caption{Anarchy}\label{fig:anarchy_topology}
+\end{subfigure}
+\caption{Hierarchic and anarchic topologies.}\label{fig:hierarchic_anarchic}
+\end{figure}
+
+
+Sometimes the hierarchical structure may be implied by the decomposition. For instance, some decompositions (\todo[exemplos de sequential dado em ChristofidesEtAl2013]{Citation?}) need the agents to solve their problems one after the other until the values converge (Fig.~\ref{fig:sequential_topology}).
 These schemes are called \emph{sequential}.
 We can see a hierarchy among the agents, since although a convergence is reached, one group of agents solve their problems disregard the others, giving them an initial position of power, even if temporary.
-In other decompositions (\todo[exemplos de parallel dado em ChristofidesEtAl2013]{??}), there is no hierarchy and all agents solve their problems independently of others and then share results until convergence is reached, iteratively or not.
+In other decompositions (\todo[exemplos de parallel dado em ChristofidesEtAl2013]{Citation?}), all agents solve their problems independently of others and then share results until convergence is reached, iteratively or not (Fig.~\ref{fig:parallel_topology}).
 These structures are called \emph{parallel}.
+in such structures there is no hierarchy.
+
+
+\begin{figure}[h]
+\begin{subfigure}{.45\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{../img/sequential_topology.png}
+  \caption{Sequential topology.}\label{fig:sequential_topology}
+\end{subfigure}
+\hfill
+\begin{subfigure}{.45\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{../img/parallel_topology.png}
+  \caption{Parallel topology.}\label{fig:parallel_topology}
+\end{subfigure}
+\caption{Sequential and parallel topologies.}\label{fig:sequential_parallel_topology}
+\end{figure}
 
 And in other decompositions the hierarchical structure can be chosen.
 For example, when negotiation between agents is needed, questions about trust and security can shape the presence or absence of hierarchy.
@@ -549,8 +595,14 @@ Additional agents are included to serve as referees, coordinators or certifiers 
 
 One real life example can be the \EFT\ between a seller and client. A seller instead of trusting the credit (capacity of paying in future date) of each of its clients, she or he trusts in a small group of credit card brands to fulfill the \EFT{}.
 Each credit card brand, in turn, trusts in a select group of credit-granting institutions, to which potentially these client are associated.
-This kind of arrangement creates a hierarchical tree-like structure called \emph{polytree} in graph theory terms. Seller and clients are leafs (terminal nodes), credit card-brands are branch vertex (intermediary) and the credit-granting institutions are roots (no parent nodes).
+This kind of arrangement creates a hierarchical tree-like structure called \emph{polytree} in graph theory terms (Fig.~\ref{fig:polytree_topology}). Seller and clients are leafs (terminal nodes), credit card-brands are branch vertex (intermediary) and the credit-granting institutions are roots (no parent nodes).
 Some other political/societal parallel views are stablished in~\cite{McNamaraEtAl2018} and~\cite{OlaruEtAl2018}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.4\textwidth]{../img/polytree.png}
+  \caption{Polytree topology.\todo[improve figure]{}}\label{fig:polytree_topology}
+\end{figure}
 
 Although the hierarchical structure can help reducing the sources of distrust, it also reduce responsitivity and robustness.
 If a small number of the intermediary or most highly nodes in the hierarchical tree are compromised, there is a possibility that the complete system collapses since the communications will not be accomplished. On the other hand, for non-hierarchical structures, the system only perish if the majority of the nodes are compromised.
