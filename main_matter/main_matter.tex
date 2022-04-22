@@ -611,34 +611,41 @@ So the compromise trust/robustness must be regarded when choosing the structure.
 \todo[some??]{Some} works in the literature of \dmpc\ \cite{VelardeEtAl2017a, BoemEtAl2020, LiuEtAl2022} use a anarchic structure.
 In this work we opt to use the hierarchical approach, adding coordinators which referee the exchange between agents, although some methods shown can be adapted to use in non-hierarchic structures.
 
-\chapter{new chapter}
-\begin{equation}\label{eq:GOP}
-  \begin{matrix}
-    \underset{\useq}{\mathrm{minimize}}&\overbrace{\sum\limits_{i\in\set{M}} \overbrace{\sum_{j\in\set{H}}\norm{\mpcvec{v}[i][k+j][k]}^{2}_{Q_i}+\norm{\mpcvec{u}[i][k+j-1][k]}^{2}_{R_i}}^{\textstyle{} \obji}}^{\textstyle{} \globobj}\\
-    \mathrm{subject~ to}&~\eqref{eq:systems},\eqref{eq:u_local_constraints}\ \mathrm{and}\ \eqref{eq:global_constraint}
-    \left\}\small
-      \begin{aligned}
-        &\forall i\in\set{M}\\
-        &\forall j\in\set{H}
-      \end{aligned}\right.,
-  \end{matrix}
-\end{equation}
 \printbibliography
 
+\chapter{Security}
+
+\section{Vulnerabilities}
+
+\section{Attacks}
+
+\section{Securing}
+
+\subsection{Detection}
+If disturbance is inside some probabilistic bounds \cite{AnandutaEtAl2020}
+
+It always depend on the question «who/what do you trust/distrust?»
 
 
-When using a linear discrete-time time-invariant model
-\begin{equation}
-  \vec{x}[k+1]=f(\vec{x}[k],\vec{u}[k])=A\vec{x}[k]+B\vec{u}[k],
-\end{equation}
-the equalities in
 
 % \epigraph{\centering There are few people, however, who, if you told them a result, would be able to evolve from their own inner consciousness what the steps were which led up to that result.}
 % {\textit{A Study in Scarlet}\\ \textsc{Sir Arthur Conan Doyle}}
 
-\todo{multiple computing units}
+
+As the hierarchical proposed in~\cite{BraunEtAl2020}, where a regulator (central supervisor) who can detect and exclude suspicious agents.
+
+\todo{\cite{MaestreEtAl2014} Monolithical, multi independent systems}
+\printbibliography%
+
+
+\part{Towards a safe DMPC algorithm}
+
+\chapter{Primal Decomposition-based distributed Model Predictive Control}
+\epigraph{\centering So you tell me 'trust me' l can trust you\\ Just let me show you But I gotta work it out in a shadow of doubt 'Cause I don't know if I know you}
+{\textit{Lie}\\\textsc{Kevin Moore}}
+
+
 \begin{description}
-  \item[Problem with size] the problem with solving a centralized MPC is blabla big blabla computationally expensive
   \item[State of the art] \cite{ChristofidesEtAl2013,ArauzEtAl2021,NotarnicolaNotarstefano2020, MaestreEtAl2014} as base for discussion,
         present the nomenclatures for dMPC frameworks, centralization and so not, and finally a summary table showing where we want to focus:
         \begin{itemize}
@@ -652,22 +659,25 @@ the equalities in
         \todo{As \cite{ArauzEtAl2021} comments, inter-agent attacks are not much studied and sometimes are considered as insider attacks}
 \end{description}
 
-\begin{remark}
-  Usually in \dmpc\ literature the term «decentralized control» refers to frameworks where the agents do not communicate~\cite[\S 4]{ChristofidesEtAl2013}. In this work we propose a more adequate nomenclature, calling those kinds of frameworks as «uncoordinated control», since there is no coordination between agents nor a coordinator agent to referee. We use the terms centralized and decentralized to describe the topology of the frameworks.
-\end{remark}
 
-\printbibliography%
+\begin{equation}\label{eq:GOP}
+  \begin{matrix}
+    \underset{\useq}{\mathrm{minimize}}&\overbrace{\sum\limits_{i\in\set{M}} \overbrace{\sum_{j\in\set{H}}\norm{\mpcvec{v}[i][k+j][k]}^{2}_{Q_i}+\norm{\mpcvec{u}[i][k+j-1][k]}^{2}_{R_i}}^{\textstyle{} \obji}}^{\textstyle{} \globobj}\\
+    \mathrm{subject~ to}&~\eqref{eq:systems},\eqref{eq:u_local_constraints}\ \mathrm{and}\ \eqref{eq:global_constraint}
+    \left\}\small
+      \begin{aligned}
+        &\forall i\in\set{M}\\
+        &\forall j\in\set{H}
+      \end{aligned}\right.,
+  \end{matrix}
+\end{equation}
 
-\chapter{Primal Decomposition-based distributed Model Predictive Control}
 \begin{description}
   \item[decomposition] Separable problem, but constrained coupled
   \item[negotiation] Solve separately and find consensus for coupling (complicating) constraints
   \item[simple example to illustrate convergence]
   \item[Interpretation of variables] allocated resources and dissatisfaction index
 \end{description}
-
-
-\printbibliography%
 
 
 \chapter[Non-conforming behaviors in Primary Decomposition]{Non-conforming behaviors\\ in Primary Decomposition}
@@ -708,7 +718,6 @@ the equalities in
 
 \printbibliography
 
-\chapter{Towards Safe algorithms}
 
 \epigraph{\centering Trust is an illusion, \\M'Lady. \\I believe only in \\mutual self-interest.}
 {\textit{Jupiter Ascending}\\\textsc{The Wachowskis}}
@@ -836,3 +845,4 @@ for the corresponding room. The inputs are constraint by ${\sum_{i=1}^{4}\vec{u}
 \todo{References }
 
 \end{document}
+\todo{Traçar relação entre primal decomposition with equality com problema de consenso}
