@@ -570,15 +570,41 @@ In such structures there is no hierarchy.
 
 
 \begin{figure}[h]
-\begin{subfigure}{.45\textwidth}
+\begin{subfigure}[b]{.45\textwidth}
   \centering
-  \includegraphics[width=\textwidth]{../img/sequential_topology.png}
+  \begin{tikzpicture}[node distance=1cm and .5cm]
+    \node[draw,circle] (first) at (0,0) {};
+    \node[draw,circle,right=of first] (second) {};
+    \node[draw,circle,right=of second] (third) {};
+    \node[draw,circle,opacity=0,right=of third] (fourth) {};
+    \node[draw,circle,right=of fourth] (fifth) {};
+
+    \node[] at (fourth) {...};
+    \draw[-latex] (first) -- (second);
+    \draw[-latex] (second) -- (third);
+    \draw[-latex] (third) -- (fourth);
+    \draw[-latex] (fourth) -- (fifth);
+  \end{tikzpicture}
   \caption{Sequential topology.}\label{fig:sequential_topology}
 \end{subfigure}
 \hfill
-\begin{subfigure}{.45\textwidth}
+\begin{subfigure}[b]{.45\textwidth}
   \centering
-  \includegraphics[width=\textwidth]{../img/parallel_topology.png}
+  \begin{tikzpicture}[node distance=.5cm and .5cm]
+    \node[draw,rectangle,fill=black,minimum height=2pt,minimum width=5cm] (bar) at (0,0) {};
+    % \draw[blue,fill] ($(bar)+(-2.5cm,-2pt)$) rectangle ($(bar)+(2.5cm,2pt)$);
+    \node[draw,circle,below=of bar] (third) {};
+    \node[draw,circle,left=of third] (second) {};
+    \node[draw,circle,left=of second] (first) {};
+    \node[draw,circle,opacity=0,right=of third] (fourth) {};
+    \node[draw,circle,right=of fourth] (fifth) {};
+
+    \node[] at (fourth) {...};
+    \draw[latex-latex]  (first)  -- (bar.south -| first);
+    \draw[latex-latex]  (second) -- (bar.south -| second);
+    \draw[latex-latex]  (third)  -- (bar.south -| third);
+    \draw[latex-latex]  (fifth)  -- (bar.south -| fifth);
+  \end{tikzpicture}
   \caption{Parallel topology.}\label{fig:parallel_topology}
 \end{subfigure}
 \caption{Sequential and parallel topologies.}\label{fig:sequential_parallel_topology}
