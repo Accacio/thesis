@@ -38,3 +38,105 @@
 % Theorem
 % \newtheorem{thm}{Theorem}[section]
 % \newtheorem{lem}[thm]{Lemma}
+
+\newcommand{\nsubsystems}{M}
+\newcommand{\umax}{\vec{u}_{\mathrm{\max}}}
+\newcommand{\predhorz}{N_{p}}
+
+\NewDocumentCommand \mpcvec { s m o o o } {%
+  \IfBooleanTF{#1}{
+    \def\optim{^\star}
+  }{
+    \def\optim{}
+  }
+  \IfValueTF{#5}{
+    \vec{#2}_{#3}\optim{}[#4|#5]
+  }{
+    \IfValueTF{#4}{
+      \vec{#2}_{#3}\optim{}[#4]
+    }
+    {
+    \IfValueTF{#3}{
+      \vec{#2}_i\optim{}[#3]
+    }
+    {
+      \vec{#2}_i\optim{}[k]
+    }
+    }
+  }
+}
+
+
+\NewDocumentCommand \mpcval { s m o o o } {%
+  \IfBooleanTF{#1}{
+    \def\optim{^\star}
+  }{
+    \def\optim{}
+  }
+  \IfValueTF{#5}{
+    {#2}_{#3}\optim{}[#4|#5]
+  }{
+    \IfValueTF{#4}{
+      {#2}_{#3}\optim{}[#4]
+    }
+    {
+    \IfValueTF{#3}{
+      {#2}_i\optim{}[#3]
+    }
+    {
+      {#2}_i\optim{}[k]
+    }
+    }
+  }
+}
+
+
+
+
+
+
+\newcommand{\uikk}{\mpcvec{u}[i][k][k]}
+\newcommand{\optuikk}{\mpcvec*{u}[i][k][k]}
+
+\newcommand{\globobj}{\mpcval{J}[][k]}
+\newcommand{\optglobobj}{\mpcval*{J}[][k]}
+
+\newcommand{\obji}{\mpcval{J}[i][k]}
+\newcommand{\optobji}{\mpcval*{J}[i][k]}
+
+\newcommand{\xik}{\mpcvec{x}}
+\newcommand{\fik}{\mpcvec{f}}
+\newcommand{\uik}{\mpcvec{u}}
+\newcommand{\uiseq}{\mpcvec{u}[i][k:k+\predhorz-1][k]}
+\newcommand{\optuiseq}{\mpcvec*{u}[i][k:k+\predhorz-1][k]}
+
+\newcommand{\useq}{\mpcvec{u}[ ][k:k+\predhorz-1][k]}
+\newcommand{\optuseq}{\mpcvec*{u}[ ][k:k+\predhorz-1][k]}
+\newcommand{\Uik}{\mpcvec{U}}
+\newcommand{\optUik}{\mpcvec*{U}}
+\newcommand{\optuncUik}{\mpcvec*{\mathring{U}}}
+\newcommand{\optuncU}{{\mathring{\vec{U}}^{\star}}}
+
+\newcommand{\vik}{\mpcvec{v}}
+\newcommand{\wik}{\mpcvec{w}}
+\newcommand{\wiseq}{\mpcvec{w}[i][k:k+\predhorz-1][k]}
+\newcommand{\Wik}{\mpcvec{W}}
+
+\newcommand{\qik}{\mpcvec{q}}
+\newcommand{\qiseq}{\mpcvec{q}[i][k:k+\predhorz-1][k]}
+\newcommand{\thetaik}{\mpcvec{\theta}}
+\newcommand{\optthetaiseq}{\mpcvec*{\theta}[i][k:k+\predhorz-1][k]}
+\newcommand{\thetaseq}{\mpcvec{\theta}[][k:k+\predhorz-1][k]}
+\newcommand{\optthetaseq}{\mpcvec*{\theta}[][k:k+\predhorz-1][k]}
+\newcommand{\thetai}{\vec{\theta}_i}
+\newcommand{\optthetai}{\vec{\theta}_i^{\star}}
+
+\newcommand{\dik}{\mpcvec{d}}
+\newcommand{\diseq}{\mpcvec{d}[i][k:k+\predhorz-1][k]}
+\newcommand{\lambdaik}{\mpcvec{\lambda}}
+\newcommand{\lambdai}{\vec{\lambda}_i}
+\newcommand{\lambdaicheat}{\tilde{\vec{\lambda}}_i}
+\newcommand{\optlambdai}{\vec{\lambda}_i^{\star}}
+
+\newcommand{\Tik}{\mpcval{T}}
+

@@ -1057,6 +1057,37 @@ refsection=chapter,
  frametitleaboveskip=\dimexpr-\ht\strutbox\relax,
  linewidth=1pt,topline=true]{infobox}
 
+\definecolor{example_title_background}{HTML}{223322}
+\colorlet{example_title_background}{fondtitre!80}
+\definecolor{example_background}{HTML}{5E81AC}
+% \colorlet{example_background}{example_background!50}
+
+\colorlet{example_background}{fonddeboite!100}
+% \colorlet{example_background}{fonddeboite!100}
+\newcounter{example}[section]
+\newenvironment{example}[1][]
+{%
+\stepcounter{example}%
+\ifstrempty{#1}%
+ {\mdfsetup{%
+   frametitle={%
+    \tikz[baseline=(current bounding box.east),outer sep=0pt]
+    \node[rectangle,fill=example_title_background,text=white,anchor=center]
+         {\sffamily\textbf{\strut Example~\theexample}};}}
+ }%
+{\mdfsetup{%
+  frametitle={%
+   \tikz[baseline=(current bounding box.east),outer sep=0pt]
+   \node[rectangle,fill=example_title_background,text=white,anchor=center]
+        {\sffamily\textbf{\strut Example~\theexample:~#1}};}}%
+ }%
+\mdfsetup{innertopmargin=10pt,linecolor=fondtitre!100,backgroundcolor=example_background,%
+       linewidth=1pt,topline=true,
+       frametitleaboveskip=\dimexpr-\ht\strutbox\relax,}
+   \begin{mdframed}[]\relax%
+}
+{\end{mdframed}}
+
 \newcounter{remark}[section]
 \newenvironment{remark}[1][]
 {%
