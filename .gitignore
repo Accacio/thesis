@@ -38,3 +38,5 @@
 *.pdf
 
 *.el
+*.fdb_latexmk
+*.fls
