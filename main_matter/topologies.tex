@@ -40,7 +40,7 @@ For instance, a sub-problem may solve a problem with a subset of states of two d
     sub-systems.\todo[improve image, add nodes]{}}
 \end{figure}
 
-In the literature, it is not unusual to assume that we can choose the computing units in order to correspond to the sub-systems of the system as in Fig.~\ref{fig:corresponding_division_system_problem} (\todo[give examples of units]{Citation?}), i.e., a computing unit computes the solution of a sub-problem to find the input of a corresponding sub-system.
+In the literature, it is not unusual to assume that we can choose the computing units in order to correspond to the sub-systems of the system as in Fig.~\ref{fig:corresponding_division_system_problem} (\todo[give examples of units]{Citation?}), i.e., a computing unit computes the solution of a sub-problem to find the input of the same corresponding sub-system.
 So, in this work we also use this assumption.
 Then, the terms sub-problems, sub-systems and agents can be used interchangeably.
 
@@ -64,7 +64,7 @@ The most part of the literature uses \emph{coordinated control}~\cite{NegenbornM
 Multiple communication schemes exist, which depend on the decomposition, topology and also trust/power.
 We can divide these schemes into two big groups (Fig.~\ref{fig:hierarchic_anarchic}), one where groups of agents are more important than others (\emph{hierarchy}), and another where there is not (\emph{anarchy}).
 
-\begin{figure}[t]
+\begin{figure}[H]
 \begin{subfigure}[b]{.45\textwidth}
   \centering
   \includegraphics[height=.5\textwidth]{../img/hierarchy.png}
@@ -76,7 +76,7 @@ We can divide these schemes into two big groups (Fig.~\ref{fig:hierarchic_anarch
   \includegraphics[height=.5\textwidth]{../img/anarchy.png}
   \caption{Anarchy}\label{fig:anarchy_topology}
 \end{subfigure}
-\caption{Hierarchic and anarchic topologies.}\label{fig:hierarchic_anarchic}
+\caption{Hierarchic and anarchic topologies.\todo[redo figures, add stages to identify power]}\label{fig:hierarchic_anarchic}
 \end{figure}
 
 
@@ -136,7 +136,7 @@ One of these questions is: Can an agent trust all other agents?
 
 This question is common in multiple areas where communication, exchanges or consensus between a large number of agents are needed (politics, economy, and others).
 If an agent distrusts the others, it can treat itself the security issues or the agent can outsource the treatment to another agent.
-Additional agents can be included to serve as referees, coordinators, regulators or certifiers. It is done because it is easier to trust/verify in a single agent or small group of agents than to trust all agents. The work is divided into more manageable parts.
+Additional agents can be included to serve as referees, coordinators, regulators or certifiers. It is done because it is easier to trust in/verify a single agent or small group of agents than to trust in all agents. This way the work is divided into more manageable parts.
 
 One real life example can be the \EFT\ between a seller and client. A seller instead of trusting the credit (capacity of paying in future date) of each of its clients, she or he trusts in a small group of credit card brands to fulfill the \EFT{}.
 Each credit card brand, in turn, trusts in a select group of credit-granting institutions, to which potentially these client are associated.
@@ -154,7 +154,7 @@ Some other political/societal parallel views are stablished in~\cite{McNamaraEtA
 \paragraph{Failure}
 Although the hierarchical structure can help reducing the sources of distrust, it also reduce responsitivity and robustness.
 If a small number of the intermediary or most highly nodes in the hierarchical tree are inoperative, there is a possibility that the complete system collapses since the communications will not be accomplished, this problem is commonly known as the \emph{single point of failure}, which can be deviated by the use of redundancy.
-On the other hand, for non-hierarchical structures, the system only perish if the majority of the nodes inoperative or compromised.
+On the other hand, for non-hierarchical structures, the system only perish if the majority of the nodes is inoperative or compromised.
 
 \paragraph{Energy consumption and Environment}
 To overcome the problem of trust in anarchic (peer-to-peer) structures, a solution recently in vogue called \emph{blockchain} was proposed~\todo[add blockchain citation]{Citation ??}.
@@ -163,7 +163,7 @@ In this solution, all historic data (log) are shared between all agents.
 Before beeing sent to all other agents (or only neighbours), new data need to be processed to generate a \emph{proof of work} (proof of a difficult computation which is easy to test) to create a block.
 This block needs to be validated (data and \emph{proof of work} are valid) by at least more than half of the agents before beeing chained into the historic data, forming a chain of blocks, thus the name.
 
-As each block has a different \emph{proof of work}, to create an new block with unreasonable data, a bad ill-intentioned agent needs to alter all the past blocks in the chain recreating all \emph{proof of work} one by one, until the false data could be accepted.
+As each block has a different \emph{proof of work}, to create an new block with unreasonable data, an ill-intentioned agent needs to alter all the past blocks in the chain recreating all \emph{proofs of work} one by one, until the false data could be accepted.
 This way, the attacker would need to have more than half of the total processing power of the network.
 The \emph{proof of work} strategy trades trust by energy.
 A recent work~\cite{ColeCheng2018} estimates the energy consumption of one of the most diffused application of the \emph{blockchain}, a crypto-currency called Bitcoin, being at least $200$kWh for each transaction, which is greater than the monthly electrical consumption of a small household of two people in Brazil~\todo[add BEN]{Citation ??}.
