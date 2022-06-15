@@ -3,29 +3,31 @@
 \begin{document}
 
 \chapter{Introduction}\label{cha:introduction}
-\minitoc
 
-\section{Context}
-  \todo{Nowadays problems (large-scale \ldots) need to decompose, problems with security Stuxnet \cite{Langner2011} and other attacks (use examples in~\cite{DingEtAl2018})}%
-  \todo{ more examples in \cite{Bindra2017}}
+\todo{Nowadays problems (large-scale \ldots) need to decompose, problems with security Stuxnet \cite{Langner2011} and other attacks (use examples in~\cite{DingEtAl2018})}%
+\todo{ more examples in \cite{Bindra2017}}
 
 \section{Motivation and Contributions}
 Due to the increased computation capabilities of computers in recent years,
 now we can solve some problems which were then not solvable in reasonable time.
 Thus the \emph{renaissance} of some optimization based methods, such as \todo{Neural networks} and \todo{Artificial Intelligence}.
 For other more common methods such \mpc~\cite{GarciaEtAl1989}, this development meant solving bigger problems in less time, sometimes even in realtime~\todo[add realtime MPC]{\cite{BesselmannEtAl2008}} and using small computation units that can fit in the palm of a hand~\cite{BanguraMahony2014}.
-But still, for some large scale systems, the calculation need to be distributed into many computation units.
+But for some large scale systems, the calculation is still quite expensive and we need some subterfuges, as distributing it into many computation units.
+One of these strategies, as we will see is called \dmpc.
 
 This work studies what happens when these computation units do not work collaboratively.
-And for a specific decomposition we search for a method to mitigate the effects of this non-cooperative behavior.
+And for a specific \dmpc framework we search for a method to mitigate the effects of this non-cooperative behavior.
 
-To give a general view to the reader and to serve as a main take-out of the possible effects, we give a simple qualitatively example, which will be retaken quantitatively in another section of this work.
+To give a general view to the reader and to serve as a main take-out of the possible effects of non-cooperative behaviors, we give a simple qualitatively example, which will be resumed in another section of this work, giving more insight of its causes.
 
-\begin{example}[Effects of a malicious agent]
+\begin{example}[Effects of a malicious agent]\label{ex:qualitative_example}
   Imagine we have a system where we want to minimize an overall objective.
-  For this a number of agents interact.
-  In the decomposition used in this work the agents need to exchange values with another agent which referees what we call a negotiation.
-  The coordinator sends all agents a message, and each agent responds the coordinator by sending a message which depends on the original message. We can see a scheme of the exchanges in Fig.~\ref{fig:ex_exchange_agents}
+  For this a number of \emph{agents interact}.
+  In the decomposition used in this work the agents need to exchange values with another agent which referees what we call a \emph{negotiation}. This referee we call \emph{coordinator}.
+  The coordinator sends all agents a message, personalized for each agent, which we will call $\theta_{i}$. The indices $i$ indicate the number of the agent.
+  In return, each agent responds the coordinator by sending a message, which we will call $\lambda_{i}$.
+  This message $\lambda_{i}$ usually depends on the message $\theta_{i}$.\\
+  We can see a scheme of the exchanges in Fig.~\ref{fig:ex_exchange_agents}
 
   % \pagebreak
 
@@ -44,31 +46,31 @@ To give a general view to the reader and to serve as a main take-out of the poss
       \node[draw, mpcSmall, fill=mpc_agent, right=of mult,] (blockM) {\small Agent M};
       \node[draw, coordinator, below=of mult,] (coordinator) {Coordinator};
 
-      \draw[-latex,line width=1pt,red] (block1.south)+(0.4,.0) -- ( coordinator.north -| {$(block1.south)+(0.4,.0)$}) node [right,midway] {\faUserSecret};
-      \draw[latex-,line width=1pt] (block1.south)+(-0.4,0) -- (  coordinator.north -| {$(block1.south)+(-0.4,0)$});
-      \draw[-latex,line width=1pt] (blockM.south)+(0.4,.0) -- ( coordinator.north -| {$(blockM.south)+(0.4,.0)$});
-      \draw[latex-,line width=1pt] (blockM.south)+(-0.4,0) -- (  coordinator.north -| {$(blockM.south)+(-0.4,0)$});
+      \draw[-latex,line width=1pt,red] (block1.south)+(0.4,.0) -- ( coordinator.north -| {$(block1.south)+(0.4,.0)$}) node [right,midway] {$\lambda_{1}$\ \faUserSecret};
+      \draw[latex-,line width=1pt] (block1.south)+(-0.4,0) -- (  coordinator.north -| {$(block1.south)+(-0.4,0)$}) node [left,midway] {$\theta_{1}$};
+      \draw[-latex,line width=1pt] (blockM.south)+(0.4,.0) -- ( coordinator.north -| {$(blockM.south)+(0.4,.0)$}) node [right,midway] {$\lambda_{M}$};
+      \draw[latex-,line width=1pt] (blockM.south)+(-0.4,0) -- (  coordinator.north -| {$(blockM.south)+(-0.4,0)$}) node [left,midway] {$\theta_{M}$};
     \end{tikzpicture}
-    \caption{Exchange between agents.}\label{fig:ex_exchange_agents}
+    \caption{Exchange between agents and coordinator.}\label{fig:ex_exchange_agents}
   \end{figure}
+Observe in Fig.~\ref{fig:ex_exchange_agents} that agent 1 sends a suspicious $\lambda_{1}$. Instead of sending the message it was supposed to send, it modifies it first and then it sends this modified version. This can be considered as an attack \todo{called \fdi, as we will see later}.
 
-  Observe in Fig.~\ref{fig:ex_exchange_agents} that Agent 1 sends a modified version of the message it was supposed to send. This can be considered as an attack \todo{called \fdi, as we will see later}.
-
-  In Fig.~\ref{fig:change_in_j}, we can see the effects on the overall objective $J^{\star}$ (in blue) when agent 1 changes a different version of the original message.
+In this example we have a system with $4$ agents and a coordinator, where one agent (agent 1) is ill-intentioned. In Fig.~\ref{fig:change_in_j}, we can see the effects of changes in the $\lambda_{1}$ sent on the objectives of each agent $J_{i}$ and the overall objective $J^{\star}$ (in blue).
   \begin{figure}[H]
     \centering
     \includegraphics[width=.55\textwidth]{../img/qualitative_example.pdf}
 % ./docstheseplot -o ../../docs/img/quantiteAvecTriche4 -i  ../../data/matlab/tricheQuantite/dmpcQuantity4systemsTriche_.mat --quantiteAvecTriche4
-    \caption{Change in objectives depending on message sent by agent 1.}\label{fig:change_in_j}
+    \caption{Changes in objectives depending on message sent by agent 1.}\label{fig:change_in_j}
   \end{figure}
-  Observe that the blue curve has its minimum value only when the message is the original one, every other message makes the resulting system sub-optimal.
+  Observe that the blue curve has its minimum value only when the $\lambda_{1}$ is the original one, every other message makes the resulting system sub-optimal.
 
-  The red hatched area represents a set of messages that agent 1 can send that destabilize the system.
+  On the other hand we can see that agent 1 can manipulate the negotiation so it can privileged itself (orange curve) at the expense of all others (green, red and purpler curves). This selfish behavior can even destabilize the system, represented by the red hatched area on the graph.
 \end{example}
 
-From the simple example we can see the two main effects: Loss of optimality and eventual \todo{total breakdown}.
+From this simple example we can see the two main effects of a attack: Loss of optimality and eventually \todo{total breakdown} of the system.
 
-In this work we look forward to answer the following questions for a specific case which will be formally presented in the next section:
+While one of them can sometimes be acceptable (depending on the suboptimality), the other is absolutely inadmissible. As our objective we want to minimize them as much as possible.
+And to guide the quest on how to minimize them, we can raise some questions:
 
 \simplebox{
   \begin{itemize} \bfseries
@@ -77,25 +79,35 @@ In this work we look forward to answer the following questions for a specific ca
     \item Can we mitigate the effects of the attack?
   \end{itemize}
 }
+This work has as objective to answer these questions, at least for specific cases which will be formally presented.
 
-To answer this questions, we divide this work into two parts.
+To understand and answer those questions, we divide this work into two parts.
 
-In the first part
+\paragraph{Part~\ref{part:mpc_intro}} It serves as a gentle introduction to attacks in the \dmpc{} context.
+
+For a more unfamiliar reader, Chapter~\ref{sec:decomposing_mpc} explains what is a \mpc{} to begin with and shows some of the challenges to decompose it.
+Chapter~\ref{sec:topoly_trust} discuss possible topologies used for the decompositions.
+In Chapter~\ref{sec:anomalous} we define anomalous behaviors (and more specifically what attacks are), and we present some methods used in the literature to prevent and combat them.
+
+\paragraph{Part~\ref{part:safe_dmpc}} It contains the contributions of this work.
+
+Chapter~\ref{sec:primal_decomposition} presents the decomposition studied in this work (primal decomposition), some of its vulnerabilities and how they can affect the performance of the system (here we take up Example~\ref{ex:qualitative_example} giving it a more quantitative approach).
+Once we know its vulnerabilities and possible effects of attacks on them, to tackle the mitigation problem we divide it into more manageable parts.
+\\ First in Chapter~\ref{sec:safe_pddmpc_eq}, we analyze a more unsophisticated problem, and from the analysis we propose a detection and mitigation mechanism, followed by some academical examples.
+\\Then, in Chapter~\ref{sec:safe_pddmpc_ineq}, we analyze a similar problem with just one small modification, which as we will see increases exponentially the complexity of the problem. From the analysis we propose similar mechanisms, but with the
 
 
 
-Section to position this work before others
-
-Since those questions are still open, this work has as objective to discuss these questions by analyzing the recent literature and schematizing the security in decomposition methods for Model Predictive Control passing by the following items:
-\begin{itemize}[label=$\bullet$]
-  \item decomposition methods;
-  \item topology;
-  \item points of vulnerability;
-  \item how malicious agents can benefit from such vulnerabilities;
-  \item effects on the overall system;
-  \item possible ways to mitigate.
-\end{itemize}
-We use some conclusions of the discussion to develop safe algorithms for a \dmpc\ framework.
+% Since those questions are still open, this work has as objective to discuss these questions by analyzing the recent literature and schematizing the security in decomposition methods for Model Predictive Control passing by the following items:
+% \begin{itemize}[label=$\bullet$]
+%   \item decomposition methods;
+%   \item topology;
+%   \item points of vulnerability;
+%   \item how malicious agents can benefit from such vulnerabilities;
+%   \item effects on the overall system;
+%   \item possible ways to mitigate.
+% \end{itemize}
+% We use some conclusions of the discussion to develop safe algorithms for a \dmpc\ framework.
 
 \section{Publications}
 The work and discussion presented in this thesis yielded the following publications
@@ -103,6 +115,7 @@ The work and discussion presented in this thesis yielded the following publicati
   \item Published
         \begin{description}
           \item[\cite{NogueiraEtAl2021}] Conference article for the SysTol'21
+          \item[\cite{NogueiraEtAl2022}] \todo[correct citation]{} Conference article for the NecSys'22
         \end{description}
   \item Under Review
   \item In Preparation
