@@ -1,7 +1,7 @@
 \documentclass[ornaments]{these-dbl}
+% \documentclass{these-dbl}
 % optional ornaments with ornaments option
-
-\externaldocument[]{\subfix{main}}
+\usepackage{fontawesome}
 % \graphicspath{{./figures/}{../figures}}
 % \input{preamble}
 
@@ -64,6 +64,24 @@
 \director{Hervé GUÉGUEN}{Professeur}{CentraleSupélec}
 
 \invited{Romain Bourdais}{Maitre de conférence}{CentraleSupélec}
+
+
+\definecolor{mpc_agent}{RGB}{39,154,216}
+\definecolor{mpc_agent}{RGB}{7, 109, 174}
+\definecolor{mpc_agent}{HTML}{5E81AC}
+
+\colorlet{mpc_agent}{mpc_agent!50}
+\definecolor{mpc_red}{RGB}{191, 97, 106}
+\colorlet{red}{color-ecole}
+
+\definecolor{mpc_green}{RGB}{98, 160, 98}
+\definecolor{mpc_coordinator}{RGB}{235, 235, 235}
+\definecolor{mpc_coordinator}{RGB}{98, 160, 98}
+\colorlet{mpc_coordinator}{mpc_coordinator!50}
+\definecolor{mpc_orange}{RGB}{247, 153, 68}
+\definecolor{mpc_yellow}{RGB}{245, 235, 103}
+
+\externaldocument[]{\subfix{main}}
 
 \begin{document}
 \dominitoc
