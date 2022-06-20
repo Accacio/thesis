@@ -32,16 +32,17 @@ Some techniques can be applied to create attack/fault-tolerant systems or to rob
 
 Due to some similarities of both, and depending on where on the system they happen, some defense techniques used for faults can also be used for attacks~\todo[add examples of fault-tolerant techniques used for attacks]{Citations ??}.
 
-Before discussing those methods, let's explore the sources of the vulnerabilities in \cps{}.
+In this work we will concentrate on attacks, mentioning faults eventually.
+Before presenting the attacks and discussing mitigation methods, let's explore the sources of the vulnerabilities in \cps{}.
 
 \section{Sources of vulnerabilities}
 
 When talking about \cps{} we can divide its components into \textbf{physical components}, which are sensors and actuators (as motors, valves, cameras, thermocouples etc.);
-\textbf{Channels}, used for communication or to connect components (wires, circuit traces, cables, air, pipes, etc.);
+\textbf{Channels}, used for communication (wires, air, tubes), \textbf{connectors} to connect components through transmission of physical quantities (wires, circuit traces, cables, water pipes, etc.);
 the \textbf{Software}, which is the logic used to operate the physical components (code, \plc{} logic etc.); and the \textbf{Controller}, which is the hardware running the software (\plc{}s, micro-controllers, computers etc.).
 
 Each one can represent a source of vulnerability. For instance, \textbf{physical components} can be targets of sabotage, or as they deteriorate with time, they can eventually cause a fault.
-\textbf{Channels} can also be targets of sabotage, as someone can interfere on the communication or intentionally interrupt it. But interruptions and corruptions can also be caused by natural accidents such solar flares (causing radio blackouts) or as trees knocking down electricity cables or sharks eating underwater cables.
+\textbf{Channels} and \textbf{connectors} can also be targets of sabotage, as someone can interfere on the communication/transmission or intentionally interrupt it. But interruptions and corruptions can also be caused by natural accidents such solar flares (causing radio blackouts) or as trees knocking down electricity cables or sharks eating underwater cables.
 \textbf{Software} can also be a source of vulnerability due to \emph{bugs}, which can interrupt the normal functioning or even let a \emph{hacker} gain total control of the system.
 The \textbf{controller} if not well dimensioned (computing capacity) can also be a vulnerability as a more than expected demand can overload the system.
 
