@@ -1,0 +1,52 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\chapter[Anomalous Behaviors]{Anomalous Behaviors}\label{sec:anomalous}
+
+
+\epigraph{``What the hell is going on with our equipment?''
+``It wasn't meant to do this in the first place.''}
+{\textit{Half-Life}\\\textsc{Valve}}
+
+Although the decompositions shown work in normal conditions, more interesting cases to analyze are when the systems do not behave nominally.
+
+In this chapter, we display briefly the causes of anomalous behaviors, how they can happen, and the primary means used in the literature to mitigate their effects.
+
+\minitoc%
+
+\section{Definition and types}
+We define \emph{anomalous behaviors} as any non-expected (change of) behavior of a system.
+
+There are two primary causes of a system not performing as nominally expected: \emph{faults} and \emph{attacks}.
+The main difference between these two is \emph{intention}; while faults happen unintentionally, attacks happen intentionally.
+
+\begin{remark}
+  A non-expected behavior can also be observed when there are modeling errors, i.e., the theoretical model used to describe the system does not correspond to the real system.
+  In this case, the system did not change its behavior, but the expectation that was false.
+  So, for the time being we will ignore modeling errors and assume they do not cause the non-nominal behaviors.
+\end{remark}
+
+Both faults and attacks can deviate the overall system from its nominal optimal behavior, but the most severe effect they can produce is a complete breakdown.
+Some techniques can be applied to create attack/fault-tolerant systems or to robustify the systems against them.
+
+Due to some similarities of both, and depending on where on the system they happen, some defense techniques used for faults can also be used for attacks~\todo[add examples of fault-tolerant techniques used for attacks]{Citations ??}.
+
+Before discussing those methods, let's explore the sources of the vulnerabilities in \cps{}.
+
+\section{Sources of vulnerabilities}
+
+When talking about \cps{} we can divide its components into \textbf{physical components}, which are sensors and actuators (as motors, valves, cameras, thermocouples etc.);
+\textbf{Channels}, used for communication or to connect components (wires, circuit traces, cables, air, pipes, etc.);
+the \textbf{Software}, which is the logic used to operate the physical components (code, \plc{} logic etc.); and the \textbf{Controller}, which is the hardware running the software (\plc{}s, micro-controllers, computers etc.).
+
+Each one can represent a source of vulnerability. For instance, \textbf{physical components} can be targets of sabotage, or as they deteriorate with time, they can eventually cause a fault.
+\textbf{Channels} can also be targets of sabotage, as someone can interfere on the communication or intentionally interrupt it. But interruptions and corruptions can also be caused by natural accidents such solar flares (causing radio blackouts) or as trees knocking down electricity cables or sharks eating underwater cables.
+\textbf{Software} can also be a source of vulnerability due to \emph{bugs}, which can interrupt the normal functioning or even let a \emph{hacker} gain total control of the system.
+The \textbf{controller} if not well dimensioned (computing capacity) can also be a vulnerability as a more than expected demand can overload the system.
+
+
+\printbibliography%
+
+
+\end{document}
