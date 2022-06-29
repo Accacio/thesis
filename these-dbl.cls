@@ -832,52 +832,52 @@ refsection=chapter,
   \cleartooddpage[\thispagestyle{empty}]
   % \newgeometry{inner=30mm,outer=20mm,top=40mm,bottom=20mm}
   \selectfontbackcover
-\thispagestyle{empty}
-\clearpage
-\begin{tikzpicture}[remember picture,overlay,line width=0mm]
-      \node (logoposition) at (current page.north){};
-      \displayLogos{logoposition}
-\end{tikzpicture}
+  \thispagestyle{empty}
+  \clearpage
+  \begin{tikzpicture}[remember picture,overlay,line width=0mm]
+    \node (logoposition) at (current page.north){};
+    \displayLogos{logoposition}
+  \end{tikzpicture}
 
-\AddToShipoutPicture*{%
+  \AddToShipoutPicture*{%
     \put(0,0){%
-    \parbox[t][\paperheight]{\paperwidth}{%
+      \parbox[t][\paperheight]{\paperwidth}{%
         \vspace{-29.6cm}
         \includegraphics[width=\paperwidth,height=\paperheight]{\vdirecole/image-fond-dos}%
-    }}
-}
-\vspace{1cm}
-{\centering \noindent \textcolor{color-ecole}{\rule{\textwidth}{0.2cm}}}
-\vspace{-1cm}
-\selectlanguage{french}
-\section*{\selectfontbackcover\smallTwelve \textcolor{color-ecole}{Titre : }{\selectfontbackcover\mdseries{\bfseries\@titleFR}}}
-\vspace{-0.2cm}
-\noindent{\smallTwelve \textbf{Mot cl\'{e}s : }\@keywordsFR}
+      }}
+  }
+  \vspace{1cm}
+  {\centering \noindent \textcolor{color-ecole}{\rule{\textwidth}{0.2cm}}}
+  \vspace{-1cm}
+  \selectlanguage{french}
+  \section*{\selectfontbackcover\smallTwelve \textcolor{color-ecole}{Titre : }{\selectfontbackcover\mdseries{\bfseries\@titleFR}}}
+  \vspace{-0.2cm}
+  \noindent{\smallTwelve \textbf{Mot cl\'{e}s : }\@keywordsFR}
 
-\vspace{-0.2cm}
-\begin{multicols}{2}
-\begin{spacing}{1}
-	\noindent\smallTwelve \textbf{R\'{e}sum\'{e} : } \@abstractFR
-\end{spacing}
-\end{multicols}
+  \vspace{-0.2cm}
+  \begin{multicols}{2}
+    \begin{spacing}{1}
+      \noindent\smallTwelve \textbf{R\'{e}sum\'{e} : } \@abstractFR
+    \end{spacing}
+  \end{multicols}
 
 
-\vspace{1cm}
-{\centering \noindent \textcolor{color-ecole}{\rule{\textwidth}{0.2cm}}}
-\vspace{-1cm}
-\selectlanguage{english}
-\section*{\selectfontbackcover\smallTwelve \textcolor{color-ecole}{Title : }{\selectfontbackcover\mdseries{\bfseries\@titleEN}}}
-\vspace{-0.2cm}
-\noindent{\smallTwelve \textbf{Keywords: }\@keywordsEN}
+  \vspace{1cm}
+  {\centering \noindent \textcolor{color-ecole}{\rule{\textwidth}{0.2cm}}}
+  \vspace{-1cm}
+  \selectlanguage{english}
+  \section*{\selectfontbackcover\smallTwelve \textcolor{color-ecole}{Title : }{\selectfontbackcover\mdseries{\bfseries\@titleEN}}}
+  \vspace{-0.2cm}
+  \noindent{\smallTwelve \textbf{Keywords: }\@keywordsEN}
 
-\vspace{-0.2cm}
-\begin{multicols}{2}
-\begin{spacing}{1}
-	\noindent\smallTwelve \textbf{Abstract: } \@abstractEN
-\end{spacing}
-\end{multicols}
+  \vspace{-0.2cm}
+  \begin{multicols}{2}
+    \begin{spacing}{1}
+      \noindent\smallTwelve \textbf{Abstract: } \@abstractEN
+    \end{spacing}
+  \end{multicols}
 
-\restoregeometry
+  \restoregeometry
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
