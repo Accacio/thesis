@@ -9,18 +9,19 @@
 ``It wasn't meant to do this in the first place.''}
 {\textit{Half-Life}\\\textsc{Valve}}
 
-Although the decompositions shown work in normal conditions, more interesting cases to analyze are when the systems do not behave nominally.
+The decompositions shown in the last chapter work in normal conditions, but we can analyze more interesting cases such as when systems do not behave nominally.
 
-In this chapter, we display briefly the causes of anomalous behaviors, how they can happen, and the primary means used in the literature to mitigate their effects.
+In this chapter, we discuss briefly the causes of anomalous behaviors, how they can happen, and the primary means used in the literature to mitigate their effects.
 
 \minitoc%
 
 \section{Definition and types}
 We define \emph{anomalous behaviors} as any non-expected (change of) behavior of a system.
 
-There are two primary causes of a system not performing as nominally expected: \emph{faults} and \emph{attacks}.
+There are two primary causes for a system not to perform as nominally expected: \emph{faults} and \emph{attacks}.
 The main difference between these two is \emph{intention}; while faults happen unintentionally, attacks happen intentionally.
 
+\newpage
 \begin{remark}
   A non-expected behavior can also be observed when there are modeling errors, i.e., the theoretical model used to describe the system does not correspond to the real system.
   In this case, the system did not change its behavior, but the expectation that was false.
@@ -30,7 +31,7 @@ The main difference between these two is \emph{intention}; while faults happen u
 Both faults and attacks can deviate the overall system from its nominal optimal behavior, but the most severe effect they can produce is a complete breakdown.
 Some techniques can be applied to create attack/fault-tolerant systems or to robustify the systems against them.
 
-Due to some similarities of both, and depending on where on the system they happen, some defense techniques used for faults can also be used for attacks~\todo[add examples of fault-tolerant techniques used for attacks]{Citations ??}.
+Due to some similarities, depending on where on the system they happen, some defense techniques used for faults can also be used for attacks~\todo[add examples of fault-tolerant techniques used for attacks]{Citations ??}.
 
 In this work we will concentrate on attacks, mentioning faults eventually.
 Before presenting the attacks and discussing mitigation methods, let's explore the sources of the vulnerabilities in \cps{}.
@@ -44,16 +45,71 @@ the \textbf{Software}, which is the logic used to operate the physical component
 Each one can represent a source of vulnerability. For instance, \textbf{physical components} can be targets of sabotage, or as they deteriorate with time, they can eventually cause a fault.
 \textbf{Channels} and \textbf{connectors} can also be targets of sabotage, as someone can interfere on the communication/transmission or intentionally interrupt it. But interruptions and corruptions can also be caused by natural accidents such solar flares (causing radio blackouts) or as trees knocking down electricity cables or sharks eating underwater cables.
 \textbf{Software} can also be a source of vulnerability due to \emph{bugs}, which can interrupt the normal functioning or even let a \emph{hacker} gain total control of the system.
-The \textbf{controller} if not well dimensioned (computing capacity) can also be a vulnerability as a more than expected demand can overload the system.
+The \textbf{controller}, if not well dimensioned (computing capacity), can also be a vulnerability.
+If it receives more requisitions than expected, the system will be overloaded.
 
 \subsection{Prevention}
 
-The prevention of the attacks and faults consists on securing the vulnerabilities in each component. Here we can give some examples for each one shown.
-To prevent physical tampering, one solution is to put physical components under surveillance, enclosed by walls and doors with access control whenever possible \todo[]{Citation~\cite{DingEtAl2018}??}.
-To prevent faults due to deterioration, it is usual to do periodically preventive maintenance \todo{citation??}.
-For software, when vulnerabilities are discovered and a solution is found, corrective \emph{patches} are sent to all users of the software to correct the bugs~\todo{Citation??}.
-For communication/transmission, increase the robustness of the mean, better cables with insulation and braided shields for example, and to secure exchanges usually cryptography is used whenever possible/necessary.
+To prevent attacks and faults, we secure the vulnerabilities in each component.
+\\Here we can give some examples.
+Physical tampering can be prevented by surveilling the physical components, enclosing them by walls and doors with access control whenever possible \todo[]{Citation~\cite{DingEtAl2018}??}.
+For faults due to deterioration, it is usual to do periodically preventive maintenance \todo{citation??}.
+Attacks and faults caused by software vulnerabilities are prevented by corrective \emph{patches} that are sent to all users of the software to correct the bugs~\todo{Citation??}.
+For communication/transmission, we increase the robustness of the mean, by using better cables with insulation and braided shields for example.
+To secure exchanges usually cryptography is used whenever possible/necessary.
 
+\section{Attacks}\label{sec:attacks}
+
+\subsection{Types}\label{sec:types_of_attacks}
+If we use the global vision shown in \S~\ref{sec:topology_trust} we can aggregate the components shown into only two,
+\cite{PasqualettiEtAl2013}
+\cite{BoemEtAl2020}
+
+but they will always reflect on the channel.
+
+
+Channel and agent
+
+Middle-man
+
+Deception Attack (Repeat Attack)
+
+DoS
+
+\cite{GuEtAl2016}
+\section{Securing against attacks}
+Prevention/Protection
+Detection
+
+Isolation
+Recovery
+
+It always depend on the question «who/what do you trust/distrust?»
+
+% no see o que se pasa
+Some examples are the \emph{blockchain} (mentioned in~\ref{sec:drawbacks}), and cryptographing the signal/data we want to protect.
+
+\subsection{Detection/Isolation}
+\emph{watermarking} (where some cryptographed signal is superimposed to the signal we want to secure)~\cite{MoEtAl2015,SatchidanandanKumar2017,KshetriVoas2017,LuciaEtAl2021},
+\cite{FortiEtAl2016}
+
+\subsection{Mitigation/Recovery}
+For the cases of faults, the main recovery options are disconnecting the malfunctioning components to prevent further consequences or fixing (or substituting) the components.
+
+If disturbance is inside some probabilistic bounds \cite{AnandutaEtAl2020}
+
+
+% \epigraph{\centering There are few people, however, who, if you told them a result, would be able to evolve from their own inner consciousness what the steps were which led up to that result.}
+% {\textit{A Study in Scarlet}\\ \textsc{Sir Arthur Conan Doyle}}
+
+As the hierarchical proposed in~\cite{BraunEtAl2020}, where a regulator (central supervisor) who can detect and exclude suspicious agents.
+
+\todo{\cite{MaestreEtAl2014} Monolithical, multi independent systems}
+
+\begin{description}
+  \item[Show examples of Attacks]
+  \item[False data injection/communication corruption] Maybe review attacks shown in \cite{VelardeEtAl2017} and how they can be viewed as false data injection attacks (corruption on sent values), \todo{show that since coordinator is oblivious to what happen inside each agent what matters is what it receives, no need to specify exactly the responsible part which generated attack}
+\end{description}
 
 \printbibliography%
 
