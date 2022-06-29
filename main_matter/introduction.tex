@@ -4,8 +4,12 @@
 
 \chapter{Introduction}\label{cha:introduction}
 
+\cps{} are systems where computers and physical machines are tightly coupled.
 \todo{Nowadays problems (large-scale \ldots) need to decompose, problems with security Stuxnet \cite{Langner2011} and other attacks (use examples in~\cite{DingEtAl2018})}%
+Brazil blackouts in 2010 \cite{Conti2010}
+
 \todo{ more examples in \cite{Bindra2017}}
+\todo{use https://csiac.org/articles/security-of-cyber-physical-systems/}
 
 \section{Motivation and Contributions}
 Due to the increased computation capabilities of computers in recent years,
@@ -69,8 +73,10 @@ In this example we have a system with $4$ agents and a coordinator, where one ag
 
 From this simple example we can see the two main effects of a attack: Loss of optimality and eventually \todo{total breakdown} of the system.
 
-While one of them can sometimes be acceptable (depending on the suboptimality), the other is absolutely inadmissible. As our objective we want to minimize them as much as possible.
-And to guide the quest on how to minimize them, we can raise some questions:
+While one of them can sometimes be acceptable (depending on the suboptimality), the other is absolutely inadmissible, principally when we are talking about \cps{} that are essential, electricity and water supply for instance.
+
+So, our goal is to reduce those effects as much as possible.
+And to guide us on the quest to minimize them, we can raise some questions:
 
 \simplebox{
   \begin{itemize} \bfseries
@@ -96,6 +102,7 @@ Once we know its vulnerabilities and possible effects of attacks on them, to tac
 \\ First in Chapter~\ref{sec:safe_pddmpc_eq}, we analyze a more unsophisticated problem, and from the analysis we propose a detection and mitigation mechanism, followed by some academical examples.
 \\Then, in Chapter~\ref{sec:safe_pddmpc_ineq}, we analyze a similar problem with just one small modification. As we will see, this small modification increases exponentially the complexity of the problem.
 From the analysis of the newly-found problem we propose a similar strategy, but with adequate modifications to contain the exponential nature of the problem.
+\todo{\\Finally, we continue in Chapter~\ref{sec:safe_pddmpc_ineq_reconst} the methodology and explore some more properties to create a less conservative strategy.}
 \todo{\\Maybe if the time permits modify the cheating device??}
 \\Then we conclude this work in Chapter~\ref{sec:conclusion} with a discussion about the results found during this study, benefits as well as shortcomings. Some of this discussion leads to open questions which can incite new works.
 
