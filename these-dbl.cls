@@ -47,7 +47,7 @@
 \RequirePackage{abstract}
 \RequirePackage{graphicx} % Pour ins\'{e}rer des images. Utiliser le format jpg pour plus de simplicit\'{e}.
 
-\graphicspath{{./fig/}{./img}}
+\graphicspath{{./fig/}{./img}{../img}}
 
 \RequirePackage{sectsty} % obligatoire, pour jouer avec l'apparence des titres
 \RequirePackage{shorttoc} % pour le sommaire, au debut.
@@ -861,7 +861,6 @@ refsection=chapter,
     \end{spacing}
   \end{multicols}
 
-
   \vspace{1cm}
   {\centering \noindent \textcolor{color-ecole}{\rule{\textwidth}{0.2cm}}}
   \vspace{-1cm}
@@ -876,8 +875,8 @@ refsection=chapter,
       \noindent\smallTwelve \textbf{Abstract: } \@abstractEN
     \end{spacing}
   \end{multicols}
-
-  \restoregeometry
+  % \newpage
+  % \restoregeometry
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
