@@ -21,7 +21,6 @@ We define \emph{anomalous behaviors} as any non-expected (change of) behavior of
 There are two primary causes for a system not to perform as nominally expected: \emph{faults} and \emph{attacks}.
 The main difference between these two is \emph{intention}; while faults happen unintentionally, attacks happen intentionally.
 
-\newpage
 \begin{remark}
   A non-expected behavior can also be observed when there are modeling errors, i.e., the theoretical model used to describe the system does not correspond to the real system.
   In this case, the system did not change its behavior, but the expectation that was false.
@@ -34,31 +33,36 @@ Some techniques can be applied to create attack/fault-tolerant systems or to rob
 Due to some similarities, depending on where on the system they happen, some defense techniques used for faults can also be used for attacks~\todo[add examples of fault-tolerant techniques used for attacks]{Citations ??}.
 
 In this work we will concentrate on attacks, mentioning faults eventually.
-Before presenting the attacks and discussing mitigation methods, let's explore the sources of the vulnerabilities in \cps{}.
+Before presenting attacks and discussing mitigation methods, let's explore the sources of the vulnerabilities in \cps{}.
 
-\section{Sources of vulnerabilities}
+\section{Vulnerabilities and how to prevent them}
 
 When talking about \cps{} we can divide its components into \textbf{physical components}, which are sensors and actuators (as motors, valves, cameras, thermocouples etc.);
 \textbf{Channels}, used for communication (wires, air, tubes), \textbf{connectors} to connect components through transmission of physical quantities (wires, circuit traces, cables, water pipes, etc.);
 the \textbf{Software}, which is the logic used to operate the physical components (code, \plc{} logic etc.); and the \textbf{Controller}, which is the hardware running the software (\plc{}s, micro-controllers, computers etc.).
 
-Each one can represent a source of vulnerability. For instance, \textbf{physical components} can be targets of sabotage, or as they deteriorate with time, they can eventually cause a fault.
+\paragraph{Sources of vulnerabilities}
+~\\Each one of the aforementioned components represents a source of vulnerability.
+\\For instance, \textbf{physical components} can be targets of sabotage, or as they deteriorate with time, they can eventually cause a fault.
 \textbf{Channels} and \textbf{connectors} can also be targets of sabotage, as someone can interfere on the communication/transmission or intentionally interrupt it. But interruptions and corruptions can also be caused by natural accidents such solar flares (causing radio blackouts) or as trees knocking down electricity cables or sharks eating underwater cables.
 \textbf{Software} can also be a source of vulnerability due to \emph{bugs}, which can interrupt the normal functioning or even let a \emph{hacker} gain total control of the system.
 The \textbf{controller}, if not well dimensioned (computing capacity), can also be a vulnerability.
 If it receives more requisitions than expected, the system will be overloaded.
 
-\subsection{Prevention}
-
-To prevent attacks and faults, we secure the vulnerabilities in each component.
+\paragraph{Prevention}
+~\\To prevent such attacks and faults, we secure each component.
 \\Here we can give some examples.
-Physical tampering can be prevented by surveilling the physical components, enclosing them by walls and doors with access control whenever possible \todo[]{Citation~\cite{DingEtAl2018}??}.
-For faults due to deterioration, it is usual to do periodically preventive maintenance \todo{citation??}.
+Tampering of the physical components can be prevented by enclosing them by walls and doors with access control whenever possible \todo[]{Citation~\cite{DingEtAl2018}??}, preventing the attacker to approach such components.
+Faults due to deterioration are prevented usually by a periodical preventive maintenance \todo{citation??}, and substitution of deteriorated components by new ones.
 Attacks and faults caused by software vulnerabilities are prevented by corrective \emph{patches} that are sent to all users of the software to correct the bugs~\todo{Citation??}.
 For communication/transmission, we increase the robustness of the mean, by using better cables with insulation and braided shields for example.
 To secure exchanges usually cryptography is used whenever possible/necessary.
 
 \section{Attacks}\label{sec:attacks}
+
+
+\cite{CaiEtAl2019}
+Two typical attacks \cite{ZhangEtAl2021a}
 
 \subsection{Types}\label{sec:types_of_attacks}
 If we use the global vision shown in \S~\ref{sec:topology_trust} we can aggregate the components shown into only two,

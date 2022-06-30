@@ -33,32 +33,31 @@ For instance, a sub-problem may solve a problem with a subset of states of two d
 
 \begin{figure}[h] \centering
   \begin{subfigure}{.4\textwidth}
-    \def\svgwidth{\textwidth}
+    \centering
+    \def\svgwidth{.8\textwidth}
     \input{../img/noncorresponding_topology.pdf_tex}
     % \includegraphics[width=\textwidth,clip,trim=0cm 1.8cm 0 2.5cm]{../img/noncorresponding_system_problem.png}
-
     \caption{Non-corresponding.}\label{fig:noncorresponding_division_system_problem}
   \end{subfigure} \hfill
   \begin{subfigure}{.4\textwidth} \centering
-    \def\svgwidth{\textwidth}
+    \def\svgwidth{.8\textwidth}
     \input{../img/corresponding_topology.pdf_tex}
     % \includegraphics[width=\textwidth,clip,trim=0cm 1.8cm 0 2.5cm]{../img/corresponding_system_problem.png}
     \caption{Corresponding.}\label{fig:corresponding_division_system_problem}
   \end{subfigure}
-  \caption{Correspondence between decompositions of sub-problems and
-    sub-systems.\todo[improve image, add nodes P1 P2 and S1 S2 etc]{}}
+  \caption{Decomposition of sub-problems ($P_i$) and
+    sub-systems ($S_{i}$).}
 \end{figure}
 
 In the literature, it is not unusual to assume that we can choose the computing units in order to correspond to the sub-systems of the system as in Fig.~\ref{fig:corresponding_division_system_problem} (\todo[give examples of units]{Citation?}), i.e., a computing unit computes the solution of a sub-problem to find the input of the same corresponding sub-system.
 So, in this work we also use this assumption.
-Then, the terms sub-problems, sub-systems and agents can be used interchangeably.
+Then, the terms sub-problems, sub-systems and agents will be used interchangeably.
 
 \section{Do the computing units communicate?}
 
 As shown in Section~\ref{sec:decomposable_problems}, the only case where communication is not needed to solve the optimization problem is in the uncoupled case (\S~\ref{sec:uncoupled_problems}).
 However, there are some decomposition methods for the \dmpc\ that even with coupled problems, they exploit the robustness properties of the MPC to compute the solution without communication~\cite{VahidNaghaviEtAl2014}.
 For the decomposition of some optimization problems, it is shown that in certain circumstances the communication is not necessary~\cite{VoulgarisElia2022}.
-
 \begin{remark}
   Usually in \dmpc\ literature the term «decentralized» refers to frameworks where the agents do not communicate~\cite[\S 4]{ChristofidesEtAl2013},\cite{NegenbornMaestre2014}.
   The term can sometimes be confusing and be used even if the agents coordinate themselves.

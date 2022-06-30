@@ -11,6 +11,7 @@
 \input{glossary_symbol}
 \input{math.tex}
 \bibliography{\subfix{bibliography.bib}}
+% \bibliography{\subfix{used_bibliography.bib}} % generate with jabref
 
 \ecoledoctorale{MathSTIC}
 \etablissement{CS}
@@ -25,7 +26,7 @@
 \titleFR{Cyber-sécurité de structures basées sur Commande Prédictive distribuée}
 \keywordsFR{Systèmes cyber-physiques, Grandes systèmes, Commande Prédictive, Optimisation distribuée}
 \abstractFR{%
-\todo[Write Abstract]{
+\todo[Write French Abstract]{
   Controlling large-scale systems sometimes requires decentralized computation.
   Communication among agents is crucial to achieving consensus and optimal global behavior.
   These negotiation mechanisms are sensitive to attacks on those exchanges.
@@ -38,7 +39,7 @@
 \makeatother
 \keywordsEN{Cyber-physical systems, Large-scale systems, Model Predictive Control, Distributed Optimisation}
 \abstractEN{%
-  \todo[Write Abstract]{
+  \todo[Write English Abstract]{
   Controlling large-scale systems sometimes requires decentralized computation.
   Communication among agents is crucial to achieving consensus and optimal global behavior.
   These negotiation mechanisms are sensitive to attacks on those exchanges.
@@ -72,7 +73,7 @@
 
 \colorlet{mpc_agent}{mpc_agent!50}
 \definecolor{mpc_red}{RGB}{191, 97, 106}
-\colorlet{red}{color-ecole}
+% \colorlet{red}{color-ecole}
 
 \definecolor{mpc_green}{RGB}{98, 160, 98}
 \definecolor{mpc_coordinator}{RGB}{235, 235, 235}
@@ -96,7 +97,8 @@
 \mainmatter
 \subfile{main_matter/main_matter}
 
-\nocite{*}
+% \nocite{*}
+\todo[adicionar used_bibliography usand jabref]{}
 \printbibliography[title=Complete Bibliography]%
 
 \backmatter
@@ -104,5 +106,4 @@
 \subfile{back_matter/back_matter}
 
 \makebackcover
-
 \end{document}

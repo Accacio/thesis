@@ -3,13 +3,14 @@
 \begin{document}
 
 \chapter{Introduction}\label{cha:introduction}
-
-\cps{} are systems where computers and physical machines are tightly coupled.
-\todo{Nowadays problems (large-scale \ldots) need to decompose, problems with security Stuxnet \cite{Langner2011} and other attacks (use examples in~\cite{DingEtAl2018})}%
-Brazil blackouts in 2010 \cite{Conti2010}
-
-\todo{ more examples in \cite{Bindra2017}}
-\todo{use https://csiac.org/articles/security-of-cyber-physical-systems/}
+\todo{Things to say here:
+  \begin{itemize}
+    \item \cps{} are systems in which computers and physical machines are tightly coupled.
+    \item Increase of large-scale problems Nowadays problems (some examples)
+    \item Security problems in those systems \\Here I can give some examples such as Stuxnet \cite{Langner2011}, Brazil blackouts in 2010 \cite{Conti2010} and other attacks (use examples in~\cite{DingEtAl2018,Bindra2017})%
+  \end{itemize}
+  maybe use https://csiac.org/articles/security-of-cyber-physical-systems/??
+}
 
 \section{Motivation and Contributions}
 Due to the increased computation capabilities of computers in recent years,
@@ -22,11 +23,13 @@ One of these strategies, as we will see is called \dmpc.
 This work studies what happens when these computation units do not work collaboratively.
 And for a specific \dmpc framework we search for a method to mitigate the effects of this non-cooperative behavior.
 
-To give a general view to the reader and to serve as a main take-out of the possible effects of non-cooperative behaviors, we give a simple qualitatively example, which will be resumed in another section of this work, giving more insight of its causes.
+To give a general view to the reader and to serve as a main take-away of the possible effects of non-cooperative behaviors, we give a simple qualitatively example, which will be resumed in another section of this work, giving more insight of its causes.
 
 \begin{example}[Effects of a malicious agent]\label{ex:qualitative_example}
-  Imagine we have a system where we want to minimize an overall objective.
-  For this a number of \emph{agents interact}.
+  \todo{Maybe I can give directly the district heating example as shown in the poster for NecSys. Add an image to represent the district?\\}
+  Imagine we have a large system whose overall objective (cost, comfort etc) we want to optimize, but its sub-parts are coupled.
+  To solve this problem, a number of \emph{agents interact}.
+
   In the decomposition used in this work the agents need to exchange values with another agent which referees what we call a \emph{negotiation}. This referee we call \emph{coordinator}.
   The coordinator sends all agents a message, personalized for each agent, which we will call $\theta_{i}$. The indices $i$ indicate the number of the agent.
   In return, each agent responds the coordinator by sending a message, which we will call $\lambda_{i}$.
@@ -57,12 +60,13 @@ To give a general view to the reader and to serve as a main take-out of the poss
     \end{tikzpicture}
     \caption{Exchange between agents and coordinator.}\label{fig:ex_exchange_agents}
   \end{figure}
-Observe in Fig.~\ref{fig:ex_exchange_agents} that agent 1 sends a suspicious $\lambda_{1}$. Instead of sending the message it was supposed to send, it modifies it first and then it sends this modified version. This can be considered as an attack \todo{called \fdi, as we will see later}.
+  Observe in Fig.~\ref{fig:ex_exchange_agents} that agent 1 sends a suspicious $\lambda_{1}$. Instead of sending the message it was supposed to send, it modifies it before sending to the coordinator.
+  This can be considered as a \fdi{} attack, as we will see later (\S~\ref{sec:anomalous}).
 
-In this example we have a system with $4$ agents and a coordinator, where one agent (agent 1) is ill-intentioned. In Fig.~\ref{fig:change_in_j}, we can see the effects of changes in the $\lambda_{1}$ sent on the objectives of each agent $J_{i}$ and the overall objective $J^{\star}$ (in blue).
+In this example we have a system with $4$ agents and a coordinator. The objective is to minimize a given function $J$. While all other agents work cooperatively, agent 1 is ill-intentioned. In Fig.~\ref{fig:change_in_j}, we can see the effects of changes in the $\lambda_{1}$ sent on the objectives of each agent $J_{i}$ and the overall objective $J^{\star}$ (in blue).
   \begin{figure}[H]
     \centering
-    \includegraphics[width=.55\textwidth]{../img/qualitative_example.pdf}
+    \includegraphics[width=.5\textwidth]{../img/qualitative_example.pdf}
 % ./docstheseplot -o ../../docs/img/quantiteAvecTriche4 -i  ../../data/matlab/tricheQuantite/dmpcQuantity4systemsTriche_.mat --quantiteAvecTriche4
     \caption{Changes in objectives depending on message sent by agent 1.}\label{fig:change_in_j}
   \end{figure}
@@ -73,7 +77,7 @@ In this example we have a system with $4$ agents and a coordinator, where one ag
 
 From this simple example we can see the two main effects of a attack: Loss of optimality and eventually \todo{total breakdown} of the system.
 
-While one of them can sometimes be acceptable (depending on the suboptimality), the other is absolutely inadmissible, principally when we are talking about \cps{} that are essential, electricity and water supply for instance.
+While one of them can sometimes be acceptable (depending on the suboptimality), the other is absolutely inadmissible, principally when we are talking about \cps{} that are essential, like electricity and water supply for instance.
 
 So, our goal is to reduce those effects as much as possible.
 And to guide us on the quest to minimize them, we can raise some questions:
@@ -89,16 +93,16 @@ This work has as objective to answer these questions, at least for specific case
 
 To understand and answer those questions, we divide this work into two parts.
 
-\paragraph{Part~\ref{part:mpc_intro}} It serves as a gentle introduction to attacks in the \dmpc{} context.
+\paragraph{Part~\ref{part:mpc_intro}} It serves as a gentle introduction to \dmpc{} and attacks.
 
 For a more unfamiliar reader, Chapter~\ref{sec:decomposing_mpc} explains what is a \mpc{} to begin with and shows some of the challenges to decompose it.
-Chapter~\ref{sec:topoly_trust} discuss possible topologies used for the decompositions.
+Chapter~\ref{sec:topoly_trust} discuss possible topologies used for those decompositions.
 In Chapter~\ref{sec:anomalous} we define anomalous behaviors (and more specifically what attacks are), and we present some methods used in the literature to prevent and combat them.
 
 \paragraph{Part~\ref{part:safe_dmpc}} It contains the contributions of this work.
 
 Chapter~\ref{sec:primal_decomposition} presents the decomposition studied in this work (primal decomposition), some of its vulnerabilities and how they can affect the performance of the system (here we take up Example~\ref{ex:qualitative_example} giving it a more quantitative approach).
-Once we know its vulnerabilities and possible effects of attacks on them, to tackle the mitigation problem we divide it into more manageable parts.
+Once we know the vulnerabilities and possible effects of attacks, we divide the mitigation problem into more manageable parts.
 \\ First in Chapter~\ref{sec:safe_pddmpc_eq}, we analyze a more unsophisticated problem, and from the analysis we propose a detection and mitigation mechanism, followed by some academical examples.
 \\Then, in Chapter~\ref{sec:safe_pddmpc_ineq}, we analyze a similar problem with just one small modification. As we will see, this small modification increases exponentially the complexity of the problem.
 From the analysis of the newly-found problem we propose a similar strategy, but with adequate modifications to contain the exponential nature of the problem.

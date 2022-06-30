@@ -17,7 +17,7 @@ on the solution of optimization problems.
 Given a system model and an objective function, this strategy uses the system model to predict future states and compute a control sequence that optimizes the given objective function.
 Since the solution is found by using optimization problems, it is natural to add some restrictions on the system, which are usually defined as (in)equality constraints.
 
-The fact that constraints can be easily added to the specifications gave it a special place in the industry, where is largely used in a plethora of applications (\todo{add uses of MPC in the industry}).
+The fact that constraints can be easily added to the specifications gave it a special place in the industry, where is largely used in a plethora of applications (\todo[add uses of MPC in the industry]{Citation ??}).
 
 \subsection{General discrete \mpc\ }
 As it is generally implemented through a digital computer and the transmission of continuous signals can potentially demand infinite bandwidth~\cite{HeEtAl2022}, it is natural to assume the system to be modeled with discrete-time dynamics
@@ -32,7 +32,7 @@ The system can be under constraints
 \end{equation}
 with $h:\R^{n_{x}}\times\R^{n_{u}}\to\R^{n_{c}}$. Observe that mathematically equality constraints can be represented by a couple of inequality constraints, although for implementation in computers it can lead to poor numerical conditioning, resulting unexpected behavior~\cite{BorrelliEtAl2017}.
 
-Given an objective function $J:\R^{n_{x}}\times\R^{N\cdot n_{u}}\to \R$, we can optimize this objective for a given horizon $\set{H}=\{1\mathbin{:}N\}$ to obtain a control sequence $\vec{U}[k]=[\vec{u}[k|k]\T \dots \vec{u}[k+N-1|k]\T]$, where
+Given an objective function $J:\R^{n_{x}}\times\R^{N\cdot n_{u}}\to \R$, we can optimize this objective for a given horizon $\set{H}=\{1\mathbin{:}N\}$ to obtain a control sequence $\vec{U}[k]=[\vec{u}[k|k]\T \dots \vec{u}[k+N-1|k]\T]\T$, where
 we use states and input predictions of time $k+i$ calculated in a time $k$, represented by $\vec{x}[k+i|k]$ and $\vec{u}[k+i|k]$. The problem solved to calculate the control sequence is
 
 \begin{equation}\label{eq:general_mpc}
@@ -194,9 +194,10 @@ By dividing the objective function by $2$ and ignoring the constant term $c[k]$ 
 Observe that even if the problem in \eqref{eq:qp_standard_form} is equivalent (same solution) to the one in~\eqref{eq:quadratic_objective_compact_batch}, they are not the same problem, so we still need to recalculate the function in~\eqref{eq:quadratic_objective_compact_batch} using the optimal $\vec{U}^{\star}[k]$ found to obtain the correct objective function value.
 
 Although the solution of such problems can be straightforward, since solvers are widely known and the problem is well structured, it can be computationally intensive depending on the sizes of $n_{x}$, $n_{u}$ and $N$.
-For large-scale systems such as \todo{(add 2/3 examples)}, the computation time and memory needed to solve their associated problems increase drastically.
-Some decomposition methods can be used to make the solution of such problems more tractable, using different time-scales (\todo[hierarchical dmpc in ChristofidesEtAl2013, Abreu talvez??]{Citation?}) for instance.
-In this work we will focus on decomposition techniques based on optimization decomposition.
+For large-scale systems such as \wdn~\cite{ZhangEtAl2021}, and \districtheating~\cite{TaylorEtAl2021}\todo[correct plural]{}, the computation time and memory needed to solve their associated problems may increase drastically.
+Some decomposition methods can be used to make the solution of such problems more tractable.
+For instance, we can decompose the parts of different time-scales for instance~\cite{ChenEtAl2011}, or use some game theory~\cite{MaestreEtAl2011} or even genetica algorithms paired with state observers \cite{XieEtAl2016}.
+In this work we will focus on decomposition techniques based on optimization decomposition such as in~\cite{GiselssonEtAl2013}.
 
 \section{Optimization Decomposition Frameworks}
 \label{sec:decomp-fram}
@@ -394,7 +395,7 @@ where $J_{1}(\vec{x}_{1}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})$ and $J_{2}(
 Again, observe that the solutions of~\eqref{eq:general_complicating_constraints_optimization_problem_decomposed} depend on the values of $\vec{\theta}_{o}$ and $\vec{\theta}_{n}$, thus a coordination between sub-problems is needed to find their optimal values in order to solve problem~\eqref{eq:general_complicating_constraints_optimization_main_problem} and thus the original problem~\eqref{eq:general_complicating_constraints_optimization_problem}.
 
 % This is the base of the methodology used in this work to decompose the \mpc, we will re-discuss the method and present examples of implementation in a further section (\todo[add primal decomposition section number]{\S??}).
-\begin{remark}
+\begin{remark}[oi]
   As seen in~\cite{BoydEtAl2015}, a complicating constraint problem can be transformed into a complicating variable problem and vice versa by the use of auxiliary variables.
   For instance, we can substitute a complicating variable by two new local variables (one for each sub-problem) and add equality constraints to each sub-problem to force them to be equal.
   We will use henceforth only complicating constraints.
@@ -449,7 +450,7 @@ and a coordination is needed to find optimal auxiliary variables. We can list th
   \item Coordination (to find the optimal value of such variables)
 \end{enumerate}
 
-The equivalent problem we call \emph{main problem}, while the sub-problems we call \emph{local problems}, which have some \emph{local constraints}, and part of the \emph{global (coupling) constraints} which depend on auxiliary variables that we call \emph{\todo[choose a better name]{interface variables}}.
+The equivalent problem we call \emph{main problem}, while the sub-problems we call \emph{local problems}, which have some \emph{local constraints}, and part of the \emph{global (coupling) constraints} which depend on auxiliary variables that we call \emph{interface variables}.
 
 The coordination is usually an iterative method chosen to solve the \emph{main problem}.
 At an iteration, the coordination uses some information from the solution of the sub-problems (given a value of \emph{interface variables} as input) in order to update the \emph{interface variables} to be used in the next step.
@@ -468,7 +469,7 @@ If we structure the coordination as an algorithm we have \autoref{alg:decomposit
 
 \subsection{Decomposition techniques}
 
-After choosing one of the forms for the problem (complicating constraints or complication variables), if we analyze \autoref{alg:decomposition_coordination} what we need to have a decomposition method is
+If we analyze \autoref{alg:decomposition_coordination}, to have a decomposition method we need
 \begin{itemize}
   \item \emph{Local problems}
   \item \emph{interface variables}
@@ -484,7 +485,7 @@ The update method is based on one optimization algorithm such as bisection, cutt
 The exact form will depend on the topology used to solve the \emph{main problem} (to be yet discussed).
 
 In this work we will concentrate on a decomposition based on the primal problem, and the projected sub-gradient.
-This decomposition will be explained in a future section (\todo[add section for primal decomposition]{\S ??}).
+This decomposition will be explained in a future section (\S~\ref{sec:primal_decomposition}).
 For other examples of decomposition the reader is referred to~\cite{MaestreEtAl2014} or~\cite{ConejoEtAl2006} and other articles cited throughout this work.
 
 Now, after having a decomposition method chosen, we need to know the topology of the problem. This topology can be chosen or imposed by some constraints (geographic or technological, for example). A brief discussion about different topologies follow.
