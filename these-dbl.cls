@@ -1006,27 +1006,27 @@ refsection=chapter,
 \begin{center}
 \begin{tikzpicture}
 % la boite
-\node[rectangle,draw=fondtitre!100,fill=fonddeboite!100,inner sep=10pt, inner ysep=20pt] (mabox)
+\node[rectangle,draw=fondtitre!100,fill=fonddeboite!100,inner sep=10pt, inner ysep=20pt,line width=1pt] (mabox)
 {
 \begin{minipage}{12cm}
 #2
 \end{minipage}
 };
 % le titre de la boite
+\ifstrempty{#1}{}
+{
 \node[fill=fondtitre!80, text=white, rectangle] at (mabox.north) {\sffamily\textbf{#1}};
+}
 \end{tikzpicture}
 \end{center}
 }
 
 %%%%%% boitesimple %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand*{\simplebox}[1]{%
-\begin{center}
-\begin{minipage}{12cm}
-\begin{shaded}
-	#1
-\end{shaded}
-\end{minipage}
-\end{center}
+\magicbox{}
+{
+  #1
+}
 }
 
 \newcounter{theorem}[section]
@@ -1068,35 +1068,35 @@ refsection=chapter,
 {%
 \stepcounter{example}%
 \ifstrempty{#1}%
- {\mdfsetup{%
-   frametitle={%
-    \tikz[baseline=(current bounding box.east),outer sep=0pt]
-    \node[rectangle,fill=example_title_background,text=white,anchor=center]
-         {\sffamily\textbf{\strut Example~\theexample}};}}
+ {\begin{infobox}[%
+     skipabove={1.2\baselineskip},
+     innertopmargin={1.2\baselineskip},
+     firstextra={\useasboundingbox (P) rectangle (P); \node[fill=fondtitre!80,text=white,anchor=west,xshift=5mm] at (P-|O)  {\sffamily\textbf{\strut Example~\theexample}};},
+     singleextra={\useasboundingbox (P) rectangle (P); \node[fill=fondtitre!80,text=white,anchor=west,xshift=5mm] at (P-|O)  {\sffamily\textbf{\strut Example~\theexample}};},
+   ]
  }%
-{\mdfsetup{%
-  frametitle={%
-   \tikz[baseline=(current bounding box.east),outer sep=0pt]
-   \node[rectangle,fill=example_title_background,text=white,anchor=center]
-        {\sffamily\textbf{\strut Example~\theexample:~#1}};}}%
- }%
-\mdfsetup{innertopmargin=10pt,linecolor=fondtitre!100,backgroundcolor=example_background,%
-       linewidth=1pt,topline=true,
-       frametitleaboveskip=\dimexpr-\ht\strutbox\relax,}
-   \begin{mdframed}[]\relax%
+ {\begin{infobox}[%
+     skipabove={1.2\baselineskip},
+     innertopmargin={1.2\baselineskip},
+     firstextra={\useasboundingbox (P) rectangle (P); \node[fill=fondtitre!80,text=white,anchor=west,xshift=5mm] at (P-|O)  {\sffamily\textbf{\strut Example~\theexample:~#1}};},
+     singleextra={\useasboundingbox (P) rectangle (P); \node[fill=fondtitre!80,text=white,anchor=west,xshift=5mm] at (P-|O)  {\sffamily\textbf{\strut Example~\theexample:~#1}};},
+     ]%
+   }%
 }
-{\end{mdframed}}
+{\end{infobox}}
 
 \newcounter{remark}[section]
 \newenvironment{remark}[1][]
 {%
+\pagebreak[1]
 \stepcounter{remark}%
 \begin{infobox}[
-  frametitle={%
-    \tikz[baseline=(current bounding box.east),outer sep=0pt]
-    \node[rectangle,fill=fondtitre!80,text=white,anchor=center]{\sffamily\textbf{\strut Remark~\theremark}};
-  },
+  skipabove={1.2\baselineskip},
+  innertopmargin={1.2\baselineskip},
+  firstextra={\useasboundingbox (P) rectangle (P); \node[fill=fondtitre!80,text=white,anchor=west,xshift=5mm] at (P-|O)  {\sffamily\textbf{\strut Remark~\theremark}};},
+  singleextra={\useasboundingbox (P) rectangle (P); \node[fill=fondtitre!80,text=white,anchor=west,xshift=5mm] at (P-|O)  {\sffamily\textbf{\strut Remark~\theremark}};},
  ]
+ %https://tex.stackexchange.com/questions/135083/mdframed-does-not-split-correctly-between-pages
 }
 {
 \end{infobox}
