@@ -242,7 +242,7 @@ If a small number of the intermediary or most highly nodes in the hierarchical t
 On the other hand, for non-hierarchical structures, the system only perish if the majority of the nodes is inoperative or compromised.
 
 \paragraph{Energy consumption and Environment}
-To overcome the problem of trust in anarchic (peer-to-peer) structures, a solution recently in vogue called \emph{blockchain} was proposed~\todo[add blockchain citation]{Citation ??}.
+To overcome the problem of trust in anarchic (peer-to-peer) structures, a solution recently in vogue called \emph{blockchain} was proposed~\cite{Nakamoto2008}.
 % The strategy targets exchange of validable data that dependend on historic data.
 In this solution, all historic data (log) are shared between all agents.
 Before beeing sent to all other agents (or only neighbours), new data need to be processed to generate a \emph{proof of work} (proof of a difficult computation which is easy to test) to create a block.
@@ -251,7 +251,8 @@ This block needs to be validated (data and \emph{proof of work} are valid) by at
 As each block has a different \emph{proof of work}, to create an new block with unreasonable data, an ill-intentioned agent needs to alter all the past blocks in the chain recreating all \emph{proofs of work} one by one, until the false data could be accepted.
 This way, the attacker would need to have more than half of the total processing power of the network.
 The \emph{proof of work} strategy trades trust by energy.
-A recent work~\cite{ColeCheng2018} estimates the energy consumption of one of the most diffused application of the \emph{blockchain}, a crypto-currency called Bitcoin, being at least $200$kWh for each transaction, which is greater than the monthly electrical consumption of a small household of two people in Brazil~\todo[add BEN]{Citation ??}.
+A recent work~\cite{ColeCheng2018} estimates the energy consumption of one of the most diffused application of the \emph{blockchain}, a crypto-currency called Bitcoin.
+It estimates that each transaction consumes at least $200$kWh, which is greater than the monthly electrical consumption of a small household of two people in Brazil~\cite{EPE2022}.
 A more recent work~\cite{RoeckDrennen2022} makes a Life Cycle Assessment of Bitcoin mining in a power plant and concludes that its annual emissions of metric tons of CO$_2$-eq is comparable to the annual emissions of 140,000 passenger vehicles.
 
 % \subsection{Conclusion}

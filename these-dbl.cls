@@ -165,6 +165,7 @@
 
 \usetikzlibrary{svg.path}
 \usetikzlibrary {graphs}
+\usetikzlibrary {chains}
 \usetikzlibrary{arrows.meta}
 \usetikzlibrary{calc,shapes,positioning}
 \usetikzlibrary{overlay-beamer-styles}
