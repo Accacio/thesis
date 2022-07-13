@@ -1030,7 +1030,7 @@ refsection=chapter,
 }
 }
 
-\newcounter{theorem}[section]
+\newcounter{theorem}[chapter]
 \newenvironment{theorem}[1][]{%
 \stepcounter{theorem}%
 \ifstrempty{#1}%
@@ -1038,13 +1038,13 @@ refsection=chapter,
    frametitle={%
     \tikz[baseline=(current bounding box.east),outer sep=0pt]
     \node[rectangle,fill=fondtitre!80,text=white,anchor=center]
-         {\sffamily\textbf{\strut Theorem~\thetheorem}};}}
+         {\sffamily\textbf{\strut Theorem~\thechapter.\thetheorem}};}}
  }%
 {\mdfsetup{%
   frametitle={%
    \tikz[baseline=(current bounding box.east),outer sep=0pt]
    \node[rectangle,fill=fondtitre!80,text=white,anchor=center]
-        {\sffamily\textbf{\strut Theorem~\thetheorem:~#1}};}}%
+        {\sffamily\textbf{\strut Theorem~\thechapter.\thetheorem:~#1}};}}%
  }%
 \mdfsetup{innertopmargin=10pt,linecolor=fondtitre!100,backgroundcolor=fonddeboite!100,%
        linewidth=1pt,topline=true,
@@ -1064,7 +1064,7 @@ refsection=chapter,
 
 \colorlet{example_background}{fonddeboite!100}
 % \colorlet{example_background}{fonddeboite!100}
-\newcounter{example}[section]
+\newcounter{example}[chapter]
 \newenvironment{example}[1][]
 {%
 \stepcounter{example}%
@@ -1072,25 +1072,25 @@ refsection=chapter,
  {\begin{infobox}[%
      skipabove={1.2\baselineskip},
      innertopmargin={1.2\baselineskip},
-     firstextra={\useasboundingbox (P) rectangle (P); \node[fill=fondtitre!80,text=white,anchor=west,xshift=5mm] at (P-|O)  {\sffamily\textbf{\strut Example~\theexample}};},
-     singleextra={\useasboundingbox (P) rectangle (P); \node[fill=fondtitre!80,text=white,anchor=west,xshift=5mm] at (P-|O)  {\sffamily\textbf{\strut Example~\theexample}};},
+     firstextra={\useasboundingbox (P) rectangle (P); \node[fill=fondtitre!80,text=white,anchor=west,xshift=5mm] at (P-|O)  {\sffamily\textbf{\strut Example~\thechapter.\theexample}};},
+     singleextra={\useasboundingbox (P) rectangle (P); \node[fill=fondtitre!80,text=white,anchor=west,xshift=5mm] at (P-|O)  {\sffamily\textbf{\strut Example~\thechapter.\theexample}};},
    ]
  }%
  {\begin{infobox}[%
      skipabove={1.2\baselineskip},
      innertopmargin={1.2\baselineskip},
-     firstextra={\useasboundingbox (P) rectangle (P); \node[fill=fondtitre!80,text=white,anchor=west,xshift=5mm] at (P-|O)  {\sffamily\textbf{\strut Example~\theexample:~#1}};},
-     singleextra={\useasboundingbox (P) rectangle (P); \node[fill=fondtitre!80,text=white,anchor=west,xshift=5mm] at (P-|O)  {\sffamily\textbf{\strut Example~\theexample:~#1}};},
+     firstextra={\useasboundingbox (P) rectangle (P); \node[fill=fondtitre!80,text=white,anchor=west,xshift=5mm] at (P-|O)  {\sffamily\textbf{\strut Example~\thechapter.\theexample:~#1}};},
+     singleextra={\useasboundingbox (P) rectangle (P); \node[fill=fondtitre!80,text=white,anchor=west,xshift=5mm] at (P-|O)  {\sffamily\textbf{\strut Example~\thechapter.theexample:~#1}};},
      ]%
    }%
 }
 {\end{infobox}}
 
-\newcounter{remark}[section]
+\newcounter{remark}[chapter]
 \newenvironment{remark}[1][]
 {%
 \pagebreak[1]
-\stepcounter{remark}%
+\refstepcounter{remark}%
 \begin{infobox}[
   skipabove={1.2\baselineskip},
   innertopmargin={1.2\baselineskip},
