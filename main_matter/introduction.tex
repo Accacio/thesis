@@ -15,17 +15,16 @@
 A more bibliometric approach with trends in control can be seen in~\cite{ZacchiaEtAl2019}.
 
 \section{Motivation and Contributions}
-Due to the increased computation capabilities of computers in recent years,
-now we can solve some problems which were then not solvable in reasonable time.
+Due to the increased computation capabilities of computers in recent years, now we can solve some problems that were not solvable in a reasonable time.
 Thus the \emph{renaissance} of some optimization based methods, such as \todo{Neural networks} and \todo{Artificial Intelligence}.
-For other more common methods such \mpc~\cite{GarciaEtAl1989}, this development meant solving bigger problems in less time, sometimes even in realtime~\todo[add realtime MPC]{\cite{BesselmannEtAl2008}} and using small computation units that can fit in the palm of a hand~\cite{BanguraMahony2014}.
-But for some large scale systems, the calculation is still quite expensive and we need some subterfuges, as distributing it into many computation units.
-One of these strategies, as we will see is called \dmpc.
+For other more common methods such \mpc~\cite{GarciaEtAl1989}, this development meant solving more significant problems in less time, sometimes even in realtime~\todo[add realtime MPC]{\cite{BesselmannEtAl2008}} and using small computation units that can fit in the palm of a hand~\cite{BanguraMahony2014}.
+Nevertheless, the calculation is still expensive for some large-scale systems, and we need subterfuges, such as distributing it into different computation units.
+As we will see, one of these strategies is called \dmpc.
 
 This work studies what happens when these computation units do not work collaboratively.
-And for a specific \dmpc framework we search for a method to mitigate the effects of this non-cooperative behavior.
+Moreover, for a specific \dmpc{} framework, we search for a method to mitigate the effects of this non-cooperative behavior.
 
-To give a general view to the reader and to serve as a main take-away of the possible effects of non-cooperative behaviors, we give a simple qualitatively example, which will be resumed in another section of this work, giving more insight of its causes.
+To give a general view to the reader and to serve as a main take-away of the possible effects of non-cooperative behaviors, we give a simple qualitatively example, which will be retaken in another section of this work, giving more insight into its causes.
 
 \begin{example}[Effects of a malicious agent]\label{ex:qualitative_example}
   \todo{Maybe I can give directly the district heating example as shown in the poster for NecSys. Add an image to represent the district?\\}
@@ -77,7 +76,7 @@ In this example we have a system with $4$ agents and a coordinator. The objectiv
   On the other hand we can see that agent 1 can manipulate the negotiation so it can privileged itself (orange curve) at the expense of all others (green, red and purpler curves). This selfish behavior can even destabilize the system, represented by the red hatched area on the graph.
 \end{example}
 
-From this simple example we can see the two main effects of a attack: Loss of optimality and eventually \todo{total breakdown} of the system.
+From example~\ref{ex:qualitative_example}, we can see the two main effects of a attack: Loss of optimality and eventually \todo{total breakdown} of the system.
 
 While one of them can sometimes be acceptable (depending on the suboptimality), the other is absolutely inadmissible, principally when we are talking about \cps{} that are essential, like electricity and water supply for instance.
 
@@ -97,20 +96,20 @@ To understand and answer those questions, we divide this work into two parts.
 
 \paragraph{Part~\ref{part:mpc_intro}} It serves as a gentle introduction to \dmpc{} and attacks.
 
-For a more unfamiliar reader, Chapter~\ref{sec:decomposing_mpc} explains what is a \mpc{} to begin with and shows some of the challenges to decompose it.
+For a unfamiliar reader, Chapter~\ref{sec:decomposing_mpc} explains what is a \mpc{} to begin with and shows some of the challenges to decompose it.
 Chapter~\ref{sec:topoly_trust} discuss possible topologies used for those decompositions.
-In Chapter~\ref{sec:anomalous} we define anomalous behaviors (and more specifically what attacks are), and we present some methods used in the literature to prevent and combat them.
+In Chapter~\ref{sec:anomalous} we define anomalous behaviors (and more specifically attacks), we categorize them and present some methods used in the literature to prevent and combat them.
 
 \paragraph{Part~\ref{part:safe_dmpc}} It contains the contributions of this work.
 
 Chapter~\ref{sec:primal_decomposition} presents the decomposition studied in this work (primal decomposition), some of its vulnerabilities and how they can affect the performance of the system (here we take up Example~\ref{ex:qualitative_example} giving it a more quantitative approach).
-Once we know the vulnerabilities and possible effects of attacks, we divide the mitigation problem into more manageable parts.
-\\ First in Chapter~\ref{sec:safe_pddmpc_eq}, we analyze a more unsophisticated problem, and from the analysis we propose a detection and mitigation mechanism, followed by some academical examples.
-\\Then, in Chapter~\ref{sec:safe_pddmpc_ineq}, we analyze a similar problem with just one small modification. As we will see, this small modification increases exponentially the complexity of the problem.
+Once we know the vulnerabilities and possible effects of attacks, we divide the mitigation problem into manageable parts.
+\\ First in Chapter~\ref{sec:safe_pddmpc_eq}, we analyze an unsophisticated problem, so we can assess the difficulties that can be found when solving the mitigation problem. From the analysis of the problem we propose a detection and mitigation mechanism, followed by an academical example to illustrate.
+\\Then, in Chapter~\ref{sec:safe_pddmpc_ineq}, we analyze a similar problem but with a twist. As we will see, just one small modification on the initial problem can increase exponentially its complexity.
 From the analysis of the newly-found problem we propose a similar strategy, but with adequate modifications to contain the exponential nature of the problem.
 \todo{\\Finally, we continue in Chapter~\ref{sec:safe_pddmpc_ineq_reconst} the methodology and explore some more properties to create a less conservative strategy.}
 \todo{\\Maybe if the time permits modify the cheating device??}
-\\Then we conclude this work in Chapter~\ref{sec:conclusion} with a discussion about the results found during this study, benefits as well as shortcomings. Some of this discussion leads to open questions which can incite new works.
+\\Then, we conclude this work in Chapter~\ref{sec:conclusion} with a discussion about the results found during this study, benefits as well as shortcomings. Some of this discussion leads to open questions which can incite new works.
 
 % Since those questions are still open, this work has as objective to discuss these questions by analyzing the recent literature and schematizing the security in decomposition methods for Model Predictive Control passing by the following items:
 % \begin{itemize}[label=$\bullet$]
