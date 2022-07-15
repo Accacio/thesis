@@ -443,7 +443,6 @@ C4657.44,2685.77,4668.48,2698.36,4674.56,2710.82Z";
 style=alphabetic,
 backref=true,
 backrefstyle=three,
-refsection=chapter,
   ]{biblatex}
 % Style biblatex avec gestion des mots cl\'{e}s des entr\'{e}es bibliographiques
 % + les abbr\'{e}viations idem, ibidem, op cit. Pr\'{e}voir un fichier bib
