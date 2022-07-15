@@ -75,6 +75,7 @@ We can divide these schemes into two big groups (Fig.~\ref{fig:hierarchic_anarch
 \begin{figure}[H]
 \begin{subfigure}[b]{.45\textwidth}
   \centering
+  \scalebox{1.5}{
   \begin{tikzpicture}[node distance=.5cm and .5cm,inner sep=0pt,every node/.style={minimum width=0.1cm}]
     \node[draw,circle,minimum width=.7cm] at (0,0) (first) {};
     \node[draw,circle,below left=of first,minimum width=.4cm] (second_l) {};
@@ -97,11 +98,13 @@ We can divide these schemes into two big groups (Fig.~\ref{fig:hierarchic_anarch
     \draw[latex-latex]  (second_r) -- (third_4);
     \draw[latex-latex]  (second_r) -- (third_5);
   \end{tikzpicture}
+  }
   \caption{Hierarchy.}\label{fig:hierarchy_topology}
 \end{subfigure}
 \hfill
 \begin{subfigure}[b]{.45\textwidth}
   \centering
+  \scalebox{1.5}{
   \begin{tikzpicture}[node distance=.5cm and .5cm,inner sep=0pt,every node/.style={minimum width=0.3cm}]
     \node[draw,circle] at (0,0) (a) {};
     \node[draw,circle] at ($(a)+(-.7,-.3)$) (b) {};
@@ -126,6 +129,7 @@ We can divide these schemes into two big groups (Fig.~\ref{fig:hierarchic_anarch
     \draw[latex-latex]  (e)  -- (h);
     \draw[latex-latex]  (f)  -- (i);
   \end{tikzpicture}
+  }
   \caption{Anarchy}\label{fig:anarchy_topology}
 \end{subfigure}
 \caption{Hierarchic and anarchic topologies.\todo[redo figures, add stages to identify power]{}}\label{fig:hierarchic_anarchic}
@@ -190,12 +194,13 @@ This question is common in multiple areas where communication, exchanges or cons
 If an agent distrusts the others, it can treat itself the security issues or the agent can outsource the treatment to another agent.
 Additional agents can be included to serve as referees, coordinators, regulators or certifiers. It is done because it is easier to trust in/verify a single agent or small group of agents than to trust in all agents. This way the work is divided into more manageable parts.
 
-One real life example can be the \EFT\ between a seller and client. A seller instead of trusting the credit (capacity of paying in future date) of each of its clients, she or he trusts in a small group of credit card brands to fulfill the \EFT{}.
+One real life example can be the \EFT\ between a seller and client~\cite{Staskauskas1988}. A seller instead of trusting the credit (capacity of paying in future date) of each of its clients, she or he trusts in a small group of credit card brands to fulfill the \EFT{}.
 Each credit card brand, in turn, trusts in a select group of credit-granting institutions, to which potentially these client are associated.
-This kind of arrangement creates a hierarchical tree-like structure called \emph{polytree} in graph theory terms (Fig.~\ref{fig:polytree_topology}). Seller and clients are leafs (terminal nodes), credit card-brands are branch vertex (intermediary) and the credit-granting institutions are roots (no parent nodes).
+This kind of arrangement creates a hierarchical tree-like structure called \emph{polytree} in graph theory terms (Fig.~\ref{fig:polytree_topology}). Seller and clients are leafs (terminal nodes), credit card-brands are branch vertex (intermediary) and the credit-granting institutions are roots (no parent nodes). While transactions today happen in a distributed way, still we have these hierarchies.
 Some other political/societal parallel views are stablished in~\cite{McNamaraEtAl2018} and~\cite{OlaruEtAl2018}.
 \begin{figure}[h]
   \centering
+  \scalebox{1.3}{
   \begin{tikzpicture}[every node/.style={circle,draw,minimum width=0.5cm},inner sep=0pt,node distance=1.cm and 0.5cm]
     \node[] (a) at (0,0) {};
     \node[right=of a] (b)  {};
@@ -231,6 +236,7 @@ Some other political/societal parallel views are stablished in~\cite{McNamaraEtA
     \draw[-latex] (f) -- (l);
     \draw[-latex] (g) -- (m);
   \end{tikzpicture}
+  }
   \caption{A polytree.}\label{fig:polytree_topology}
 \end{figure}
 
@@ -239,26 +245,32 @@ Some other political/societal parallel views are stablished in~\cite{McNamaraEtA
 \paragraph{Failure}
 Although the hierarchical structure can help reducing the sources of distrust, it also reduce responsitivity and robustness.
 If a small number of the intermediary or most highly nodes in the hierarchical tree are inoperative, there is a possibility that the complete system collapses since the communications will not be accomplished, this problem is commonly known as the \emph{single point of failure}, which can be deviated by the use of redundancy.
-On the other hand, for non-hierarchical structures, the system only perish if the majority of the nodes is inoperative or compromised.
+On the other hand, for non-hierarchical structures, the system only perish if the majority of the nodes is inoperative or compromised, since there can be diffirent paths to link two nodes.
+
+\paragraph{Propagation of information}
+It is known that for non-hierarchical structure that propagation of some information depends on the connectivity of the graphs, that means, to how many nodes each node is connected.
 
 \paragraph{Energy consumption and Environment}
-To overcome the problem of trust in anarchic (peer-to-peer) structures, a solution recently in vogue called \emph{blockchain} was proposed~\cite{Nakamoto2008}.
+To overcome the problem of trust in anarchic (peer-to-peer) structures, a solution based on cryptography recently in vogue called \emph{blockchain} was proposed~\cite{Nakamoto2008}.
 % The strategy targets exchange of validable data that dependend on historic data.
 In this solution, all historic data (log) are shared between all agents.
 Before beeing sent to all other agents (or only neighbours), new data need to be processed to generate a \emph{proof of work} (proof of a difficult computation which is easy to test) to create a block.
 This block needs to be validated (data and \emph{proof of work} are valid) by at least more than half of the agents before beeing chained into the historic data, forming a chain of blocks, thus the name.
+In case of multiple chains, the longest chain is always chosen, since it was in it that most \emph{proofs of work} resides. This policy is called the \emph{Longest Chain Rule}.
 
 As each block has a different \emph{proof of work}, to create an new block with unreasonable data, an ill-intentioned agent needs to alter all the past blocks in the chain recreating all \emph{proofs of work} one by one, until the false data could be accepted.
-This way, the attacker would need to have more than half of the total processing power of the network.
+This way, the attacker would need to have more than half of the total processing power of the network, creating the longest chain. This kind of attack is called a 51\% attack or majority attack~\cite{CilloniEtAl2020}.
+
 The \emph{proof of work} strategy trades trust by energy.
 A recent work~\cite{ColeCheng2018} estimates the energy consumption of one of the most diffused application of the \emph{blockchain}, a crypto-currency called Bitcoin.
 It estimates that each transaction consumes at least $200$kWh, which is greater than the monthly electrical consumption of a small household of two people in Brazil~\cite{EPE2022}.
 A more recent work~\cite{RoeckDrennen2022} makes a Life Cycle Assessment of Bitcoin mining in a power plant and concludes that its annual emissions of metric tons of CO$_2$-eq is comparable to the annual emissions of 140,000 passenger vehicles.
-
+\\~\\
 % \subsection{Conclusion}
 All the points above and many others must be considered before choosing a structure.
-\todo[some??]{Some} works in the literature of \dmpc\ \cite{VelardeEtAl2017a, BoemEtAl2020, LiuEtAl2022} use an anarchic structure.
-Although some methods shown in this work could be adapted to function in analogous structures, we opt to use the hierarchical approach instead. We add coordinator(s) which referee the exchange between agents.
+
+% \todo[some??]{Some} works in the literature of \dmpc\ \cite{VelardeEtAl2017a, BoemEtAl2020, LiuEtAl2022} use an anarchic structure.
+% Although some methods shown in this work could be adapted to function in analogous structures, we opt to use the hierarchical approach instead. We add coordinator(s) which referee the exchange between agents.
 
 % \chapterEndOrnament
 
