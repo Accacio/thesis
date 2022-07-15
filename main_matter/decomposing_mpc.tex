@@ -30,21 +30,21 @@ The system can be under constraints
 \begin{equation}
  h(\vec{x}[k],\vec{u}[k])\preceq\0,
 \end{equation}
-with $h:\R^{n_{x}}\times\R^{n_{u}}\to\R^{n_{c}}$. Observe that mathematically equality constraints can be represented by a couple of inequality constraints, although for implementation in computers it can lead to poor numerical conditioning, resulting unexpected behavior~\cite{BorrelliEtAl2017}.
+with ${h:\R^{n_{x}}\times\R^{n_{u}}\to\R^{n_{c}}}$. Observe that mathematically equality constraints can be represented by a couple of inequality constraints, although for implementation in computers it can lead to poor numerical conditioning, resulting unexpected behavior~\cite{BorrelliEtAl2017}.
 
-Given an objective function $J:\R^{n_{x}}\times\R^{N\cdot n_{u}}\to \R$, we can optimize this objective for a given horizon $\set{H}=\{1\mathbin{:}N\}$ to obtain a control sequence $\vec{U}[k]=[\vec{u}[k|k]\T \dots \vec{u}[k+N-1|k]\T]\T$, where
-we use states and input predictions of time $k+i$ calculated in a time $k$, represented by $\vec{x}[k+i|k]$ and $\vec{u}[k+i|k]$. The problem solved to calculate the control sequence is
+Given an objective function ${J:\R^{n_{x}}\times\R^{N\cdot n_{u}}\to \R}$, we can optimize this objective for a given horizon $\set{H}=\{1\mathbin{:}N\}$ to obtain a control sequence ${\vec{U}^{\star}[k]=[\vec{u}^{\star}[0|k];\dots; \vec{u}^{\star}[N-1|k]]}$. To calculate $\vec{U}^{\star}[k]$,
+we use states and input predictions of time $k+i$ calculated in a time $k$, represented by $\vec{x}[i|k]$ and $\vec{u}[i|k]$. The problem solved to calculate the control sequence is
 
 \begin{equation}\label{eq:general_mpc}
   \small
   \begin{aligned}
     \begin{matrix}
-      \underset{\vec{U}[k]}{\mathrm{minimize}} & J(\vec{x}[k|k],\vec{U}[k])&\\
+      \underset{\vec{U}[k]}{\mathrm{minimize}} & J(\vec{x}[0|k],\vec{U}[k])&\\
       \mathrm{subject~ to} &
 
       \left.  \begin{aligned}
-          \quad \vec{x}[k+i|k]=f(\vec{x}[k+i-1|k],\vec{u}[k+i-1|k])\\
-          \quad                h(\vec{x}[k+i-1|k],\vec{u}[k+i-1])\preceq\0
+          \quad \vec{x}[i|k]=f(\vec{x}[i-1|k],\vec{u}[i-1|k])\\
+          \quad                h(\vec{x}[i-1|k],\vec{u}[i-1])\preceq\0
         \end{aligned}\qquad        \right\}
 
       \begin{aligned}
@@ -53,7 +53,8 @@ we use states and input predictions of time $k+i$ calculated in a time $k$, repr
     \end{matrix}
   \end{aligned}
 \end{equation}
-After solving this problem, we have an optimal control sequence $\vec{U}^{\star}[k]$ and only the first element $\vec{u}^{\star}[k|k]$ is applied in the system. The process is repeated for $k+1$ following a \rhs.
+After solving this problem, we have an optimal control sequence $\vec{U}^{\star}[k]$ and only the first element $\vec{u}^{\star}[0|k]$ is applied in the system.
+The process is repeated for ${k+1}$ following a \rhs.
 
 This formulation is as general as possible, but depending on the problem's convexity it can be hard to solve it, specially online.
 Convex problems are the most widely studied, and strategies to solve them are extensively diffused. Some of those problems even have explicit solutions~\cite{BoydVandenberghe2004}.
@@ -65,18 +66,18 @@ In this work we concentrate on \qp\ problems, whose objective functions are quad
 A commonly quadratic objective function used is
 \begin{equation}
   \label{eq:quadratic_objective_with_sum}
-  J(\vec{x}[k|k],\vec{U}[k])=\sum_{i\in\set{H}}\left[\norm{\mpcvec{v}[ ][k+i][k]}^{2}_{Q} +\norm{\mpcvec{u}[ ][k+i-1][k]}^{2}_{R}\right]
+  J(\vec{x}[0|k],\vec{U}[k])=\sum_{i\in\set{H}}\left[\norm{\mpcvec{v}[ ][i][k]}^{2}_{Q} +\norm{\mpcvec{u}[ ][i-1][k]}^{2}_{R}\right]
 \end{equation}
 where $\vec{v}$ is a control objective, and ${ Q\in\semidefpos }$ and ${ R\in\defpos }$ are weighting matrices, which can represent costs of each term of the equation. The relation between these matrices describe the compromise between control signal energy and control objective.
 
 The control objectives can be for example, \emph{disturbance rejection}, where ${ \vec{v}[k]=\vec{x}[k] }$, or \emph{reference tracking}, where ${ \vec{v}[k]=\vec{w}[k]-\vec{x}[k] }$, being $\vec{w}[k]$ a setpoint.
 Observe that this last example is for state reference tracking, for output reference tracking the system output $\vec{y}[k]$ should be used instead of $\vec{x}[k]$, depending on the system an adequate relation between $\vec{y}[k]$ and $\vec{x}[k]$ can be found.
 
-The predictions of $\vec{v}[k]$ and $\vec{w}[k]$ can be stacked as ${ \vec{V}[k]=[\vec{v}[k+1|k]\T \dots \vec{v}[k+N|k]\T] }$ and
-${ \vec{W}[k]=[\vec{w}[k+1|k]\T \dots \vec{w}[k+N|k]\T] }$ and then~\eqref{eq:quadratic_objective_with_sum} can be rewritten as
+The predictions of $\vec{v}[k]$ and $\vec{w}[k]$ can be stacked as ${ \vec{V}[k]=[\vec{v}[1|k];\dots;\vec{v}[N|k]] }$ and
+${ \vec{W}[k]=[\vec{w}[1|k];\dots;\vec{w}[N|k]] }$ and then~\eqref{eq:quadratic_objective_with_sum} can be rewritten as
 \begin{equation}
   \label{eq:quadratic_objective_compact}
-  J(\vec{x}[k|k],\vec{U}[k])=\norm{\vec{V}[k]}^{2}_{\bar{Q}} + \norm{\vec{U}[k] }^{2}_{\bar{R}},
+  J(\vec{x}[0|k],\vec{U}[k])=\norm{\vec{V}[k]}^{2}_{\bar{Q}} + \norm{\vec{U}[k] }^{2}_{\bar{R}},
 \end{equation}
 where $\bar{Q}=\kron{I_{N}}{Q}$ and
 $\bar{R}=\kron{I_{N}}{R}$.
@@ -108,7 +109,7 @@ Putting it all together we have
     \begin{matrix}
       \underset{\vec{U}[k]}{\mathrm{minimize}} &\norm{\vec{V}[k]}^{2}_{\bar{Q}} + \norm{\vec{U}[k] }^{2}_{\bar{R}}&\\
       \mathrm{subject~ to} &
-      \vec{x}[k+i|k]=A\vec{x}[k+i-1|k]+B\vec{u}[k+i-1|k]
+      \vec{x}[i|k]=A\vec{x}[i-1|k]+B\vec{u}[i-1|k]
       &
        \forall i\in\set{H} \\
       &\bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}}&
@@ -126,10 +127,10 @@ If we opt for a Batch Approach~\cite[Chapter 8.2]{BorrelliEtAl2017} to solve the
       \underbrace{
         \left[
           \begin{matrix}
-            \vec{y}[k+1|k] \\
-            \vec{y}[k+2|k] \\
+            \vec{y}[1|k] \\
+            \vec{y}[2|k] \\
             \vdots \\
-            \vec{y}[k+N|k]
+            \vec{y}[N|k]
           \end{matrix}
         \right]
       }_{\textstyle \vec{Y}[k]} &=&
@@ -143,7 +144,7 @@ If we opt for a Batch Approach~\cite[Chapter 8.2]{BorrelliEtAl2017} to solve the
           \end{matrix}
         \right]
       }_{\textstyle \mathcal{Y}^{x}}
-      \vec{x}[k|k]+
+      \vec{x}[0|k]+
       \underbrace{
         \left[
           \begin{matrix}
@@ -175,8 +176,8 @@ where
 \begin{equation}
 \begin{array}{lll}
 H&=&\norm{\mathcal{Y}^{u}}^{2}_{\bar{Q}}+\bar{R}\\
-\vec{f}[k]&=&{\mathcal{Y}^{u}}^{T}\bar{Q}(\mathcal{Y}^{x}\vec{x}[k|k]-\vec{W}[k])\\
-c[k]&=&\norm{\mathcal{Y}^{x}\vec{x}[k|k]}^{2}_{\bar{Q}}-2{\vec{W}[k]}^{T}\bar{Q}{\mathcal{Y}^{x}}\vec{x}[k|k]+\norm{\vec{W}[k]}^{2}_{\bar{Q}}
+\vec{f}[k]&=&{\mathcal{Y}^{u}}^{T}\bar{Q}(\mathcal{Y}^{x}\vec{x}[0|k]-\vec{W}[k])\\
+c[k]&=&\norm{\mathcal{Y}^{x}\vec{x}[0|k]}^{2}_{\bar{Q}}-2{\vec{W}[k]}^{T}\bar{Q}{\mathcal{Y}^{x}}\vec{x}[0|k]+\norm{\vec{W}[k]}^{2}_{\bar{Q}}
 \end{array}.
 \end{equation}
 By dividing the objective function by $2$ and ignoring the constant term $c[k]$ we have a problem structured in the standard \qp\ form which can be easily used in the solvers supracited
