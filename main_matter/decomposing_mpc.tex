@@ -67,7 +67,7 @@ A commonly quadratic objective function used is
   \label{eq:quadratic_objective_with_sum}
   J(\vec{x}[k|k],\vec{U}[k])=\sum_{i\in\set{H}}\left[\norm{\mpcvec{v}[ ][k+i][k]}^{2}_{Q} +\norm{\mpcvec{u}[ ][k+i-1][k]}^{2}_{R}\right]
 \end{equation}
-where $\vec{v}$ is a control objective, and ${ Q:\semidefpos }$ and ${ R:\defpos }$ are weighting matrices, which can represent costs of each term of the equation. The relation between these matrices describe the compromise between control signal energy and control objective.
+where $\vec{v}$ is a control objective, and ${ Q\in\semidefpos }$ and ${ R\in\defpos }$ are weighting matrices, which can represent costs of each term of the equation. The relation between these matrices describe the compromise between control signal energy and control objective.
 
 The control objectives can be for example, \emph{disturbance rejection}, where ${ \vec{v}[k]=\vec{x}[k] }$, or \emph{reference tracking}, where ${ \vec{v}[k]=\vec{w}[k]-\vec{x}[k] }$, being $\vec{w}[k]$ a setpoint.
 Observe that this last example is for state reference tracking, for output reference tracking the system output $\vec{y}[k]$ should be used instead of $\vec{x}[k]$, depending on the system an adequate relation between $\vec{y}[k]$ and $\vec{x}[k]$ can be found.
