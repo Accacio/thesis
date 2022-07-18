@@ -164,7 +164,14 @@
 
 
 \usetikzlibrary{svg.path}
-\usetikzlibrary {graphs}
+\usetikzlibrary{graphs,quotes,graphs.standard}
+\tikzset{
+  graphs/nodes={draw,circle,inner sep=1pt},
+  <->/.style={latex-latex},
+  ->/.style={-latex},
+  <-/.style={latex-},
+}
+
 \usetikzlibrary {chains}
 \usetikzlibrary{arrows.meta}
 \usetikzlibrary{calc,shapes,positioning}
@@ -910,6 +917,7 @@ backrefstyle=three,
   \renewcommand{\listacronymsname}{Liste des abréviations}
 }
 
+\captionsetup{justification=centering}
 \def\listofacronyms{
 \cleartooddpage[\thispagestyle{empty}]
 % \addcontentsline{toc}{chapter}{\listacronymsname}\adjustmtc
