@@ -10,6 +10,7 @@
 When dividing computation into different computing units, some questions are raised:
 How to distribute the computation units?
 Do they communicate?
+How do they influence each other?
 How do they communicate?
 In this chapter we try to answer these questions.
 
@@ -49,9 +50,125 @@ For instance, a sub-problem may solve a problem with a subset of states of two d
     sub-systems ($S_{i}$).}
 \end{figure}
 
-In the literature, it is not unusual to assume that we can choose the computing units in order to correspond to the sub-systems of the system as in Fig.~\ref{fig:corresponding_division_system_problem} (\todo[give examples of units]{Citation?}), i.e., a computing unit computes the solution of a sub-problem to find the input of the same corresponding sub-system.
+In the literature, it is not unusual to assume that we can choose the computing units in order to correspond to the sub-systems of the system as in Fig.~\ref{fig:corresponding_division_system_problem}~\cite{ArauzEtAl2021}, i.e., a computing unit computes the solution of a sub-problem to find the input of the same corresponding sub-system.
 So, in this work we also use this assumption.
 Then, the terms sub-problems, sub-systems and agents will be used interchangeably.
+
+\section{Representing networks}
+To represent and better visualize the agents and how they interconnect, we will use graphs. In this section we present a brief introduction on graphs.
+The fundamental unit on graph theory is a vertex/node (Fig.~\ref{fig:node}), which for us will represent an agent.
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[node distance=1cm and .5cm,inner sep=1pt]
+    \node[draw,circle] (first) at (0,0) {$v_{1}$};
+  \end{tikzpicture}
+  \caption{A vertex/node.}\label{fig:node}
+\end{figure}
+
+The connection between nodes is represented by arcs and edges. While arcs are an ordered pair of vertices, such as ${a=(v_{1},v_{2})}$, indicating a direction, edges are an unorderd pair, not implying direction, as ${e=\{v_{1},v_{2}\}}$. Sometimes the arrow tips of edges are suppressed to improve visibility. In Fig.~\ref{fig:arc_edges} we can see edges and arcs.
+
+\begin{figure}[h]
+\begin{subfigure}[t]{.3\textwidth}
+  \centering
+  \scalebox{1.25}{
+  \begin{tikzpicture}
+    \graph {
+      a/$v_{1}$ ->["$a$"] b/$v_{2}$
+    };
+  \end{tikzpicture}
+  }
+  \caption{An arc.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{.3\textwidth}
+  \centering
+    \scalebox{1.25}{
+  \begin{tikzpicture}
+    \graph {
+      a/$v_{1}$ <->["$e$"] b/$v_{2}$
+    };
+  \end{tikzpicture}
+  }
+  \caption{An edge.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{.3\textwidth}
+  \centering
+    \scalebox{1.25}{
+  \begin{tikzpicture}
+    \graph {
+      a/$v_{1}$ --["$e$"] b/$v_{2}$
+    };
+  \end{tikzpicture}
+  }
+  \caption{An edge. \\(tips suppressed)}
+\end{subfigure}
+\caption{Arcs and edges.}\label{fig:arc_edges}
+\end{figure}
+
+A (undirected) graph $\graph{G}$ is a tuple composed of a set of vertices $\set{V}$ and a set of edges $\set{E}$, written ${\graph{G}=(\set{V},\set{E})}$.
+Similarly a directed graph $\graph{G}$ is composed of a set of vertices and a set of arcs $\set{A}$, written ${\graph{G}=(\set{V},\set{A})}$.
+In Fig.~\ref{fig:directed_undirected_graphs} we can see examples of directed and undirected graphs.
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[t]{.45\textwidth}
+    \centering
+    \scalebox{1.5}{
+    \begin{tikzpicture}
+      \graph { subgraph C_n [-!-,n=7, clockwise],
+        {1,2,3,5} <- 6,
+        {1,2,5} <- 3,
+        3 -> 4,
+        {1,7} <- 5,
+        {2,4} <- 1,
+        {6,7} <- 4,
+        {4,3} <- 7,
+
+      };
+    \end{tikzpicture}
+    }
+    \caption{Directed graph.}\label{fig:graph}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{.45\textwidth}
+    \centering
+    \scalebox{1.5}{
+    \begin{tikzpicture}
+      \graph { subgraph K_n [-!-,n=7,clockwise],
+        {1,2,3} -- 7,
+        {1,2,3} -- 6,
+        {1,5,6} -- 4,
+      };
+    \end{tikzpicture}
+      }
+    \caption{Undirected graph.}\label{fig:undirected_graph}
+  \end{subfigure}
+    \caption{Directed and undirected graphs with 7 vertices.}\label{fig:directed_undirected_graphs}
+\end{figure}
+
+Two vertices are called adjacent or neighbours if there is an edge linking them.
+The neighbourhood $\set{N}$ of a vertex is all the vertices to which it is linked.
+We can define a neighbor subgraph $\graph{N}(v)$ of $\graph{G}$ with the neighbors of $v$ and the edges connecting them. For example, taking the graph in Fig.~\ref{fig:undirected_graph}, we can overlay the neighbor subgraph of vertex $6$ in red (Fig.~\ref{fig:neighbor_subgraph}).
+
+\definecolor{emphgraphcolor}{RGB}{232,232,232}
+\colorlet{emphgraphcolor}{color-ecole}
+
+\begin{figure}[h]
+  \centering
+  \scalebox{1.5}{
+    \begin{tikzpicture}
+      \graph[clockwise,n=7]{
+        {1[emphgraphcolor],2[emphgraphcolor],3[emphgraphcolor],4[emphgraphcolor],5,6[emphgraphcolor],7},
+        {1,2,3} -- 7,
+        {1,2,3} --[emphgraphcolor] 6,
+        {1,5} -- 4,
+        6 --[emphgraphcolor] 4,
+      };
+    \end{tikzpicture}
+    }
+  \caption{Directed and undirected graphs with 7 vertices.}\label{fig:neighbor_subgraph}
+\end{figure}
 
 \section{Do the computing units communicate?}
 
@@ -67,10 +184,10 @@ For the decomposition of some optimization problems, it is shown that in certain
 The most part of the literature uses \emph{coordinated control}~\cite{NegenbornMaestre2014, ArauzEtAl2021}, in this work, analogously, we will use a decomposition method where the agents need to communicate.
 
 
-\section{How do the computing units communicate?}
+\section{How do they influence each other?}
 
-Multiple communication schemes exist, which depend on the decomposition, topology and also trust/power.
-We can divide these schemes into two big groups (Fig.~\ref{fig:hierarchic_anarchic}), one where groups of agents are more important than others (\emph{hierarchy}), and another where there is not (\emph{anarchy}).
+There exists multiple communication schemes. They depend on the decomposition, topology and also trust/power.
+When looking at the trust/power axis, we can divide these schemes into two big groups (Fig.~\ref{fig:hierarchic_anarchic}), one where groups of agents are more important than others (\emph{hierarchy}), and another where there is not (\emph{anarchy}).
 
 \begin{figure}[H]
 \begin{subfigure}[b]{.45\textwidth}
@@ -87,16 +204,16 @@ We can divide these schemes into two big groups (Fig.~\ref{fig:hierarchic_anarch
     \node[draw,circle,below left =0.8cm and -0.0cm of second_r,minimum width=.2cm] (third_4) {};
     \node[draw,circle,below right=0.8cm and 0.1cm  of second_r,minimum width=.2cm] (third_5) {};
 
-    \draw[latex-latex]  (first)  -- (second_l);
-    \draw[latex-latex]  (first)  -- (second_r);
-    \draw[latex-latex]  (second_l) -- (third_1);
-    \draw[latex-latex]  (second_l) -- (third_2);
-    \draw[latex-latex]  (second_l) -- (third_3);
-    \draw[latex-latex]  (second_l) -- (third_5);
-    \draw[latex-latex]  (second_r) -- (third_2);
-    \draw[latex-latex]  (second_r) -- (third_3);
-    \draw[latex-latex]  (second_r) -- (third_4);
-    \draw[latex-latex]  (second_r) -- (third_5);
+    \draw[-]  (first)  -- (second_l);
+    \draw[-]  (first)  -- (second_r);
+    \draw[-]  (second_l) -- (third_1);
+    \draw[-]  (second_l) -- (third_2);
+    \draw[-]  (second_l) -- (third_3);
+    \draw[-]  (second_l) -- (third_5);
+    \draw[-]  (second_r) -- (third_2);
+    \draw[-]  (second_r) -- (third_3);
+    \draw[-]  (second_r) -- (third_4);
+    \draw[-]  (second_r) -- (third_5);
   \end{tikzpicture}
   }
   \caption{Hierarchy.}\label{fig:hierarchy_topology}
@@ -116,30 +233,31 @@ We can divide these schemes into two big groups (Fig.~\ref{fig:hierarchic_anarch
     \node[draw,circle] at ($(e)+(-0.8,-0.0)$) (h) {};
     \node[draw,circle] at ($(f)+(-0.5,-0.5)$) (i) {};
 
-    \draw[latex-latex]  (a)  -- (b);
-    \draw[latex-latex]  (a)  -- (c);
-    \draw[latex-latex]  (a)  -- (d);
-    \draw[latex-latex]  (b)  -- (c);
-    \draw[latex-latex]  (c)  -- (d);
-    \draw[latex-latex]  (e)  -- (b);
-    \draw[latex-latex]  (e)  -- (c);
-    \draw[latex-latex]  (c)  -- (f);
-    \draw[latex-latex]  (d)  -- (g);
-    \draw[latex-latex]  (f)  -- (g);
-    \draw[latex-latex]  (e)  -- (h);
-    \draw[latex-latex]  (f)  -- (i);
+    \draw[-]  (a)  -- (b);
+    \draw[-]  (a)  -- (c);
+    \draw[-]  (a)  -- (d);
+    \draw[-]  (b)  -- (c);
+    \draw[-]  (c)  -- (d);
+    \draw[-]  (e)  -- (b);
+    \draw[-]  (e)  -- (c);
+    \draw[-]  (c)  -- (f);
+    \draw[-]  (d)  -- (g);
+    \draw[-]  (f)  -- (g);
+    \draw[-]  (e)  -- (h);
+    \draw[-]  (f)  -- (i);
   \end{tikzpicture}
   }
   \caption{Anarchy}\label{fig:anarchy_topology}
 \end{subfigure}
-\caption{Hierarchic and anarchic topologies.\todo[redo figures, add stages to identify power]{}}\label{fig:hierarchic_anarchic}
+\caption{Hierarchic and anarchic topologies. \\Bigger nodes represent more power/influence over others.}\label{fig:hierarchic_anarchic}
 \end{figure}
 
 
-Sometimes the hierarchical structure may be implied by the decomposition. For instance, some decompositions (\todo[exemplos de sequential dado em ChristofidesEtAl2013]{Citation?}) need the agents to solve their problems one after the other until the values converge (Fig.~\ref{fig:sequential_topology}).
+Sometimes the hierarchical structure may be implied by the decomposition.
+\\For instance, some decompositions need the agents to solve their problems one after the other until the values converge (Fig.~\ref{fig:sequential_topology})~\cite{LiuEtAl2009a}.
 These schemes are called \emph{sequential}.
 We can see a hierarchy among the agents, since although a convergence is reached, one group of agents solve their problems disregard the others, giving them an initial position of power, even if temporary.
-In other decompositions (\todo[exemplos de parallel dado em ChristofidesEtAl2013]{Citation?}), all agents solve their problems independently of others and then share results until convergence is reached, iteratively or not (Fig.~\ref{fig:parallel_topology}).
+\\In other decompositions, all agents solve their problems independently of others and then share results until convergence is reached, iteratively or not (Fig.~\ref{fig:parallel_topology})~\cite{LiuEtAl2010}.
 These structures are called \emph{parallel}.
 In such structures there is no hierarchy.
 
@@ -218,27 +336,39 @@ Some other political/societal parallel views are stablished in~\cite{McNamaraEtA
     \node[minimum width=0.2cm,right     =of k] (l)  {};
     \node[minimum width=0.2cm,right     =of l] (m)  {};
 
-    \draw[-latex] (a) -- (e);
-    \draw[-latex] (a) -- (g);
-    \draw[-latex] (b) -- (e);
-    \draw[-latex] (b) -- (f);
-    \draw[-latex] (c) -- (e);
-    \draw[-latex] (c) -- (f);
-    \draw[-latex] (c) -- (g);
-    \draw[-latex] (d) -- (g);
-    \draw[-latex] (e) -- (h);
-    \draw[-latex] (e) -- (i);
-    \draw[-latex] (e) -- (j);
-    \draw[-latex] (e) -- (l);
-    \draw[-latex] (f) -- (i);
-    \draw[-latex] (f) -- (j);
-    \draw[-latex] (f) -- (k);
-    \draw[-latex] (f) -- (l);
-    \draw[-latex] (g) -- (m);
+    \draw[-] (a) -- (e);
+    \draw[-] (a) -- (g);
+    \draw[-] (b) -- (e);
+    \draw[-] (b) -- (f);
+    \draw[-] (c) -- (e);
+    \draw[-] (c) -- (f);
+    \draw[-] (c) -- (g);
+    \draw[-] (d) -- (g);
+    \draw[-] (e) -- (h);
+    \draw[-] (e) -- (i);
+    \draw[-] (e) -- (j);
+    \draw[-] (e) -- (l);
+    \draw[-] (f) -- (i);
+    \draw[-] (f) -- (j);
+    \draw[-] (f) -- (k);
+    \draw[-] (f) -- (l);
+    \draw[-] (g) -- (m);
   \end{tikzpicture}
   }
   \caption{A polytree.}\label{fig:polytree_topology}
 \end{figure}
+
+\subsection{How do they communicate?}
+Depending on the problem and the structure, the connection of the nodes can be unidirectional or bidirectional.
+While edges are mode simple to deal, arcs may need some more convoluted ways to prove that the two nodes can communicate (present an alternate path between the two nodes).
+In this work we suppose nodes communicate bidirectionally.
+
+communicate synchronously or asynchronously.
+
+Broadcast, and gossiping
+
+
+In this work we suppose the nodes communicate synchronously.
 
 \subsection{Some drawbacks and compromises}\label{sec:drawbacks}
 
