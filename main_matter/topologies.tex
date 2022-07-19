@@ -54,14 +54,31 @@ In the literature, it is not unusual to assume that we can choose the computing 
 So, in this work we also use this assumption.
 Then, the terms sub-problems, sub-systems and agents will be used interchangeably.
 
-\section{Representing networks}
-To represent and better visualize the agents and how they interconnect, we will use graphs. In this section we present a brief introduction on graphs.
+\section{Do the computing units communicate?}
+
+As shown in Section~\ref{sec:decomposable_problems}, the only case where communication is not needed to solve the optimization problem is in the uncoupled case (\S~\ref{sec:uncoupled_problems}).
+However, there are some decomposition methods for the \dmpc\ that even with coupled problems, they exploit the robustness properties of the MPC to compute the solution without communication~\cite{VahidNaghaviEtAl2014}.
+For the decomposition of some optimization problems, it is shown that in certain circumstances the communication is not necessary~\cite{VoulgarisElia2022}.
+\begin{remark}
+  Usually in \dmpc\ literature the term «decentralized» refers to frameworks where the agents do not communicate~\cite[\S 4]{ChristofidesEtAl2013},\cite{NegenbornMaestre2014}.
+  The term can sometimes be confusing and be used even if the agents coordinate themselves.
+  In this work we propose a different nomenclature, calling those kinds of frameworks as «uncoordinated control», since there is no coordination between agents nor a coordinator agent to referee. We use the term decentralized as opposed to centralized (monolithic), i.e. to describe structure instead of communication.
+\end{remark}
+
+The most part of the literature uses \emph{coordinated control}~\cite{NegenbornMaestre2014, ArauzEtAl2021}, in this work, analogously, we will use a decomposition method where the agents need to communicate.
+
+\section{Representing communication}
+
+To represent and better visualize the agents and how they communicate, we will use graphs. In this section we present a brief introduction on graphs.
 The fundamental unit on graph theory is a vertex/node (Fig.~\ref{fig:node}), which for us will represent an agent.
 \begin{figure}[h]
   \centering
+  \scalebox{1.25}
+  {
   \begin{tikzpicture}[node distance=1cm and .5cm,inner sep=1pt]
     \node[draw,circle] (first) at (0,0) {$v_{1}$};
   \end{tikzpicture}
+  }
   \caption{A vertex/node.}\label{fig:node}
 \end{figure}
 
@@ -159,30 +176,48 @@ We can define a neighbor subgraph $\graph{N}(v)$ of $\graph{G}$ with the neighbo
   \scalebox{1.5}{
     \begin{tikzpicture}
       \graph[clockwise,n=7]{
-        {1[emphgraphcolor],2[emphgraphcolor],3[emphgraphcolor],4[emphgraphcolor],5,6[emphgraphcolor],7},
+        {1[emphgraphcolor,thick],2[emphgraphcolor,thick],3[emphgraphcolor,thick],4[emphgraphcolor,thick],5,6[emphgraphcolor,thick],7},
         {1,2,3} -- 7,
-        {1,2,3} --[emphgraphcolor] 6,
+        {1,2,3} --[emphgraphcolor,thick] 6,
         {1,5} -- 4,
-        6 --[emphgraphcolor] 4,
+        6 --[emphgraphcolor,thick] 4,
       };
     \end{tikzpicture}
     }
-  \caption{Directed and undirected graphs with 7 vertices.}\label{fig:neighbor_subgraph}
+  \caption{Graph in Fig.~\ref{fig:undirected_graph} overlayed by neighbor subgraph of vertex $6$ (in red).}\label{fig:neighbor_subgraph}
 \end{figure}
 
-\section{Do the computing units communicate?}
+For directed graphs the notion of neighborhood can be expanded into in and out neighborhoods of a vertex ($\set{N}_{\text{in}}$ and $\set{N}_{\text{out}}$), which are the sets of vertices whose arcs are inbound and outbound, respectively.
+A graph which all vertices are neighbors are called \emph{complete graph} (as in Fig.~\ref{fig:complete_graph}).
 
-As shown in Section~\ref{sec:decomposable_problems}, the only case where communication is not needed to solve the optimization problem is in the uncoupled case (\S~\ref{sec:uncoupled_problems}).
-However, there are some decomposition methods for the \dmpc\ that even with coupled problems, they exploit the robustness properties of the MPC to compute the solution without communication~\cite{VahidNaghaviEtAl2014}.
-For the decomposition of some optimization problems, it is shown that in certain circumstances the communication is not necessary~\cite{VoulgarisElia2022}.
-\begin{remark}
-  Usually in \dmpc\ literature the term «decentralized» refers to frameworks where the agents do not communicate~\cite[\S 4]{ChristofidesEtAl2013},\cite{NegenbornMaestre2014}.
-  The term can sometimes be confusing and be used even if the agents coordinate themselves.
-  In this work we propose a different nomenclature, calling those kinds of frameworks as «uncoordinated control», since there is no coordination between agents nor a coordinator agent to referee. We use the term decentralized as opposed to centralized (monolithic), i.e. to describe structure instead of communication.
-\end{remark}
+\begin{figure}[h]
+    \centering
+    \scalebox{1.5}{
+    \begin{tikzpicture}
+      \graph { subgraph K_n [--,n=6,clockwise],
+      };
+    \end{tikzpicture}
+      }
+    \caption{A complete graph with 6 vertices.}\label{fig:complete_graph}
+\end{figure}
 
-The most part of the literature uses \emph{coordinated control}~\cite{NegenbornMaestre2014, ArauzEtAl2021}, in this work, analogously, we will use a decomposition method where the agents need to communicate.
+A path is a sequence of edges/arcs connecting two vertices. In Fig.~\ref{fig:a_path} we can see a path between vertices $1$ and $5$.
 
+\begin{figure}[h]
+  \centering
+  \scalebox{1.5}{
+    \begin{tikzpicture}
+      \graph[clockwise,n=7]{
+        {1,2,3,4,5,6,7},
+        {1,2,3} -- 7,
+        {1,2,3} -- 6,
+        {1,5} --[emphgraphcolor,thick] 4,
+        6 -- 4,
+      };
+    \end{tikzpicture}
+    }
+  \caption{A path between vertices $1$ and $5$ (in red).}\label{fig:a_path}
+\end{figure}
 
 \section{How do they influence each other?}
 
@@ -359,16 +394,16 @@ Some other political/societal parallel views are stablished in~\cite{McNamaraEtA
 \end{figure}
 
 \subsection{How do they communicate?}
-Depending on the problem and the structure, the connection of the nodes can be unidirectional or bidirectional.
-While edges are mode simple to deal, arcs may need some more convoluted ways to prove that the two nodes can communicate (present an alternate path between the two nodes).
-In this work we suppose nodes communicate bidirectionally.
+Depending on the problem and the structure, the connection of the nodes can be unidirectional or bidirectional. As said, these connections are represented by arcs and edges as shown in Fig.~\ref{fig:arc_edges}.
+While edges are usually more simple to deal, arcs may need some more convoluted ways to prove that the two nodes can communicate, or that the algorithm converge~\cite{GarinSchenato2010}.
 
-communicate synchronously or asynchronously.
+Another classification of the communication is about the synchronization of the exchanges. Agents can exchange simultaneously (synchronously), or not. In general synchronous communication is the most straightforward, while asynchronous depends on the communication scheme/policy. Broadcast and gossiping~\cite{GarinSchenato2010} are examples of these communication scheme.
+\\In the broadcast scheme, an agent transmits its information to all its out-neighbors ($\set{N}_{\text{out}}$) and each recipient agent updates its local variables.
+\\Gossiping can be divided into two, asymmetric and symmetric.
+In the asymmetric an agent chooses one of its out-neighbors, sends its information, and the recipient updates its local variables on the arrival of the message.
+On the other hand, in a symmetric case we assume bidirectional communication, i.e., after updating its variables, the recipient becomes a transmitter and sends its information to the original sender, who updates its local variables.
 
-Broadcast, and gossiping
-
-
-In this work we suppose the nodes communicate synchronously.
+\todo{In this work we suppose nodes communicate bidirectionally and synchronously.}
 
 \subsection{Some drawbacks and compromises}\label{sec:drawbacks}
 
@@ -378,7 +413,38 @@ If a small number of the intermediary or most highly nodes in the hierarchical t
 On the other hand, for non-hierarchical structures, the system only perish if the majority of the nodes is inoperative or compromised, since there can be diffirent paths to link two nodes.
 
 \paragraph{Propagation of information}
-It is known that for non-hierarchical structure that propagation of some information depends on the connectivity of the graphs, that means, to how many nodes each node is connected.
+It is known that for non-hierarchical structure, which not necessarily have a star or tree-shaped topology, the propagation of information depends on the connectivity of the graphs, that means, to the neighborhood of each node.
+For instance, for a network with ring topology (Fig.~\ref{fig:ring_topology}) the more agents there are, more the information takes to be diffused for all nodes.
+On the other hand, in a small-world topology (Fig.~\ref{fig:smallworld_topology}), where there are some hubs (in red) propagation is increased.
+
+\begin{figure}[h]
+  \begin{subfigure}[t]{.45\textwidth}
+    \centering
+    \scalebox{1.5}{
+    \begin{tikzpicture}
+      \graph { subgraph C_n [--,n=10, empty nodes,nodes={inner sep=2.5pt}, clockwise],
+      };
+    \end{tikzpicture}
+    }
+    \caption{Ring graph.}\label{fig:ring_topology}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{.45\textwidth}
+    \centering
+    \scalebox{1.5}{
+    \begin{tikzpicture}
+      \graph[clockwise,n=10,empty nodes,nodes={inner sep=2.5pt}]{
+        {1[emphgraphcolor,thick],2,3,4,5,6[emphgraphcolor,thick],7,8,9,10},
+        {1 -- 2 -- 3 -- 4 -- 5 -- 6 -- 7 -- 8 -- 9 -- 10 -- 1},
+        {1 -- {3,7,8}},
+        {6 -- {9,10,4}},
+      };
+    \end{tikzpicture}
+    }
+    \caption{Small-world graph.}\label{fig:smallworld_topology}
+  \end{subfigure}
+  \caption{Ring an small-world graphs.}
+\end{figure}
 
 \paragraph{Energy consumption and Environment}
 To overcome the problem of trust in anarchic (peer-to-peer) structures, a solution based on cryptography recently in vogue called \emph{blockchain} was proposed~\cite{Nakamoto2008}.
