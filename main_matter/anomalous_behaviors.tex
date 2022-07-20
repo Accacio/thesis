@@ -2,7 +2,7 @@
 
 \begin{document}
 
-\chapter[Anomalous Behaviors - Causes and Protecting against]{Anomalous Behaviors:\\ Causes and Protecting against}\label{sec:anomalous}
+\chapter[Anomalous Behaviors \& Security]{Anomalous Behaviors\\\&\\ Security}\label{sec:anomalous}
 
 
 \epigraph{``What the hell is going on with our equipment?''
@@ -37,7 +37,7 @@ That's why we are interested in assuring the normal operation of such systems.
 Security alludes to the safe and reliable operation of a system even under unexpected circumstances, such faults and attacks.
 To understand security of \cps{}, we can first borrow some definitions from cyber-security and then extend them to \cps{}.
 
-Computer systems are usually described in terms of data and resources, and \emph{cyber-security} is ensured by three pillars: \CIA{} of such components~\cite{Bishop2002}.
+Computer systems are usually described in terms of data and resources, and \emph{cyber-security} is ensured by three pillars: \CIA{} of such components~\cite{Bishop2005}.
 
 \paragraph{Confidentiality} refers to how undisclosed the data and resources are.
 Sometimes parts of the system need to be secret and only accessible for a selected group.
@@ -48,7 +48,7 @@ For example, a new equipment is more trustworthy than an old one. For data traff
 
 \paragraph{Availability} relates to how accessible to use the data and resources are when desired.
 For example, if one control is given to a system, it should be applied to it, and equally, if we need data from a sensor, it must be able to send it.
-Furthermore, it is always good to call attention to, as exposed in~\cite{Bishop2002}, that ``an unavailable system is at least as bad as no system at all''.
+Furthermore, it is always good to call attention to, as exposed in~\cite{Bishop2005}, that ``an unavailable system is at least as bad as no system at all''.
 \\~\\
 The vulnerabilities of a system can compromise any of the three pillars, sometimes multiple at the same time. So, let us explore the sources of the vulnerabilities in \cps{}.
 
@@ -70,8 +70,27 @@ It is worth emphasizing that in a \iot{} context, almost all sensors and actuato
 
 Attackers can discover some of those vulnerabilities and use them in their favor. Due to this adversary behavior, in this work we will concentrate on attacks, mentioning faults eventually.
 
-\section{Attacks}\label{sec:attacks}
-Using the \CIA{}, It is possible~\cite{TeixeiraEtAl2015}
+\section{Attacks in \cps{}}\label{sec:attacks}
+
+From the definition of cyber-attacks~\cite{Bishop2005} and other
+definitions used in this chapter, we can define an attack as an ill-intentioned action which uses vulnerabilities of a cyber-physical system to violate its security.
+The perpetrator of the action is called attacker.
+
+In a computer context~\cite{Bishop2005}, \Citeauthor{Bishop2005} divides cyber-attacks into ``four broad classes'':
+disclosure, deception, disruption and usurpation.
+\textbf{Disclosure} is the unauthorized access to information.
+\textbf{Deception} tries to deceit making false data pass as true.
+\textbf{Disruption} interrupts or prevents the system to work correctly. And \textbf{usurpation} is the unauthorized control of the system.
+
+In networked control systems~\cite{AminEtAl2009}, the authors divided attacks into only two \textbf{deception} and \textbf{denial of service}, which is equivalent to disruption.
+
+While presumably those definitions may also work for \cps{}, in~\cite{TeixeiraEtAl2015} the authors emphasize the control and physical aspects of \cps{} (sensors, actuators, model dynamics etc) which can be useful for the attacker.
+So to categorize aspects they proposed an attack space based on 3 dimensions: Model Knowledge, Disruption resources and disclosure resources.
+
+
+But in~\cite{TeixeiraEtAl2015}, the authors recover the \CIA{} pillars and categorizes cyber
+
+\cite{DibajiEtAl2019} and ~ use a categorization close to the \CIA{}. It is possible
 \todo{model 3 axis of cyber-physical attack space}
 
 use as base
@@ -115,7 +134,7 @@ which can achieve graceful degradation
 
 
 \todo{remove}
-Some techniques can be applied to create attack/fault-tolerant systems or to robustify the systems against them.\cite{SatchidanandanKumar2017}
+Some techniques can be applied to create attack/fault-tolerant systems or to robustify the systems against them\cite{DingEtAl2018,SatchidanandanKumar2017}
 
 Due to some similarities, depending on where on the system they happen, some defense techniques based on robustness used for faults may also be used for attacks~\cite{TeixeiraEtAl2015}.
 
@@ -131,10 +150,10 @@ First thing is to assess the risks and see what parts of you system your trust, 
 ~\\To prevent anomalous behaviors, we secure components that we see as a possible threat due its vulnerabilities.
 \\Here we can give some examples.
 Tampering of the physical components can be prevented by enclosing them by walls and doors with access control whenever possible~\cite{DingEtAl2018}, preventing the attacker to approach such components.
-Faults due to deterioration are prevented usually by a periodical preventive maintenance \todo{citation??}, and substitution of deteriorated components by new ones.
+Faults due to deterioration are prevented usually by a periodical preventive maintenance~\cite{ChenEtAl2021}, and substitution of deteriorated components by new ones.
 Attacks and faults caused by software vulnerabilities may be prevented by corrective \emph{patches} that are sent to all users of the software to correct the bugs, or even by software rejuvenation~\cite{GriffioenEtAl2020}, where the system is refreshed with a trusted copy of the original, in case there is a chance it was corrupted.
 For communication/transmission, we increase the robustness of the mean, by using better cables with insulation and braided shields for example.
-To secure exchanges usually cryptography is used to ensure data integrity and authenticity of agents.
+To secure exchanges usually cryptography is used to ensure data integrity and authenticity of agents~\cite{DingEtAl2018}.
 
 \paragraph{Detection}
 Use some system knowledge to recognize an anomalous behavior.
