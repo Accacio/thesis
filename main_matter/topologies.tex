@@ -123,8 +123,8 @@ The connection between nodes is represented by arcs and edges. While arcs are an
 \caption{Arcs and edges.}\label{fig:arc_edges}
 \end{figure}
 
-A (undirected) graph $\graph{G}$ is a tuple composed of a set of vertices $\set{V}$ and a set of edges $\set{E}$, written ${\graph{G}=(\set{V},\set{E})}$.
-Similarly a directed graph $\graph{G}$ is composed of a set of vertices and a set of arcs $\set{A}$, written ${\graph{G}=(\set{V},\set{A})}$.
+A (undirected) graph $\graph{G}$ is a tuple composed of a set of vertices $\set{V}$ and a set of edges ${\set{E}\subseteq\set{V}\times\set{V}}$, written ${\graph{G}=(\set{V},\set{E})}$.
+Similarly a directed graph $\graph{G}$ is composed of a set of vertices and a set of arcs ${\set{A}\subseteq\set{V}\times\set{V}}$, written ${\graph{G}=(\set{V},\set{A})}$.
 In Fig.~\ref{fig:directed_undirected_graphs} we can see examples of directed and undirected graphs.
 
 \begin{figure}[h]
