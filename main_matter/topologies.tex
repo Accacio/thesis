@@ -54,19 +54,6 @@ In the literature, it is not unusual to assume that we can choose the computing 
 So, in this work we also use this assumption.
 Then, the terms sub-problems, sub-systems and agents will be used interchangeably.
 
-\section{Do the computing units communicate?}
-
-As shown in Section~\ref{sec:decomposable_problems}, the only case where communication is not needed to solve the optimization problem is in the uncoupled case (\S~\ref{sec:uncoupled_problems}).
-However, there are some decomposition methods for the \dmpc\ that even with coupled problems, they exploit the robustness properties of the MPC to compute the solution without communication~\cite{VahidNaghaviEtAl2014}.
-For the decomposition of some optimization problems, it is shown that in certain circumstances the communication is not necessary~\cite{VoulgarisElia2022}.
-\begin{remark}
-  Usually in \dmpc\ literature the term «decentralized» refers to frameworks where the agents do not communicate~\cite[\S 4]{ChristofidesEtAl2013},\cite{NegenbornMaestre2014}.
-  The term can sometimes be confusing and be used even if the agents coordinate themselves.
-  In this work we propose a different nomenclature, calling those kinds of frameworks as «uncoordinated control», since there is no coordination between agents nor a coordinator agent to referee. We use the term decentralized as opposed to centralized (monolithic), i.e. to describe structure instead of communication.
-\end{remark}
-
-The most part of the literature uses \emph{coordinated control}~\cite{NegenbornMaestre2014, ArauzEtAl2021}, in this work, analogously, we will use a decomposition method where the agents need to communicate.
-
 \section{Representing communication}
 
 To represent and better visualize the agents and how they communicate, we will use graphs. In this section we present a brief introduction on graphs.
@@ -82,10 +69,11 @@ The fundamental unit on graph theory is a vertex/node (Fig.~\ref{fig:node}), whi
   \caption{A vertex/node.}\label{fig:node}
 \end{figure}
 
-The connection between nodes is represented by arcs and edges. While arcs are an ordered pair of vertices, such as ${a=(v_{1},v_{2})}$, indicating a direction, edges are an unorderd pair, not implying direction, as ${e=\{v_{1},v_{2}\}}$. Sometimes the arrow tips of edges are suppressed to improve visibility. In Fig.~\ref{fig:arc_edges} we can see edges and arcs.
+The connection between nodes is represented by arcs and edges. While arcs are an ordered pair of vertices, such as ${a=(v_{1},v_{2})}$, indicating a direction, edges are an unorderd pair, not implying direction, as ${e=\{v_{1},v_{2}\}}$.
+In Fig.~\ref{fig:arc_edges} we can see edges and arcs.
 
 \begin{figure}[h]
-\begin{subfigure}[t]{.3\textwidth}
+\begin{subfigure}[t]{.45\textwidth}
   \centering
   \scalebox{1.25}{
   \begin{tikzpicture}
@@ -97,19 +85,7 @@ The connection between nodes is represented by arcs and edges. While arcs are an
   \caption{An arc.}
 \end{subfigure}
 \hfill
-\begin{subfigure}[t]{.3\textwidth}
-  \centering
-    \scalebox{1.25}{
-  \begin{tikzpicture}
-    \graph {
-      a/$v_{1}$ <->["$e$"] b/$v_{2}$
-    };
-  \end{tikzpicture}
-  }
-  \caption{An edge.}
-\end{subfigure}
-\hfill
-\begin{subfigure}[t]{.3\textwidth}
+\begin{subfigure}[t]{.45\textwidth}
   \centering
     \scalebox{1.25}{
   \begin{tikzpicture}
@@ -118,13 +94,14 @@ The connection between nodes is represented by arcs and edges. While arcs are an
     };
   \end{tikzpicture}
   }
-  \caption{An edge. \\(tips suppressed)}
+  \caption{An edge.}
 \end{subfigure}
 \caption{Arcs and edges.}\label{fig:arc_edges}
 \end{figure}
 
-A (undirected) graph $\graph{G}$ is a tuple composed of a set of vertices $\set{V}$ and a set of edges ${\set{E}\subseteq\set{V}\times\set{V}}$, written ${\graph{G}=(\set{V},\set{E})}$.
-Similarly a directed graph $\graph{G}$ is composed of a set of vertices and a set of arcs ${\set{A}\subseteq\set{V}\times\set{V}}$, written ${\graph{G}=(\set{V},\set{A})}$.
+A directed graph $\graph{G}$ is composed of a set of vertices and a set of arcs ${\set{A}\subseteq\set{V}\times\set{V}}$, written ${\graph{G}=(\set{V},\set{A})}$.
+Similarly, an undirected graph $\graph{G}$ is a tuple composed of a set of vertices $\set{V}$ and a set of edges ${\set{E}\subseteq\set{V}\times\set{V}}$, written ${\graph{G}=(\set{V},\set{E})}$.
+An undirected graph can be interpreted as a directed graph where each edge $\{v_{i},v_{j}\}$ can be split into two arcs $(v_{i},v_{j})$ and $(v_{j},v_{i})$.
 In Fig.~\ref{fig:directed_undirected_graphs} we can see examples of directed and undirected graphs.
 
 \begin{figure}[h]
@@ -164,8 +141,8 @@ In Fig.~\ref{fig:directed_undirected_graphs} we can see examples of directed and
     \caption{Directed and undirected graphs with 7 vertices.}\label{fig:directed_undirected_graphs}
 \end{figure}
 
-Two vertices are called adjacent or neighbours if there is an edge linking them.
-The neighbourhood $\set{N}$ of a vertex is all the vertices to which it is linked.
+In an undirected graph two vertices are called adjacent or neighbours if there is an edge linking them.
+The neighbourhood $\set{N}$ of a vertex is the set of all the vertices to which it is linked.
 We can define a neighbor subgraph $\graph{N}(v)$ of $\graph{G}$ with the neighbors of $v$ and the edges connecting them. For example, taking the graph in Fig.~\ref{fig:undirected_graph}, we can overlay the neighbor subgraph of vertex $6$ in red (Fig.~\ref{fig:neighbor_subgraph}).
 
 \definecolor{emphgraphcolor}{RGB}{232,232,232}
@@ -187,21 +164,21 @@ We can define a neighbor subgraph $\graph{N}(v)$ of $\graph{G}$ with the neighbo
   \caption{Graph in Fig.~\ref{fig:undirected_graph} overlayed by neighbor subgraph of vertex $6$ (in red).}\label{fig:neighbor_subgraph}
 \end{figure}
 
-For directed graphs the notion of neighborhood can be expanded into in and out neighborhoods of a vertex ($\set{N}_{\text{in}}$ and $\set{N}_{\text{out}}$), which are the sets of vertices whose arcs are inbound and outbound, respectively.
-A graph which all vertices are neighbors are called \emph{complete graph} (as in Fig.~\ref{fig:complete_graph}).
+For directed graphs the notion of neighborhood can be split into in and out-neighborhoods of a vertex ($\set{N}_{\text{in}}$ and $\set{N}_{\text{out}}$), which are the sets of vertices whose arcs are inbound and outbound, respectively.
+A graph that all vertices are neighbors is called a \emph{complete graph} (as in Fig.~\ref{fig:complete_graph}).
 
 \begin{figure}[h]
     \centering
     \scalebox{1.5}{
     \begin{tikzpicture}
-      \graph { subgraph K_n [--,n=6,clockwise],
+      \graph { subgraph K_n [--,n=6,clockwise,empty nodes,nodes={inner sep=4pt}],
       };
     \end{tikzpicture}
       }
     \caption{A complete graph with 6 vertices.}\label{fig:complete_graph}
 \end{figure}
 
-A path is a sequence of edges/arcs connecting two vertices. In Fig.~\ref{fig:a_path} we can see a path between vertices $1$ and $5$.
+A path of length $r$ is a sequence of $r$ edges/arcs connecting two vertices. In Fig.~\ref{fig:a_path} we can see a path of length $2$ between vertices $1$ and $5$.
 
 \begin{figure}[h]
   \centering
@@ -218,6 +195,39 @@ A path is a sequence of edges/arcs connecting two vertices. In Fig.~\ref{fig:a_p
     }
   \caption{A path between vertices $1$ and $5$ (in red).}\label{fig:a_path}
 \end{figure}
+
+A graph that for all pairs of vertices there is a path is called \emph{connected}, otherwise \emph{disconnected} or \emph{disjoint} (Fig.~\ref{fig:disjoint}).
+
+\begin{figure}[h]
+  \centering
+  \scalebox{1.5}{
+    \begin{tikzpicture}
+      \graph[clockwise,n=7,empty nodes,nodes={inner sep=4pt}]{
+        {1,2,3,4,5,6,7},
+        {1,2} -- 7,
+        {1,2} -- 6,
+        {5} -- 4,
+      };
+    \end{tikzpicture}
+    }
+  \caption{A disjoint graph.}\label{fig:disjoint}
+\end{figure}
+
+
+
+
+\section{Do the computing units communicate?}
+
+As shown in Section~\ref{sec:decomposable_problems}, the only case where communication is not needed to solve the optimization problem is in the uncoupled case (\S~\ref{sec:uncoupled_problems}).
+However, there are some decomposition methods for the \dmpc\ that even with coupled problems, they exploit the robustness properties of the MPC to compute the solution without communication~\cite{VahidNaghaviEtAl2014}.
+For the decomposition of some optimization problems, it is shown that in certain circumstances the communication is not necessary~\cite{VoulgarisElia2022}.
+\begin{remark}
+  Usually in \dmpc\ literature the term «decentralized» refers to frameworks where the agents do not communicate~\cite[\S 4]{ChristofidesEtAl2013},\cite{NegenbornMaestre2014}.
+  But the term can be confusing and even in this works it is sometimes ``misused''.
+  So, in this work we opt for a different nomenclature, calling those kinds of frameworks as «uncoordinated control», since there is no coordination between agents nor a coordinator agent to referee. We use the term decentralized as opposed to centralized (monolithic), i.e.\ to describe structure instead of communication.
+\end{remark}
+
+The most part of the literature uses \emph{coordinated control}~\cite{NegenbornMaestre2014, ArauzEtAl2021}, in this work, analogously, we suppose the agents communicate and the communication graph is connected.
 
 \section{How do they influence each other?}
 
@@ -395,25 +405,30 @@ Some other political/societal parallel views are stablished in~\cite{McNamaraEtA
 
 \section{How do they communicate?}
 Depending on the problem and the structure, the connection of the nodes can be unidirectional or bidirectional. As said, these connections are represented by arcs and edges as shown in Fig.~\ref{fig:arc_edges}.
-While edges are usually more simple to deal, arcs may need some more convoluted ways to prove that the two nodes can communicate, or that the algorithm converge~\cite{GarinSchenato2010}.
+While edges are usually more simple to deal, arcs may need some more convoluted ways to prove that the two nodes can somehow communicate (if there is a path between them), or that the algorithm converge~\cite{GarinSchenato2010}.
 
 Another classification of the communication is about the synchronization of the exchanges. Agents can exchange simultaneously (synchronously), or not. In general synchronous communication is the most straightforward, while asynchronous depends on the communication scheme/policy. Broadcast and gossiping~\cite{GarinSchenato2010} are examples of these communication scheme.
-\\In the broadcast scheme, an agent transmits its information to all its out-neighbors ($\set{N}_{\text{out}}$) and each recipient agent updates its local variables.
+\\In the broadcast scheme (a unidirectional scheme), an agent transmits its information to all its out-neighbors ($\set{N}_{\text{out}}$) and each recipient agent updates its local variables.
 \\Gossiping can be divided into two, asymmetric and symmetric.
-In the asymmetric an agent chooses one of its out-neighbors, sends its information, and the recipient updates its local variables on the arrival of the message.
-On the other hand, in a symmetric case we assume bidirectional communication, i.e., after updating its variables, the recipient becomes a transmitter and sends its information to the original sender, who updates its local variables.
+In the asymmetric (unidirectional), an agent chooses one of its out-neighbors, sends its information, and the recipient updates its local variables on the arrival of the message.
+On the other hand, in a symmetric case (bidirectional), after updating its variables, the recipient becomes a transmitter, sending its information to the original sender, who updates its local variables.
 
 \todo{In this work we suppose nodes communicate bidirectionally and synchronously.}
 
 \section{Some drawbacks and compromises}\label{sec:drawbacks}
 
-\paragraph{Failure}
-Although the hierarchical structure can help reducing the sources of distrust, it also reduce responsitivity and robustness.
-If a small number of the intermediary or most highly nodes in the hierarchical tree are inoperative, there is a possibility that the complete system collapses since the communications will not be accomplished, this problem is commonly known as the \emph{single point of failure}, which can be deviated by the use of redundancy.
-On the other hand, for non-hierarchical structures, the system only perish if the majority of the nodes is inoperative or compromised, since there can be diffirent paths to link two nodes.
+\paragraph{Failure/Robustness}
+Although the hierarchical structure can help reducing the sources of distrust, it may also reduce robustness.
+Take for example the graph in Fig.~\ref{fig:polytree_topology}, if we remove the $3$ intermediary nodes, the hierarchical tree becomes disconnected.
+There is a possibility that the complete system collapses since the communications will not be accomplished.
+For decentralized systems with a central unit, this problem is commonly referenced as the \emph{single point of failure}, since removing the central unit collapses the communication and moves the system to a failure state.
+This problem is usually deviated by the use of redundancy.
+On the other hand, for non-hierarchical structures with more complex topologies than tree-like, they can be more robust.
+In graph theory there is what is called f-robustness~\cite{DibajiIshii2015}, which defines how many connections we have to remove to make the graph disconnected.
+This definition, as we will see can be used in favor of some decomposition techniques to ensure robustness.
 
 \paragraph{Propagation of information}
-It is known that for non-hierarchical structure, which not necessarily have a star or tree-shaped topology, the propagation of information depends on the connectivity of the graphs, that means, to the neighborhood of each node.
+It is known that the propagation of information depends on the connectivity of the graphs, that means, to the neighborhood of each node.
 For instance, for a network with ring topology (Fig.~\ref{fig:ring_topology}) the more agents there are, more the information takes to be diffused for all nodes.
 On the other hand, in a small-world topology (Fig.~\ref{fig:smallworld_topology}), where there are some hubs (in red) propagation is increased.
 
