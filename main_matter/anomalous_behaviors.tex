@@ -2,7 +2,7 @@
 
 \begin{document}
 
-\chapter[Anomalous Behaviors \& Security]{Anomalous Behaviors\\\&\\ Security}\label{sec:anomalous}
+\chapter[Anomalous Behaviors \& Security]{Anomalous Behaviors\\and\\ Security}\label{sec:anomalous}
 
 
 \epigraph{``What the hell is going on with our equipment?''
@@ -15,7 +15,7 @@ In this chapter, we discuss briefly the causes of anomalous behaviors, how they 
 
 \minitoc%
 
-\section{Definition and types}
+\section{What are anomalous behaviors?}
 We define \emph{anomalous behaviors} as any non-expected (change of) behavior of a system.
 
 There are two primary causes for a system not to perform as nominally expected: \emph{faults} and \emph{attacks}.
@@ -34,7 +34,7 @@ aspects of modern life, as water and energy supply.
 That's why we are interested in assuring the normal operation of such systems.
 
 \section{Security}\label{sec:security}
-Security alludes to the safe and reliable operation of a system even under unexpected circumstances, such faults and attacks.
+Security alludes to the safe and reliable operation of a system even under unexpected circumstances, such as faults and attacks.
 To understand security of \cps{}, we can first borrow some definitions from cyber-security and then extend them to \cps{}.
 
 Computer systems are usually described in terms of data and resources, and \emph{cyber-security} is ensured by three pillars: \CIA{} of such components~\cite{Bishop2005}.
@@ -61,7 +61,7 @@ the \textbf{Software}, which is the logic used to operate the physical component
 
 ~\\Each one of the aforementioned components represents a source of vulnerability.
 \\\textbf{Transducers} can be targets of sabotage, for instance an attacker can use a cold object to disrupt thermostat readings to increase the temperature of a room. But the components may also deteriorate with time, which can eventually cause a fault.
-\textbf{Channels} and \textbf{connectors} can as well be targets of sabotage, as someone can interfere on the transmission to observe the traffic or intentionally interrupt it. But interruptions and corruptions might be caused by natural accidents such solar flares (causing radio blackouts) or as trees knocking down electricity cables or sharks eating underwater cables.
+\textbf{Channels} and \textbf{connectors} can as well be targets of sabotage, as someone can interfere on the transmission to observe the traffic to gather information or intentionally interrupt it. But interruptions and corruptions might be caused by natural accidents such solar flares (causing radio blackouts) or as trees knocking down electricity cables or sharks eating underwater cables.
 \textbf{Software} can also be a source of vulnerability due to \emph{bugs}, which can interrupt the normal functioning or even let a \emph{hacker} gain total control of the system.
 The \textbf{controller}, if not well dimensioned (computing capacity), can also be a vulnerability.
 If it receives more requisitions than expected, the system will be overloaded.
@@ -78,14 +78,138 @@ The perpetrator of the action is called attacker.
 
 In a computer context~\cite{Bishop2005}, \Citeauthor{Bishop2005} divides cyber-attacks into ``four broad classes'':
 disclosure, deception, disruption and usurpation.
-\textbf{Disclosure} is the unauthorized access to information.
-\textbf{Deception} tries to deceit making false data pass as true.
-\textbf{Disruption} interrupts or prevents the system to work correctly. And \textbf{usurpation} is the unauthorized control of the system.
+\textbf{Disclosure} is the unauthorized access to information (break of confidentiality).
+\textbf{Deception} tries to deceit making false data pass as true (break of data integrity).
+\textbf{Disruption} interrupts or prevents the system to work correctly (break of availability). And \textbf{usurpation} is the unauthorized control of the system (break of authenticity).
 
-In networked control systems~\cite{AminEtAl2009}, the authors divided attacks into only two \textbf{deception} and \textbf{denial of service}, which is equivalent to disruption.
+In~\cite{CardenasEtAl2008}, the authors used only the first 3, calling them Deception, Disclosure, and~\DoS{}
+In~\cite{AminEtAl2009}, the authors divided attacks into only \textbf{deception} and \textbf{denial of service}, probably because disclosure attacks do not affect performance.
 
-While presumably those definitions may also work for \cps{}, in~\cite{TeixeiraEtAl2015} the authors emphasize the control and physical aspects of \cps{} (sensors, actuators, model dynamics etc) which can be useful for the attacker.
-So to categorize aspects they proposed an attack space based on 3 dimensions: Model Knowledge, Disruption resources and disclosure resources.
+An general abstraction used for \cps{} is to divide it into communication channel, controller and the Physical system (as seen in Fig.~\ref{fig:cps_abstraction}).
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[
+    node distance=.5cm and 2cm,
+    box/.style={draw,align=center,minimum height=1.5cm,minimum width=3cm,rectangle,black},
+		]
+
+    \node[box] (plant) at (0,0) {Physical\\System};
+
+    \node[box,below=of plant] (controller) {Controller};
+
+    \draw[-latex,thick] (controller.west) -- ++(-1,0) node [midway,above] {u} |- (plant.west) ;
+
+    \draw[-latex,thick] (plant.east) -- ++(1,0) node [midway,above] {y} |- (controller.east);
+\end{tikzpicture}
+\caption{General abstraction of \cps{}. (Adpated from~\cite{CardenasEtAl2008,AminEtAl2009})}\label{fig:cps_abstraction}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[
+    node distance=.5cm and 2cm,
+    box/.style={draw,align=center,minimum height=1.5cm,minimum width=3cm,rectangle,black},
+		]
+
+    \node[box] (plant) at (0,0) {Physical\\System};
+
+    \node[box,below=of plant] (controller)  {Controller};
+
+    \node[draw,cloud,aspect=2,cloud puffs=20,below=1cm of controller] (network)  {Network};
+
+    \draw[-latex,thick] (controller.west) -- ++(-1,0) node [midway,above] {u} |- (plant.west) ;
+
+    \draw[-latex,thick] (plant.east) -- ++(1,0) node [midway,above] {y} |- (controller.east);
+
+    \draw[-latex,thick] (controller.south -| network.puff 2) -- (network.puff 2) node [midway,left] {$\mathcal{I}_{\text{out}}$};
+
+    \draw[latex-,thick] (controller.south -| network.puff 20) -- (network.puff 20) node [midway,right] {$\mathcal{I}_{\text{in}}$};
+
+\end{tikzpicture}
+\caption{General abstraction of networked \cps{}.}\label{fig:networked_cps_abstraction}
+\end{figure}
+\usetikzlibrary{circuits.ee.IEC}
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[circuit ee IEC,
+    node distance=1cm and 2cm,
+    box/.style={draw,align=center,minimum height=1.5cm,minimum width=3cm,rectangle,black},
+		]
+
+    \node[box] (plant) at (0,0) {Physical\\System};
+
+    \node[box,below=of plant] (controller)  {Controller};
+
+    \node[draw,cloud,aspect=2,cloud puffs=20,below=1.5cm of controller] (network)  {Network};
+
+    \draw[thick] (controller.west) -- ++(-1,0) node (a) {} node [midway,above] {u};
+    \draw[thick] (a.center) to[make contact] (a.center |- plant.west) node (b) {};
+    \draw[-latex,thick] (b.center) -- (plant.west);
+
+    \draw[thick] (plant.east) -- ++(1,0) node (aa) {} node [midway,above] {y};
+    \draw[thick] (aa.center) to[make contact] (aa.center |- controller.east) node (bb) {} ;
+    \draw[-latex,thick] (bb.center) -- (controller.east);
+
+    \draw[thick] (network.puff 2) node (nout) {}  to [make contact](controller.south -| network.puff 2) node (nout2) {};
+    \node[above left=-4pt and -2.5pt] at (nout) {$\mathcal{I}_{\text{out}}$};
+
+    \draw[thick] (controller.south -| network.puff 20) node (nin) {} to[make contact] (network.puff 20) node (nin2) {};
+    \node[above right=-5pt and 0pt] at (nin2) {$\mathcal{I}_{\text{in}}$};
+
+\end{tikzpicture}
+\caption{Attack in networked \cps{}.}\label{fig:attacks_networked_cps}
+\end{figure}
+\todo{um boneco para cada lugar com numeros diferentes e explicar}
+
+In~\cite{TeixeiraEtAl2015} the authors emphasize the control and physical aspects of \cps{} (sensors, actuators, model dynamics etc) and how this knowledge can be useful for the attacker. Also they emphasize how the attacks not necessarily happen purely.
+So, to categorize aspects they proposed an attack space based on 3 dimensions: Model Knowledge, Disruption resources and disclosure resources as seen in Fig.~\ref{fig:3_dimensions_attack}.
+\usetikzlibrary{3d}
+\usetikzlibrary{perspective}
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[3d view={115}{20},
+		grid/.style={very thin,gray},
+		axis/.style={-latex,thick},
+		cube/.style={very thick,fill=red},
+		cube hidden/.style={very thick,dashed}]
+
+	%draw the axes
+	\draw[axis] (0,0,0) -- (5,0,0) node[below left]{Disruption Resources};
+	\draw[axis] (0,0,0) -- (0,5,0) node (disclosure) {};
+  \node[above right=5pt and -10pt] at (disclosure) {Disclosure Resources};
+
+	\draw[axis] (0,0,0) -- (0,0,5) node[above]{Model Knowledge};
+
+	\node[fill,circle,inner sep=1.5pt,label=below:Replay] at (2,2,0) {};
+	\draw[cube hidden] (2,0,0) -- (2,2,0);
+	\draw[cube hidden] (0,2,0) -- (2,2,0);
+
+	\node[fill,circle,inner sep=1.5pt] (eavesdropping) at (0,.5,0) {};
+  \node[above right=5pt and -10pt] at (eavesdropping) {Eavesdropping};
+
+	\node[fill,circle,inner sep=1.5pt,label=above left:DoS] at (.5,0,0) {};
+
+	\node[fill,circle,inner sep=1.5pt] (covert) at (4,4,4) {};
+  \node[above right=5pt and -30pt] at (covert) {Covert};
+
+	\draw[cube hidden] (4,4,0) -- (4,4,4);
+	\draw[cube hidden] (0,4,4) -- (4,4,4);
+	\draw[cube hidden] (4,0,4) -- (4,4,4);
+
+	\draw[cube hidden] (4,4,0) -- (4,0,0);
+	\draw[cube hidden] (4,4,0) -- (0,4,0);
+
+	\draw[cube hidden] (0,4,4) -- (0,4,0);
+	\draw[cube hidden] (0,4,4) -- (0,0,4);
+
+	\draw[cube hidden] (4,0,4) -- (4,0,0);
+	\draw[cube hidden] (4,0,4) -- (0,0,4);
+\end{tikzpicture}
+\caption{Attacks space and some attacks. (Adpated from~\cite{TeixeiraEtAl2015})}
+\end{figure}
+
+But as argued in~\cite{CardenasEtAl2008}, an attacker would prefer to commit attacks A1-A4, since the attacker has less risk to be identified and not necessarily needs to by physically close to the plant, reducing also risk for injuries.
 
 
 But in~\cite{TeixeiraEtAl2015}, the authors recover the \CIA{} pillars and categorizes cyber
@@ -101,6 +225,8 @@ use as base
 https://ieeexplore.ieee.org/abstract/document/4577833
 \cite{CaiEtAl2019,ZhangEtAl2021b}
 Two typical attacks \cite{ZhangEtAl2021a}
+
+\section{Attacks in \dmpc{}}\label{sec:attacks_in_dmpc}
 
 \subsection{Types}\label{sec:types_of_attacks}
 If we use the global vision shown in \S~\ref{sec:topology_trust} we can aggregate the components shown into only two,
@@ -152,7 +278,7 @@ First thing is to assess the risks and see what parts of you system your trust, 
 \paragraph{Prevention}
 ~\\To prevent anomalous behaviors, we secure components that we see as a possible threat due its vulnerabilities.
 \\Here we can give some examples.
-Tampering of the physical components can be prevented by enclosing them by walls and doors with access control whenever possible~\cite{DingEtAl2018}, preventing the attacker to approach such components.
+Tampering of the physical components can be prevented by enclosing them by walls and doors with access control and adding monitoring cameras~\cite{CardenasEtAl2008,DingEtAl2018}, preventing the attacker to approach such components.
 Faults due to deterioration are prevented usually by a periodical preventive maintenance~\cite{ChenEtAl2021}, and substitution of deteriorated components by new ones.
 Attacks and faults caused by software vulnerabilities may be prevented by corrective \emph{patches} that are sent to all users of the software to correct the bugs, or even by software rejuvenation~\cite{GriffioenEtAl2020}, where the system is refreshed with a trusted copy of the original, in case there is a chance it was corrupted.
 For communication/transmission, we increase the robustness of the mean, by using better cables with insulation and braided shields for example.
