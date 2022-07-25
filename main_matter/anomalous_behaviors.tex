@@ -98,41 +98,16 @@ An general abstraction used for \cps{} is to divide it into communication channe
 
     \node[box,below=of plant] (controller) {Controller};
 
-    \draw[-latex,thick] (controller.west) -- ++(-1,0) node [midway,above] {u} |- (plant.west) ;
+    \draw[-latex,thick] (controller.west) -- ++(-1,0) node [midway,above] {${u}$} |- (plant.west) ;
 
-    \draw[-latex,thick] (plant.east) -- ++(1,0) node [midway,above] {y} |- (controller.east);
+    \draw[-latex,thick] (plant.east) -- ++(1,0) node [midway,above] {${y}$} |- (controller.east);
 \end{tikzpicture}
 \caption{General abstraction of \cps{}. (Adpated from~\cite{CardenasEtAl2008,AminEtAl2009})}\label{fig:cps_abstraction}
 \end{figure}
 
 \begin{figure}
   \centering
-  \begin{tikzpicture}[
-    node distance=.5cm and 2cm,
-    box/.style={draw,align=center,minimum height=1.5cm,minimum width=3cm,rectangle,black},
-		]
-
-    \node[box] (plant) at (0,0) {Physical\\System};
-
-    \node[box,below=of plant] (controller)  {Controller};
-
-    \node[draw,cloud,aspect=2,cloud puffs=20,below=1cm of controller] (network)  {Network};
-
-    \draw[-latex,thick] (controller.west) -- ++(-1,0) node [midway,above] {u} |- (plant.west) ;
-
-    \draw[-latex,thick] (plant.east) -- ++(1,0) node [midway,above] {y} |- (controller.east);
-
-    \draw[-latex,thick] (controller.south -| network.puff 2) -- (network.puff 2) node [midway,left] {$\mathcal{I}_{\text{out}}$};
-
-    \draw[latex-,thick] (controller.south -| network.puff 20) -- (network.puff 20) node [midway,right] {$\mathcal{I}_{\text{in}}$};
-
-\end{tikzpicture}
-\caption{General abstraction of networked \cps{}.}\label{fig:networked_cps_abstraction}
-\end{figure}
-\usetikzlibrary{circuits.ee.IEC}
-\begin{figure}
-  \centering
-  \begin{tikzpicture}[circuit ee IEC,
+\begin{tikzpicture}[circuit ee IEC,
     node distance=1cm and 2cm,
     box/.style={draw,align=center,minimum height=1.5cm,minimum width=3cm,rectangle,black},
 		]
@@ -143,22 +118,99 @@ An general abstraction used for \cps{} is to divide it into communication channe
 
     \node[draw,cloud,aspect=2,cloud puffs=20,below=1.5cm of controller] (network)  {Network};
 
-    \draw[thick] (controller.west) -- ++(-1,0) node (a) {} node [midway,above] {u};
-    \draw[thick] (a.center) to[make contact] (a.center |- plant.west) node (b) {};
+    \draw[thick] (controller.west) -- ++(-1,0) node (a) {} node [midway,above] {${u}$};
+    \draw[thick] (a.center) -- (a.center |- plant.west) node (b) {};
     \draw[-latex,thick] (b.center) -- (plant.west);
 
-    \draw[thick] (plant.east) -- ++(1,0) node (aa) {} node [midway,above] {y};
-    \draw[thick] (aa.center) to[make contact] (aa.center |- controller.east) node (bb) {} ;
+    \draw[thick] (plant.east) -- ++(1,0) node (aa) {} node [midway,above] {${y}$};
+    \draw[thick] (aa.center) -- (aa.center |- controller.east) node (bb) {} ;
     \draw[-latex,thick] (bb.center) -- (controller.east);
 
-    \draw[thick] (network.puff 2) node (nout) {}  to [make contact](controller.south -| network.puff 2) node (nout2) {};
-    \node[above left=-4pt and -2.5pt] at (nout) {$\mathcal{I}_{\text{out}}$};
+    \draw[latex-,thick] (controller.south -| network.puff 20) -- +(0,-.25) node (nin) {} ;
+    \draw[thick] (nin.center) -- ($(nin.center) + (0,-1)$) node (nin2) {};
+    \draw[thick] (nin2.center) -- (network.puff 20) {};
+    \node at ($(nin2)+(.45,.40)$) {$\mathcal{I}_{\text{in}}$};
 
-    \draw[thick] (controller.south -| network.puff 20) node (nin) {} to[make contact] (network.puff 20) node (nin2) {};
-    \node[above right=-5pt and 0pt] at (nin2) {$\mathcal{I}_{\text{in}}$};
+    \draw[latex-,thick] (network.puff 2) -- +(0,.25) node (nout) {} ;
+    \draw[thick] (nout.center) -- ($(nout.center) + (0,1)$) node (nout2) {};
+    \draw[thick] (nout2.center) -- ( controller.south -| network.puff 2) {};
+    \node at ($(nout)+(-.45,.5)$) {$\mathcal{I}_{\text{out}}$};
+  \end{tikzpicture}
+  \caption{General abstraction of networked \cps{}.}\label{fig:networked_cps_abstraction}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[circuit ee IEC,
+    node distance=1cm and 2cm,
+    box/.style={draw,align=center,minimum height=1.5cm,minimum width=3cm,rectangle,black},
+		]
+
+    \node[thick,box] (plant) at (0,0) {Physical\\System};
+
+    \node[thick,box,below=of plant] (controller)  {Controller};
+
+    \node[thick,draw,cloud,aspect=2,cloud puffs=20,below=2.0cm of controller] (network)  {Network};
+
+    \draw[thick] (controller.west) -- ++(-1,0) node (a) {} node [midway,below] (input) {$\tilde{u}$};
+    \draw[thick] (a.center) -- (a.center |- plant.west) node (b) {};
+    \draw[-latex,thick] (b.center) -- (plant.west);
+    \node (switch_input) at ($(a)!0.5!(b)$) {};
+
+    \draw[thick] (plant.east) -- ++(1,0) node (aa) {} node [midway,above] (output) {$\tilde{y}$};
+    \draw[thick] (aa.center) -- (aa.center |- controller.east) node (bb) {} ;
+    \draw[-latex,thick] (bb.center) -- (controller.east);
+    \node (switch_output) at ($(aa)!0.5!(bb)$) {};
+
+
+    \draw[latex-,thick] (controller.south -| network.puff 20) -- +(0,-.5) node (nin) {} ;
+    \draw[thick] (nin.center) -- ($(nin.center) + (0,-1)$) node (nin2) {};
+    \draw[thick] (nin2.center) -- (network.puff 20) {};
+    \node (info_in) at ($(nin)+(.45,-.10)$) {$\mathcal{I}_{\text{in}}$};
+
+    \draw[latex-,thick] (network.puff 2) -- +(0,.5) node (nout) {} ;
+    \draw[thick] (nout.center) -- ($(nout.center) + (0,1)$) node (nout2) {};
+    \draw[thick] (nout2.center) -- ( controller.south -| network.puff 2) {};
+    \node (info_out) at ($(nout)+(-.45,-.0)$) {$\mathcal{I}_{\text{out}}$};
+
+    \node[red,above right=1cm of aa,inner sep=1pt,align=center] (a1) {\scalebox{1.5}{\faUserSecret}};
+    \draw[-latex,thick] (a1) -- (output) node [midway,below,sloped] {A1};
+
+
+    \node[red,right=1cm of info_in,inner sep=1pt,align=center] (a3) {\scalebox{1.5}{\faUserSecret}};
+    \draw[-latex,thick] (a3) -- (info_in) node [midway,below,sloped] {A3};
+
+    \node[red,left=1cm of info_out,inner sep=1pt,align=center] (a5) {\scalebox{1.5}{\faUserSecret}};
+    \draw[-latex,thick] (a5) -- (info_out) node [midway,below,sloped] {A5};
+
+
+    \node[red,below left=1cm of a,inner sep=1pt,align=center] (a7) {\scalebox{1.5}{\faUserSecret}};
+    \draw[-latex,thick] (a7) -- (input) node [midway,below,sloped] {A7};
+
+
+    \node[red,right=.4cm of switch_output,inner sep=1pt,align=center] (a2) {\scalebox{1.5}{\faUserSecret}};
+    \node[red,inner sep=1pt,align=center] at ($(switch_output) + (.3,0)$) {\rotatebox[origin=c]{180}{\faCut}};
+    \node [above,sloped] at ($(a2) + (-.05,-.8)$) {A2};
+
+    \node[red,right=.4cm of nin2,inner sep=1pt,align=center] (a4) {\scalebox{1.5}{\faUserSecret}};
+    \node[red,inner sep=1pt,align=center] at ($(nin2) + (.3,0)$) {\rotatebox[origin=c]{180}{\faCut}};
+    \node [above,sloped] at ($(a4) + (-.05,-.8)$) {A4};
+
+
+    \node[red,left=.4cm of nout2,inner sep=1pt,align=center] (a6) {\scalebox{1.5}{\faUserSecret}};
+    \node[red,inner sep=1pt,align=center] at ($(nout2) + (-.3,0)$) {\rotatebox[origin=c]{0}{\faCut}};
+    \node [above,sloped] at ($(a6) + (-.05,-.8)$) {A6};
+
+    \node[red,left=.4cm of switch_input,inner sep=1pt,align=center] (a8) {\scalebox{1.5}{\faUserSecret}};
+    \node[red,inner sep=1pt,align=center] at ($(switch_input) + (-.3,0)$) {\rotatebox[origin=c]{0}{\faCut}};
+    \node [above,sloped] at ($(a8) + (-.05,-.8)$) {A8};
+    
+
+    \node[red,above=.5cm of plant,inner sep=1pt,align=center] (a9) {\hspace{1.5pt}\scalebox{1.5}{\faUserSecret}};
+    \draw[-latex,thick] (a9) -- (plant) node [midway,left] {A9};
 
 \end{tikzpicture}
-\caption{Attack in networked \cps{}.}\label{fig:attacks_networked_cps}
+\caption{Attacks in networked \cps{}.}\label{fig:attacks_networked_cps}
 \end{figure}
 \todo{um boneco para cada lugar com numeros diferentes e explicar}
 

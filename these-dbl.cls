@@ -177,6 +177,7 @@
 \usetikzlibrary{calc,shapes,positioning}
 \usetikzlibrary{overlay-beamer-styles}
  \usetikzlibrary{plotmarks}
+ \usetikzlibrary{circuits.ee.IEC}
   \usetikzlibrary{arrows.meta}
 \usetikzlibrary{babel} % to correct problem with babel
 
@@ -951,6 +952,8 @@ backrefstyle=three,
 \RequirePackage{geometry}
 \RequirePackage{etoolbox}
 \RequirePackage[framemethod=TikZ]{mdframed}
+\RequirePackage{fontawesome}
+
 
 
 
