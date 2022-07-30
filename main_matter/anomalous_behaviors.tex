@@ -82,12 +82,14 @@ disclosure, deception, disruption and usurpation.
 \textbf{Deception} tries to deceit making false data pass as true (break of data integrity).
 \textbf{Disruption} interrupts or prevents the system to work correctly (break of availability). And \textbf{usurpation} is the unauthorized control of the system (break of authenticity).
 
-In~\cite{CardenasEtAl2008}, the authors used only the first 3, calling them Deception, Disclosure, and~\DoS{}
-In~\cite{AminEtAl2009}, the authors divided attacks into only \textbf{deception} and \textbf{denial of service}, probably because disclosure attacks do not affect performance.
+In a control context~\cite{CardenasEtAl2008}, the authors used only the first 3, calling them Deception, Disclosure, and~\DoS{} instead of disruption.
+In~\cite{AminEtAl2009}, the authors used only \textbf{deception} and \textbf{denial of service} to divided attacks, probably because disclosure attacks do not affect performance.
+In~\cite{TeixeiraEtAl2015} the authors emphasize the control and physical aspects of \cps{} (sensors, actuators, model dynamics etc) and how this knowledge can be useful for the attacker.
+This model of categorization is usually called the \DDD{} model.
 
-An general abstraction used for \cps{} is to divide it into communication channel, controller and the Physical system (as seen in Fig.~\ref{fig:cps_abstraction}).
+A general abstraction used for \cps{} to demonstrate the attacks and their category is to divide them into communication channel, controller and the Physical system (as seen in Fig.~\ref{fig:cps_abstraction}).
 
-\begin{figure}
+\begin{figure}[h]
   \centering
   \begin{tikzpicture}[
     node distance=.5cm and 2cm,
@@ -98,14 +100,20 @@ An general abstraction used for \cps{} is to divide it into communication channe
 
     \node[box,below=of plant] (controller) {Controller};
 
-    \draw[-latex,thick] (controller.west) -- ++(-1,0) node [midway,above] {${u}$} |- (plant.west) ;
+    \draw[-latex,thick] (controller.west) -- ++(-1,0) node [midway,below] {${u}$} |- (plant.west) ;
 
     \draw[-latex,thick] (plant.east) -- ++(1,0) node [midway,above] {${y}$} |- (controller.east);
 \end{tikzpicture}
 \caption{General abstraction of \cps{}. (Adpated from~\cite{CardenasEtAl2008,AminEtAl2009})}\label{fig:cps_abstraction}
 \end{figure}
 
-\begin{figure}
+In the diagram, $u$ corresponds to the control inputs calculated by the controller to be applied in the physical system by the actuators and $y$ corresponds to the outputs of the systems transmitted by the sensors.
+
+Due to the networked nature of the systems, we modify the scheme to also model the communication between systems.
+In Fig.~\ref{fig:networked_cps_abstraction} we represent all other systems as a single entity called network with which the system can communicate.
+We also add two other signals, which represent the information shared with the network, $I_{\text{in}}$, information from all other systems and $I_{\text{out}}$ information given to all other systems.
+
+\begin{figure}[h]
   \centering
 \begin{tikzpicture}[circuit ee IEC,
     node distance=1cm and 2cm,
@@ -118,7 +126,7 @@ An general abstraction used for \cps{} is to divide it into communication channe
 
     \node[draw,cloud,aspect=2,cloud puffs=20,below=1.5cm of controller] (network)  {Network};
 
-    \draw[thick] (controller.west) -- ++(-1,0) node (a) {} node [midway,above] {${u}$};
+    \draw[thick] (controller.west) -- ++(-1,0) node (a) {} node [midway,below] {${u}$};
     \draw[thick] (a.center) -- (a.center |- plant.west) node (b) {};
     \draw[-latex,thick] (b.center) -- (plant.west);
 
@@ -139,7 +147,14 @@ An general abstraction used for \cps{} is to divide it into communication channe
   \caption{General abstraction of networked \cps{}.}\label{fig:networked_cps_abstraction}
 \end{figure}
 
-\begin{figure}
+Using this general networked control system scheme, one way to characterize the attacks is by where the attack happen.
+In Fig.~\ref{fig:attacks_networked_cps} we can see multiple kinds of attacks enumerated from A1 to A9.
+The attacks from A1 to A4 are deception attacks, where the attacker changes the signals to a modified version (here represented by a \~{} above the variable name).
+The attacks from A5 to A8 are disruption attacks, where the attacker momentarily or not prevents the communication between two entities.
+\todo{It can be divided also into denial of service and denial of ...}
+And A9 are physical attacks, where the attacker change physically the behavior of the system.
+
+\begin{figure}[h]
   \centering
   \begin{tikzpicture}[circuit ee IEC,
     node distance=1cm and 2cm,
@@ -177,34 +192,34 @@ An general abstraction used for \cps{} is to divide it into communication channe
     \draw[-latex,thick] (a1) -- (output) node [midway,below,sloped] {A1};
 
 
-    \node[red,right=1cm of info_in,inner sep=1pt,align=center] (a3) {\scalebox{1.5}{\faUserSecret}};
-    \draw[-latex,thick] (a3) -- (info_in) node [midway,below,sloped] {A3};
+    \node[red,right=1cm of info_in,inner sep=1pt,align=center] (a2) {\scalebox{1.5}{\faUserSecret}};
+    \draw[-latex,thick] (a2) -- (info_in) node [midway,below,sloped] {A2};
 
-    \node[red,left=1cm of info_out,inner sep=1pt,align=center] (a5) {\scalebox{1.5}{\faUserSecret}};
-    \draw[-latex,thick] (a5) -- (info_out) node [midway,below,sloped] {A5};
-
-
-    \node[red,below left=1cm of a,inner sep=1pt,align=center] (a7) {\scalebox{1.5}{\faUserSecret}};
-    \draw[-latex,thick] (a7) -- (input) node [midway,below,sloped] {A7};
+    \node[red,left=1cm of info_out,inner sep=1pt,align=center] (a3) {\scalebox{1.5}{\faUserSecret}};
+    \draw[-latex,thick] (a3) -- (info_out) node [midway,below,sloped] {A3};
 
 
-    \node[red,right=.4cm of switch_output,inner sep=1pt,align=center] (a2) {\scalebox{1.5}{\faUserSecret}};
+    \node[red,below left=1cm of a,inner sep=1pt,align=center] (a4) {\scalebox{1.5}{\faUserSecret}};
+    \draw[-latex,thick] (a4) -- (input) node [midway,below,sloped] {A4};
+
+
+    \node[red,right=.4cm of switch_output,inner sep=1pt,align=center] (a5) {\scalebox{1.5}{\faUserSecret}};
     \node[red,inner sep=1pt,align=center] at ($(switch_output) + (.3,0)$) {\rotatebox[origin=c]{180}{\faCut}};
-    \node [above,sloped] at ($(a2) + (-.05,-.8)$) {A2};
+    \node [above,sloped] at ($(a5) + (-.05,-.8)$) {A5};
 
-    \node[red,right=.4cm of nin2,inner sep=1pt,align=center] (a4) {\scalebox{1.5}{\faUserSecret}};
+    \node[red,right=.4cm of nin2,inner sep=1pt,align=center] (a6) {\scalebox{1.5}{\faUserSecret}};
     \node[red,inner sep=1pt,align=center] at ($(nin2) + (.3,0)$) {\rotatebox[origin=c]{180}{\faCut}};
-    \node [above,sloped] at ($(a4) + (-.05,-.8)$) {A4};
-
-
-    \node[red,left=.4cm of nout2,inner sep=1pt,align=center] (a6) {\scalebox{1.5}{\faUserSecret}};
-    \node[red,inner sep=1pt,align=center] at ($(nout2) + (-.3,0)$) {\rotatebox[origin=c]{0}{\faCut}};
     \node [above,sloped] at ($(a6) + (-.05,-.8)$) {A6};
+
+
+    \node[red,left=.4cm of nout2,inner sep=1pt,align=center] (a7) {\scalebox{1.5}{\faUserSecret}};
+    \node[red,inner sep=1pt,align=center] at ($(nout2) + (-.3,0)$) {\rotatebox[origin=c]{0}{\faCut}};
+    \node [above,sloped] at ($(a7) + (-.05,-.8)$) {A7};
 
     \node[red,left=.4cm of switch_input,inner sep=1pt,align=center] (a8) {\scalebox{1.5}{\faUserSecret}};
     \node[red,inner sep=1pt,align=center] at ($(switch_input) + (-.3,0)$) {\rotatebox[origin=c]{0}{\faCut}};
     \node [above,sloped] at ($(a8) + (-.05,-.8)$) {A8};
-    
+
 
     \node[red,above=.5cm of plant,inner sep=1pt,align=center] (a9) {\hspace{1.5pt}\scalebox{1.5}{\faUserSecret}};
     \draw[-latex,thick] (a9) -- (plant) node [midway,left] {A9};
@@ -212,10 +227,18 @@ An general abstraction used for \cps{} is to divide it into communication channe
 \end{tikzpicture}
 \caption{Attacks in networked \cps{}.}\label{fig:attacks_networked_cps}
 \end{figure}
+
+
+
+
+\todo{dar exemplos de }
+
+In~\cite{TeixeiraEtAl2015}, the authors also stress that the attacks not necessarily happen purely.
+So, instead of using the \DDD{} model, they proposed an attack space based on 3 dimensions: Model Knowledge, Disruption resources and disclosure resources as seen in Fig.~\ref{fig:3_dimensions_attack}.
+
+
 \todo{um boneco para cada lugar com numeros diferentes e explicar}
 
-In~\cite{TeixeiraEtAl2015} the authors emphasize the control and physical aspects of \cps{} (sensors, actuators, model dynamics etc) and how this knowledge can be useful for the attacker. Also they emphasize how the attacks not necessarily happen purely.
-So, to categorize aspects they proposed an attack space based on 3 dimensions: Model Knowledge, Disruption resources and disclosure resources as seen in Fig.~\ref{fig:3_dimensions_attack}.
 \usetikzlibrary{3d}
 \usetikzlibrary{perspective}
 \begin{figure}
