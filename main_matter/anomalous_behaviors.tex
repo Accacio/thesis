@@ -82,12 +82,12 @@ disclosure, deception, disruption and usurpation.
 \textbf{Deception} tries to deceit making false data pass as true (break of data integrity).
 \textbf{Disruption} interrupts or prevents the system to work correctly (break of availability). And \textbf{usurpation} is the unauthorized control of the system (break of authenticity).
 
-In a control context~\cite{CardenasEtAl2008}, the authors used only the first 3, calling them Deception, Disclosure, and~\DoS{} instead of disruption.
-In~\cite{AminEtAl2009}, the authors used only \textbf{deception} and \textbf{denial of service} to divided attacks, probably because disclosure attacks do not affect performance.
-In~\cite{TeixeiraEtAl2015} the authors emphasize the control and physical aspects of \cps{} (sensors, actuators, model dynamics etc) and how this knowledge can be useful for the attacker.
-This model of categorization is usually called the \DDD{} model.
+In a \cps{}/control context~\cite{CardenasEtAl2008}, normally only the first 3 categories are used, calling them Deception, Disclosure, and~\DoS{} instead of disruption.
+Sometimes, for instance~\cite{AminEtAl2009}, authors use only deception and \DoS{} to divided attacks, probably because disclosure attacks do not affect performance. But as we will, depending on the attacker they can create sneaky attacks.
+In~\cite{TeixeiraEtAl2015} the authors emphasize how the knowledge of control and physical aspects of \cps{} (sensors, actuators, model dynamics etc) and how this can be advantageous for a attacker.
 
-A general abstraction used for \cps{} to demonstrate the attacks and their category is to divide them into communication channel, controller and the Physical system (as seen in Fig.~\ref{fig:cps_abstraction}).
+This model of categorization is usually called the \DDD{} model, and authors in \cps{} also add physical attacks. To demonstrate the \DDD{} model, the components of
+\cps{} are abstracted into 4 different parts: the physical system to be controlled, the controller, the communication channels, and the information trafficking by them  (as seen in Fig.~\ref{fig:cps_abstraction}).
 
 \begin{figure}[h]
   \centering
@@ -110,8 +110,8 @@ A general abstraction used for \cps{} to demonstrate the attacks and their categ
 In the diagram, $u$ corresponds to the control inputs calculated by the controller to be applied in the physical system by the actuators and $y$ corresponds to the outputs of the systems transmitted by the sensors.
 
 Due to the networked nature of the systems, we modify the scheme to also model the communication between systems.
-In Fig.~\ref{fig:networked_cps_abstraction} we represent all other systems as a single entity called network with which the system can communicate.
-We also add two other signals, which represent the information shared with the network, $I_{\text{in}}$, information from all other systems and $I_{\text{out}}$ information given to all other systems.
+In Fig.~\ref{fig:networked_cps_abstraction} we represent all other systems as a single entity called network with which the system may communicate.
+We also add two other signals, which represent the information shared with the network, $I_{\text{in}}$ is information received from all other systems and $I_{\text{out}}$ is the information send to all other systems.
 
 \begin{figure}[h]
   \centering
@@ -147,12 +147,12 @@ We also add two other signals, which represent the information shared with the n
   \caption{General abstraction of networked \cps{}.}\label{fig:networked_cps_abstraction}
 \end{figure}
 
-Using this general networked control system scheme, one way to characterize the attacks is by where the attack happen.
+Using this general networked control system scheme, the \DDD{} model characterizes the attacks by where the attack happen.
 In Fig.~\ref{fig:attacks_networked_cps} we can see multiple kinds of attacks enumerated from A1 to A9.
-The attacks from A1 to A4 are deception attacks, where the attacker changes the signals to a modified version (here represented by a \~{} above the variable name).
-The attacks from A5 to A8 are disruption attacks, where the attacker momentarily or not prevents the communication between two entities.
-\todo{It can be divided also into denial of service and denial of ...}
-And A9 are physical attacks, where the attacker change physically the behavior of the system.
+The attacks from A1 to A4 are deception attacks, where the attack happens in the information level.
+The attacker changes the signals to a modified version (here represented by a \~{} above the variable name).
+The attacks from A5 to A8 are disruption (or \DoS{}) attacks, where the attacker attacks the communication channel, momentarily or not preventing the communication between two entities.
+And A9 are physical attacks, where the physical system is attacked and the attacker can change physically the behavior of the system.
 
 \begin{figure}[h]
   \centering
@@ -228,60 +228,79 @@ And A9 are physical attacks, where the attacker change physically the behavior o
 \caption{Attacks in networked \cps{}.}\label{fig:attacks_networked_cps}
 \end{figure}
 
-
-
-
-\todo{dar exemplos de }
-
 In~\cite{TeixeiraEtAl2015}, the authors also stress that the attacks not necessarily happen purely.
-So, instead of using the \DDD{} model, they proposed an attack space based on 3 dimensions: Model Knowledge, Disruption resources and disclosure resources as seen in Fig.~\ref{fig:3_dimensions_attack}.
+For instance an attacker could record the information trafficking in the communication channel (disclosure attack) to replay it in a future time, deceiving controllers and supervisors (deception attack) generating some kind of input in the system which can be harmful for the physical system.
+This attack is commonly known as \textbf{Replay attack}.
+One of the classic examples of this attack in the pop culture is heist movies, such as Ocean's Eleven, where the protagonists record the video feed of surveillance cameras to deceive security guards.
 
+So, instead of using the \DDD{} model, \citeauthor{TeixeiraEtAl2015}~\cite{TeixeiraEtAl2015} proposed an attack space based on 3 dimensions: Model Knowledge, Disruption resources and disclosure resources as seen in Fig.~\ref{fig:3_dimensions_attack}.
 
-\todo{um boneco para cada lugar com numeros diferentes e explicar}
+\todo{\cite{MoSinopoli2009}, deception attack can be subtler thant \DoS{}}
 
 \usetikzlibrary{3d}
 \usetikzlibrary{perspective}
 \begin{figure}
   \centering
-  \begin{tikzpicture}[3d view={115}{20},
-		grid/.style={very thin,gray},
-		axis/.style={-latex,thick},
-		cube/.style={very thick,fill=red},
-		cube hidden/.style={very thick,dashed}]
+  \begin{tikzpicture}[3d view={105}{15},
+    grid/.style={very thin,gray},
+    axis/.style={-latex,thick},
+    cube/.style={very thick,fill=red},
+    cube hidden/.style={very thick,dashed,lightgray!70}]
 
-	%draw the axes
-	\draw[axis] (0,0,0) -- (5,0,0) node[below left]{Disruption Resources};
-	\draw[axis] (0,0,0) -- (0,5,0) node (disclosure) {};
-  \node[above right=5pt and -10pt] at (disclosure) {Disclosure Resources};
+    % draw the axes
+    \draw[axis] (0,0,0) -- (5,0,0) node[below left]{Disruption Resources};
+    \draw[axis] (0,0,0) -- (0,5,0) node (disclosure) {};
+    \node[above right=5pt and -10pt] at (disclosure) {Disclosure Resources};
+    \draw[axis] (0,0,0) -- (0,0,5) node (model_knowledge) {};
+    \node[above] at (model_knowledge) {Model Knowledge};
 
-	\draw[axis] (0,0,0) -- (0,0,5) node[above]{Model Knowledge};
+    \draw[cube hidden] (2,0,0) -- (2,2,0);
+    \draw[cube hidden] (0,2,0) -- (2,2,0);
 
-	\node[fill,circle,inner sep=1.5pt,label=below:Replay] at (2,2,0) {};
-	\draw[cube hidden] (2,0,0) -- (2,2,0);
-	\draw[cube hidden] (0,2,0) -- (2,2,0);
 
-	\node[fill,circle,inner sep=1.5pt] (eavesdropping) at (0,.5,0) {};
-  \node[above right=5pt and -10pt] at (eavesdropping) {Eavesdropping};
+    \draw[cube hidden] (0,4,4) -- (0,0,4); %% top face
+    \draw[cube hidden] (0,4,4) -- (4,4,4); %% top face
+    \draw[cube hidden] (4,0,4) -- (4,4,4); %% top face
+    \draw[cube hidden] (4,0,4) -- (0,0,4); %% top face
 
-	\node[fill,circle,inner sep=1.5pt,label=above left:DoS] at (.5,0,0) {};
+    \draw[cube hidden] (4,4,0) -- (4,4,4); %%
+    \draw[cube hidden] (4,4,0) -- (4,0,0);
+    \draw[cube hidden] (4,4,0) -- (0,4,0);
+    \draw[cube hidden] (0,4,4) -- (0,4,0);
+    \draw[cube hidden] (4,0,4) -- (4,0,0);
 
-	\node[fill,circle,inner sep=1.5pt] (covert) at (4,4,4) {};
-  \node[above right=5pt and -30pt] at (covert) {Covert};
 
-	\draw[cube hidden] (4,4,0) -- (4,4,4);
-	\draw[cube hidden] (0,4,4) -- (4,4,4);
-	\draw[cube hidden] (4,0,4) -- (4,4,4);
+    \draw[cube hidden] (3,0,4) -- (3,0,0);
 
-	\draw[cube hidden] (4,4,0) -- (4,0,0);
-	\draw[cube hidden] (4,4,0) -- (0,4,0);
+    \draw[cube hidden] (0,4,3) -- (0,0,3); %% top face
+    \draw[cube hidden] (0,4,3) -- (4,4,3); %% top face
+    \draw[cube hidden] (4,0,3) -- (4,4,3); %% top face
+    \draw[cube hidden] (4,0,3) -- (0,0,3); %% top face
 
-	\draw[cube hidden] (0,4,4) -- (0,4,0);
-	\draw[cube hidden] (0,4,4) -- (0,0,4);
+    \draw[cube hidden] (2,0,1.5) -- (0,0,1.5); %% top face
+    \draw[cube hidden] (2,0,1.5) -- (2,0,0); %% top face
 
-	\draw[cube hidden] (4,0,4) -- (4,0,0);
-	\draw[cube hidden] (4,0,4) -- (0,0,4);
-\end{tikzpicture}
-\caption{Attacks space and some attacks. (Adpated from~\cite{TeixeiraEtAl2015})}
+    \node[fill,circle,inner sep=1.5pt] (eavesdropping) at (0,.5,0) {};
+    \node[fill,circle,inner sep=1.5pt] (zero_dynamics) at (3,0,4) {};
+    \node[fill,circle,inner sep=1.5pt] (false_data_injection) at (3,0,3) {};
+
+    \node[fill,circle,inner sep=1.5pt] (dos) at (3,0,0) {};
+    \node[fill,circle,inner sep=1.5pt] (covert) at (4,4,4) {};
+    \node[fill,circle,inner sep=1.5pt] (soft_modif) at (4,4,3) {};
+    \node[fill,circle,inner sep=1.5pt] (topology) at (2,0,1.5) {};
+
+    \node[left=10pt] at (dos) {DoS};
+    \node[left=10pt] at (topology) {Topology};
+    \node[above right=5pt and -10pt] at (eavesdropping) {Eavesdropping};
+    \node[above right=5pt and -30pt] at (covert) {Covert};
+    \node[fill,circle,inner sep=1.5pt,label=below:Replay] at (2,2,0) {};
+    \node[align=center,right=.2cm] at (soft_modif) {Software\\ Modification};
+    \node[above left=5pt and -10pt] at (zero_dynamics) {Zero Dynamics};
+
+    \node[align=center,left=10pt] at (false_data_injection) {False Data\\ Injection};
+    
+  \end{tikzpicture}
+  \caption{Attacks space and some attacks. (Adpated from~\cite{TeixeiraEtAl2015})}\label{fig:3_dimensions_attack}
 \end{figure}
 
 But as argued in~\cite{CardenasEtAl2008}, an attacker would prefer to commit attacks A1-A4, since the attacker has less risk to be identified and not necessarily needs to by physically close to the plant, reducing also risk for injuries.
