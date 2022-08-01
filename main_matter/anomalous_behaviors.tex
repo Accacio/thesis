@@ -84,7 +84,6 @@ disclosure, deception, disruption and usurpation.
 
 In a \cps{}/control context~\cite{CardenasEtAl2008}, normally only the first 3 categories are used, calling them Deception, Disclosure, and~\DoS{} instead of disruption.
 Sometimes, for instance~\cite{AminEtAl2009}, authors use only deception and \DoS{} to divided attacks, probably because disclosure attacks do not affect performance. But as we will, depending on the attacker they can create sneaky attacks.
-In~\cite{TeixeiraEtAl2015} the authors emphasize how the knowledge of control and physical aspects of \cps{} (sensors, actuators, model dynamics etc) and how this can be advantageous for a attacker.
 
 This model of categorization is usually called the \DDD{} model, and authors in \cps{} also add physical attacks. To demonstrate the \DDD{} model, the components of
 \cps{} are abstracted into 4 different parts: the physical system to be controlled, the controller, the communication channels, and the information trafficking by them  (as seen in Fig.~\ref{fig:cps_abstraction}).
@@ -228,17 +227,39 @@ And A9 are physical attacks, where the physical system is attacked and the attac
 \caption{Attacks in networked \cps{}.}\label{fig:attacks_networked_cps}
 \end{figure}
 
-In~\cite{TeixeiraEtAl2015}, the authors also stress that the attacks not necessarily happen purely.
+In~\cite{TeixeiraEtAl2015}, the authors stress that the attacks not necessarily happen purely.
 For instance an attacker could record the information trafficking in the communication channel (disclosure attack) to replay it in a future time, deceiving controllers and supervisors (deception attack) generating some kind of input in the system which can be harmful for the physical system.
 This attack is commonly known as \textbf{Replay attack}.
 One of the classic examples of this attack in the pop culture is heist movies, such as Ocean's Eleven, where the protagonists record the video feed of surveillance cameras to deceive security guards.
 
+In~\cite{TeixeiraEtAl2015} the authors also emphasize how the knowledge of control and physical aspects of \cps{} (sensors, actuators, model dynamics etc) and how this can be advantageous for a attacker.
 So, instead of using the \DDD{} model, \citeauthor{TeixeiraEtAl2015}~\cite{TeixeiraEtAl2015} proposed an attack space based on 3 dimensions: Model Knowledge, Disruption resources and disclosure resources as seen in Fig.~\ref{fig:3_dimensions_attack}.
 
 \todo{\cite{MoSinopoli2009}, deception attack can be subtler thant \DoS{}}
 
 \usetikzlibrary{3d}
 \usetikzlibrary{perspective}
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[3d view={105}{15},
+    grid/.style={very thin,gray},
+    axis/.style={-latex,thick},
+    cube/.style={very thick,fill=red},
+    cube hidden/.style={very thick,dashed,lightgray!70}]
+
+    % draw the axes
+    \draw[axis] (0,0,0) -- (2,0,0) node[below left]{Disruption Resources};
+    \draw[axis] (0,0,0) -- (0,2,0) node (disclosure) {};
+    \node[above right=5pt and -10pt] at (disclosure) {Disclosure Resources};
+    \draw[axis] (0,0,0) -- (0,0,2) node (model_knowledge) {};
+    \node[above] at (model_knowledge) {Model Knowledge};
+
+  \end{tikzpicture}
+  \caption{3 dimensional attack space.}\label{fig:3_dimensions_attack}
+\end{figure}
+
+We can populate the attack space with some \todo{continuar daqui}
+
 \begin{figure}
   \centering
   \begin{tikzpicture}[3d view={105}{15},
@@ -298,9 +319,9 @@ So, instead of using the \DDD{} model, \citeauthor{TeixeiraEtAl2015}~\cite{Teixe
     \node[above left=5pt and -10pt] at (zero_dynamics) {Zero Dynamics};
 
     \node[align=center,left=10pt] at (false_data_injection) {False Data\\ Injection};
-    
+
   \end{tikzpicture}
-  \caption{Attacks space and some attacks. (Adpated from~\cite{TeixeiraEtAl2015})}\label{fig:3_dimensions_attack}
+  \caption{Attacks space and some attacks. (Adpated from~\cite{TeixeiraEtAl2015})}\label{fig:3_dimensions_attack_with_attacks}
 \end{figure}
 
 But as argued in~\cite{CardenasEtAl2008}, an attacker would prefer to commit attacks A1-A4, since the attacker has less risk to be identified and not necessarily needs to by physically close to the plant, reducing also risk for injuries.
