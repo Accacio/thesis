@@ -23,10 +23,6 @@
 \symbl{latex}{\LaTeX}{Is a mark up language specially suited for scientific documents}
 \symbl{TikZ}{Ti{\textit{k}}Z}{A mark up language for drawings based on \gls{latex}}
 
-\newcommand{\symblwidest}{
-\glssetwidest{\LaTeX}
-}
-
 \acr{districtheating}{DH}{District Heating Network}
 \acr{wdn}{WDNs}{Water Distribution Networks}
 \acr{dmpc}{dMPC}{distributed Model based Predictive Control}
@@ -46,12 +42,3 @@
 \acrSing{cps}{CPS}{Cyber-Physical Systems}
 \acrSing{fdi}{FDI}{False Data Injection}
 \acrSing{rhs}{RHS}{Receding Horizon Strategy}
-\newcommand{\acrwidest}{
-\glssetwidest{ADMM}
-}
-
-
-\let\oldlistofacronyms\listofacronyms%
-\renewcommand{\listofacronyms}{\acrwidest{}\oldlistofacronyms}
-\let\oldprintglossary\printglossary%
-\renewcommand{\printglossary}{\symblwidest{}\oldprintglossary}

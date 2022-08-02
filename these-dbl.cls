@@ -918,6 +918,7 @@ backrefstyle=three,
 }
 
 \captionsetup{justification=centering}
+\renewcommand{\glossarypreamble}{\glsfindwidesttoplevelname[\currentglossary]}
 \def\listofacronyms{
 \cleartooddpage[\thispagestyle{empty}]
 % \addcontentsline{toc}{chapter}{\listacronymsname}\adjustmtc
