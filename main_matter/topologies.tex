@@ -52,7 +52,7 @@ For instance, a sub-problem may solve a problem with a subset of states of two d
 
 In the literature, it is not unusual to assume that we can choose the computing units in order to correspond to the sub-systems of the system as in Fig.~\ref{fig:corresponding_division_system_problem}~\cite{ArauzEtAl2021}, i.e., a computing unit computes the solution of a sub-problem to find the input of the same corresponding sub-system.
 So, in this work we also use this assumption.
-Then, the terms sub-problems, sub-systems and agents will be used interchangeably.
+Then, the terms sub-problems, sub-systems, agents and units will be used interchangeably.
 
 \section{Representing communication}
 
@@ -161,7 +161,7 @@ We can define a neighbor subgraph $\graph{N}(v)$ of $\graph{G}$ with the neighbo
       };
     \end{tikzpicture}
     }
-  \caption{Graph in Fig.~\ref{fig:undirected_graph} overlayed by neighbor subgraph of vertex $6$ (in red).}\label{fig:neighbor_subgraph}
+  \caption[Neighbor subgraph of vertex $6$ (in red).]{Graph in Fig.~\ref{fig:undirected_graph} overlayed by neighbor subgraph of vertex $6$ (in red).}\label{fig:neighbor_subgraph}
 \end{figure}
 
 For directed graphs the notion of neighborhood can be split into in and out-neighborhoods of a vertex ($\set{N}_{\text{in}}$ and $\set{N}_{\text{out}}$), which are the sets of vertices whose arcs are inbound and outbound, respectively.
@@ -216,7 +216,7 @@ A graph that for all pairs of vertices there is a path is called \emph{connected
 
 
 
-\section{Do the computing units communicate?}
+\section{Do computing units communicate?}
 
 As shown in Section~\ref{sec:decomposable_problems}, the only case where communication is not needed to solve the optimization problem is in the uncoupled case (\S~\ref{sec:uncoupled_problems}).
 However, there are some decomposition methods for the \dmpc\ that even with coupled problems, they exploit the robustness properties of the MPC to compute the solution without communication~\cite{VahidNaghaviEtAl2014}.
@@ -229,7 +229,7 @@ For the decomposition of some optimization problems, it is shown that in certain
 
 The most part of the literature uses \emph{coordinated control}~\cite{NegenbornMaestre2014, ArauzEtAl2021}, in this work, analogously, we suppose the agents communicate and the communication graph is connected.
 
-\section{How do they influence each other?}
+\section{How units influence each other?}
 
 There exists multiple communication schemes. They depend on the decomposition, topology and also trust/power.
 When looking at the trust/power axis, we can divide these schemes into two big groups (Fig.~\ref{fig:hierarchic_anarchic}), one where groups of agents are more important than others (\emph{hierarchy}), and another where there is not (\emph{anarchy}).
@@ -294,7 +294,7 @@ When looking at the trust/power axis, we can divide these schemes into two big g
   }
   \caption{Anarchy}\label{fig:anarchy_topology}
 \end{subfigure}
-\caption{Hierarchic and anarchic topologies. \\Bigger nodes represent more power/influence over others.}\label{fig:hierarchic_anarchic}
+\caption[Hierarchic and anarchic topologies.]{Hierarchic and anarchic topologies. \\Bigger nodes represent more power/influence over others.}\label{fig:hierarchic_anarchic}
 \end{figure}
 
 
@@ -403,7 +403,7 @@ Some other political/societal parallel views are stablished in~\cite{McNamaraEtA
   \caption{A polytree.}\label{fig:polytree_topology}
 \end{figure}
 
-\section{How do they communicate?}
+\section{How units communicate?}
 Depending on the problem and the structure, the connection of the nodes can be unidirectional or bidirectional. As said, these connections are represented by arcs and edges as shown in Fig.~\ref{fig:arc_edges}.
 While edges are usually more simple to deal, arcs may need some more convoluted ways to prove that the two nodes can somehow communicate (if there is a path between them), or that the algorithm converge~\cite{GarinSchenato2010}.
 
