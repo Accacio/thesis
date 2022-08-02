@@ -183,43 +183,45 @@ And A9 are physical attacks, where the physical system is attacked and the attac
     \draw[latex-,thick] (network.puff 2) -- +(0,.5) node (nout) {} ;
     \draw[thick] (nout.center) -- ($(nout.center) + (0,1)$) node (nout2) {};
     \draw[thick] (nout2.center) -- ( controller.south -| network.puff 2) {};
-    \node (info_out) at ($(nout)+(-.45,-.0)$) {$\mathcal{I}_{\text{out}}$};
+    \node (info_out) at ($(nout)+(-.45,-.3)$) {$\mathcal{I}_{\text{out}}$};
 
     \node[red,above right=1cm of aa,inner sep=1pt,align=center] (a1) {\scalebox{1.5}{\faUserSecret}};
-    \draw[-latex,thick] (a1) -- (output) node [midway,below,sloped] {A1};
+    \draw[-latex,thick] (a1) -- (output) node [midway,above,sloped] {{\faEye} A1} node [midway,below,sloped] {{\faPencil} A5};
+    % \draw[-latex,thick] ($(a1)+(0,.1)$) -- ($(output)+(0,.1)$)  node [midway,above,sloped] {A1\faEye};
+    % \draw[-latex,thick] ($(a1)+(0,-.1)$) -- ($(output)+(0,-.1)$)  node [midway,below,sloped] {A1\faPencil};
 
 
-    \node[red,right=1cm of info_in,inner sep=1pt,align=center] (a2) {\scalebox{1.5}{\faUserSecret}};
-    \draw[-latex,thick] (a2) -- (info_in) node [midway,below,sloped] {A2};
+    \node[red,right=1.2cm of info_in,inner sep=1pt,align=center] (a2) {\scalebox{1.5}{\faUserSecret}};
+    \draw[-latex,thick] (a2) -- (info_in) node [midway,below,sloped] {{\faEye} A2} node [midway,above,sloped] {{\faPencil} A6};
 
-    \node[red,left=1cm of info_out,inner sep=1pt,align=center] (a3) {\scalebox{1.5}{\faUserSecret}};
-    \draw[-latex,thick] (a3) -- (info_out) node [midway,below,sloped] {A3};
+    \node[red,left=1.3cm of info_out,inner sep=1pt,align=center] (a3) {\scalebox{1.5}{\faUserSecret}};
+    \draw[-latex,thick] (a3) -- (info_out) node [midway,above,sloped] {A3 {\faEye}} node [midway,below,sloped] {A7 \reflectbox{\faPencil}};
 
 
     \node[red,below left=1cm of a,inner sep=1pt,align=center] (a4) {\scalebox{1.5}{\faUserSecret}};
-    \draw[-latex,thick] (a4) -- (input) node [midway,below,sloped] {A4};
+    \draw[-latex,thick] (a4) -- (input) node [midway,above,sloped] {A4 {\faEye}} node [midway,below,sloped] {A8 \reflectbox{\faPencil}};
 
 
     \node[red,right=.4cm of switch_output,inner sep=1pt,align=center] (a5) {\scalebox{1.5}{\faUserSecret}};
-    \node[red,inner sep=1pt,align=center] at ($(switch_output) + (.3,0)$) {\rotatebox[origin=c]{180}{\faCut}};
-    \node [above,sloped] at ($(a5) + (-.05,-.8)$) {A5};
+    \node[inner sep=1pt,align=center] at ($(switch_output) + (.3,0)$) {\rotatebox[origin=c]{180}{\faCut}};
+    \node [above,sloped] at ($(a5) + (-.05,-.8)$) {A9};
 
     \node[red,right=.4cm of nin2,inner sep=1pt,align=center] (a6) {\scalebox{1.5}{\faUserSecret}};
-    \node[red,inner sep=1pt,align=center] at ($(nin2) + (.3,0)$) {\rotatebox[origin=c]{180}{\faCut}};
-    \node [above,sloped] at ($(a6) + (-.05,-.8)$) {A6};
+    \node[inner sep=1pt,align=center] at ($(nin2) + (.3,0)$) {\rotatebox[origin=c]{180}{\faCut}};
+    \node [above,sloped] at ($(a6) + (-.05,-.8)$) {A10};
 
 
     \node[red,left=.4cm of nout2,inner sep=1pt,align=center] (a7) {\scalebox{1.5}{\faUserSecret}};
-    \node[red,inner sep=1pt,align=center] at ($(nout2) + (-.3,0)$) {\rotatebox[origin=c]{0}{\faCut}};
-    \node [above,sloped] at ($(a7) + (-.05,-.8)$) {A7};
+    \node[inner sep=1pt,align=center] at ($(nout2) + (-.3,0)$) {\rotatebox[origin=c]{0}{\faCut}};
+    \node [above,sloped] at ($(a7) + (-.05,-.8)$) {A11};
 
     \node[red,left=.4cm of switch_input,inner sep=1pt,align=center] (a8) {\scalebox{1.5}{\faUserSecret}};
-    \node[red,inner sep=1pt,align=center] at ($(switch_input) + (-.3,0)$) {\rotatebox[origin=c]{0}{\faCut}};
-    \node [above,sloped] at ($(a8) + (-.05,-.8)$) {A8};
+    \node[inner sep=1pt,align=center] at ($(switch_input) + (-.3,0)$) {\rotatebox[origin=c]{0}{\faCut}};
+    \node [above,sloped] at ($(a8) + (-.05,-.8)$) {A12};
 
 
-    \node[red,above=.5cm of plant,inner sep=1pt,align=center] (a9) {\hspace{1.5pt}\scalebox{1.5}{\faUserSecret}};
-    \draw[-latex,thick] (a9) -- (plant) node [midway,left] {A9};
+    \node[above=.5cm of plant,inner sep=1pt,align=center] (a9) {\hspace{1.5pt}\scalebox{1.5}{\reflectbox{\scalebox{.8}{\faWrench}}{\color{red}\faUserSecret}}};
+    \draw[-latex,thick] (a9) -- (plant) node [midway,left] {A13};
 
 \end{tikzpicture}
 \caption{Attacks in networked \cps{}.}\label{fig:attacks_networked_cps}
