@@ -1,0 +1,9 @@
+#+title: Todo
+* TODO Add examples of cyber-attacks
+[[file:main_matter/introduction.tex][file:~/research/thesis/main_matter/introduction.tex]]
+[[id:~/docsThese/bibliography/DibajiEtAl2019.pdf-annot-3-13][Examples of CPS cyber-attacks]]
+
+* TODO Maybe give the example used in the poster for NecSys [[file:main_matter/introduction.tex::\begin{example}\[Effects of a malicious agent\]\label{ex:qualitative_example}][Initial example]]
+  Add an image to represent the district?
+
+* TODO this [[file:main.tex::\definecolor{mpc_green}{RGB}{98, 160, 98}][colors]] should move somewhere
