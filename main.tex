@@ -85,23 +85,23 @@
 \externaldocument[]{\subfix{main}}
 
 \begin{document}
-\dominitoc
+\dominitoc%
 
 \selectlanguage{french}
 \maketitle
 \selectlanguage{english}
 
-\frontmatter
-\subfile{front_matter/front_matter}
+\frontmatter%
+\subfile{front_matter/front_matter}%
 
-\mainmatter
+\mainmatter%
 \subfile{main_matter/main_matter}
 
 \printbibliography%
 
-\backmatter
+\backmatter%
 \appendix
 \subfile{back_matter/back_matter}
 
-\makebackcover
+\makebackcover%
 \end{document}
