@@ -177,7 +177,6 @@
 \usetikzlibrary{calc,shapes,positioning}
 \usetikzlibrary{overlay-beamer-styles}
  \usetikzlibrary{plotmarks}
- \usetikzlibrary{circuits.ee.IEC}
   \usetikzlibrary{arrows.meta}
 \usetikzlibrary{babel} % to correct problem with babel
 
@@ -906,7 +905,7 @@ backrefstyle=three,
 \let\oldglossary\printglossary
 \def\printglossary{
 \cleartooddpage[\thispagestyle{empty}]
-\oldglossary\adjustmtc
+\oldglossary[style=alttree]\adjustmtc
 }
 
 \providecommand{\listacronymsname}{}
@@ -922,7 +921,7 @@ backrefstyle=three,
 \def\listofacronyms{
 \cleartooddpage[\thispagestyle{empty}]
 % \addcontentsline{toc}{chapter}{\listacronymsname}\adjustmtc
-\oldglossary[type=\acronymtype,title=\listacronymsname]\adjustmtc
+\oldglossary[type=\acronymtype,style=alttree,title=\listacronymsname]\adjustmtc
 }
 
 \let\oldlistoftables\listoftables
