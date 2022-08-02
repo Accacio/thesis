@@ -59,7 +59,6 @@
 \RequirePackage[inner=30mm,outer=20mm,top=30mm,bottom=20mm]{geometry}
 \RequirePackage{setspace}
 \RequirePackage{xargs}
-\RequirePackage[acronym,toc]{glossaries}\makeglossaries
 
 \RequirePackage{minitoc}
 
@@ -88,6 +87,8 @@
 \RequirePackage{setspace} % permet d'utiliser les commandes \spacing, doublespace (double interligne), singlespace (simple interligne) et onehalfspace (un interligne et demi)
 
 \RequirePackage{hyperref} %Utiliser pour une bibliographie interactive + sommaire et TOC interactifs (pour une sortie PDF, par exemple).
+
+\RequirePackage[acronym,toc]{glossaries}\makeglossaries
 
 \BeforeBeginEnvironment{document}{
 \makeatletter
