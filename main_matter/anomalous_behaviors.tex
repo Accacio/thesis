@@ -145,12 +145,15 @@ We also add two other signals, which represent the information shared with the n
   \caption{General abstraction of networked \cps{}.}\label{fig:networked_cps_abstraction}
 \end{figure}
 
-Using this general networked control system scheme, the \DDD{} model characterizes the attacks by where the attack happen.
-In Fig.~\ref{fig:attacks_networked_cps} we can see multiple kinds of attacks enumerated from A1 to A9.
-The attacks from A1 to A4 are deception attacks, where the attack happens in the information level.
-The attacker changes the signals to a modified version (here represented by a \~{} above the variable name).
-The attacks from A5 to A8 are disruption (or \DoS{}) attacks, where the attacker attacks the communication channel, momentarily or not preventing the communication between two entities.
-And A9 are physical attacks, where the physical system is attacked and the attacker can change physically the behavior of the system.
+Using this general networked control system scheme, the \DDD{} model can be characterized by where the attack happen.
+In Fig.~\ref{fig:attacks_networked_cps} we can see multiple kinds of attacks enumerated from A1 to A13.
+The attacks from A1 to A4 are disclosure attacks, which happen in the information level. The attacker observes the traffic, maybe to a posterior use.
+This attack is also known as a \textbf{snooping} or \textbf{eavesdropping} attack.
+A5 to A8 represent deception attacks.
+The attacks also happen in the information level, but the attacker changes the signals to a modified version (here represented by a \~{} above the variable name).
+The attacks from A10 to A12 are disruption (or \DoS{}) attacks, where the attacker attacks the communication channel, momentarily or not preventing the communication between two entities.
+And A13 are physical attacks, where the physical system is attacked.
+In this attack, the attacker change physically the behavior of the system.
 
 \begin{figure}[h]
   \centering
@@ -227,19 +230,19 @@ And A9 are physical attacks, where the physical system is attacked and the attac
 \caption{Attacks in networked \cps{}.}\label{fig:attacks_networked_cps}
 \end{figure}
 
+As argued in~\cite{CardenasEtAl2008}, to accomplish attacks A13 the attacker needs physical access to the plant. So an attacker would prefer to commit attacks A1-A12, since the attacker has less risk to be identified and not necessarily needs to by physically close to the plant, reducing also risk for injuries. As we will see in a future section, this kind of attacks can be easily prevented.
+
 In~\cite{TeixeiraEtAl2015}, the authors stress that the attacks not necessarily happen purely.
 For instance an attacker could record the information trafficking in the communication channel (disclosure attack) to replay it in a future time, deceiving controllers and supervisors (deception attack) generating some kind of input in the system which can be harmful for the physical system.
 This attack is commonly known as \textbf{Replay attack}.
 One of the classic examples of this attack in the pop culture is heist movies, such as Ocean's Eleven, where the protagonists record the video feed of surveillance cameras to deceive security guards.
 
 In~\cite{TeixeiraEtAl2015} the authors also emphasize how the knowledge of control and physical aspects of \cps{} (sensors, actuators, model dynamics etc) and how this can be advantageous for a attacker.
-So, instead of using the \DDD{} model, \citeauthor{TeixeiraEtAl2015}~\cite{TeixeiraEtAl2015} proposed an attack space based on 3 dimensions: Model Knowledge, Disruption resources and disclosure resources as seen in Fig.~\ref{fig:3_dimensions_attack}.
-
-\todo{\cite{MoSinopoli2009}, deception attack can be subtler thant \DoS{}}
+So, instead of using purely the \DDD{} model, \citeauthor{TeixeiraEtAl2015}~\cite{TeixeiraEtAl2015} proposed instead an attack space with 3 orthogonal dimensions: Model Knowledge, Disruption resources and disclosure resources as seen in Fig.~\ref{fig:3_dimensions_attack}.
 
 \usetikzlibrary{3d}
 \usetikzlibrary{perspective}
-\begin{figure}
+\begin{figure}[h]
   \centering
   \begin{tikzpicture}[3d view={105}{15},
     grid/.style={very thin,gray},
@@ -258,9 +261,9 @@ So, instead of using the \DDD{} model, \citeauthor{TeixeiraEtAl2015}~\cite{Teixe
   \caption{3 dimensional attack space.}\label{fig:3_dimensions_attack}
 \end{figure}
 
-We can populate the attack space with some \todo{continuar daqui}
+To illustrate, we can populate the attack space with some cited attacks and others that will be explained subsequently (Fig.~\ref{fig:3_dimensions_attack_with_attacks}).
 
-\begin{figure}
+\begin{figure}[h]
   \centering
   \begin{tikzpicture}[3d view={105}{15},
     grid/.style={very thin,gray},
@@ -321,10 +324,10 @@ We can populate the attack space with some \todo{continuar daqui}
     \node[align=center,left=10pt] at (false_data_injection) {False Data\\ Injection};
 
   \end{tikzpicture}
-  \caption{Attacks space and some attacks. (Adpated from~\cite{TeixeiraEtAl2015})}\label{fig:3_dimensions_attack_with_attacks}
+  \caption[Attack space and some attacks.]{Attack space and some attacks. (Adpated from~\cite{TeixeiraEtAl2015})}\label{fig:3_dimensions_attack_with_attacks}
 \end{figure}
 
-But as argued in~\cite{CardenasEtAl2008}, an attacker would prefer to commit attacks A1-A4, since the attacker has less risk to be identified and not necessarily needs to by physically close to the plant, reducing also risk for injuries.
+\todo{\cite{MoSinopoli2009}, deception attack can be subtler thant \DoS{}}
 
 
 But in~\cite{TeixeiraEtAl2015}, the authors recover the \CIA{} pillars and categorizes cyber
