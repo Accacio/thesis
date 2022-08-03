@@ -14,7 +14,7 @@
 \newcommand{\acrPl}[5]{
   \newacronym[plural=#4,firstplural=#5 (#4)]{#1}{#2}{#3}
   \expandafter\newcommand\csname #1\endcsname{\gls{#1}}
-  \expandafter\newcommand\csname #4\endcsname{\glspl{#1}}
+  \expandafter\newcommand\csname #1s\endcsname{\glspl{#1}}
 }
 
 \newcommand{\symbl}[3]{\newglossaryentry{#1}{name ={#2},	description ={#3}}
@@ -33,12 +33,14 @@
 \acr{DDD}{DDD}{Disclosure, Deception and Denial of Service}
 \acr{DoS}{DoS}{Denial of Service}
 \acr{EFT}{EFT}{Electronic Funds Transfer}
-\acr{GPU}{GPU}{Graphical Processing Unit}
-\acr{districtheating}{DH}{District Heating Network}
+\acr{GPU}{GPU}{Graphical Processing Unit}[GPUs][Graphical Processing Units]
+\acr{dhn}{DHN}{District Heating Network}[DHNs][District Heating Networks]
 \acr{dmpc}{dMPC}{distributed Model based Predictive Control}
 \acr{iot}{IOT}{Internet of Things}
 \acr{lp}{LP}{Linear Programming}
 \acr{mpc}{MPC}{Model-based Predictive Control}
-\acr{plc}{PLC}{Programmable Logic Controller}
+\acr{plc}{PLC}{Programmable Logic Controller}[PLCs][Programmable Logic Controllers]
+\acr{HMI}{HMI}{Human Machine Interface}[HMIs][Human Machine Interfaces]
 \acr{qp}{QP}{Quadratic Programming}
-\acr{wdn}{WDNs}{Water Distribution Networks}
+\acr{scada}{SCADA}{Supervisory Control and Data Acquisition}
+\acr{wdn}{WDN}{Water Distribution Network}[WDNs][Water Distribution Networks]
