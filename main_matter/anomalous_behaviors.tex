@@ -19,7 +19,7 @@ In this chapter, we discuss briefly the causes of anomalous behaviors, how they 
 We define \emph{anomalous behaviors} as any non-expected (change of) behavior of a system.
 
 There are two primary causes for a system not to perform as nominally expected: \emph{faults} and \emph{attacks}.
-The main difference between these two is \emph{intention}; while faults happen unintentionally, uncoordinated and with no objective, attacks happen intentionally, usually coordinated with a malicious objective.
+The main difference between these two is \emph{intention}; while faults happen unintentionally, uncoordinated and with no objective, attacks happen intentionally, usually coordinated having a malicious objective.
 
 \begin{remark}
   A non-expected behavior can also be observed when there are modeling errors, i.e., the theoretical model used to describe the system does not correspond to the real system.
@@ -64,7 +64,7 @@ the \textbf{Software}, which is the logic used to operate the physical component
 \textbf{Channels} and \textbf{connectors} can as well be targets of sabotage, as someone can interfere on the transmission to observe the traffic to gather information or intentionally interrupt it. But interruptions and corruptions might be caused by natural accidents such solar flares (causing radio blackouts) or as trees knocking down electricity cables or sharks eating underwater cables.
 \textbf{Software} can also be a source of vulnerability due to \emph{bugs}, which can interrupt the normal functioning or even let a \emph{hacker} gain total control of the system.
 The \textbf{controller}, if not well dimensioned (computing capacity), can also be a vulnerability.
-If it receives more requisitions than expected, the system will be overloaded.
+If it receives more requisitions than expected, the system will be overloaded and will cease to respond.
 
 It is worth emphasizing that in a \iot{} context, almost all sensors and actuators have embedded controllers and software, which can also be sources of vulnerabilities themselves.
 
@@ -83,7 +83,8 @@ disclosure, deception, disruption and usurpation.
 \textbf{Disruption} interrupts or prevents the system to work correctly (break of availability). And \textbf{usurpation} is the unauthorized control of the system (break of authenticity).
 
 In a \cps{}/control context~\cite{CardenasEtAl2008}, normally only the first 3 categories are used, calling them Deception, Disclosure, and~\DoS{} instead of disruption.
-Sometimes, for instance~\cite{AminEtAl2009}, authors use only deception and \DoS{} to divided attacks, probably because disclosure attacks do not affect performance. But as we will, depending on the attacker they can create sneaky attacks.
+Sometimes, for instance~\cite{AminEtAl2009}, authors use only deception and \DoS{} to divided attacks, probably because disclosure attacks do not affect performance.
+But as we are we going to see following, depending on the attacker disclosure attacks when combined with others can create some sneaky attacks.
 
 This model of categorization is usually called the \DDD{} model, and authors in \cps{} also add physical attacks. To demonstrate the \DDD{} model, the components of
 \cps{} are abstracted into 4 different parts: the physical system to be controlled, the controller, the communication channels, and the information trafficking by them  (as seen in Fig.~\ref{fig:cps_abstraction}).
@@ -132,26 +133,26 @@ We also add two other signals, which represent the information shared with the n
     \draw[thick] (aa.center) -- (aa.center |- controller.east) node (bb) {} ;
     \draw[-latex,thick] (bb.center) -- (controller.east);
 
-    \draw[latex-,thick] (controller.south -| network.puff 20) -- +(0,-.25) node (nin) {} ;
-    \draw[thick] (nin.center) -- ($(nin.center) + (0,-1)$) node (nin2) {};
-    \draw[thick] (nin2.center) -- (network.puff 20) {};
+    \draw[latex-,thick,dotted] (controller.south -| network.puff 20) -- +(0,-.25) node (nin) {} ;
+    \draw[thick,dotted] (nin.center) -- ($(nin.center) + (0,-1)$) node (nin2) {};
+    \draw[thick,dotted] (nin2.center) -- (network.puff 20) {};
     \node at ($(nin2)+(.45,.40)$) {$\mathcal{I}_{\text{in}}$};
 
-    \draw[latex-,thick] (network.puff 2) -- +(0,.25) node (nout) {} ;
-    \draw[thick] (nout.center) -- ($(nout.center) + (0,1)$) node (nout2) {};
-    \draw[thick] (nout2.center) -- ( controller.south -| network.puff 2) {};
+    \draw[latex-,thick,dotted] (network.puff 2) -- +(0,.25) node (nout) {} ;
+    \draw[thick,dotted] (nout.center) -- ($(nout.center) + (0,1)$) node (nout2) {};
+    \draw[thick,dotted] (nout2.center) -- ( controller.south -| network.puff 2) {};
     \node at ($(nout)+(-.45,.5)$) {$\mathcal{I}_{\text{out}}$};
   \end{tikzpicture}
   \caption{General abstraction of networked \cps{}.}\label{fig:networked_cps_abstraction}
 \end{figure}
 
-Using this general networked control system scheme, the \DDD{} model can be characterized by where the attack happen.
+Using this general networked control system scheme, the \DDD{} model can be characterized by where and how the attack happen.
 In Fig.~\ref{fig:attacks_networked_cps} we can see multiple kinds of attacks enumerated from A1 to A13.
 The attacks from A1 to A4 are disclosure attacks, which happen in the information level. The attacker observes the traffic, maybe to a posterior use.
 This attack is also known as a \textbf{snooping} or \textbf{eavesdropping} attack.
 A5 to A8 represent deception attacks.
 The attacks also happen in the information level, but the attacker changes the signals to a modified version (here represented by a \~{} above the variable name).
-The attacks from A10 to A12 are disruption (or \DoS{}) attacks, where the attacker attacks the communication channel, momentarily or not preventing the communication between two entities.
+The attacks from A10 to A12 are disruption (or \textbf{\DoS{}}) attacks, where the attacker attacks the communication channel, momentarily or not preventing the communication between two entities.
 And A13 are physical attacks, where the physical system is attacked.
 In this attack, the attacker change physically the behavior of the system.
 
@@ -178,15 +179,15 @@ In this attack, the attacker change physically the behavior of the system.
     \node (switch_output) at ($(aa)!0.5!(bb)$) {};
 
 
-    \draw[latex-,thick] (controller.south -| network.puff 20) -- +(0,-.5) node (nin) {} ;
-    \draw[thick] (nin.center) -- ($(nin.center) + (0,-1)$) node (nin2) {};
-    \draw[thick] (nin2.center) -- (network.puff 20) {};
-    \node (info_in) at ($(nin)+(.45,-.10)$) {$\mathcal{I}_{\text{in}}$};
+    \draw[latex-,thick,dotted] (controller.south -| network.puff 20) -- +(0,-.5) node (nin) {} ;
+    \draw[thick,dotted] (nin.center) -- ($(nin.center) + (0,-1)$) node (nin2) {};
+    \draw[thick,dotted] (nin2.center) -- (network.puff 20) {};
+    \node (info_in) at ($(nin)+(.45,-.10)$) {$\widetilde{\mathcal{I}_{\text{in}}}$};
 
-    \draw[latex-,thick] (network.puff 2) -- +(0,.5) node (nout) {} ;
-    \draw[thick] (nout.center) -- ($(nout.center) + (0,1)$) node (nout2) {};
-    \draw[thick] (nout2.center) -- ( controller.south -| network.puff 2) {};
-    \node (info_out) at ($(nout)+(-.45,-.3)$) {$\mathcal{I}_{\text{out}}$};
+    \draw[latex-,thick,dotted] (network.puff 2) -- +(0,.5) node (nout) {} ;
+    \draw[thick,dotted] (nout.center) -- ($(nout.center) + (0,1)$) node (nout2) {};
+    \draw[thick,dotted] (nout2.center) -- ( controller.south -| network.puff 2) {};
+    \node (info_out) at ($(nout)+(-.45,-.3)$) {$\widetilde{\mathcal{I}_{\text{out}}}$};
 
     \node[red,above right=1cm of aa,inner sep=1pt,align=center] (a1) {\scalebox{1.5}{\faUserSecret}};
     \draw[-latex,thick] (a1) -- (output) node [midway,above,sloped] {{\faEye} A1} node [midway,below,sloped] {{\faPencil} A5};
@@ -227,7 +228,7 @@ In this attack, the attacker change physically the behavior of the system.
     \draw[-latex,thick] (a9) -- (plant) node [midway,left] {A13};
 
 \end{tikzpicture}
-\caption{Attacks in networked \cps{}.}\label{fig:attacks_networked_cps}
+\caption{Attacks in networked \cps{}. Adpated from~\cite{AminEtAl2009,DibajiEtAl2019}.}\label{fig:attacks_networked_cps}
 \end{figure}
 
 As argued in~\cite{CardenasEtAl2008}, to accomplish attacks A13, attackers need physical access to the plant.
@@ -244,7 +245,7 @@ This attack is commonly known as \textbf{Replay attack}.
 One of the classic examples of this attack in the pop culture is heist movies, such as Ocean's Eleven, where the protagonists record the video feed of surveillance cameras to deceive security guards.
 
 In~\cite{TeixeiraEtAl2015} the authors also emphasize how the knowledge of control and physical aspects of \cps{} (sensors, actuators and plant dynamics) can be advantageous for an attacker.
-So, instead of using purely the \DDD{} model, \citeauthor{TeixeiraEtAl2015}~\cite{TeixeiraEtAl2015} proposed instead an attack space with 3 orthogonal dimensions: Model Knowledge, Disruption resources and disclosure resources as seen in Fig.~\ref{fig:3_dimensions_attack}.
+So, instead of using purely the \DDD{} model, \citeauthor{TeixeiraEtAl2015}~\cite{TeixeiraEtAl2015} proposed an attack space with 3 orthogonal dimensions: Model Knowledge, Disruption resources and Disclosure resources as seen in Fig.~\ref{fig:3_dimensions_attack}.
 
 \usetikzlibrary{3d}
 \usetikzlibrary{perspective}
@@ -267,7 +268,7 @@ So, instead of using purely the \DDD{} model, \citeauthor{TeixeiraEtAl2015}~\cit
   \caption{3 dimensional attack space.}\label{fig:3_dimensions_attack}
 \end{figure}
 
-To illustrate, we can populate the attack space with some of the cited attacks and others that will be explained subsequently (Fig.~\ref{fig:3_dimensions_attack_with_attacks}).
+To illustrate, we can populate the attack space with some attacks, some already cited and others will be explained subsequently (Fig.~\ref{fig:3_dimensions_attack_with_attacks}).
 
 \begin{figure}[h]
   \centering
@@ -335,11 +336,60 @@ To illustrate, we can populate the attack space with some of the cited attacks a
 
 \todo{\cite{MoSinopoli2009}, deception attack can be subtler thant \DoS{}}
 
+\begin{itemize}
+  \item FDI~\cite{TeixeiraEtAl2015}
+  \item Zero Dynamics~\cite{TeixeiraEtAl2012,TeixeiraEtAl2015,HoehnZhang2016}
+\end{itemize}
 
-But in~\cite{TeixeiraEtAl2015}, the authors recover the \CIA{} pillars and categorizes cyber
+In \textbf{Topology attacks}, the attackers manipulate the topology of the system or misleads the control to believe the system is under a different topology (with false-data). Such attacks are done by changing the state of devices as switches and breakers~\cite{KimTong2013,WuEtAl2016,ZhangEtAl2021c}.
+In a \textbf{Software Modification attack}, the attacker modifies the software used in the controller, as done by the attackers in the Stuxnet attack~\cite{Langner2011}.
+In \textbf{Covert attacks}, the attacker fabricates new control and output signals to be fed to the plant and the controller.
+For this the attacker uses a double of the plant using a model and uses a covert controller which it can choose a different reference. Since this attack uses the plant model, it may go unnoticed (stealth attack)~\cite{Smith2015} (See Fig.~\ref{fig:covert_attack})
 
-\cite{DibajiEtAl2019} and ~ use a categorization close to the \CIA{}. It is possible
-\todo{model 3 axis of cyber-physical attack space}
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[node distance=1cm and 2cm,
+    box/.style={thick,draw,align=center,minimum height=1.5cm,minimum width=3cm,rectangle,black},
+    network/.style={thick,draw,cloud,cloud puffs=20,aspect=2},
+    ]
+
+    \node[box] (plant) at (0,0) {Physical\\System};
+    \node[box,below=7.5cm of plant] (controller)  {Controller};
+    \node[network,above=.75cm of controller] (network)  {Network};
+    \node[box,above=1cm of network] (covert_controller)  {Covert\\Controller};
+    \node[box,above=.5cm of covert_controller] (plant_model)  {Plant\\Model};
+
+    \node[thick,draw,circle,inner sep=1pt,right=1.75cm of plant_model] (y_sum)  {+};
+    \node[thick,draw,circle,inner sep=1pt,left=1.75cm of covert_controller] (u_sum)  {+};
+
+    \draw[thick] (controller.west) -- ++(-2,0) node (a) {} node [midway,below] (input) {$u$};
+    \draw[thick] (plant.east) -- ++(2,0) node (aa) {} node [midway,above] (output) {$y$};
+    \draw[thick] (plant_model.east) -- ++(1,0) node (model_aa) {} node [midway,above] (model_output) {$\gamma$};
+    \draw[thick] (covert_controller.west) -- ++(-1,0) node (covert_a) {} node [midway,below] (covert_input) {$\mu$};
+
+    \draw[-latex,thick] (aa.center) -- (y_sum);
+    \draw[-latex,thick] (model_aa.center) -- (y_sum) node[midway,below right=.1cm] {-};
+    \draw[-latex,thick] (model_aa.center) |- (covert_controller.east);
+
+    \draw[-latex,thick] (y_sum) |- (controller.east);
+
+    \draw[-latex,thick] (covert_a.center) |- (plant_model.west);
+
+    \draw[-latex,thick] (covert_a.center) -- (u_sum);
+    \draw[-latex,thick] (a.center) -- (u_sum);
+    \draw[-latex,thick] (u_sum) |- (plant.west);
+
+    \draw[latex-,thick,dotted] (controller.north -| network.puff 12) -- (network.puff 12) node[midway,right] {$\mathcal{I}_{\text{in}}$} ;
+    \draw[latex-,thick,dotted] (network.puff 10) -- ( controller.north -| network.puff 10) node[midway,left] {$\mathcal{I}_{\text{out}}$} ;
+    \draw[latex-,thick,dotted] (covert_controller.south -| network.puff 20) -- (network.puff 20) node[midway,right] {$\mathcal{I}_{\text{in}}$} ;
+    \draw[latex-,thick,dotted] (network.puff 2) -- ( covert_controller.south -| network.puff 2) node[midway,left] {$\mathcal{I}_{\text{out}}$} ;
+\end{tikzpicture}
+\caption{Covert agent. Adpated from~\cite{Smith2015}.}\label{fig:covert_attack}
+\end{figure}
+
+Other attacks can be seen in~\cite{TeixeiraEtAl2015,ZhangEtAl2021c}.
+
+\cite{DibajiEtAl2019} and ~ use a categorization close to the \CIA{}.
 
 use as base
 \cite{MaestreEtAl2018}
