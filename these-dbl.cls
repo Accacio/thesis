@@ -920,6 +920,9 @@ backrefstyle=three,
 
 \captionsetup{justification=centering}
 \renewcommand{\glossarypreamble}{\glsfindwidesttoplevelname[\currentglossary]}
+\renewcommand*{\glstreenamebox}[2]{%
+\makebox[1.1#1][l]{#2}%
+}
 \def\listofacronyms{
 \cleartooddpage[\thispagestyle{empty}]
 % \addcontentsline{toc}{chapter}{\listacronymsname}\adjustmtc
