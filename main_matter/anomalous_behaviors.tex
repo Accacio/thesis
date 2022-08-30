@@ -336,15 +336,15 @@ To illustrate, we can populate the attack space with some attacks, some already 
 
 \todo{\cite{MoSinopoli2009}, deception attack can be subtler thant \DoS{}}
 
+In \textbf{Topology attacks}, the attackers manipulate the topology of the system or misleads the control to believe the system is under a different topology (with false-data). Such attacks are done by changing the state of devices as switches and breakers~\cite{KimTong2013,WuEtAl2016,ZhangEtAl2021c}.
+\\In a \textbf{Software Modification attack}, the attacker modifies the software used in the controller, as done by the attackers in the Stuxnet attack~\cite{Langner2011}.
+
 \begin{itemize}
   \item FDI~\cite{TeixeiraEtAl2015}
-  \item Zero Dynamics~\cite{TeixeiraEtAl2012,TeixeiraEtAl2015,HoehnZhang2016}
 \end{itemize}
-
-In \textbf{Topology attacks}, the attackers manipulate the topology of the system or misleads the control to believe the system is under a different topology (with false-data). Such attacks are done by changing the state of devices as switches and breakers~\cite{KimTong2013,WuEtAl2016,ZhangEtAl2021c}.
-In a \textbf{Software Modification attack}, the attacker modifies the software used in the controller, as done by the attackers in the Stuxnet attack~\cite{Langner2011}.
-In \textbf{Covert attacks}, the attacker fabricates new control and output signals to be fed to the plant and the controller.
-For this the attacker uses a double of the plant using a model and uses a covert controller which it can choose a different reference. Since this attack uses the plant model, it may go unnoticed (stealth attack)~\cite{Smith2015} (See Fig.~\ref{fig:covert_attack})
+\\In \textbf{Covert attacks}, the attacker fabricates new control and output signals to be fed to the plant and the controller.
+For this the attacker uses a double of the plant (model) and all signals which are available.
+This way the convert controller can choose a different reference and since the dynamics are close enough to the plant, the attack may go unnoticed (stealth attack)~\cite{Smith2015,HoehnZhang2016,BarboniEtAl2020} (See Fig.~\ref{fig:covert_attack})
 
 \begin{figure}[h]
   \centering
@@ -393,10 +393,13 @@ For this the attacker uses a double of the plant using a model and uses a covert
     \draw[latex-,thick,dotted] (covert_controller.south -| network.puff 20) -- (network.puff 20) node[midway,right] {$\mathcal{I}_{\text{in}}$} ;
     \draw[latex-,thick,dotted] (network.puff 2) -- ( covert_controller.south -| network.puff 2) node[midway,left] {$\mathcal{I}_{\text{out}}$} ;
 \end{tikzpicture}
-\caption{Covert agent. Adpated from~\cite{Smith2015}.}\label{fig:covert_attack}
+\caption{Covert agent. Adpated from~\cite{Smith2015,BarboniEtAl2020}.}\label{fig:covert_attack}
 \end{figure}
 
-Other attacks can be seen in~\cite{TeixeiraEtAl2015,ZhangEtAl2021c}.
+As we will soon discuss, to counter these attacks sometimes we use detectors of anomalous behaviors which tries to detect a change in the dynamics of the system (plant plus controller)~\cite{TeixeiraEtAl2012,TeixeiraEtAl2015,HoehnZhang2016}, more generically an attack that can go unnoticed under these detectors is called a \textbf{Zero Dynamics Attack}.
+
+The cited attacks are not extensive but gives a background of the more usual in the literature.
+Other attacks can be seen in~\cite{TeixeiraEtAl2015,ZhangEtAl2021c} and all other cited works in this chapter.
 
 \cite{DibajiEtAl2019} and ~ use a categorization close to the \CIA{}.
 
