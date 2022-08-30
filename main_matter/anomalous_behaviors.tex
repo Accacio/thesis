@@ -396,24 +396,25 @@ This way the convert controller can choose a different reference and since the d
 
 As we will soon discuss, to counter these attacks sometimes we use detectors of anomalous behaviors which tries to detect a change in the dynamics of the system (plant plus controller)~\cite{TeixeiraEtAl2012,TeixeiraEtAl2015,HoehnZhang2016}, more generically an attack that can go unnoticed under these detectors is called a \textbf{Zero Dynamics Attack}.
 
-The cited attacks are not extensive but gives a background of the more usual in the literature.
+The cited attacks are not extensive but gives a background of the more usual attacks presented in the literature.
 Other attacks can be seen in~\cite{TeixeiraEtAl2015,ZhangEtAl2021c} and all other cited works in this chapter.
 
-\cite{DibajiEtAl2019} and ~ use a categorization close to the \CIA{}.
+\section{Attacks in \dmpc{}}\label{sec:attacks_in_dmpc}
+In the \dmpc{} community, as pointed in~\cite{ArauzEtAl2021}, the cyber-physical security has not been sufficiently studied. While many decompositions methods are created, usually the agents are considered cooperative and no vulnerabilities not explored.
 
-use as base
+Some recent works began to explore the vulnerabilities of some decompositions methods,
+such as dual decomposition.
+
+~\cite{DibajiIshii2015,WangIshii2019,VelardeEtAl2018}
+s{} use as base
 \cite{MaestreEtAl2018}
 \cite{DibajiIshii2015,WangIshii2019,VelardeEtAl2018} based robustness of graph and ignoring extreme values.
-\todo{search zero dynamics attack}
 
-https://ieeexplore.ieee.org/abstract/document/4577833
-\cite{CaiEtAl2019,ZhangEtAl2021b}
-Two typical attacks \cite{ZhangEtAl2021a}
+\cite{CaiEtAl2019}
 
 \subsection{Types}\label{sec:types_of_attacks}
-If we use the global vision shown in \S~\ref{sec:topology_trust} we can aggregate the components shown into only two,
 \cite{PasqualettiEtAl2013}
-\cite{BoemEtAl2020}
+Fault Diagnoses~\cite{BoemEtAl2020}
 
 but they will always reflect on the channel.
 
@@ -445,7 +446,7 @@ which can achieve graceful degradation
 
 
 \todo{remove}
-Some techniques can be applied to create attack/fault-tolerant systems or to robustify the systems against them\cite{DingEtAl2018,SatchidanandanKumar2017}
+Some techniques can be applied to create attack/fault-tolerant systems or to robustify the systems against them\cite{DingEtAl2018,SatchidanandanKumar2017,BoemEtAl2020}
 
 Due to some similarities, depending on where on the system they happen, some defense techniques based on robustness used for faults may also be used for attacks~\cite{TeixeiraEtAl2015}.
 
@@ -469,15 +470,13 @@ To secure exchanges usually cryptography is used to ensure data integrity and au
 \paragraph{Detection}
 Use some system knowledge to recognize an anomalous behavior.
 
+\todo{Detection based on residuals of state dynamics~\cite{TeixeiraEtAl2015}}
+\todo{Other kind of detectors can be found in~\cite{ZhangEtAl2021a}}
+
 \paragraph{Isolation}
 Use some  knowledge of the system to recognize what component is the source of the anomalous behavior
 
 \paragraph{Mitigation}
-
-
-
-
-
 Prevention/Protection
 Detection
 
