@@ -351,6 +351,7 @@ For this the attacker uses a double of the plant using a model and uses a covert
   \begin{tikzpicture}[node distance=1cm and 2cm,
     box/.style={thick,draw,align=center,minimum height=1.5cm,minimum width=3cm,rectangle,black},
     network/.style={thick,draw,cloud,cloud puffs=20,aspect=2},
+    connection/.style={draw,fill,circle,inner sep=0pt,minimum width=3pt},
     ]
 
     \node[box] (plant) at (0,0) {Physical\\System};
@@ -359,23 +360,31 @@ For this the attacker uses a double of the plant using a model and uses a covert
     \node[box,above=1cm of network] (covert_controller)  {Covert\\Controller};
     \node[box,above=.5cm of covert_controller] (plant_model)  {Plant\\Model};
 
-    \node[thick,draw,circle,inner sep=1pt,right=1.75cm of plant_model] (y_sum)  {+};
-    \node[thick,draw,circle,inner sep=1pt,left=1.75cm of covert_controller] (u_sum)  {+};
+    \node[thick,draw,circle,inner sep=1pt] (y_sum) at ($(covert_controller.east) + (2,-.5)$)  {\small $+$};
+    \node[thick,draw,circle,inner sep=1pt,left=1.75cm of plant_model] (u_sum)  {\small $+$};
 
     \draw[thick] (controller.west) -- ++(-2,0) node (a) {} node [midway,below] (input) {$u$};
     \draw[thick] (plant.east) -- ++(2,0) node (aa) {} node [midway,above] (output) {$y$};
-    \draw[thick] (plant_model.east) -- ++(1,0) node (model_aa) {} node [midway,above] (model_output) {$\gamma$};
-    \draw[thick] (covert_controller.west) -- ++(-1,0) node (covert_a) {} node [midway,below] (covert_input) {$\mu$};
-
     \draw[-latex,thick] (aa.center) -- (y_sum);
-    \draw[-latex,thick] (model_aa.center) -- (y_sum) node[midway,below right=.1cm] {-};
-    \draw[-latex,thick] (model_aa.center) |- (covert_controller.east);
+
+    \draw[thick] (plant_model.east) -- ++(1,0) node (model_aa) {} node [midway,above] {$\gamma$};
+    \draw[-latex,thick] (model_aa.center |- y_sum) node [connection] {} -- (y_sum) node[midway,below right=.1cm] {-};
+    \draw[-latex,thick] (model_aa.center) |- (covert_controller.east |- y_sum);
+
+    \draw[thick] ($(covert_controller.west) +(0,.5)$) -- ++(-1,0) node (covert_a) {} node [midway,below] {$\mu$};
+    \draw[-latex,thick] (covert_a.center) |- (plant_model.west);
+    \draw[-latex,thick] (covert_a.center|-u_sum) node[connection] {} -- (u_sum);
+
+    \draw[-latex,thick] (u_sum |- y_sum) node[connection] {} -- (covert_controller.west|- y_sum);
+
+
+    \node[connection] (y_to_covert) at ($(y_sum) + (0,1)$) {};
+    \draw[-latex,thick] (model_aa.center) |- (covert_controller.east |- y_sum);
+    \draw[-latex,thick] (y_to_covert) |- (covert_controller.east |- y_to_covert);
 
     \draw[-latex,thick] (y_sum) |- (controller.east);
 
-    \draw[-latex,thick] (covert_a.center) |- (plant_model.west);
 
-    \draw[-latex,thick] (covert_a.center) -- (u_sum);
     \draw[-latex,thick] (a.center) -- (u_sum);
     \draw[-latex,thick] (u_sum) |- (plant.west);
 
