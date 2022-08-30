@@ -6,7 +6,17 @@
   {
     \acrPl{#1}{#2}{#3}{#4}{#5}
   }
+}
+
+\newcommandx\symbl[4][4=,]{
+  \ifthenelse{\equal{#4}{}}
+  {
+    \symblnosort{#1}{#2}{#3}
   }
+  {
+    \symblwithsort{#1}{#2}{#3}{#4}
+  }
+}
 
 \newcommand{\acrSing}[3]{\newacronym{#1}{#2}{#3}
   \expandafter\newcommand\csname #1\endcsname{\gls{#1}}}
@@ -17,11 +27,17 @@
   \expandafter\newcommand\csname #1s\endcsname{\glspl{#1}}
 }
 
-\newcommand{\symbl}[3]{\newglossaryentry{#1}{name ={#2},	description ={#3}}
+\newcommand{\symblwithsort}[4]{\newglossaryentry{#1}{name ={#2},	description ={#3}, sort={#4}}
+  \expandafter\newcommand\csname #1\endcsname{\gls{#1}}
+}
+\newcommand{\symblnosort}[3]{\newglossaryentry{#1}{name ={#2},	description ={#3}}
   \expandafter\newcommand\csname #1\endcsname{\gls{#1}}
 }
 \symbl{coordinated}{coordinated control}{Decomposition framework where agents communicate to solve a problem. As opposed to uncoordinated control}
-\symbl{latex}{\LaTeX}{Is a mark up language specially suited for scientific documents}
+\symbl{anomalousbehaviors}{anomalous behaviors}{Change in any non-expected (change of) behavior of a system}
+
+\symbl{latex}{\LaTeX}{A mark up language specially suited for scientific documents}[latex]
+
 \symbl{TikZ}{Ti{\textit{k}}Z}{A mark up language for drawings based on \gls{latex}}
 
 \acrSing{EM}{EM}{Expectation Maximization}
