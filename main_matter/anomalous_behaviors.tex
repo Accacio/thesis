@@ -334,14 +334,11 @@ To illustrate, we can populate the attack space with some attacks, some already 
   \caption[Attack space and some attacks.]{Attack space and some attacks. (Adpated from~\cite{TeixeiraEtAl2015})}\label{fig:3_dimensions_attack_with_attacks}
 \end{figure}
 
-\todo{\cite{MoSinopoli2009}, deception attack can be subtler thant \DoS{}}
 
-In \textbf{Topology attacks}, the attackers manipulate the topology of the system or misleads the control to believe the system is under a different topology (with false-data). Such attacks are done by changing the state of devices as switches and breakers~\cite{KimTong2013,WuEtAl2016,ZhangEtAl2021c}.
+In \textbf{Topology attacks}, the attackers manipulate the topology of the system or misleads the control to believe the system is under a different topology (with false-data). Such attacks are done by changing the state of devices like switches and breakers~\cite{KimTong2013,WuEtAl2016,ZhangEtAl2021b}.
 \\In a \textbf{Software Modification attack}, the attacker modifies the software used in the controller, as done by the attackers in the Stuxnet attack~\cite{Langner2011}.
-
-\begin{itemize}
-  \item FDI~\cite{TeixeiraEtAl2015}
-\end{itemize}
+\\In \textbf{\fdi{} attacks}, the attacker sends a false data to the controller or the plant, usually with some insight about the functioning of the system.
+In an example shown in~\cite{TeixeiraEtAl2015}, the attackers objective is to inject a constant bias so it can affect the steady state value of the variables in the system.
 \\In \textbf{Covert attacks}, the attacker fabricates new control and output signals to be fed to the plant and the controller.
 For this the attacker uses a double of the plant (model) and all signals which are available.
 This way the convert controller can choose a different reference and since the dynamics are close enough to the plant, the attack may go unnoticed (stealth attack)~\cite{Smith2015,HoehnZhang2016,BarboniEtAl2020} (See Fig.~\ref{fig:covert_attack})
