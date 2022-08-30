@@ -905,6 +905,7 @@ backrefstyle=three,
 
 \let\oldglossary\printglossary
 \def\printglossary{
+  \renewcommand{\glsnamefont}[1]{\makefirstuc{##1}}%
 \cleartooddpage[\thispagestyle{empty}]
 \oldglossary[style=alttree]\adjustmtc
 }
