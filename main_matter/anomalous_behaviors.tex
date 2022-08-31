@@ -16,7 +16,7 @@ In this chapter, we discuss briefly the causes of anomalous behaviors, how they 
 \minitoc%
 
 \section{What are anomalous behaviors?}
-We define \emph{\anomalousbehaviors} as any non-expected (change of) behavior of a system.
+We define \emph{\anomalousbehaviors} (or non-compliant behaviors) as any non-expected (change of) behavior of a system.
 
 There are two primary causes for a system not to perform as nominally expected: \emph{faults} and \emph{attacks}.
 The main difference between these two is \emph{intention}; while faults happen unintentionally, uncoordinated and with no objective, attacks happen intentionally, usually coordinated having a malicious objective.
@@ -338,7 +338,7 @@ To illustrate, we can populate the attack space with some attacks, some already 
 
 In \textbf{Topology attacks}, the attackers manipulate the topology of the system or misleads the control to believe the system is under a different topology (with false-data). Such attacks are done by changing the state of devices like switches and breakers~\cite{KimTong2013,WuEtAl2016,ZhangEtAl2021b}.
 \\In a \textbf{Software Modification attack}, the attacker modifies the software used in the controller, as done by the attackers in the Stuxnet attack~\cite{Langner2011}.
-\\In \textbf{\fdi{} attacks}, the attacker sends a false data to the controller or the plant, usually with some insight about the functioning of the system.
+\\In \textbf{\fdi{} attacks}, the attacker sends a false data to the controller or the plant, usually with some insight about the functioning of the system~\cite{PasqualettiEtAl2013}.
 In an example shown in~\cite{TeixeiraEtAl2015}, the attackers objective is to inject a constant bias so it can affect the steady state value of the variables in the system.
 \\In \textbf{Covert attacks}, the attacker fabricates new control and output signals to be fed to the plant and the controller.
 For this the attacker uses a double of the plant (model) and all signals which are available.
@@ -397,37 +397,26 @@ This way the convert controller can choose a different reference and since the d
 As we will soon discuss, to counter these attacks sometimes we use detectors of anomalous behaviors which tries to detect a change in the dynamics of the system (plant plus controller)~\cite{TeixeiraEtAl2012,TeixeiraEtAl2015,HoehnZhang2016}, more generically an attack that can go unnoticed under these detectors is called a \textbf{Zero Dynamics Attack}.
 
 The cited attacks are not extensive but gives a background of the more usual attacks presented in the literature.
-Other attacks can be seen in~\cite{TeixeiraEtAl2015,ZhangEtAl2021c} and all other cited works in this chapter.
+Other attacks can be seen in~\cite{TeixeiraEtAl2015,ZhangEtAl2021b} and all other cited works in this chapter.
 
 \section{Attacks in \dmpc{}}\label{sec:attacks_in_dmpc}
-In the \dmpc{} community, as pointed in~\cite{ArauzEtAl2021}, the cyber-physical security has not been sufficiently studied. While many decompositions methods are created, usually the agents are considered cooperative and no vulnerabilities not explored.
+As pointed in~\cite{ArauzEtAl2021}, although cyber-physical security has been studied in \mpc{} frameworks\todo[add some examples]{}, the \dmpc{} community has not yet studied it sufficiently.
+While many decompositions methods are discussed, the agents usually are considered cooperative and no vulnerabilities are explored.
+But some effort has been made in the recent years began to explore the vulnerabilities of some decompositions methods, noticeably dual decomposition~\cite{VelardeEtAl2017b,VelardeEtAl2017a,VelardeEtAl2018,AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} (which is the most widely used decomposition) and Jacobi-Gauß decomposition~\cite{ChanfreutEtAl2018}.
 
-Some recent works began to explore the vulnerabilities of some decompositions methods,
-such as dual decomposition.
+In all these works the attacks are not originated from an external agent.
+One (or a group) of the agents  behave non-cooperatively and tries to steer de decomposition based on a objective, be it to destabilize the system or to benefit a group of agents.
+These kinds of attacks are called \textbf{inter-agent attacks}.
+And usually the objectives are accomplished by deception.
 
-~\cite{DibajiIshii2015,WangIshii2019,VelardeEtAl2018}
-s{} use as base
-\cite{MaestreEtAl2018}
-\cite{DibajiIshii2015,WangIshii2019,VelardeEtAl2018} based robustness of graph and ignoring extreme values.
-
-\cite{CaiEtAl2019}
-
-\subsection{Types}\label{sec:types_of_attacks}
-\cite{PasqualettiEtAl2013}
-Fault Diagnoses~\cite{BoemEtAl2020}
-
-but they will always reflect on the channel.
+The mentioned works present \fdi{} attacks, which they categorize based on where in the optimization problem the deception occurs.
+\\\textbf{Selfish attack} is when the attacker modify its local objective function (usually multiplying it by a positive constant) so it can be more penalized, which causes all other agents to increase the efforts to balance this disadvantage and decrease the local cost of the attacker.
+\\In \textbf{Fake weights attacks}, the non-cooperative agent uses different weights in its local objective function. A selfish attack can be viewed as a specific case of this kind of attack.
+\\Supposing the agents follow a reference, in a \textbf{false reference attack} the malicious agent uses a different value of reference to calculate its local objective function.
+\\For a \textbf{fake constraints attack}, the attacker uses different constraints when solving its local optimization problem.
+\\The authors call a \textbf{``liar'' agent attack} when, after the negotiation is finished as usual, the attacker uses a control different from the agreed one.
 
 
-Channel and agent
-
-Middle-man
-
-Deception Attack (Repeat Attack)
-
-DoS
-
-\cite{GuEtAl2016}
 
 \section{Maintaining security}\label{sec:maintaining_security}
 It can be achieved by two means: robustness and resilience.
@@ -439,49 +428,59 @@ Robustness can be defined as the ability to withstand perturbations without chan
 
 While robustness is usually passive, resilience is more adaptive, active in order to reestablish a more optimal behavior.
 Some robust control approaches used in fault-tolerance can also be used for some kinds of attacks, while usually for specific kinds of attacks new resilient methods need to be created in order to mitigate the effects.
-\todo{Naghavi, S. V., Safavi, A. A., \& Kazerooni, M. (2014). Decentralized fault tolerant model
-predictive control of discrete-time interconnected nonlinear systems. Journal of the
-Franklin Institute, 351(3), 1644–1656.}
-which can achieve graceful degradation
+
 
 
 \todo{remove}
 Some techniques can be applied to create attack/fault-tolerant systems or to robustify the systems against them\cite{DingEtAl2018,SatchidanandanKumar2017,BoemEtAl2020}
+
+Fault tolerant control\cite{VahidNaghaviEtAl2014}
 
 Due to some similarities, depending on where on the system they happen, some defense techniques based on robustness used for faults may also be used for attacks~\cite{TeixeiraEtAl2015}.
 
 
 
 \section{Protecting against Attacks}\label{sec:protecting_against_attacks}
-First thing is to assess the risks and see what parts of you system your trust, and what part of the system can be seem as \emph{vulnerable}, or a \emph{threat}.
 
+The first thing to remember is that nothing is safe and everything can be potentially attacked.
+The initial step is to assess the risks and see which parts of your system you trust.
+Some parts of the system can be more \emph{vulnerable} to \emph{threats}, i.e. some components have more probability of being attacked or to suffer from faults.
+We usually protect components with more probability of presenting an anomalous behavior~\cite{Bishop2005} (risk and threat analysis).
 
-\paragraph{Trust}
-
-\paragraph{Prevention}
-~\\To prevent anomalous behaviors, we secure components that we see as a possible threat due its vulnerabilities.
-\\Here we can give some examples.
+\paragraph{Prevention} To prevent anomalous behaviors, we secure components that we see as a possible threat due its vulnerabilities.
+Here we can give some examples.
 Tampering of the physical components can be prevented by enclosing them by walls and doors with access control and adding monitoring cameras~\cite{CardenasEtAl2008,DingEtAl2018}, preventing the attacker to approach such components.
 Faults due to deterioration are prevented usually by a periodical preventive maintenance~\cite{ChenEtAl2021}, and substitution of deteriorated components by new ones.
-Attacks and faults caused by software vulnerabilities may be prevented by corrective \emph{patches} that are sent to all users of the software to correct the bugs, or even by software rejuvenation~\cite{GriffioenEtAl2020}, where the system is refreshed with a trusted copy of the original, in case there is a chance it was corrupted.
+Attacks and faults caused by software vulnerabilities may be prevented by corrective \emph{patches} that are sent to all users of the software to correct the bugs, or even by software rejuvenation~\cite{AlonsoEtAl2012,GriffioenEtAl2020}, where the system is refreshed with a trusted copy of the original, in case there is a chance it was corrupted.
 For communication/transmission, we increase the robustness of the mean, by using better cables with insulation and braided shields for example.
 To secure exchanges usually cryptography is used to ensure data integrity and authenticity of agents~\cite{DingEtAl2018}.
+
+~\\\\When prevention fails it is time to use a strategy, based on resilience (active), robustness (passive) or even both
 
 \paragraph{Detection}
 Use some system knowledge to recognize an anomalous behavior.
 
 \todo{Detection based on residuals of state dynamics~\cite{TeixeiraEtAl2015}}
-\todo{Other kind of detectors can be found in~\cite{ZhangEtAl2021a}}
+In \cite{PasqualettiEtAl2013}, the authors discuss what are monitors and how attacks can be detected and identified.
+\todo{or detectors, Other kind of detectors can be found in~\cite{ZhangEtAl2021a}}
 
 \paragraph{Isolation}
 Use some  knowledge of the system to recognize what component is the source of the anomalous behavior
 
-\paragraph{Mitigation}
+\paragraph{Recovery}
 Prevention/Protection
 Detection
 
 Isolation
 Recovery
+
+
+Fault Diagnoses~\cite{BoemEtAl2020}
+In \cite{MaestreEtAl2018} the strategy was to uses set membership detection to detect attackers and tube-based mpc to robustify against changes inside a safety set.
+In~\cite{VelardeEtAl2018} their solution is based on f-robustness of graphs\cite{DibajiIshii2015,WangIshii2019} and ignoring extreme values. Similarly~\cite{AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} base their solution on f-local graph robustness, their method detects suspect agents using a bayesian approach and ignore them in the negotiation.
+The approach in~\cite{VelardeEtAl2017a,MaestreEtAl2021} is to robustify the system using probability of occurence of trustworthy historical scenarios.
+
+
 
 It always depend on the question «who/what do you trust/distrust?»
 
@@ -493,7 +492,7 @@ Some examples are the \emph{blockchain} (mentioned in~\ref{sec:drawbacks}), and 
 \cite{FortiEtAl2016}
 
 \subsection{Mitigation/Recovery}
-For the cases of faults, the main recovery options are disconnecting the malfunctioning components to prevent further consequences or fixing (or substituting) the components.
+For the cases of faults, the main recovery options are disconnecting the malfunctioning components to prevent further consequences, substituting the components by its redundancy and fixing the malfunctioning one (if possible).
 
 If disturbance is inside some probabilistic bounds \cite{AnandutaEtAl2020}
 
@@ -504,12 +503,5 @@ If disturbance is inside some probabilistic bounds \cite{AnandutaEtAl2020}
 As the hierarchical proposed in~\cite{BraunEtAl2020}, where a regulator (central supervisor) who can detect and exclude suspicious agents.
 
 \todo{\cite{MaestreEtAl2014} Monolithical, multi independent systems}
-
-\begin{description}
-  \item[Show examples of Attacks]
-  \item[False data injection/communication corruption] Maybe review attacks shown in \cite{VelardeEtAl2018} and how they can be viewed as false data injection attacks (corruption on sent values), \todo{show that since coordinator is oblivious to what happen inside each agent what matters is what it receives, no need to specify exactly the responsible part which generated attack}
-\end{description}
-
-
 
 \end{document}
