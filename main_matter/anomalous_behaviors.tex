@@ -402,7 +402,7 @@ Other attacks can be seen in~\cite{TeixeiraEtAl2015,ZhangEtAl2021b} and all othe
 \section{Attacks in \dmpc{}}\label{sec:attacks_in_dmpc}
 As pointed in~\cite{ArauzEtAl2021}, although cyber-physical security has been studied in \mpc{} frameworks\todo[add some examples]{}, the \dmpc{} community has not yet studied it sufficiently.
 While many decompositions methods are discussed, the agents usually are considered cooperative and no vulnerabilities are explored.
-But some effort has been made in the recent years began to explore the vulnerabilities of some decompositions methods, noticeably dual decomposition~\cite{VelardeEtAl2017b,VelardeEtAl2017a,VelardeEtAl2018,AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} (which is the most widely used decomposition) and Jacobi-Gauß decomposition~\cite{ChanfreutEtAl2018}.
+But some effort has been made in the recent years to explore the vulnerabilities of some decompositions methods, noticeably dual decomposition~\cite{VelardeEtAl2017b,VelardeEtAl2017a,VelardeEtAl2018,AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} (which is the most widely used decomposition) and Jacobi-Gauß decomposition~\cite{ChanfreutEtAl2018}.
 
 In all these works the attacks are not originated from an external agent.
 One (or a group) of the agents  behave non-cooperatively and tries to steer de decomposition based on a objective, be it to destabilize the system or to benefit a group of agents.
@@ -416,84 +416,76 @@ The mentioned works present \fdi{} attacks, which they categorize based on where
 \\For a \textbf{fake constraints attack}, the attacker uses different constraints when solving its local optimization problem.
 \\The authors call a \textbf{``liar'' agent attack} when, after the negotiation is finished as usual, the attacker uses a control different from the agreed one.
 
-
-
-\section{Maintaining security}\label{sec:maintaining_security}
-It can be achieved by two means: robustness and resilience.
-
-While both terms are usually used interchangeably here we make a distinction.
-
-\textbf{Robustness} can be defined as the ability to withstand perturbations without change in function~\cite{Jen2003}, while \textbf{resilience} is the ability to maintain an accepted level of operational normalcy  in  response  to  disturbances,  including  threats  of  an unexpected and malicious nature\cite{Rieger2010}.
-
-While robustness is usually passive, resilience is more adaptive, active in order to reestablish a more optimal behavior.
-
-Some robust control approaches used in fault-tolerance can also be used for some kinds of attacks, while usually for specific kinds of attacks new resilient methods need to be created in order to mitigate the effects.
-
-\todo{remove}
-Some techniques can be applied to create attack/fault-tolerant systems or to robustify the systems against them\cite{DingEtAl2018,SatchidanandanKumar2017,BoemEtAl2020}
-
-Fault tolerant control\cite{VahidNaghaviEtAl2014}
-
-Due to some similarities, depending on where on the system they happen, some defense techniques based on robustness used for faults may also be used for attacks~\cite{TeixeiraEtAl2015}.
-
-
-
-\section{Protecting against Attacks}\label{sec:protecting_against_attacks}
-
+\section{Securing \cps{}}\label{sec:maintaining_security}
 The first thing to remember is that nothing is safe and everything can be potentially attacked.
 The initial step is to assess the risks and see which parts of your system you trust.
 Some parts of the system can be more \emph{vulnerable} to \emph{threats}, i.e. some components have more probability of being attacked or to suffer from faults.
-We usually protect components with more probability of presenting an anomalous behavior~\cite{Bishop2005} (risk and threat analysis).
+As a second measure, we usually protect this components that have more probability of presenting an anomalous behavior~\cite{Bishop2005} in order to prevent such behaviors.
 
-\paragraph{Prevention} To prevent anomalous behaviors, we secure components that we see as a possible threat due its vulnerabilities.
-Here we can give some examples.
-Tampering of the physical components can be prevented by enclosing them by walls and doors with access control and adding monitoring cameras~\cite{CardenasEtAl2008,DingEtAl2018}, preventing the attacker to approach such components.
-Faults due to deterioration are prevented usually by a periodical preventive maintenance~\cite{ChenEtAl2021}, and substitution of deteriorated components by new ones.
-Attacks and faults caused by software vulnerabilities may be prevented by corrective \emph{patches} that are sent to all users of the software to correct the bugs, or even by software rejuvenation~\cite{AlonsoEtAl2012,GriffioenEtAl2020}, where the system is refreshed with a trusted copy of the original, in case there is a chance it was corrupted.
+\paragraph{Prevention} To prevent anomalous behaviors, we secure the vulnerable components.
+Some examples follow.
+Tampering of \emph{physical components} is prevented by \emph{enclosing} them by walls and doors with \emph{access control} and adding \emph{monitoring devices} (cameras and alarms)~\cite{CardenasEtAl2008,DingEtAl2018}, persuading the attacker to not approach such components.
+Faults due to \emph{deterioration} are prevented usually by a \emph{periodical preventive maintenance}~\cite{ChenEtAl2021}, and substitution of deteriorated components by new ones.
+Attacks and faults caused by \emph{software vulnerabilities} may be prevented by \emph{corrective patches} that are sent to all users of the software to correct the bugs.
+Another method is \emph{software rejuvenation}~\cite{AlonsoEtAl2012,GriffioenEtAl2020}, where the system is refreshed with a trusted copy of the original software periodically, useful when there is a chance the software was corrupted.
 For communication/transmission, we increase the robustness of the mean, by using better cables with insulation and braided shields for example.
-To secure exchanges usually cryptography is used to ensure data integrity and authenticity of agents~\cite{DingEtAl2018}.
+To secure exchanges usually \emph{cryptography} is used to ensure data integrity and authenticity of agents~\cite{DingEtAl2018}.
 
-~\\\\When prevention fails it is time to use a strategy, based on resilience (active), robustness (passive) or even both
+~\\If prevention fails it is need to have another strategy to maintain security.
+In the literature, those strategies are usually accompanied by one of two words: robustness and resilience.
+Although both terms are generally used interchangeably in the literature, here we make a distinction.
+\textbf{Robustness} can be defined as the ability to withstand perturbations without change in function~\cite{Jen2003}. \textbf{Resilience} is the ability to maintain an accepted level of operational normalcy in  response  to  disturbances,  including  threats  of  an unexpected and malicious nature~\cite{Rieger2010}.
 
-\paragraph{Detection}
+Here we interpret robust methods as more passive strategies, while resilient methods are more adaptive, active in order to reestablish a more optimal behavior.
+So we can divide the security methods into two categories: active and passive
+
+\section{Passive strategies}\label{sec:protecting_against_attacks}
+Passive strategies are usually based on robust control, where a control is implemented which can maintain satisfactory performance if values of some variables are inside a given safety range (robust against disturbances) or if a number of components present anomalous behaviors.
+
+The majority of the robust strategies is used for \ftc{}, however, depending on the similarities between faults and the attacks, some robust control approaches can be used, as indicated in~\cite{TeixeiraEtAl2015,DingEtAl2018,ArauzEtAl2021}.
+
+For example in distribution grids there is N-1 static security index, which indicates how stable the grid is even if 1 component present a failure (or is disconnected)~\cite{QianEtAl2022}.
+So for a system said N-1 safe, if a component is attacked (a \DoS{} for example) the system still can present satisfactory performance.
+
+While usually for specific kinds of attacks new resilient methods need to be created in order to mitigate the effects.
+
+Generally is used for
+
+Some techniques can be applied to create attack/fault-tolerant systems or to robustify the systems against them~\cite{BoemEtAl2020}
+
+\cite{SatchidanandanKumar2017}
+Fault tolerant control\cite{VahidNaghaviEtAl2014}
+
+\section{Active strategies}\label{sec:protecting_against_attacks}
+
+Some examples are the \emph{blockchain} (mentioned in~\ref{sec:drawbacks}), and cryptographing the signal/data we want to protect.
+
+\subsection{Detection/Isolation}
+
 Use some system knowledge to recognize an anomalous behavior.
+
+Use some  knowledge of the system to recognize what component is the source of the anomalous behavior
 
 \todo{Detection based on residuals of state dynamics~\cite{TeixeiraEtAl2015}}
 In \cite{PasqualettiEtAl2013}, the authors discuss what are monitors and how attacks can be detected and identified.
 \todo{or detectors, Other kind of detectors can be found in~\cite{ZhangEtAl2021a}}
 
-\paragraph{Isolation}
-Use some  knowledge of the system to recognize what component is the source of the anomalous behavior
-
-\paragraph{Recovery}
-Prevention/Protection
-Detection
-
-Isolation
-Recovery
-
-
 Fault Diagnoses~\cite{BoemEtAl2020}
+
+
+\emph{watermarking} (where some cryptographed signal is superimposed to the signal we want to secure)~\cite{MoEtAl2015,SatchidanandanKumar2017,KshetriVoas2017,LuciaEtAl2021},
+
+detector~\cite{FortiEtAl2016}
+
+\subsection{Mitigation/Recovery}
+
 In \cite{MaestreEtAl2018} the strategy was to uses set membership detection to detect attackers and tube-based mpc to robustify against changes inside a safety set.
 In~\cite{VelardeEtAl2018} their solution is based on f-robustness of graphs\cite{DibajiIshii2015,WangIshii2019} and ignoring extreme values. Similarly~\cite{AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} base their solution on f-local graph robustness, their method detects suspect agents using a bayesian approach and ignore them in the negotiation.
 The approach in~\cite{VelardeEtAl2017a,MaestreEtAl2021} is to robustify the system using probability of occurence of trustworthy historical scenarios.
 
-
-
-It always depend on the question «who/what do you trust/distrust?»
-
-% no see o que se pasa
-Some examples are the \emph{blockchain} (mentioned in~\ref{sec:drawbacks}), and cryptographing the signal/data we want to protect.
-
-\subsection{Detection/Isolation}
-\emph{watermarking} (where some cryptographed signal is superimposed to the signal we want to secure)~\cite{MoEtAl2015,SatchidanandanKumar2017,KshetriVoas2017,LuciaEtAl2021},
-\cite{FortiEtAl2016}
-
-\subsection{Mitigation/Recovery}
 For the cases of faults, the main recovery options are disconnecting the malfunctioning components to prevent further consequences, substituting the components by its redundancy and fixing the malfunctioning one (if possible).
 
 If disturbance is inside some probabilistic bounds \cite{AnandutaEtAl2020}
-
 
 % \epigraph{\centering There are few people, however, who, if you told them a result, would be able to evolve from their own inner consciousness what the steps were which led up to that result.}
 % {\textit{A Study in Scarlet}\\ \textsc{Sir Arthur Conan Doyle}}
