@@ -23,8 +23,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.date.outputs.date }}
-          release_name: Release ${{ steps.date.outputs.date }}
+          tag_name: ${{ github.event.repository.updated_at}}
+          release_name: Release ${{ github.event.repository.updated_at}}
           draft: false
           prerelease: false
       - name: Upload Normal PDF
