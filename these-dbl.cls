@@ -601,7 +601,7 @@ backrefstyle=three,
   \global\advance\@reporter by 1
 }
 
-\newcommand\president[3]{\gdef\@president{#1 & #2,#3}}
+\newcommand\president[3]{\gdef\@president{#1 & #2, #3}}
 
 \newcolumntype{y}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
 
