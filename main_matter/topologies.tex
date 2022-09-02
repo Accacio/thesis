@@ -51,7 +51,7 @@ For instance, a sub-problem may solve a problem with a subset of states of two d
 \end{figure}
 
 In the literature, it is not unusual to assume that we can choose the computing units in order to correspond to the sub-systems of the system as in Fig.~\ref{fig:corresponding_division_system_problem}~\cite{ArauzEtAl2021}, i.e., a computing unit computes the solution of a sub-problem to find the input of the same corresponding sub-system.
-So, in this work we also use this assumption.
+So, in \textbf{this work} we also assume the sub-problems and sub-systems are \textbf{corresponding}.
 Then, the terms sub-problems, sub-systems, agents and units will be used interchangeably.
 
 \section{Representing communication}
@@ -227,12 +227,12 @@ For the decomposition of some optimization problems, it is shown that in certain
   So, in this work we opt for a different nomenclature, calling those kinds of frameworks as «uncoordinated control», since there is no coordination between agents nor a coordinator agent to referee. We use the term decentralized as opposed to centralized (monolithic), i.e.\ to describe structure instead of communication.
 \end{remark}
 
-The most part of the literature uses \emph{\coordinated}~\cite{NegenbornMaestre2014, ArauzEtAl2021}, in this work, analogously, we suppose the agents communicate and the communication graph is connected.
+The most part of the literature uses \emph{\coordinated}~\cite{NegenbornMaestre2014, ArauzEtAl2021}, in \textbf{this work}, analogously, we suppose the agents communicate and the communication \textbf{graph} is \textbf{connected}.
 
 \section{How units influence each other?}
 
 There exists multiple communication schemes. They depend on the decomposition, topology and also trust/power.
-When looking at the trust/power axis, we can divide these schemes into two big groups (Fig.~\ref{fig:hierarchic_anarchic}), one where groups of agents are more important than others (\emph{hierarchy}), and another where there is not (\emph{anarchy}).
+When looking at the trust/power axis, we can divide these schemes into two big groups (Fig.~\ref{fig:hierarchic_anarchic}), one where groups of agents are more important than others (\emph{hierarchy}), and another where all nodes are equally important (\emph{anarchy}).
 
 \begin{figure}[H]
 \begin{subfigure}[b]{.45\textwidth}
@@ -403,6 +403,8 @@ Some other political/societal parallel views are stablished in~\cite{McNamaraEtA
   \caption{A polytree.}\label{fig:polytree_topology}
 \end{figure}
 
+In \textbf{this work}, we choose to use a \textbf{hierarchical} structure, described later (\S \todo[put section]{??}).
+
 \section{How units communicate?}
 Depending on the problem and the structure, the connection of the nodes can be unidirectional or bidirectional. As said, these connections are represented by arcs and edges as shown in Fig.~\ref{fig:arc_edges}.
 While edges are usually more simple to deal, arcs may need some more convoluted ways to prove that the two nodes can somehow communicate (if there is a path between them), or that the algorithm converge~\cite{GarinSchenato2010}.
@@ -413,7 +415,7 @@ Another classification of the communication is about the synchronization of the 
 In the asymmetric (unidirectional), an agent chooses one of its out-neighbors, sends its information, and the recipient updates its local variables on the arrival of the message.
 On the other hand, in a symmetric case (bidirectional), after updating its variables, the recipient becomes a transmitter, sending its information to the original sender, who updates its local variables.
 
-\todo{In this work we suppose nodes communicate bidirectionally and synchronously.}
+\todo{In \textbf{this work} we suppose nodes communicate bidirectionally and synchronously.}
 
 \section{Some drawbacks and compromises}\label{sec:drawbacks}
 
