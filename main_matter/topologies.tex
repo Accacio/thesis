@@ -409,7 +409,7 @@ In \textbf{this work}, we choose to use a \textbf{hierarchical} structure, descr
 Depending on the problem and the structure, the connection of the nodes can be unidirectional or bidirectional. As said, these connections are represented by arcs and edges as shown in Fig.~\ref{fig:arc_edges}.
 While edges are usually more simple to deal, arcs may need some more convoluted ways to prove that the two nodes can somehow communicate (if there is a path between them), or that the algorithm converge~\cite{GarinSchenato2010}.
 
-Another classification of the communication is about the synchronization of the exchanges. Agents can exchange simultaneously (synchronously), or not. In general synchronous communication is the most straightforward, while asynchronous depends on the communication scheme/policy. Broadcast and gossiping~\cite{GarinSchenato2010} are examples of these communication scheme.
+Another classification of the communication is about the synchronization of the exchanges. Agents can exchange simultaneously (synchronously), or not. In general synchronous communication is the most straightforward, while asynchronous depends on the communication scheme/policy. Broadcast and gossiping~\cite{GarinSchenato2010} are examples of these communication schemes.
 \\In the broadcast scheme (a unidirectional scheme), an agent transmits its information to all its out-neighbors ($\set{N}_{\text{out}}$) and each recipient agent updates its local variables.
 \\Gossiping can be divided into two, asymmetric and symmetric.
 In the asymmetric (unidirectional), an agent chooses one of its out-neighbors, sends its information, and the recipient updates its local variables on the arrival of the message.
