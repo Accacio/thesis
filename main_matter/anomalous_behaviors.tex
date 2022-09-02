@@ -461,28 +461,30 @@ When there is no attack it behave in some way, and when an attack happens it cha
 
 In order to identify an anomalous behavior, first we need some prior information about the normal behavior of the system, for example the dynamics of certain variables, bounds or any other useful information.
 With this knowledge we can supervise the threatened components and create monitors.
-This part is called the \textbf{Detection/Isolation} phase, where the attack can be detected throught the monitors and the mishaving component/agent can be isolated.
+This part is called the \textbf{Detection} phase, where the attack can be detected through the monitors/detectors and sometimes there is an isolation step where the mishaving component/agent is identified.
 
 Once an attack is detected, the control law changes in order to mitigate the effects of the anomalous behavior.
 This is called the \textbf{Mitigation} or \textbf{Recovery} phase.
 
-In the next subsection we try to better illustrate some examples of mechanisms for the two phases.
+In the next subsections we give some examples of mechanisms to better illustrate both phases.
 
-\subsubsection{Detection/Isolation}
+\subsection{Detection}
 
-Some techniques can be applied to create attack/fault-tolerant systems or to robustify the systems against them~\cite{BoemEtAl2020}
+The detection phase techniques can be categorized in some ways.
+For example depending if an additional signal to the monitored data is added (\textbf{active detection}) or not (\textbf{passive detection}).
 
-Some examples are the \emph{blockchain} (mentioned in~\ref{sec:drawbacks}), and cryptographing the signal/data we want to protect.
+The techniques can also be divided by they use event-triggered approaches or not.
+We give the works in~\cite{SunYang2019,HuEtAl2021,SunEtAl2022} as examples of event-triggered methods, but this work do not focus on this kind of methods.
 
-Detection of covert attacks based on observator~\cite{HoehnZhang2016}
+Other categorization is if the monitoring devices use analytical knowledge of the system or use learning methods.
 
-Use some  knowledge of the system to recognize what component is the source of the anomalous behavior
+For active detection we can mention the \emph{watermarking} where a random authentication signal is superimposed to the monitored signal we want to secure~\cite{MoSinopoli2009,MoEtAl2015,SatchidanandanKumar2017,KshetriVoas2017,LuciaEtAl2021}, it can protect against replay attacks since with the knowledge of the random seed it is possible to have a unique timestamp.
 
-\todo{Detection based on residuals of state dynamics~\cite{TeixeiraEtAl2015}}
-In \cite{PasqualettiEtAl2013}, the authors discuss what are monitors and how attacks can be detected and identified.
-\todo{or detectors, Other kind of detectors can be found in~\cite{ZhangEtAl2021a}}
+Some passive and analytical examples can be the observators used in~\cite{HoehnZhang2016} or residues of state dynamics~\cite{TeixeiraEtAl2015,BoemEtAl2020}, which can are associated with hypothesis testing~\cite{MoSinopoli2009} ($\chi^{2}$ detectors), or other Bernoulli sets~\cite{FortiEtAl2016} for instance.
+Some more examples are seen in~\cite{PasqualettiEtAl2013,ZhangEtAl2021a,ArauzEtAl2021}.
 
-Fault Diagnoses~\cite{BoemEtAl2020}
+For learning methods we can reference~\cite{AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} which uses
+a bayesian approach to learn bounds and detect suspect agents.
 
 
 \emph{watermarking} (where some cryptographed signal is superimposed to the signal we want to secure)~\cite{MoEtAl2015,SatchidanandanKumar2017,KshetriVoas2017,LuciaEtAl2021},
