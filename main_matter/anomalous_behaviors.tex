@@ -406,8 +406,8 @@ But some effort has been made in the recent years to explore the vulnerabilities
 
 In all these works the attacks are not originated from an external agent.
 One (or a group) of the agents  behave non-cooperatively and tries to steer de decomposition based on a objective, be it to destabilize the system or to benefit a group of agents.
-These kinds of attacks are called \textbf{inter-agent attacks} and sometimes \textbf{insider attacks}.
-And usually the objectives are accomplished by deception.
+These kinds of attacks are called \textbf{inter-agent attacks} and sometimes considered as \textbf{insider attacks} (as if someone with sufficient access rights has taken control).
+Usually the objectives of the attacker are accomplished by deception attacks.
 
 The mentioned works present \fdi{} attacks, which they categorize based on where in the optimization problem the deception occurs.
 \\\textbf{Selfish attack} is when the attacker modify its local objective function (usually multiplying it by a positive constant) so it can be more penalized, which causes all other agents to increase the efforts to balance this disadvantage and decrease the local cost of the attacker.
@@ -439,7 +439,7 @@ Although both terms are generally used interchangeably in the literature, here w
 Here we interpret robust methods as more passive strategies, while resilient methods are more adaptive, active in order to reestablish a more optimal behavior.
 So we can divide the security methods into two categories: active and passive
 
-\section{Passive strategies}\label{sec:protecting_against_attacks}
+\subsection{Passive strategies}\label{sec:protecting_against_attacks}
 Passive methods are usually based on robust control, where the control law implemented does not change in presence of faults or attacks.
 It can maintain satisfactory performance (with loss of optimality) if values of some project variables are inside a given safety range or if a certain maximum number of components present anomalous behaviors.
 
@@ -449,33 +449,30 @@ For example, a \fdi{} attack could change the value of a variable just as a faul
 
 Another example is in distribution grids where there is a N-1 static security index, which indicates how stable the grid is even if 1 component present a failure (or is disconnected)~\cite{QianEtAl2022}.
 So, for a system said N-1 safe, if a component is attacked (a \DoS{} for example) the system still can present satisfactory performance.
-As we will see, some active strategies may also take advantage of this kind of property.
+\citeauthor{VelardeEtAl2018} in~\cite{VelardeEtAl2018} used a similar solution based on f-robustness of graphs\footnote{Graph maintain connectivity even if a number $f$ of agents is disconnected}~\cite{DibajiIshii2015,WangIshii2019} for robust \dmpc{} based on dual decomposition. During each step of the negotiation, extreme values (the f biggest and smallest values) are ignored.
 
 Yet another strategy is the one in~\cite{VelardeEtAl2017a,MaestreEtAl2021}, where trustworthy historical scenarios (\mpc{} trajectories) with known occurrence probabilities are stored and used to solve the problem together with the current calculation, which may not be so reliable due to attacks.
 
+\subsection{Active strategies}\label{sec:protecting_against_attacks}
 
-\section{Active strategies}\label{sec:protecting_against_attacks}
-
-For other specific kinds of anomalous behaviors, or more ingenious attacks such as replay attacks or covert attacks, some resilient methods need to be created.
+For other specific kinds of anomalous behaviors, e.g.\ more ingenious attacks such as replay attacks or covert attacks, some resilient methods need to be created.
 The active methods are usually bi-modal.
 When there is no attack it behave in some way, and when an attack happens it changes its behavior.
 
-In order to identify an anomalous behavior, first we need some prior information about the normal behavior of the system.
-With this knowledge we can supervise the threatened component and create monitors.
-This part is called the \textbf{Detection/Isolation} phase, where the attack can be detected and the mishaving component/agent can be isolated.
+In order to identify an anomalous behavior, first we need some prior information about the normal behavior of the system, for example the dynamics of certain variables, bounds or any other useful information.
+With this knowledge we can supervise the threatened components and create monitors.
+This part is called the \textbf{Detection/Isolation} phase, where the attack can be detected throught the monitors and the mishaving component/agent can be isolated.
 
-Once an attack detected, the control law changes in order to mitigate the effects of the anomalous behavior.
+Once an attack is detected, the control law changes in order to mitigate the effects of the anomalous behavior.
 This is called the \textbf{Mitigation} or \textbf{Recovery} phase.
 
 In the next subsection we try to better illustrate some examples of mechanisms for the two phases.
 
-\subsection{Detection/Isolation}
+\subsubsection{Detection/Isolation}
 
 Some techniques can be applied to create attack/fault-tolerant systems or to robustify the systems against them~\cite{BoemEtAl2020}
 
 Some examples are the \emph{blockchain} (mentioned in~\ref{sec:drawbacks}), and cryptographing the signal/data we want to protect.
-
-Use some system knowledge to recognize an anomalous behavior.
 
 Detection of covert attacks based on observator~\cite{HoehnZhang2016}
 
@@ -492,14 +489,17 @@ Fault Diagnoses~\cite{BoemEtAl2020}
 
 detector~\cite{FortiEtAl2016}
 
-\subsection{Mitigation/Recovery}
+In~\cite{AnandutaEtAl2020} a learning If disturbance is inside some probabilistic bounds
+
+\subsubsection{Mitigation/Recovery}
 
 In \cite{MaestreEtAl2018} the strategy was to uses set membership detection to detect attackers and tube-based mpc to robustify against changes inside a safety set.
-In~\cite{VelardeEtAl2018} their solution is based on f-robustness of graphs\cite{DibajiIshii2015,WangIshii2019} and ignoring extreme values. Similarly~\cite{AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} base their solution on f-local graph robustness, their method detects suspect agents using a bayesian approach and ignore them in the negotiation.
+
+
+Similarly~\cite{AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} base their solution on f-local graph robustness, their method detects suspect agents using a bayesian approach and ignore them in the negotiation.
 
 For the cases of faults, the main recovery options are disconnecting the malfunctioning components to prevent further consequences, substituting the components by its redundancy and fixing the malfunctioning one (if possible).
 
-If disturbance is inside some probabilistic bounds \cite{AnandutaEtAl2020}
 
 % \epigraph{\centering There are few people, however, who, if you told them a result, would be able to evolve from their own inner consciousness what the steps were which led up to that result.}
 % {\textit{A Study in Scarlet}\\ \textsc{Sir Arthur Conan Doyle}}
