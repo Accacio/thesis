@@ -933,15 +933,15 @@ backrefstyle=three,
 \let\oldlistoftables\listoftables
 \def\listoftables{
 \cleartooddpage[\thispagestyle{empty}]
-\addcontentsline{toc}{chapter}{\listtablename}\adjustmtc
-\oldlistoftables
+\phantomsection\addcontentsline{toc}{chapter}{\listtablename}
+\oldlistoftables\adjustmtc
 }
 
 \let\oldlistoffigures\listoffigures
 \def\listoffigures{
 \cleartooddpage[\thispagestyle{empty}]
-\addcontentsline{toc}{chapter}{\listfigurename}\adjustmtc
-\oldlistoffigures
+\phantomsection\addcontentsline{toc}{chapter}{\listfigurename}
+\oldlistoffigures\adjustmtc
 }
 
 
