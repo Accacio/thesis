@@ -14,8 +14,10 @@ How do they influence each other?
 How do they communicate?
 In this chapter we try to answer these questions.
 
+\vfill
 \minitoc
-
+\vfill
+\pagebreak
 \section{How to distribute the computation units?}
 
 The distribution of the computation units depends on the system we want to control and the processing power/number of computation units needed to solve.
@@ -164,6 +166,7 @@ We can define a neighbor subgraph $\graph{N}(v)$ of $\graph{G}$ with the neighbo
   \caption[Neighbor subgraph of vertex $6$ (in red).]{Graph in Fig.~\ref{fig:undirected_graph} overlayed by neighbor subgraph of vertex $6$ (in red).}\label{fig:neighbor_subgraph}
 \end{figure}
 
+\pagebreak
 For directed graphs the notion of neighborhood can be split into in and out-neighborhoods of a vertex ($\set{N}_{\text{in}}$ and $\set{N}_{\text{out}}$), which are the sets of vertices whose arcs are inbound and outbound, respectively.
 A graph that all vertices are neighbors is called a \emph{complete graph} (as in Fig.~\ref{fig:complete_graph}).
 
@@ -234,7 +237,7 @@ The most part of the literature uses \emph{\coordinated}~\cite{NegenbornMaestre2
 There exists multiple communication schemes. They depend on the decomposition, topology and also trust/power.
 When looking at the trust/power axis, we can divide these schemes into two big groups (Fig.~\ref{fig:hierarchic_anarchic}), one where groups of agents are more important than others (\emph{hierarchy}), and another where all nodes are equally important (\emph{anarchy}).
 
-\begin{figure}[H]
+\begin{figure}[h]
 \begin{subfigure}[b]{.45\textwidth}
   \centering
   \scalebox{1.5}{
@@ -302,7 +305,9 @@ Sometimes the hierarchical structure may be implied by the decomposition.
 \\For instance, some decompositions need the agents to solve their problems one after the other until the values converge (Fig.~\ref{fig:sequential_topology})~\cite{LiuEtAl2009a}.
 These schemes are called \emph{sequential}.
 We can see a hierarchy among the agents, since although a convergence is reached, one group of agents solve their problems disregard the others, giving them an initial position of power, even if temporary.
-\\In other decompositions, all agents solve their problems independently of others and then share results until convergence is reached, iteratively or not (Fig.~\ref{fig:parallel_topology})~\cite{LiuEtAl2010}.
+
+\pagebreak
+In other decompositions, all agents solve their problems independently of others and then share results until convergence is reached, iteratively or not (Fig.~\ref{fig:parallel_topology})~\cite{LiuEtAl2010}.
 These structures are called \emph{parallel}.
 In such structures there is no hierarchy.
 
@@ -415,7 +420,7 @@ Another classification of the communication is about the synchronization of the 
 In the asymmetric (unidirectional), an agent chooses one of its out-neighbors, sends its information, and the recipient updates its local variables on the arrival of the message.
 On the other hand, in a symmetric case (bidirectional), after updating its variables, the recipient becomes a transmitter, sending its information to the original sender, who updates its local variables.
 
-\todo{In \textbf{this work} we suppose nodes communicate bidirectionally and synchronously.}
+In \textbf{this work} we suppose nodes communicate bidirectionally and synchronously.
 
 \section{Some drawbacks and compromises}\label{sec:drawbacks}
 
