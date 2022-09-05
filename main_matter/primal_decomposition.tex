@@ -71,22 +71,38 @@ Using the methodology in~\S\ref{sec:generalizing_decomposition} for coupling con
 where $\lambdaik,\forall i\in\set{M}$ are the dual variables of the problems, i.e. the lagrange multipliers associated with the constraints~\cite{BoydVandenberghe2004}.
 
 Problem~\eqref{eq:DOP_main} is solved by updating the $\theta_{i}$ until convergence. The method chosen is the projected sub-gradient, which update is given by
-
 \begin{equation}
   \label{eq:projectedSubgradient}
 \vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p-\rho\p\vec{g}[k]\p),
 \end{equation}
-where $\vec{\theta}[k]=[\vec{\theta}_{1}[k];\dots;\vec{\theta}_{M}[k]]$, ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k]\preceq \vec{U}_{\max}}}$, being ${c=\card{\vec{U}_{\max}}}$, ${I_{c}^{M}=\kron{\1_{M}}{I_{c}}}$, $(p)$ is a given step in the iterative process and $\vec{g}\p[k]$ is a sub-gradient of the objective function of problem in~\eqref{eq:DOP_main} in step $p$.
+where $p$ is a given step in the iterative process, $\vec{\theta}[k]=[\vec{\theta}_{1}[k];\dots;\vec{\theta}_{M}[k]]$, ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k]\preceq \vec{U}_{\max}}}$, ${c=\card{\vec{U}_{\max}}}$, ${I_{c}^{M}=\kron{\1_{M}}{I_{c}}}$, $\rho^{(p)}$ is a given step length and $\vec{g}\p[k]$ is a sub-gradient of the objective function of problem in~\eqref{eq:DOP_main} in step $p$.
+The choice of the step length is given such $$\lim_{p\to\infty}\rho^{(p)}\to0$$ and $$\sum_{p=1}^{\infty}\rho^{(p)}\to\infty$$~\cite{ConejoEtAl2006}. And an usual law is
+$$\rho^{(p)}=\frac{1}{a+bp},$$
+with $a$ and $b$ arbitrarily chosen.
 
-From~\cite{BoydVandenberghe2004} and~\cite{BoydEtAl2015}, we can derive that the dual variables $\lambdaik$ of the local problems are sub-gradients of the main problem and can be used in~\eqref{eq:projectedSubgradient}, yielding
-
+From~\cite{BoydVandenberghe2004} and~\cite{BoydEtAl2015}, we can derive that the dual variables $\lambdaik$ of the local problems are sub-gradients of the local problems and since the objective function of the main problem is a sum of the local objectives, then the $\vec{\lambda}_{i}$ can form a sub-gradient of the main problem.
+If we stack the $\vec{\lambda}_{i}[k]$ in $\vec{\lambda}[k]=[\vec{\lambda}_{1}[k];\dots;\vec{\lambda}_{M}[k]]$, it can be used in~\eqref{eq:projectedSubgradient}, yielding
 \begin{equation}
-  \label{eq:projectedSubgradient}
-\vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p-\rho\p\vec{\lambda}[k]\p),
+  \label{eq:projectedSubgradient_lambda}
+\vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p-\rho\p\vec{\lambda}[k]\p).
 \end{equation}
-with $\vec{\lambda}[k]=[\vec{\lambda}_{1}[k];\dots;\vec{\lambda}_{M}[k]]$.
 
+Using~\eqref{eq:DOP_local} and~\eqref{eq:projectedSubgradient_lambda}, we can alter Algorithm~\ref{alg:decomposition_coordination} to correspond to a decomposition of the original \mpc{} problem~\eqref{eq:qp_standard_form_decomposable} using the primal decomposition-based:
 
+\begin{algorithm2e}[H]
+  \DontPrintSemicolon%
+  $p\gets 0$\;
+  Initialize $a$ and $b$\;
+  Initialize an arbitrary maximum number of iterations $p_{\max}$\;
+  Initialize an arbitrary bound $\epsilon$\;
+  Initialize ${\thetaik}^{(p)},$ $\forall i\in\set{M}$, such that ${\vec{\theta}[k]}^{(p)}\in\set{S}$\;
+  \Repeat{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\ ||\ \left[p\geq p_{\max}\right]$}{
+    Solve local sub-problems~\eqref{eq:DOP_local} and calculate ${\vec{\lambda}_{i}[k]}^{(p)}$\;
+    Update $\vec{\theta}[k]$: $\vec{\theta}[k]\pplusone\gets\Proj^{\set{S}}(\vec{\theta}[k]\p-\rho\p\vec{\lambda}[k]\p)$ \;
+    $p\gets p+1$\;
+  }
+  \caption{Decomposition of \mpc{} problem using primal decomposition.}\label{alg:primal_decomposition}
+\end{algorithm2e}
 
 \begin{description}
   \item[simple example to illustrate convergence]
