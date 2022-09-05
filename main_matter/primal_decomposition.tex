@@ -113,22 +113,22 @@ but they will always reflect on the channel.
         \end{enumerate}
   \item[Example of how attacker can drive negotiation to other points]
 \end{description}
-\begin{figure}[h]
-  \centering
-  \begin{subfigure}{.45\textwidth}
-    \includegraphics[width=\textwidth]{../img/original-minimum.png}
-    \caption{Original minimum.}
-    \label{fig:first}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../img/new-minimum-selfish.png}
-    \caption{Minimum after non-conforming behavior.}
-    \label{fig:second}
-  \end{subfigure}
-  \caption{Effects of non-conforming behaviors on optimal value. \todo{Refaire les images}}
-  \label{fig:figures}
-\end{figure}
+% \begin{figure}[h]
+%   \centering
+%   \begin{subfigure}{.45\textwidth}
+%     \includegraphics[width=\textwidth]{../img/original-minimum.png}
+%     \caption{Original minimum.}
+%     \label{fig:first}
+%   \end{subfigure}
+%   \hfill
+%   \begin{subfigure}{0.45\textwidth}
+%     \includegraphics[width=\textwidth]{../img/new-minimum-selfish.png}
+%     \caption{Minimum after non-conforming behavior.}
+%     \label{fig:second}
+%   \end{subfigure}
+%   \caption{Effects of non-conforming behaviors on optimal value. \todo{Refaire les images}}
+%   \label{fig:figures}
+% \end{figure}
 
 General discussion about ways to secure negotiation, here we discuss what
 \begin{description}
@@ -146,47 +146,47 @@ General discussion about ways to secure negotiation, here we discuss what
 \end{description}
 
 
-\begin{figure}[h]
-  \centering
-  \begin{subfigure}{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../img/ignoreX.png}
-    \caption{Optimal value after ignoring attacker.}
-    \label{fig:third}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../img/correctX.png}
-    \caption{Optimal value after trying to recover original behavior.}
-    \label{fig:third}
-  \end{subfigure}
+% \begin{figure}[h]
+%   \centering
+%   \begin{subfigure}{0.45\textwidth}
+%     \includegraphics[width=\textwidth]{../img/ignoreX.png}
+%     \caption{Optimal value after ignoring attacker.}
+%     \label{fig:third}
+%   \end{subfigure}
+%   \hfill
+%   \begin{subfigure}{0.45\textwidth}
+%     \includegraphics[width=\textwidth]{../img/correctX.png}
+%     \caption{Optimal value after trying to recover original behavior.}
+%     \label{fig:third}
+%   \end{subfigure}
 
-  \caption{Recovering options.}
-  \label{fig:figures}
-\end{figure}
+%   \caption{Recovering options.}
+%   \label{fig:figures}
+% \end{figure}
 
 
-Model 3R-2C \cite{GoudaEtAl2002}
-\begin{figure}[h]
-  \centering
-  \begin{circuitikz}[european]
-    \draw (0,0) node[tlground]{} to[isource, l=$P^{\text{heat}}$] ++(0,2) to[short, -*] ++(1.5,0) coordinate (a);
+% Model 3R-2C \cite{GoudaEtAl2002}
+% \begin{figure}[h]
+%   \centering
+%   \begin{circuitikz}[european]
+%     \draw (0,0) node[tlground]{} to[isource, l=$P^{\text{heat}}$] ++(0,2) to[short, -*] ++(1.5,0) coordinate (a);
 
-    \draw (a) node[above]{$T^{\text{in}}$}  to[C=$C^{\text{air}}$] ++(0,-2) node[tlground]{};
-    \draw (0,-3) node[tlground]{} to[isource, l=$I^{\text{sol}}$] ++(0,2)
-    to[short, -*] ++(1.5,0) coordinate (b);
-    \draw (b) to[C=$C^{\text{walls}}$] ++(0,-2) node[tlground]{};
+%     \draw (a) node[above]{$T^{\text{in}}$}  to[C=$C^{\text{air}}$] ++(0,-2) node[tlground]{};
+%     \draw (0,-3) node[tlground]{} to[isource, l=$I^{\text{sol}}$] ++(0,2)
+%     to[short, -*] ++(1.5,0) coordinate (b);
+%     \draw (b) to[C=$C^{\text{walls}}$] ++(0,-2) node[tlground]{};
 
-    \draw (a) -- ++(2,0) coordinate (c) -- ++(0,-.5) to[R=$R^{\text{iw/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (d);
+%     \draw (a) -- ++(2,0) coordinate (c) -- ++(0,-.5) to[R=$R^{\text{iw/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (d);
 
-    \draw (b) node[above]{$T^{\text{walls}}$} to[short,-*] (d);
+%     \draw (b) node[above]{$T^{\text{walls}}$} to[short,-*] (d);
 
-    \draw (c) --  ++(2.5,0) -- ++(0,-.5) to[R=$R^{\text{oa/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (e);
+%     \draw (c) --  ++(2.5,0) -- ++(0,-.5) to[R=$R^{\text{oa/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (e);
 
-    \draw (d) to[R=$R^{\text{ow/oa}}$] (e) to[battery,l=$T^{\text{out}}$] ++(0,-2) node[tlground]{};
-  \end{circuitikz}
-  \caption{Thermic Model 3R-2C of a room.}
-  \label{fig:3R2C_model}
-\end{figure}
+%     \draw (d) to[R=$R^{\text{ow/oa}}$] (e) to[battery,l=$T^{\text{out}}$] ++(0,-2) node[tlground]{};
+%   \end{circuitikz}
+%   \caption{Thermic Model 3R-2C of a room.}
+%   \label{fig:3R2C_model}
+% \end{figure}
 
 The state-space model of each subsystem is given by:
 \begin{equation}
