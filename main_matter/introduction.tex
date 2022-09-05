@@ -63,7 +63,7 @@ To give a general view to the reader and to serve as a main take-away of the pos
     \caption{Exchange between agents and coordinator.}\label{fig:ex_exchange_agents}
   \end{figure}
   Observe in Fig.~\ref{fig:ex_exchange_agents} that agent 1 sends a suspicious $\lambda_{1}$. Instead of sending the message it was supposed to send, it modifies it before sending to the coordinator.
-  This can be considered as a \fdi{} attack, as we will see later (\S~\ref{sec:anomalous}).
+  This can be considered as a \fdi{} attack, as we will see later (\S\ref{sec:anomalous}).
 
 In this example we have a system with $4$ agents and a coordinator. The objective is to minimize a given function $J$. While all other agents work cooperatively, agent 1 is ill-intentioned. In Fig.~\ref{fig:change_in_j}, we can see the effects of changes in the $\lambda_{1}$ sent on the objectives of each agent $J_{i}$ and the overall objective $J^{\star}$ (in blue).
   \begin{figure}[H]
@@ -98,8 +98,8 @@ To understand and answer those questions, we divide this work into two parts.
 \paragraph{Part~\ref{part:mpc_intro}} It serves as a gentle introduction to \dmpc{} and attacks.
 
 For a unfamiliar reader, Chapter~\ref{sec:decomposing_mpc} explains what is a \mpc{} to begin with and shows some of the challenges to decompose it.
-Chapter~\ref{sec:topoly_trust} discuss possible topologies used for those decompositions.
-In Chapter~\ref{sec:anomalous} we define anomalous behaviors (and more specifically attacks), we categorize them and present some methods used in the literature to prevent and combat them.
+Chapter~\ref{sec:topology_trust} discuss possible topologies used for those decompositions.
+In Chapter~\ref{sec:anomalous} we define anomalous behaviors, give some examples, we categorize them and present some methods used in the literature to prevent and combat them.
 
 \paragraph{Part~\ref{part:safe_dmpc}} It contains the contributions of this work.
 

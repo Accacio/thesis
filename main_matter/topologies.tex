@@ -2,7 +2,7 @@
 
 \begin{document}
 
-\chapter[Topologies, Trust and Responsivity]{Topologies,\\ Trust\\ and \\Responsivity}\label{sec:topoly_trust}
+\chapter[Topologies, Trust and Responsivity]{Topologies,\\ Trust\\ and \\Responsivity}\label{sec:topology_trust}
 \epigraph{\centering Trust is an illusion, \\M'Lady. \\I believe only in \\mutual self-interest.}
 {\textit{Jupiter Ascending}\\\textsc{The Wachowskis}}
 
@@ -18,7 +18,7 @@ In this chapter we try to answer these questions.
 \minitoc
 \vfill
 \pagebreak
-\section{How to distribute the computation units?}
+\section{How to distribute the computation units?}\label{sec:distributing_computation_units}
 
 The distribution of the computation units depends on the system we want to control and the processing power/number of computation units needed to solve.
 
@@ -221,11 +221,11 @@ A graph that for all pairs of vertices there is a path is called \emph{connected
 
 \section{Do computing units communicate?}
 
-As shown in Section~\ref{sec:decomposable_problems}, the only case where communication is not needed to solve the optimization problem is in the uncoupled case (\S~\ref{sec:uncoupled_problems}).
-However, there are some decomposition methods for the \dmpc\ that even with coupled problems, they exploit the robustness properties of the MPC to compute the solution without communication~\cite{VahidNaghaviEtAl2014}.
+As shown in Section~\ref{sec:decomposable_problems}, the only case where communication is not needed to solve the optimization problem is in the uncoupled case (\S\ref{sec:uncoupled_problems}).
+However, there are some decomposition methods for the \dmpc{} that even with coupled problems, they exploit the robustness properties of the MPC to compute the solution without communication~\cite{VahidNaghaviEtAl2014}.
 For the decomposition of some optimization problems, it is shown that in certain circumstances the communication is not necessary~\cite{VoulgarisElia2022}.
 \begin{remark}
-  Usually in \dmpc\ literature the term «decentralized» refers to frameworks where the agents do not communicate~\cite[\S 4]{ChristofidesEtAl2013},\cite{NegenbornMaestre2014}.
+  Usually in \dmpc{} literature the term «decentralized» refers to frameworks where the agents do not communicate~\cite[\S 4]{ChristofidesEtAl2013},\cite{NegenbornMaestre2014}.
   But the term can be confusing and even in this works it is sometimes ``misused''.
   So, in this work we opt for a different nomenclature, calling those kinds of frameworks as «uncoordinated control», since there is no coordination between agents nor a coordinator agent to referee. We use the term decentralized as opposed to centralized (monolithic), i.e.\ to describe structure instead of communication.
 \end{remark}

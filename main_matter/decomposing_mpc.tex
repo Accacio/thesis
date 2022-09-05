@@ -59,7 +59,7 @@ The process is repeated for ${k+1}$ following a \rhs.
 This formulation is as general as possible, but depending on the problem's convexity it can be hard to solve it, specially online.
 Convex problems are the most widely studied, and strategies to solve them are extensively diffused. Some of those problems even have explicit solutions~\cite{BoydVandenberghe2004}.
 
-\subsection{Convex \mpc\ (quadratic case) }
+\subsection{Convex \mpc\ (quadratic case) }\label{sec:qp_mpc}
 The \mpc\ community favors the use of convex problems when possible. Two families of convex problems broadly used are \qp\ and \lp.
 In this work we concentrate on \qp\ problems, whose objective functions are quadratic and constraints are affine or linear. Numerous mathematical solvers are apt to solve this kind of problem directly or through equivalent problems. We can cite non-extensivily some solvers such as MATLAB internal QP solvers\footnote{\url{https://fr.mathworks.com/help/optim/ug/quadprog.html}}, OSQP\footnote{\url{https://osqp.org}}, MOSEK\footnote{\url{https://www.mosek.com}} and ECOS\footnote{\url{https://github.com/embotech/ecos}}.
 
@@ -90,7 +90,7 @@ For the constraints in~\eqref{eq:general_mpc} to be affine or linear, first we s
   \end{array}
 .
 \end{equation}
-In this work we concentrate in input constraint systems whose constraints do no depend on the system state, so we drop the $\vec{x}[k]$ terms in $h$, and since it is affine or linear we rewrite it as
+In this work we concentrate in \textbf{input constraint systems} whose constraints do no depend on the system state, so we drop the $\vec{x}[k]$ terms in $h$, and since it is affine or linear we rewrite it as
 \begin{equation}
   \Gamma\vec{u}[k]\preceq\vec{u}_{\max}
 \end{equation}
@@ -192,20 +192,22 @@ By dividing the objective function by $2$ and ignoring the constant term $c[k]$ 
     \end{matrix}
   \end{aligned}.
 \end{equation}
-Observe that even if the problem in \eqref{eq:qp_standard_form} is equivalent (same solution) to the one in~\eqref{eq:quadratic_objective_compact_batch}, they are not the same problem, so we still need to recalculate the function in~\eqref{eq:quadratic_objective_compact_batch} using the optimal $\vec{U}^{\star}[k]$ found to obtain the correct objective function value.
 
-Although the solution of such problems can be straightforward, since solvers are widely known and the problem is well structured, it can be computationally intensive depending on the sizes of $n_{x}$, $n_{u}$ and $N$.
+\begin{remark}
+  Observe that even if the problem in \eqref{eq:qp_standard_form} is equivalent (same solution) to the one in~\eqref{eq:quadratic_objective_compact_batch}, they are not the same problem, so we still need to recalculate the function in~\eqref{eq:quadratic_objective_compact_batch} using the optimal $\vec{U}^{\star}[k]$ found to obtain the correct objective function value.
+\end{remark}
+
+Although the solution of such problems can be straightforward, since solvers are widely known and the problem is well structured, in this \textbf{monolithic} form these problems can be computationally intensive depending on the sizes of $n_{x}$, $n_{u}$ and $N$.
 For large-scale systems such as \wdns~\cite{ZhangEtAl2021}, and \dhns~\cite{TaylorEtAl2021}\todo[correct plural]{}, the computation time and memory needed to solve their associated problems may increase drastically.
 Some decomposition methods can be used to make the solution of such problems more tractable.
-For instance, we can decompose the parts of different time-scales for instance~\cite{ChenEtAl2011}, or use some game theory~\cite{MaestreEtAl2011} or even genetic algorithms paired with state observers~\cite{XieEtAl2016}.
+For instance, we can decompose the parts of different time-scales~\cite{ChenEtAl2011}, use game theory~\cite{MaestreEtAl2011} or even genetic algorithms paired with state observers~\cite{XieEtAl2016}.
 In this work we will focus on decomposition techniques based on optimization decomposition such as in~\cite{GiselssonEtAl2013}.
 
-\section{Optimization Decomposition Frameworks}
-\label{sec:decomp-fram}
+\section{Optimization Decomposition Frameworks}\label{sec:decomp-fram}
 In this section we briefly describe the optimization decomposition frameworks finding what they have in common so we can decompose the \mpc\ problem proposed.
 As seen in~\cite{BoydVandenberghe2004}, maximization problems can be rewritten as minimization problems so we use only minimization problems henceforth.
 \subsection{Decomposable problems}\label{sec:decomposable_problems}
-As shown in~\cite{ConejoEtAl2006} and~\cite{BoydEtAl2015}, a decomposable optimization problem has more than 1 decision variable and can be decomposed into at least 2 sub-problems.
+As shown in~\cite{ConejoEtAl2006} and~\cite{BoydEtAl2015}, a \textbf{decomposable optimization problem} has more than 1 decision variable and can be decomposed into at least 2 sub-problems.
 For simplicity, the examples given in this section divide problems into 2 sub-problems.
 If the sub-problems variables can also be partitioned, we can partition the original problem even further.
 
@@ -282,7 +284,7 @@ where ${J_{1}(\vec{x}_{1}^{\star})}$ and ${J_{2}(\vec{x}_{2}^{\star})}$ can be f
 \end{subequations}
 Each problem in~\eqref{eq:general_uncoupled_optimization_problem_decomposed} can be solved in parallel and when solutions $\vec{x}_{i}^{*}$ are found for each sub-problem, the problem in~\eqref{eq:general_uncoupled_optimization_problem_main_problem} is automatically solved ($J_{i}(\vec{x}_{i}^{\star})$ are constants).
 
-\subsection{Coupled problems}
+\subsection{Coupled problems}\label{sec:coupled_problems}
 On the other hand, coupled problems are more frequent in the real world.
 In this category, the sub-problems can not be entirely solved in parallel since the coupling implies an exchange of information between sup-problems (one sub-problem needs information of other sub-problem to solve itself).
 The coupling nature of the problem can be traced to two main sources
@@ -396,13 +398,13 @@ where $J_{1}(\vec{x}_{1}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})$ and $J_{2}(
 Again, observe that the solutions of~\eqref{eq:general_complicating_constraints_optimization_problem_decomposed} depend on the values of $\vec{\theta}_{o}$ and $\vec{\theta}_{n}$, thus a coordination between sub-problems is needed to find their optimal values in order to solve problem~\eqref{eq:general_complicating_constraints_optimization_main_problem} and thus the original problem~\eqref{eq:general_complicating_constraints_optimization_problem}.
 
 % This is the base of the methodology used in this work to decompose the \mpc, we will re-discuss the method and present examples of implementation in a further section (\todo[add primal decomposition section number]{\S??}).
-\begin{remark}[oi]
+\begin{remark}
   As seen in~\cite{BoydEtAl2015}, a complicating constraint problem can be transformed into a complicating variable problem and vice versa by the use of auxiliary variables.
   For instance, we can substitute a complicating variable by two new local variables (one for each sub-problem) and add equality constraints to each sub-problem to force them to be equal.
   We will use henceforth only complicating constraints.
 \end{remark}
 
-\subsection{Generalizing}
+\subsection{Generalizing}\label{sec:generalizing_decomposition}
 If we observe all the examples given, we can see a pattern emerge:
 
 A problem
@@ -486,7 +488,7 @@ The update method is based on one optimization algorithm such as bisection, cutt
 The exact form will depend on the topology used to solve the \emph{main problem} (to be yet discussed).
 
 In this work we will concentrate on a decomposition based on the primal problem, and the projected sub-gradient.
-This decomposition will be explained in a future section (\S~\ref{sec:primal_decomposition}).
+This decomposition will be explained in a future section (\S\ref{sec:primal_decomposition}).
 For other examples of decomposition the reader is referred to~\cite{MaestreEtAl2014} or~\cite{ConejoEtAl2006} and other articles cited throughout this work.
 
 Now, after having a decomposition method chosen, we need to know the topology of the problem. This topology can be chosen or imposed by some constraints (geographic or technological, for example). A brief discussion about different topologies follow.
