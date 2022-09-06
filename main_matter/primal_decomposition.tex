@@ -213,13 +213,12 @@ We can illustrate the communication structure using Fig.~\ref{fig:dmpc_communica
 As a simple numerical example to illustrate the functioning of the algorithm we take two \mbox{$1$-dimensional} \siso{} systems coupled by the inputs ($M=2$,$n_{x}=1$,$n_{c}=1$).
 The systems have no physical meaning but due to their small scale it is easier to visualize.
 
-The systems are described by the following \ltidt{} dynamics:
-
+The systems are described by the following \ltidt{} dynamics
 \begin{equation}
   \label{eq:example_dynamics}
-  \dot{x}_{i}=a_{i}x_{i}+b_{i}u_{i}
+  x_{i}[k+1]=a_{i}x_{i}[k]+b_{i}u_{i}[k]
 \end{equation}
-with \todo[verify values]{$a_{1}=$,$a_{2}=$,$b_{1}=$,$b_{2}=$} and
+with \todo[verify values]{$a_{1}=$,$a_{2}=$,$b_{1}=$,$b_{2}=$}, and
 constraint by an equality constraint
 \begin{equation}
   \label{eq:example_equality}
@@ -237,7 +236,6 @@ We use a \dmpc{} with horizon ${\predhorz=2}$ and references and gains that resu
 with \todo{$H_{1}$, $H_{2}$, $\vec{f}_{1}[k]$, $\vec{f}_{2}[k]$, $\bar{\Gamma}_{1}$,$\bar{\Gamma}_{2}$}.
 The coordinator update function
 \begin{equation}
-  \label{eq:projectedSubgradient_lambda}
 \vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p-\rho\p\vec{\lambda}[k]\p),
 \end{equation}
 with ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k] = \vec{u}_{\max}}}$, $c=n_{u}\predhorz=2$.
@@ -251,26 +249,42 @@ This euclidean projection can be calculated explicitly yielding
 
 If the initial ${\vec{\theta}}^{(0)}$ belongs to $\set{S}$, we can rewrite for each individual $\thetai$:
 \begin{equation}
-\label{eq:primalDecomposition}
- \thetai\pplusone=\thetai\p+\rho\p\left(\lambdai\p-\frac{1}{M}\sum_{j=1}^{M}\lambda_j^p\right),\forall i\in\set{M}
+  \label{eq:example_projectedSubgradient_lambda}
+ \thetai\pplusone=\thetai\p+\rho\p\left(\lambdai\p-\frac{1}{M}\sum_{j=1}^{M}\vec{\lambda}_j\p\right),\forall i\in\set{M}
 \end{equation}
 
+\todo{Using~\eqref{eq:example_local_problem} and~\eqref{eq:example_projectedSubgradient_lambda} with initial conditions $x_{1}[0]=$ and $x_{2}[0]$, and state references $w_{1}[0]=$,$w_{2}[k]$, we can program Algorithm~\ref{alg:primal_decomposition_based_dmpc}.
+The dynamics of variables $\vec{\theta}_{i}[0]$ $\vec{\lambda}_{i}[0]$ during the iterative process can be seen in Figs.~\ref{fig:example_theta} and~\ref{fig:example_lambda}.}
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.5\textwidth]{../img/example_theta.png}
+  \caption{Evolution of $\thetai$ during iterative process. \todo{remake figure}}\label{fig:example_theta}
+\end{figure}
 
-\begin{description}
-  \item[simple example to illustrate convergence]
-  \item[Interpretation of variables] allocated resources and dissatisfaction index
-\end{description}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.5\textwidth]{../img/example_lambda.png}
+  \caption{Evolution of $\lambdai$ during iterative process. \todo{remake figure}}\label{fig:example_lambda}
+\end{figure}
+In Figs.~\ref{fig:example_theta} and~\ref{fig:example_lambda} the sub-systems were color coded in nuances of \todo{blue} for agent $1$ and nuances of \todo{green} for agent $2$.
+Observe in Fig.~\ref{fig:example_theta} that the agent with the bigger values of $\thetai$ has a corresponding $\lambdai$ smaller than the other agent.
+In next iterations the bigger $\thetai$ decrease and the smaller ones increase, until they stabilize.
 
+For $\lambdai$ we see it stabilizes exactly in the middle of the initial values.
+It is true due to the global equality constraint whose simple projection onto the intersection of hyperplanes result in~\eqref{eq:example_projectedSubgradient_lambda}.
+Moreover, as one can see, the iterative process converges if ${\thetai\pplusone=\thetai\p}$, which happens when ${\lambdai\p=\frac{1}{M}\sum_{j=1}^{M}\vec{\lambda}_j\p}$.
+Although it is not necessarily true for the inequality cases it can gives an insight of the functioning of the algorithm.
+The values of $\thetai$ can represent an allocation of the maximum input given to the agents by the coordinator, and $\lambdai$ as a measure of dissatisfaction of each agent to the value allocated.
+So the coordinator has as role to negotiate the values of the allocations so all agents can be equally dissatisfied.
+Due to this process of iterative allocations, other names given for this decomposition are \textbf{resource allocation} and \textbf{quantity decomposition}.
 
+We can create a parallel with the cake-cutting problem~\cite{BramsTaylor1995} where two (or more) agents want to share a cake dividing it equally so no agent envy the piece of cake of other agent.
+Usually in these kinds of problems, a protocol is created where agents cut successively the cake and the other agents take parts which they think it is the greater.
+But in those cases usually all agents have the same hunger.
 
-
-
-
-
-% \section[Anomalous behaviors and their consequences]{Anomalous behaviors and their consequences}\label{sec:vulnerabilities_PD}
-% % \epigraph{\centering So you tell me 'trust me' l can trust you\\ Just let me show you But I gotta work it out in a shadow of doubt 'Cause I don't know if I know you}
-% % {\textit{Lie}\\\textsc{Kevin Moore}}
+In our case, agents may have different needs (represented by the matrices $\bar{\Gamma}_{i}$).
+So the coordinator works as a mediator positioning the cake cutter, showing where it would cut the cake ($\thetai$ during the iterative process) and asks if the agents would be satisfied ($\lambdai$) and adjust the cake cutter until a consensus is reached. Due to this interpretation we call the iterative process as a \textbf{negotiation phase}.
 
 % \begin{remark}
 %   Observe that in this decomposition \textbf{``Liar'' agent attacks} as in \cite{VelardeEtAl2017b} cannot happen, since the input constraint is given by the coordinator.
