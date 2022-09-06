@@ -9,7 +9,7 @@
 ``It wasn't meant to do this in the first place.''}
 {\textit{Half-Life}\\\textsc{Valve}}
 
-The decompositions shown in the last chapter work in normal conditions, but we can analyze more interesting cases such as when systems do not behave nominally.
+The decompositions shown in the last chapters work in normal conditions, but we can analyze more interesting cases, such as when systems do not behave nominally.
 
 In this chapter, we discuss briefly the causes of anomalous behaviors, how they can happen, and the primary means used in the literature to mitigate their effects.
 
@@ -335,6 +335,14 @@ To illustrate, we can populate the attack space with some attacks, some already 
   \caption[Attack space and some attacks.]{Attack space and some attacks. (Adpated from~\cite{TeixeiraEtAl2015})}\label{fig:3_dimensions_attack_with_attacks}
 \end{figure}
 
+In~\textbf{\DoS{} attacks} the attacker interrupts the communication between entities directly by attacking the communication channel~\cite{SunYang2019,ZhaoEtAl2020,YangEtAl2019} or by making more requisitions to the controller than it can expect, this is also called~\textbf{spamming} or \textbf{jamming}.
+Such attack causing what we call \textbf{packet drops}~\cite{ChenEtAl2021}.
+Depending on the scale of the system (computational power), attackers may coordinate multiple computational units (usually geographically distributed) to make the requests, this is called a \dDoS{}~\cite{WangLu2013,HussainEtAl2021}.
+\begin{remark}
+  Observe that packet drops may also occur in some unreliable networks, sometimes called \textbf{lossy networks}.
+  The study of communication in such networks is important since wireless communication (profusely used nowadays) usually present packet loss and acknowledgment to reception of packets with protocols such \tcpip{} needs synchronization which for some use cases may increase drastically delays~\cite{BofEtAl2019}.
+
+\end{remark}
 
 In \textbf{Topology attacks}, the attackers manipulate the topology of the system or misleads the control to believe the system is under a different topology (with false-data). Such attacks are done by changing the state of devices like switches and breakers~\cite{KimTong2013,WuEtAl2016,ZhangEtAl2021b}.
 \\In a \textbf{Software Modification attack}, the attacker modifies the software used in the controller, as done by the attackers in the Stuxnet attack~\cite{Langner2011}.
@@ -423,6 +431,7 @@ The first thing to remember is that nothing is safe and everything can be potent
 The initial step is to assess the risks and see which parts of your system you trust.
 Some parts of the system can be more \emph{vulnerable} to \emph{threats}, i.e. some components have more probability of being attacked or to suffer from faults.
 As a second measure, we usually protect this components that have more probability of presenting an anomalous behavior~\cite{Bishop2005} in order to prevent such behaviors.
+In~\cite{WangLu2013} some risk assessment methods for smart-grids are presented.
 
 \paragraph{Prevention} To prevent anomalous behaviors, we secure the vulnerable components.
 Some examples follow.
@@ -487,14 +496,19 @@ For active detection we can mention the \emph{watermarking} where a random authe
 
 Some passive and analytical examples can be the observators used in~\cite{HoehnZhang2016} or residues of state dynamics~\cite{TeixeiraEtAl2015,BoemEtAl2020}, which can are associated with hypothesis testing~\cite{MoSinopoli2009} ($\chi^{2}$ detectors), or other
 set membership detection as in~\cite{FortiEtAl2016} or~\cite{MaestreEtAl2018} for instance.
-Some more examples are seen in~\cite{PasqualettiEtAl2013,ZhangEtAl2021a,ArauzEtAl2021}.
+Some more examples are seen in~\cite{PasqualettiEtAl2012,PasqualettiEtAl2013,ZhangEtAl2021a,ArauzEtAl2021}.
 
 For learning methods we can reference~\cite{AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} which uses
 a bayesian approach to learn bounds and detect suspect agents.
+Other example is training neural networks/deep learning to create detectors. In~\cite{HussainEtAl2021} the authors create a convolutional neural network to train the data and detect 91\% of \dDoS{} attacks.
 
 In~\cite{BraunEtAl2020,BraunEtAl2020a}, the authors use an optimization problem in order to identify which part of the system has been attacked.
 
 Another method could be using coalitional control~\cite{ChanfreutEtAl2021} which can potentially cluster healthy agents and detect changes in topologies.
+
+\begin{remark}
+As stated in~\cite{ArauzEtAl2021} is important to observe that when choosing a bound to detect anomalous behaviors there are false positives associated.
+\end{remark}
 
 \subsection{Mitigation/Recovery}
 The recovery phase consists in the damage control, changing the system accordingly to reestablish normal behavior.
