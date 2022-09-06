@@ -88,7 +88,7 @@
 
 \RequirePackage{hyperref} %Utiliser pour une bibliographie interactive + sommaire et TOC interactifs (pour une sortie PDF, par exemple).
 
-\RequirePackage[acronym,toc]{glossaries}\makeglossaries
+\RequirePackage[acronym,toc,nonumberlist]{glossaries}\makeglossaries
 
 \BeforeBeginEnvironment{document}{
 \makeatletter
