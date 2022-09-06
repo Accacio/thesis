@@ -75,10 +75,20 @@ Problem~\eqref{eq:DOP_main} is solved by updating the $\theta_{i}$ until converg
   \label{eq:projectedSubgradient}
 \vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p-\rho\p\vec{g}[k]\p),
 \end{equation}
-where $p$ is a given step in the iterative process, $\vec{\theta}[k]=[\vec{\theta}_{1}[k];\dots;\vec{\theta}_{M}[k]]$, ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k]\preceq \vec{U}_{\max}}}$, ${c=\card{\vec{U}_{\max}}}$, ${I_{c}^{M}=\kron{\1_{M}}{I_{c}}}$, $\rho^{(p)}$ is a given step length and $\vec{g}\p[k]$ is a sub-gradient of the objective function of problem in~\eqref{eq:DOP_main} in step $p$.
-The choice of the step length is given such $$\lim_{p\to\infty}\rho^{(p)}\to0$$ and $$\sum_{p=1}^{\infty}\rho^{(p)}\to\infty$$~\cite{ConejoEtAl2006}. And an usual law is
-$$\rho^{(p)}=\frac{1}{a+bp},$$
-with $a$ and $b$ arbitrarily chosen.
+where $p$ is a given step in the iterative process, $\vec{\theta}[k]=[\vec{\theta}_{1}[k];\dots;\vec{\theta}_{M}[k]]$,
+$\rho^{(p)}$ is a given step length,
+${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k]\preceq \vec{U}_{\max}}}$,
+${c=n_{u}\predhorz}$,
+${I_{c}^{M}=\kron{\1_{M}}{I_{c}}}$,
+and
+$\vec{g}\p[k]$ is a sub-gradient of the objective function of problem in~\eqref{eq:DOP_main} in step $p$.
+The choice of the step length is given such
+\[\lim_{p\to\infty}\rho^{(p)}\to0\]
+and
+\[\sum_{p=1}^{\infty}\rho^{(p)}\to\infty.\]
+An usual law is
+\[\rho^{(p)}=\frac{1}{a+bp},\]
+with $a$ and $b$ arbitrarily chosen~\cite{ConejoEtAl2006}.
 
 From~\cite{BoydVandenberghe2004} and~\cite{BoydEtAl2015}, we can derive that the dual variables $\lambdaik$ of the local problems are sub-gradients of the local problems and since the objective function of the main problem is a sum of the local objectives, then the $\vec{\lambda}_{i}$ can form a sub-gradient of the main problem.
 If we stack the $\vec{\lambda}_{i}[k]$ in $\vec{\lambda}[k]=[\vec{\lambda}_{1}[k];\dots;\vec{\lambda}_{M}[k]]$, it can be used in~\eqref{eq:projectedSubgradient}, yielding
@@ -87,9 +97,8 @@ If we stack the $\vec{\lambda}_{i}[k]$ in $\vec{\lambda}[k]=[\vec{\lambda}_{1}[k
 \vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p-\rho\p\vec{\lambda}[k]\p).
 \end{equation}
 
-Using~\eqref{eq:DOP_local} and~\eqref{eq:projectedSubgradient_lambda}, we can alter Algorithm~\ref{alg:decomposition_coordination} to correspond to a decomposition of the original \mpc{} problem~\eqref{eq:qp_standard_form_decomposable} using the primal decomposition-based:
-
-\begin{algorithm2e}[H]
+Using~\eqref{eq:DOP_local} and~\eqref{eq:projectedSubgradient_lambda}, we can alter Algorithm~\ref{alg:decomposition_coordination} to correspond to a decomposition of the original \mpc{} problem~\eqref{eq:qp_standard_form_decomposable} using the primal decomposition:
+\begin{algorithm2e}[h]
   \DontPrintSemicolon%
   $p\gets 0$\;
   Initialize $a$ and $b$\;
@@ -97,38 +106,188 @@ Using~\eqref{eq:DOP_local} and~\eqref{eq:projectedSubgradient_lambda}, we can al
   Initialize an arbitrary bound $\epsilon$\;
   Initialize ${\thetaik}^{(p)},$ $\forall i\in\set{M}$, such that ${\vec{\theta}[k]}^{(p)}\in\set{S}$\;
   \Repeat{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\ ||\ \left[p\geq p_{\max}\right]$}{
-    Solve local sub-problems~\eqref{eq:DOP_local} and calculate ${\vec{\lambda}_{i}[k]}^{(p)}$\;
+    Solve local sub-problems~\eqref{eq:DOP_local} and calculate ${\vec{\lambda}_{i}[k]}^{(p)}$ (potentially in parallel)\;
     Update $\vec{\theta}[k]$: $\vec{\theta}[k]\pplusone\gets\Proj^{\set{S}}(\vec{\theta}[k]\p-\rho\p\vec{\lambda}[k]\p)$ \;
     $p\gets p+1$\;
   }
   \caption{Decomposition of \mpc{} problem using primal decomposition.}\label{alg:primal_decomposition}
 \end{algorithm2e}
 
+Since each problem~\eqref{eq:DOP_local} can potentially be solved in parallel, a different computation unit is allocated to solve each problem.
+For the update~\eqref{eq:projectedSubgradient_lambda} the agents need to have the $\lambdaik$ of all other agents to update the $\thetaik$.
+We could create an anarchic solution analog to the one in~\cite{VelardeEtAl2018} where the $\lambdaik$ information circulate among agents and each agent update its own $\thetaik$.
+However, we decide for a more private structure.
+We choose to use an \textbf{hierarchic} solution, allocating another agent to aggregate the $\lambdaik$ and coordinate the updates of the $\thetaik$, we called this agent the \emph{coordinator}.
+This way, each agent has only access to its own $\lambdaik$ and $\thetaik$.
+
+We can illustrate the communication structure using Fig.~\ref{fig:dmpc_communication} and summarize the complete primal decomposition-based \dmpc{} algorithm in Algorithm~\ref{alg:primal_decomposition_based_dmpc}.
+
+\SetKwBlock{coordinit}{ Coordinator initialization:}{}
+\SetKwBlock{exchange}{ Exchange between Coordinator and agents:}{}
+\begin{algorithm2e}[h]
+  \DontPrintSemicolon%
+  \coordinit{
+    Initialize $p$, $a$, $b$, $p_{\max}$ and $\epsilon$\;
+  }
+  \While{$k\geq 0$}{
+    Initialize ${\thetaik}^{(p)},$ $\forall i\in\set{M}$, such that ${\vec{\theta}[k]}^{(p)}\in\set{S}$\;
+    Coordinator sends $\thetaik^{(p)}$ for all agents\;
+    \exchange{
+      \Repeat{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\ ||\ \left[p\geq p_{\max}\right]$}{
+        Agents solve local sub-problems~\eqref{eq:DOP_local} and send ${\vec{\lambda}_{i}[k]}^{(p)}$ to coordinator\;
+        Coordinator updates $\vec{\theta}[k]$ using~\eqref{eq:projectedSubgradient_lambda} and sends to local agents\;
+        $p\gets p+1$\;
+      }
+      Agents apply on respective sub-systems the last calculated $\vec{u}_{i}^{\star}[0|k]$\;
+      $k\gets k+1$\;
+    }
+  }
+  \caption{Primal decomposition-based \dmpc{}.}\label{alg:primal_decomposition_based_dmpc}
+\end{algorithm2e}
+
+\begin{figure}[h]
+  \centering
+  \resizebox{0.5\textwidth}{!}{
+    \begin{tikzpicture}[>=latex,line join=bevel,]
+      \pgfsetlinewidth{1bp}
+      %% 
+      \begin{scope}
+        \pgfsetstrokecolor{black}
+        \definecolor{strokecol}{rgb}{1.0,1.0,1.0};
+        \pgfsetstrokecolor{strokecol}
+        \definecolor{fillcol}{rgb}{1.0,1.0,1.0};
+        \pgfsetfillcolor{fillcol}
+      \end{scope}
+      \pgfsetcolor{black}
+      % Edge: a_1 -> a_3
+      \draw [->] (262.09bp,122.8bp) to[out=-120,in=120] node[below=0.02cm] {$\vec{\theta_M}^{(p)}$} (381.97bp,36.225bp);
+      % Edge: a_3 -> a_1
+      \draw [->] (438.82bp,36.094bp) to[out=30,in=0] node[above=0.1cm] {$\vec{\lambda_M}^{(p)}$} (313.09bp,132.52bp);
+      % Edge: a_2 -> a_1
+      \draw [->] (95.811bp,36.138bp) to[out=30,in=-60] node[above=0.05cm] {$\vec{\lambda_1}^{(p)}$} (214.09bp,122.79bp);
+      % Edge: a_4 -> a_3
+      \draw [dashed] (316.23bp,18.0bp) .. controls (325.45bp,18.0bp) and (334.67bp,18.0bp)  .. (343.9bp,18.0bp);
+      % Edge: a_1 -> a_2
+      \draw [->] (168.84bp,133.34bp) to[out=180,in=120] node[above=0.1cm] {$\vec{\theta_1}^{(p)}$} (41.325bp,36.047bp);
+      % Edge: a_2 -> a_4
+      \draw [dashed] (144.23bp,18.0bp) .. controls (153.45bp,18.0bp) and (162.67bp,18.0bp)  .. (171.9bp,18.0bp);
+      % Node: a_4
+      \begin{scope}
+        \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+        \pgfsetstrokecolor{strokecol}
+        \draw (244.0bp,18.0bp) node {$\dots$};
+      \end{scope}
+      % Node: a_3
+      \begin{scope}
+        \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+        \pgfsetstrokecolor{strokecol}
+        \draw (488.0bp,36.0bp) -- (344.0bp,36.0bp) -- (344.0bp,0.0bp) -- (488.0bp,0.0bp) -- cycle;
+        \draw (416.0bp,18.0bp) node {M};
+      \end{scope}
+      % Node: a_2
+      \begin{scope}
+        \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+        \pgfsetstrokecolor{strokecol}
+        \draw (144.0bp,36.0bp) -- (0.0bp,36.0bp) -- (0.0bp,0.0bp) -- (144.0bp,0.0bp) -- cycle;
+        \draw (72.0bp,18.0bp) node {1};
+      \end{scope}
+      % Node: a_1
+      \begin{scope}
+        \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+        \pgfsetstrokecolor{strokecol}
+        \draw (313.0bp,159.0bp) -- (169.0bp,159.0bp) -- (169.0bp,123.0bp) -- (313.0bp,123.0bp) -- cycle;
+        \draw (241.0bp,141.0bp) node {Coord.};
+      \end{scope}
+      % 
+    \end{tikzpicture}
+  }
+  \caption[Primal decomposition-based \dmpc{}.]{Primal decomposition-based \dmpc{}. \todo{remake figure}}\label{fig:dmpc_communication}
+\end{figure}
+\begin{remark}
+  The same decomposition can be used if the coupling constraints are equalities or if there are local constraints for the subsystems.
+  We can change problems~\eqref{eq:DOP_local} and~\eqref{eq:projectedSubgradient_lambda} accordingly to respect such modifications, i.e.\ adding the local constraints to the local problems and changing the inequality constraints to equality ones, including in the set $\set{S}$.
+  An example is given in the next section.
+\end{remark}
+
+\section{Example and Interpretations}\label{sec:example-interpr}
+As a simple numerical example to illustrate the functioning of the algorithm we take two \mbox{$1$-dimensional} \siso{} systems coupled by the inputs ($M=2$,$n_{x}=1$,$n_{c}=1$).
+The systems have no physical meaning but due to their small scale it is easier to visualize.
+
+The systems are described by the following \ltidt{} dynamics:
+
+\begin{equation}
+  \label{eq:example_dynamics}
+  \dot{x}_{i}=a_{i}x_{i}+b_{i}u_{i}
+\end{equation}
+with \todo[verify values]{$a_{1}=$,$a_{2}=$,$b_{1}=$,$b_{2}=$} and
+constraint by an equality constraint
+\begin{equation}
+  \label{eq:example_equality}
+  \todo[verify]{u_{1}+u_{2}=\vec{u}_{\max}}
+\end{equation}
+with \todo{$\vec{u}_{\max}=4$}.
+We use a \dmpc{} with horizon ${\predhorz=2}$ and references and gains that results in the problems
+\begin{equation}
+  \begin{matrix}
+    \underset{\vec{U}_{i}[k]}{\mathrm{minimize}}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+    \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] = \thetaik:\lambdaik
+  \end{matrix}
+  \label{eq:example_local_problem}
+\end{equation}
+with \todo{$H_{1}$, $H_{2}$, $\vec{f}_{1}[k]$, $\vec{f}_{2}[k]$, $\bar{\Gamma}_{1}$,$\bar{\Gamma}_{2}$}.
+The coordinator update function
+\begin{equation}
+  \label{eq:projectedSubgradient_lambda}
+\vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p-\rho\p\vec{\lambda}[k]\p),
+\end{equation}
+with ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k] = \vec{u}_{\max}}}$, $c=n_{u}\predhorz=2$.
+
+From now on, we remove the $[k]$ indices for convenience, since all calculation is valid for the same step $k$ unless expressly stated otherwise.
+
+This euclidean projection can be calculated explicitly yielding
+\begin{equation}
+    \vec{\theta}\pplusone=\vec{\theta}\p-\rho\p\vec{\lambda}\p-{I_{c}^M}/({I_{c}^M}\T {I_{c}^M})\left({I_{c}^M}\T(\vec{\theta}\p-\rho\p\vec{\lambda}\p) -\vec{u}_{\max}\right).
+\end{equation}
+
+If the initial ${\vec{\theta}}^{(0)}$ belongs to $\set{S}$, we can rewrite for each individual $\thetai$:
+\begin{equation}
+\label{eq:primalDecomposition}
+ \thetai\pplusone=\thetai\p+\rho\p\left(\lambdai\p-\frac{1}{M}\sum_{j=1}^{M}\lambda_j^p\right),\forall i\in\set{M}
+\end{equation}
+
+
+
 \begin{description}
   \item[simple example to illustrate convergence]
   \item[Interpretation of variables] allocated resources and dissatisfaction index
 \end{description}
 
-\section[Anomalous behaviors and their consequences]{Anomalous behaviors and their consequences}\label{sec:vulnerabilities_PD}
-% \epigraph{\centering So you tell me 'trust me' l can trust you\\ Just let me show you But I gotta work it out in a shadow of doubt 'Cause I don't know if I know you}
-% {\textit{Lie}\\\textsc{Kevin Moore}}
 
-\begin{remark}
-  Observe that in this decomposition \textbf{``Liar'' agent attacks} as in \cite{VelardeEtAl2017b} cannot happen, since the input constraint is given by the coordinator.
-\end{remark}
 
-\begin{description}
-  \item[Show examples of Attacks]
-  \item[False data injection/communication corruption] \todo{show that since coordinator is oblivious to what happen inside each agent what matters is what it receives, no need to specify exactly the responsible part which generated attack}
-\end{description}
-but they will always reflect on the channel.
-\begin{description}
-  \item[Negotiation Stability] Show example and how cheating can destabilize negotiation
-        \begin{enumerate}
-          \item Analysis of eigenvalues of negotiation
-        \end{enumerate}
-  \item[Example of how attacker can drive negotiation to other points]
-\end{description}
+
+
+
+
+% \section[Anomalous behaviors and their consequences]{Anomalous behaviors and their consequences}\label{sec:vulnerabilities_PD}
+% % \epigraph{\centering So you tell me 'trust me' l can trust you\\ Just let me show you But I gotta work it out in a shadow of doubt 'Cause I don't know if I know you}
+% % {\textit{Lie}\\\textsc{Kevin Moore}}
+
+% \begin{remark}
+%   Observe that in this decomposition \textbf{``Liar'' agent attacks} as in \cite{VelardeEtAl2017b} cannot happen, since the input constraint is given by the coordinator.
+% \end{remark}
+
+% \begin{description}
+%   \item[Show examples of Attacks]
+%   \item[False data injection/communication corruption] \todo{show that since coordinator is oblivious to what happen inside each agent what matters is what it receives, no need to specify exactly the responsible part which generated attack}
+% \end{description}
+% but they will always reflect on the channel.
+% \begin{description}
+%   \item[Negotiation Stability] Show example and how cheating can destabilize negotiation
+%         \begin{enumerate}
+%           \item Analysis of eigenvalues of negotiation
+%         \end{enumerate}
+%   \item[Example of how attacker can drive negotiation to other points]
+% \end{description}
 % \begin{figure}[h]
 %   \centering
 %   \begin{subfigure}{.45\textwidth}
@@ -146,20 +305,20 @@ but they will always reflect on the channel.
 %   \label{fig:figures}
 % \end{figure}
 
-General discussion about ways to secure negotiation, here we discuss what
-\begin{description}
-  \item[Discussion about Methods]
-  \item[Discussion about Detection and Isolation]
-        \begin{description}
-          \item[Learning methods] Use input labeled data to train detector
-          \item[Analytical methods] Use model of the system and residuals
-        \end{description}
-  \item[Discussion about Recovery] Could show different cases
-        \begin{description}
-          \item[Active methods] Need detection
-          \item[Passive methods] Robust control
-        \end{description}
-\end{description}
+% General discussion about ways to secure negotiation, here we discuss what
+% \begin{description}
+%   \item[Discussion about Methods]
+%   \item[Discussion about Detection and Isolation]
+%         \begin{description}
+%           \item[Learning methods] Use input labeled data to train detector
+%           \item[Analytical methods] Use model of the system and residuals
+%         \end{description}
+%   \item[Discussion about Recovery] Could show different cases
+%         \begin{description}
+%           \item[Active methods] Need detection
+%           \item[Passive methods] Robust control
+%         \end{description}
+% \end{description}
 
 
 % \begin{figure}[h]
@@ -204,65 +363,63 @@ General discussion about ways to secure negotiation, here we discuss what
 %   \label{fig:3R2C_model}
 % \end{figure}
 
-The state-space model of each subsystem is given by:
-\begin{equation}
-  \begin{matrix}
-    \label{eq:systems_cont}
-    \dot{\vec{x}}_{i}(t)  &=&{A_{c}}_{i}\vec{x}_{i}(t) &+& {B_{c}}_{i}\vec{u}_{i}(t)\\
-    \vec{y}_{i}(t)        &=&{C_{c}}_{i}\vec{x}_{i}(t) &&
-  \end{matrix},
-\end{equation}
-where
-\begin{equation}
-  \label{eq:4}
-  \begin{matrix}
-    A_{\mathrm{c}_{i}}=\left[
-      \begin{matrix}
-        -\frac{1}{C^{\text{walls}}_{i}R^{\text{oa/ia}}_{i}}-\frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}& \frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}\\
-        \frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}} &-\frac{1}{C^{\text{air}}_{i}R^{\text{ow/oa}}o_{i}}-\frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}}
-      \end{matrix}\right]\\
-    \begin{matrix}
-      B_{\mathrm{c}_{i}}=\left[
-        \begin{matrix}  \frac{10}{C^{\text{walls}}_{i}}& 0\end{matrix}
-      \right]\T&C_{\mathrm{c}_{i}}=\left[\begin{matrix}1 & 0\end{matrix}\right]
-    \end{matrix}
-  \end{matrix}
-\end{equation}
-where ${\vec{x}_{i}=[{{x}_{A}}_{i}\T\ {{x}_{W}}_{i}\T]\T}$. ${x_A}_i$ and ${x_W}_i$ are the mean temperatures of the air and walls inside room~$i$. $\vec{u}_{i}$ is the input (the heating power)
-for the corresponding room. The inputs are constraint by ${\sum_{i=1}^{4}\vec{u}_{i}(t)\preceq 4\mathrm{kW}}$.
+% The state-space model of each subsystem is given by:
+% \begin{equation}
+%   \begin{matrix}
+%     \label{eq:systems_cont}
+%     \dot{\vec{x}}_{i}(t)  &=&{A_{c}}_{i}\vec{x}_{i}(t) &+& {B_{c}}_{i}\vec{u}_{i}(t)\\
+%     \vec{y}_{i}(t)        &=&{C_{c}}_{i}\vec{x}_{i}(t) &&
+%   \end{matrix},
+% \end{equation}
+% where
+% \begin{equation}
+%   \label{eq:4}
+%   \begin{matrix}
+%     A_{\mathrm{c}_{i}}=\left[
+%       \begin{matrix}
+%         -\frac{1}{C^{\text{walls}}_{i}R^{\text{oa/ia}}_{i}}-\frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}& \frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}\\
+%         \frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}} &-\frac{1}{C^{\text{air}}_{i}R^{\text{ow/oa}}o_{i}}-\frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}}
+%       \end{matrix}\right]\\
+%     \begin{matrix}
+%       B_{\mathrm{c}_{i}}=\left[
+%         \begin{matrix}  \frac{10}{C^{\text{walls}}_{i}}& 0\end{matrix}
+%       \right]\T&C_{\mathrm{c}_{i}}=\left[\begin{matrix}1 & 0\end{matrix}\right]
+%     \end{matrix}
+%   \end{matrix}
+% \end{equation}
+% where ${\vec{x}_{i}=[{{x}_{A}}_{i}\T\ {{x}_{W}}_{i}\T]\T}$. ${x_A}_i$ and ${x_W}_i$ are the mean temperatures of the air and walls inside room~$i$. $\vec{u}_{i}$ is the input (the heating power)
+% for the corresponding room. The inputs are constraint by ${\sum_{i=1}^{4}\vec{u}_{i}(t)\preceq 4\mathrm{kW}}$.
 
-\begin{table}[b]
-  \centering
-  \caption{Model Parameters}\label{tab:modelParamMeaning}
-  \begin{tabular}[b]{cl}
-    \toprule
-    Symbol&Meaning\\
-    \midrule
-    $C^{\text{air}}_{i}$  &Heat Capacity of Inside Air\\
-    $C^{\text{walls}}_{i}$ &Heat Capacity of External Walls\\
-    $R^{\text{iw/ia}}_{i}$ &Resist. Between Inside Air and Inside Walls\\
-    $R^{\text{ow/oa}}_{i}$ &Resist. Between Outside Air and Outside Walls\\
-    $R^{\text{oa/ia}}_{i}$ &Resist. Between Inside and Out.\ Air (from windows)\\
-    \bottomrule
-  \end{tabular}
-\end{table}
+% \begin{table}[b]
+%   \centering
+%   \caption{Model Parameters}\label{tab:modelParamMeaning}
+%   \begin{tabular}[b]{cl}
+%     \toprule
+%     Symbol&Meaning\\
+%     \midrule
+%     $C^{\text{air}}_{i}$  &Heat Capacity of Inside Air\\
+%     $C^{\text{walls}}_{i}$ &Heat Capacity of External Walls\\
+%     $R^{\text{iw/ia}}_{i}$ &Resist. Between Inside Air and Inside Walls\\
+%     $R^{\text{ow/oa}}_{i}$ &Resist. Between Outside Air and Outside Walls\\
+%     $R^{\text{oa/ia}}_{i}$ &Resist. Between Inside and Out.\ Air (from windows)\\
+%     \bottomrule
+%   \end{tabular}
+% \end{table}
 
-\begin{table}[b]
-  \centering
-  \caption{
-    Parameters for each agent}\label{tab:modelParam}
-  \begin{tabular}[t]{cccccc} \toprule
-    Symbol& I & II & III & IV &Unit\\
-    \midrule
-    $C^{\text{walls}}$   &$5.4$&$4.9$&$4.7$&$4.7$ &$10^{4}\mathrm{J/K}$ \\
-    $C^{\text{air}}$     &$7.5$ &$8.4 $&$8.2$ &$7.7$&$10^{4}\mathrm{J/K}$  \\
-    $R^{\text{oa/ia}}$   &$5.2$&$4.6$&$4.9$&$5.4$&$10^{-3}\mathrm{K/W}$ \\
-    $R^{\text{iw/ia}}$   &$2.3$&$2.4$&$2.3$&$2.9$&$10^{-4}\mathrm{K/W}$\\
-    $R^{\text{ow/oa}}$   &$1.5$&$0.6$&$0.7$&$0.7$& $10^{-4}\mathrm{K/W}$ \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-%\printbibliography
+% \begin{table}[b]
+%   \centering
+%   \caption{
+%     Parameters for each agent}\label{tab:modelParam}
+%   \begin{tabular}[t]{cccccc} \toprule
+%     Symbol& I & II & III & IV &Unit\\
+%     \midrule
+%     $C^{\text{walls}}$   &$5.4$&$4.9$&$4.7$&$4.7$ &$10^{4}\mathrm{J/K}$ \\
+%     $C^{\text{air}}$     &$7.5$ &$8.4 $&$8.2$ &$7.7$&$10^{4}\mathrm{J/K}$  \\
+%     $R^{\text{oa/ia}}$   &$5.2$&$4.6$&$4.9$&$5.4$&$10^{-3}\mathrm{K/W}$ \\
+%     $R^{\text{iw/ia}}$   &$2.3$&$2.4$&$2.3$&$2.9$&$10^{-4}\mathrm{K/W}$\\
+%     $R^{\text{ow/oa}}$   &$1.5$&$0.6$&$0.7$&$0.7$& $10^{-4}\mathrm{K/W}$ \\
+%     \bottomrule
+%   \end{tabular}
+% \end{table}
 
 \end{document}
