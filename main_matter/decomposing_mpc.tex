@@ -20,7 +20,7 @@ Since the solution is found by using optimization problems, it is natural to add
 The fact that constraints can be easily added to the specifications gave it a special place in the industry, where is largely used in a plethora of applications (energy management~\cite{AnandutaEtAl2018}, water distribution~\cite{ZhangEtAl2021}, control of quadrotors~\cite{BanguraMahony2014} etc.).
 
 \subsection{General discrete \mpc\ }
-As it is generally implemented through a digital computer and the transmission of continuous signals can potentially demand infinite bandwidth~\cite{HeEtAl2022}, it is natural to assume the system to be modeled with discrete-time dynamics
+As it is generally implemented through a digital computer and the transmission of continuous signals can potentially demand infinite bandwidth~\cite{HeEtAl2022}, it is natural to assume the system to be modeled with \dt{} dynamics
 \begin{equation}
 \vec{x}[k+1]=f(\vec{x}[k],\vec{u}[k]),
 \end{equation}
@@ -32,7 +32,7 @@ The system can be under constraints
 \end{equation}
 with ${h:\R^{n_{x}}\times\R^{n_{u}}\to\R^{n_{c}}}$. Observe that mathematically equality constraints can be represented by a couple of inequality constraints, although for implementation in computers it can lead to poor numerical conditioning, resulting unexpected behavior~\cite{BorrelliEtAl2017}.
 
-Given an objective function ${J:\R^{n_{x}}\times\R^{N\cdot n_{u}}\to \R}$, we can optimize this objective for a given horizon $\set{H}=\{1\mathbin{:}N\}$ to obtain a control sequence ${\vec{U}^{\star}[k]=[\vec{u}^{\star}[0|k];\dots; \vec{u}^{\star}[N-1|k]]}$. To calculate $\vec{U}^{\star}[k]$,
+Given an objective function ${J:\R^{n_{x}}\times\R^{\predhorz\cdot n_{u}}\to \R}$, we can optimize this objective for a given horizon $\set{H}=\{1\mathbin{:}\predhorz\}$ to obtain a control sequence ${\vec{U}^{\star}[k]=[\vec{u}^{\star}[0|k];\dots; \vec{u}^{\star}[\predhorz-1|k]]}$. To calculate $\vec{U}^{\star}[k]$,
 we use states and input predictions of time $k+i$ calculated in a time $k$, represented by $\vec{x}[i|k]$ and $\vec{u}[i|k]$. The problem solved to calculate the control sequence is
 
 \begin{equation}\label{eq:general_mpc}
@@ -73,16 +73,16 @@ where $\vec{v}$ is a control objective, and ${ Q\in\semidefpos }$ and ${ R\in\de
 The control objectives can be for example, \emph{disturbance rejection}, where ${ \vec{v}[k]=\vec{x}[k] }$, or \emph{reference tracking}, where ${ \vec{v}[k]=\vec{w}[k]-\vec{x}[k] }$, being $\vec{w}[k]$ a setpoint.
 Observe that this last example is for state reference tracking, for output reference tracking the system output $\vec{y}[k]$ should be used instead of $\vec{x}[k]$, depending on the system an adequate relation between $\vec{y}[k]$ and $\vec{x}[k]$ can be found.
 
-The predictions of $\vec{v}[k]$ and $\vec{w}[k]$ can be stacked as ${ \vec{V}[k]=[\vec{v}[1|k];\dots;\vec{v}[N|k]] }$ and
-${ \vec{W}[k]=[\vec{w}[1|k];\dots;\vec{w}[N|k]] }$ and then~\eqref{eq:quadratic_objective_with_sum} can be rewritten as
+The predictions of $\vec{v}[k]$ and $\vec{w}[k]$ can be stacked as ${ \vec{V}[k]=[\vec{v}[1|k];\dots;\vec{v}[\predhorz|k]] }$ and
+${ \vec{W}[k]=[\vec{w}[1|k];\dots;\vec{w}[\predhorz|k]] }$ and then~\eqref{eq:quadratic_objective_with_sum} can be rewritten as
 \begin{equation}
   \label{eq:quadratic_objective_compact}
   J(\vec{x}[0|k],\vec{U}[k])=\norm{\vec{V}[k]}^{2}_{\bar{Q}} + \norm{\vec{U}[k] }^{2}_{\bar{R}},
 \end{equation}
-where $\bar{Q}=\kron{I_{N}}{Q}$ and
-$\bar{R}=\kron{I_{N}}{R}$.
+where $\bar{Q}=\kron{I_{\predhorz}}{Q}$ and
+$\bar{R}=\kron{I_{\predhorz}}{R}$.
 
-For the constraints in~\eqref{eq:general_mpc} to be affine or linear, first we suppose the system is linear and we use a linear time-invariant model
+For the constraints in~\eqref{eq:general_mpc} to be affine or linear, first we suppose the system is linear and we use a \lti{} model
 \begin{equation}\label{eq:large_scale_system_model}
   \begin{array}{rl}
     \vec{x}[k+1]&=A\vec{x}[k]+B\vec{u}[k]\\
@@ -98,7 +98,7 @@ which can be vectorized for an horizon in $\mathcal{H}$
 \begin{equation}
 \bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}},
 \end{equation}
-with ${ \bar{\Gamma}=\kron{I_{N}}{\Gamma} }$ and ${ \vec{U}_{\max}=\kron{\1_{N}}{\vec{u_{max}}} }$.
+with ${ \bar{\Gamma}=\kron{I_{\predhorz}}{\Gamma} }$ and ${ \vec{U}_{\max}=\kron{\1_{\predhorz}}{\vec{u_{max}}} }$.
 
 For the control objectives, henceforth we only consider \emph{reference tracking}, since \emph{disturbance rejection} can be described as a \emph{reference tracking} when ${ C=I_{n_{x}} }$ and ${ \vec{w}[k]=\0_{n_{x}} }$.
 
@@ -130,7 +130,7 @@ If we opt for a Batch Approach~\cite[Chapter 8.2]{BorrelliEtAl2017} to solve the
             \vec{y}[1|k] \\
             \vec{y}[2|k] \\
             \vdots \\
-            \vec{y}[N|k]
+            \vec{y}[\predhorz|k]
           \end{matrix}
         \right]
       }_{\textstyle \vec{Y}[k]} &=&
@@ -140,7 +140,7 @@ If we opt for a Batch Approach~\cite[Chapter 8.2]{BorrelliEtAl2017} to solve the
             CA^{1} \\
             CA^{2} \\
             \vdots \\
-            CA^{N}
+            CA^{\predhorz}
           \end{matrix}
         \right]
       }_{\textstyle \mathcal{Y}^{x}}
@@ -151,7 +151,7 @@ If we opt for a Batch Approach~\cite[Chapter 8.2]{BorrelliEtAl2017} to solve the
             CA^{0}B & 0 & \dots & 0 \\
             CA^{1}B& \ddots & \ddots & \vdots      \\
             \vdots     & \ddots   & \ddots & \vdots    \\
-            CA^{N-1}B & \dots & \dots & CA^{0}B
+            CA^{\predhorz-1}B & \dots & \dots & CA^{0}B
           \end{matrix}
         \right]
       }_{\textstyle \mathcal{Y}^{u}}
@@ -197,7 +197,7 @@ By dividing the objective function by $2$ and ignoring the constant term $c[k]$ 
   Observe that even if the problem in \eqref{eq:qp_standard_form} is equivalent (same solution) to the one in~\eqref{eq:quadratic_objective_compact_batch}, they are not the same problem, so we still need to recalculate the function in~\eqref{eq:quadratic_objective_compact_batch} using the optimal $\vec{U}^{\star}[k]$ found to obtain the correct objective function value.
 \end{remark}
 
-Although the solution of such problems can be straightforward, since solvers are widely known and the problem is well structured, in this \textbf{monolithic} form these problems can be computationally intensive depending on the sizes of $n_{x}$, $n_{u}$ and $N$.
+Although the solution of such problems can be straightforward, since solvers are widely known and the problem is well structured, in this \textbf{monolithic} form these problems can be computationally intensive depending on the sizes of $n_{x}$, $n_{u}$ and $\predhorz$.
 For large-scale systems such as \wdns~\cite{ZhangEtAl2021}, and \dhns~\cite{TaylorEtAl2021}\todo[correct plural]{}, the computation time and memory needed to solve their associated problems may increase drastically.
 Some decomposition methods can be used to make the solution of such problems more tractable.
 For instance, we can decompose the parts of different time-scales~\cite{ChenEtAl2011}, use game theory~\cite{MaestreEtAl2011} or even genetic algorithms paired with state observers~\cite{XieEtAl2016}.
