@@ -249,13 +249,19 @@ end
 end
 
 figure()
-plot(1:lastp(1),theta(:,1:lastp(1),1,1),'r')
+plot(1:lastp(1),theta(:,1:lastp(1),1,1),'g')
 hold on
 plot(1:lastp(1),theta(:,1:lastp(1),1,2),'b')
 hold off
 figure()
-plot(1:lastp(1),lambdaHist(:,1:lastp(1),1,1),'r')
+plot(1:lastp(1),lambdaHist(:,1:lastp(1),1,1),'g')
 hold on
 plot(1:lastp(1),lambdaHist(:,1:lastp(1),1,2),'b')
-plot(1:lastp(1),kron(ones(1,lastp(1)),(lambdaHist(:,1,1,1)+lambdaHist(:,1,1,2))/2),'--b')
+plot(1:lastp(1),kron(ones(1,lastp(1)),(lambdaHist(:,1,1,1)+lambdaHist(:,1,1,2))/2),'--r')
 hold off
+
+sympref('FloatingPointOutput',true);
+disp(['$H_1=' latex(sym(H(:,:,1))) '$'])
+disp(['$H_2=' latex(sym(H(:,:,2))) '$'])
+disp(['$\vec{f}_1[k]=' latex(sym(f(:,1))) '$'])
+disp(['$\vec{f}_2[k]=' latex(sym(f(:,2))) '$'])

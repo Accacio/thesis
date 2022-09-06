@@ -90,11 +90,11 @@ An usual law is
 \[\rho^{(p)}=\frac{1}{a+bp},\]
 with $a$ and $b$ arbitrarily chosen~\cite{ConejoEtAl2006}.
 
-From~\cite{BoydVandenberghe2004} and~\cite{BoydEtAl2015}, we can derive that the dual variables $\lambdaik$ of the local problems are sub-gradients of the local problems and since the objective function of the main problem is a sum of the local objectives, then the $\vec{\lambda}_{i}$ can form a sub-gradient of the main problem.
+From~\cite{BoydVandenberghe2004} and~\cite{BoydEtAl2015}, we can derive that the opposite of the dual variables $\lambdaik$ of the local problems are sub-gradients of the local problems and since the objective function of the main problem is a sum of the local objectives, then the $\vec{\lambda}_{i}$ can form a sub-gradient of the main problem.
 If we stack the $\vec{\lambda}_{i}[k]$ in $\vec{\lambda}[k]=[\vec{\lambda}_{1}[k];\dots;\vec{\lambda}_{M}[k]]$, it can be used in~\eqref{eq:projectedSubgradient}, yielding
 \begin{equation}
   \label{eq:projectedSubgradient_lambda}
-\vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p-\rho\p\vec{\lambda}[k]\p).
+\vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p).
 \end{equation}
 
 Using~\eqref{eq:DOP_local} and~\eqref{eq:projectedSubgradient_lambda}, we can alter Algorithm~\ref{alg:decomposition_coordination} to correspond to a decomposition of the original \mpc{} problem~\eqref{eq:qp_standard_form_decomposable} using the primal decomposition:
@@ -107,7 +107,7 @@ Using~\eqref{eq:DOP_local} and~\eqref{eq:projectedSubgradient_lambda}, we can al
   Initialize ${\thetaik}^{(p)},$ $\forall i\in\set{M}$, such that ${\vec{\theta}[k]}^{(p)}\in\set{S}$\;
   \Repeat{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\ ||\ \left[p\geq p_{\max}\right]$}{
     Solve local sub-problems~\eqref{eq:DOP_local} and calculate ${\vec{\lambda}_{i}[k]}^{(p)}$ (potentially in parallel)\;
-    Update $\vec{\theta}[k]$: $\vec{\theta}[k]\pplusone\gets\Proj^{\set{S}}(\vec{\theta}[k]\p-\rho\p\vec{\lambda}[k]\p)$ \;
+    Update $\vec{\theta}[k]$: $\vec{\theta}[k]\pplusone\gets\Proj^{\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p)$ \;
     $p\gets p+1$\;
   }
   \caption{Decomposition of \mpc{} problem using primal decomposition.}\label{alg:primal_decomposition}
@@ -218,13 +218,13 @@ The systems are described by the following \ltidt{} dynamics
   \label{eq:example_dynamics}
   x_{i}[k+1]=a_{i}x_{i}[k]+b_{i}u_{i}[k]
 \end{equation}
-with \todo[verify values]{$a_{1}=$,$a_{2}=$,$b_{1}=$,$b_{2}=$}, and
+with $a_{1}=0.8$, $a_{2}=0.6$, $b_{1}=0.3$, $b_{2}=0.4$, and
 constraint by an equality constraint
 \begin{equation}
   \label{eq:example_equality}
-  \todo[verify]{u_{1}+u_{2}=\vec{u}_{\max}}
+  u_{1}+u_{2}=\vec{u}_{\max}
 \end{equation}
-with \todo{$\vec{u}_{\max}=4$}.
+with $\vec{u}_{\max}=4$.
 We use a \dmpc{} with horizon ${\predhorz=2}$ and references and gains that results in the problems
 \begin{equation}
   \begin{matrix}
@@ -233,10 +233,27 @@ We use a \dmpc{} with horizon ${\predhorz=2}$ and references and gains that resu
   \end{matrix}
   \label{eq:example_local_problem}
 \end{equation}
-with \todo{$H_{1}$, $H_{2}$, $\vec{f}_{1}[k]$, $\vec{f}_{2}[k]$, $\bar{\Gamma}_{1}$,$\bar{\Gamma}_{2}$}.
+with
+\begin{equation}
+  \label{eq:1}
+  \begin{array}{ccc}
+    H_1=\left(\begin{array}{cc} 1.9446 & 0.4608\\ 0.4608 & 1.5760 \end{array}\right),
+                                                         &
+    \vec{f}_1[k]=\left(\begin{array}{c} -6.6624\\ -4.1280 \end{array}\right),
+                                       &
+     \bar{\Gamma}_{1}= I_{2},
+    \\
+    \\
+    H_2=\left(\begin{array}{cc} 1.7834 & 0.3456\\ 0.3456 & 1.5760 \end{array}\right),
+                                                         &
+    \vec{f}_2[k]=\left(\begin{array}{c} -7.6032\\ -5.4720 \end{array}\right),
+    &
+    \bar{\Gamma}_{2}=I_{2}.
+  \end{array}
+\end{equation}
 The coordinator update function
 \begin{equation}
-\vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p-\rho\p\vec{\lambda}[k]\p),
+\vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p),
 \end{equation}
 with ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k] = \vec{u}_{\max}}}$, $c=n_{u}\predhorz=2$.
 
@@ -253,8 +270,8 @@ If the initial ${\vec{\theta}}^{(0)}$ belongs to $\set{S}$, we can rewrite for e
  \thetai\pplusone=\thetai\p+\rho\p\left(\lambdai\p-\frac{1}{M}\sum_{j=1}^{M}\vec{\lambda}_j\p\right),\forall i\in\set{M}
 \end{equation}
 
-\todo{Using~\eqref{eq:example_local_problem} and~\eqref{eq:example_projectedSubgradient_lambda} with initial conditions $x_{1}[0]=$ and $x_{2}[0]$, and state references $w_{1}[0]=$,$w_{2}[k]$, we can program Algorithm~\ref{alg:primal_decomposition_based_dmpc}.
-The dynamics of variables $\vec{\theta}_{i}[0]$ $\vec{\lambda}_{i}[0]$ during the iterative process can be seen in Figs.~\ref{fig:example_theta} and~\ref{fig:example_lambda}.}
+Using~\eqref{eq:example_local_problem} and~\eqref{eq:example_projectedSubgradient_lambda} with initial conditions ${x_{1}[0]=2}$ and ${x_{2}[0]=2}$, and state references ${w_{1}[0]=1.5x_{1}[0]}$ and ${w_{2}[0]=1.5x_{2}[0]}$, we can program Algorithm~\ref{alg:primal_decomposition_based_dmpc}.
+The dynamics of variables $\vec{\theta}_{i}[0]$ $\vec{\lambda}_{i}[0]$ during the iterative process can be seen in Figs.~\ref{fig:example_theta} and~\ref{fig:example_lambda}.
 
 \begin{figure}[h]
   \centering
