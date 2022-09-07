@@ -12,69 +12,67 @@ curly = @(x, varargin) x{varargin{:}}; %
 options = optimset('Display', 'off');
 warning off
 % options = [];
-%
-simK = 1;    %= Simulation horizon
-negotP = 200; %= max # of iteration for each negotiation
-err_theta=1e-4; %= err to test theta convergence in each negotiation
-rand('seed',2);
 
 %= Simulation parameters
 Te=.25; %= Sampling
 Np=2;   %= Prediction horizon
 a=10;  %= for rho=1/(a+b*negot)
 b=1;  %= for rho=1/(a+b*negot)
+simK = 10;    %= Simulation horizon
+negotP = 200; %= max # of iteration for each negotiation
+err_theta=1e-4; %= err to test theta convergence in each negotiation
+rand('seed',2);
 
 %= System
-A=[0.8,0.6]
-B=[0.3,0.4]
-
+A=[0.8,0.6,0.4];
+B=[0.3,0.5,0.6];
 
 %= Initial state
 X0(:,1,1) = [3]';
 X0(:,1,2) = [2]';
+X0(:,1,3) = [1]';
 
-%= Setpoint
-Wt = [X0(1,1)*1.30;
-      X0(1,2)*1.50;
+%= Setpoint/References
+Wt = [X0(1,1)*1.07;
+      X0(1,2)*1.10;
+      X0(1,3)*1.05;
      ];
 Wt_final = [Wt(1)*1.05;
             Wt(2)*1.05;
+            Wt(3)*1.05;
            ];
 Wt_change_time =[ simK/2;
                   simK;
                   simK;
                   simK;
                 ];
+%
 %= Global constraint
-Umax=4;
-% Umax=2;
+Umax=4; %= max value
 
-% TODO(accacio): change name of these variables
 chSetpoint_list = 0; %= Change setpoint?
 selfish_list = 0;    %= Selfish behaviour?
 secure_list = 0;     %= Secure algorithm?
 
 %= Input bounds
-% u_min=0;
 u_min=-inf;
 u_max=Umax;
-% u_max=inf;
 
 %% Define systems
 M=size(A,2);    %= # of systems
 %= Define continuos systems using 3R2C
 for i=M:-1:1 % make it backward to "preallocate"
-    dsys(:,:,1,i)=ss(A(i),B(i),1,0,Te)
+    dsys(:,:,1,i)=ss(A(i),B(i),1,0,Te);
+    % figure()
+    % pzmap(dsys(:,:,1,i))
 end
-
 
 ni=size(dsys.B(:,:,1,1),2); %= # of inputs
 ns=size(dsys.A(:,:,1,1),2); %= # of states
 n=Np*ni; % constant used everywhere
-Gamma(:,:,1)=eye(ni*n)
-Gamma(:,:,2)=1*eye(ni*n)
-Gamma(:,:,2)=0.9*eye(ni*n)
-Gamma(:,:,2)=0.7*eye(ni*n)
+Gamma(:,:,1)=eye(ni*n);
+Gamma(:,:,2)=eye(ni*n);
+Gamma(:,:,3)=eye(ni*n);
 
 %= Output prediction matrices, such $\vec{Y}=\mathcal{M}\vec{x}_k+\mathcal{C}\vec{U}$
 % These functions use operator overloading, see https://accacio.gitlab.io/blog/matlab_overload/
@@ -203,6 +201,7 @@ for k=1:simK
                                                        umin(:,i)*ones(ni*n,1), ...  % Lower Bound
                                                        umax(:,i)*ones(ni*n,1), ...  % Upper Bound
                                                        [], options);
+            % lambda(:,i)=l(:,p,k,i).ineqlin;
             lambda(:,i)=l(:,p,k,i).eqlin;
             if selfish
                 if k>selfish_time(i)
@@ -215,17 +214,17 @@ for k=1:simK
         lambdaHist(:,p,k,:) = lambda;
 
         %= Update allocation
-        % thetap=reshape(theta(:,p,k,:),n,M) + rho*(lambda);
-        thetap=reshape(theta(:,p,k,:),n,M)+rho*(lambda-mean(lambda,2))
+        thetap=reshape(theta(:,p,k,:),n,M) + rho*(lambda);
+        % thetap=reshape(theta(:,p,k,:),n,M)+rho*(lambda-mean(lambda,2));
         % % Projection
-        % [thetapnew ,~,~,~,~] = quadprog(eye(M*n*ni), -thetap, ...
-        %                                 [], [], ...
-        %                                 Ac', bc, ...
-        %                                 umin(:,i)*ones(M*ni*n,1), ...  % Lower Bound
-        %                                 umax(:,i)*ones(M*ni*n,1), ...  % Upper Bound
-        %                                 [], options);
-        % theta(:,p+1,k,:) = reshape(thetapnew,n,1,1,M);
-        theta(:,p+1,k,:) = thetap;
+        [thetapnew ,~,~,~,~] = quadprog(eye(M*n*ni), -thetap, ...
+                                        [], [], ...
+                                        Ac', bc, ...
+                                        umin(:,i)*ones(M*ni*n,1), ...  % Lower Bound
+                                        umax(:,i)*ones(M*ni*n,1), ...  % Upper Bound
+                                        [], options);
+        theta(:,p+1,k,:) = reshape(thetapnew,n,1,1,M);
+        % theta(:,p+1,k,:) = thetap;
 
 
         theta_converged=true;
@@ -240,13 +239,14 @@ for k=1:simK
 
     end
 
-    uHist(:,k,:) = u(1:ni,:);
     for i=1:M
         u_applied=u(1:ni,i);
+        u(1:ni,i)=u_applied;
         % u_applied=0;
         sys=dsys(:,:,1,i);
         xt(:,k+1,i)=sys.A*xt(:,k,i)+sys.B*u_applied;
     end
+    uHist(:,k,:) = u(1:ni,:);
 end
 toc
 dataPath='../data/';
@@ -255,24 +255,47 @@ end
 end
 end
 
-figure()
-plot(1:lastp(1),theta(:,1:lastp(1),1,1),'g')
-hold on
-plot(1:lastp(1),theta(:,1:lastp(1),1,2),'b')
-% plot(1:lastp(1),(theta(:,1:lastp(1),1,1)+theta(:,1:lastp(1),1,2)),'--')
-hold off
-legend('\theta_{1_1}','\theta_{1_2}','\theta_{2_1}','\theta_{2_2}')
+for i=1:simK
+    figure()
+    plot(1:lastp(i),theta(:,1:lastp(i),i,1),'g')
+    hold on
+    plot(1:lastp(i),theta(:,1:lastp(i),i,2),'b')
+    plot(1:lastp(i),theta(:,1:lastp(i),i,3),'r')
+    hold off
+    legend('\theta_{1_1}','\lambda_{1_2}','\lambda_{2_1}','\lambda_{2_2}','\lambda_{3_1}','\lambda_{3_2}')
+    title(['\theta_i k=' num2str(i)])
+
+    figure()
+    plot(1:lastp(i),lambdaHist(:,1:lastp(i),i,1),'g')
+    hold on
+    plot(1:lastp(i),lambdaHist(:,1:lastp(i),i,2),'b')
+    plot(1:lastp(i),lambdaHist(:,1:lastp(i),i,3),'r')
+    % plot(1:lastp(1),kron(ones(1,lastp(1)),(lambdaHist(:,1,1,1)+lambdaHist(:,1,1,2))/2),'--r')
+    plot(1:lastp(i),mean(lambdaHist(:,1:lastp(i),i,:),4),'--k')
+    hold off
+    legend('\lambda_{1_1}','\lambda_{1_2}','\lambda_{2_1}','\lambda_{2_2}','\lambda_{3_1}','\lambda_{3_2}')
+    title(['\lambda_i k=' num2str(i)])
+end
 
 figure()
-plot(1:lastp(1),lambdaHist(:,1:lastp(1),1,1),'g')
+plot(1:simK,uHist(:,1:simK,1))
 hold on
-plot(1:lastp(1),lambdaHist(:,1:lastp(1),1,2),'b')
-% plot(1:lastp(1),kron(ones(1,lastp(1)),(lambdaHist(:,1,1,1)+lambdaHist(:,1,1,2))/2),'--r')
-plot(1:lastp(1),(lambdaHist(:,1:lastp(1),1,1)+lambdaHist(:,1:lastp(1),1,2))/2,'--r')
+plot(1:simK,uHist(:,1:simK,2))
+plot(1:simK,uHist(:,1:simK,3))
+plot(1:simK,sum(uHist,3))
+
+figure()
+hold on
+plot(1:simK,xt(:,1:simK,1))
+plot(1:simK,kron(ones(1,simK),Wt(1)),'--')
+plot(1:simK,xt(:,1:simK,2))
+plot(1:simK,kron(ones(1,simK),Wt(2)),'--')
+plot(1:simK,xt(:,1:simK,3))
+plot(1:simK,kron(ones(1,simK),Wt(3)),'--')
 hold off
-legend('\lambda_{1_1}','\lambda_{1_2}','\lambda_{2_1}','\lambda_{2_2}')
 
 sympref('FloatingPointOutput',false);
-disp(['$a_1=' latex(sym(A(:,1))) '$, $a_2=' latex(sym(A(:,2))) '$, $b_1=' latex(sym(B(:,1))) '$, $b_2=' latex(sym(B(:,2))) '$,' ])
+disp(['$a_1=' latex(sym(A(:,1))) '$, $a_2=' latex(sym(A(:,2))) '$, $a_3=' latex(sym(A(:,3))) '$, $b_1=' latex(sym(B(:,1))) '$, $b_2=' latex(sym(B(:,2))) '$, $b_3=' latex(sym(B(:,3))) '$,' ])
 disp(['H_1=' latex(sym(H(:,:,1))) ' & \vec{f}_1[k]=' latex(sym(f(:,1))) ' & \bar{\Gamma}_1=' latex(sym(Gamma(:,:,1))) '\\'])
 disp(['H_2=' latex(sym(H(:,:,2))) ' & \vec{f}_2[k]=' latex(sym(f(:,2))) ' & \bar{\Gamma}_2=' latex(sym(Gamma(:,:,2))) '\\'])
+disp(['H_3=' latex(sym(H(:,:,3))) ' & \vec{f}_3[k]=' latex(sym(f(:,3))) ' & \bar{\Gamma}_3=' latex(sym(Gamma(:,:,3))) '\\'])
