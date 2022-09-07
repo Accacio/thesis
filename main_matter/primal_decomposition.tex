@@ -218,13 +218,17 @@ The systems are described by the following \ltidt{} dynamics
   \label{eq:example_dynamics}
   x_{i}[k+1]=a_{i}x_{i}[k]+b_{i}u_{i}[k]
 \end{equation}
-with $a_{1}=0.8$, $a_{2}=0.6$, $b_{1}=0.3$, $b_{2}=0.4$, and
+with
+$a_1=\frac{4}{5}$, $a_2=\frac{3}{5}$, $b_1=\frac{3}{10}$, $b_2=\frac{2}{5}$,
+and
 constraint by an equality constraint
 \begin{equation}
   \label{eq:example_equality}
   u_{1}+u_{2}=\vec{u}_{\max}
 \end{equation}
-with $\vec{u}_{\max}=4$.
+with
+$\vec{u}_{\max}=4$
+.
 We use a \dmpc{} with horizon ${\predhorz=2}$ and references and gains that results in the problems
 \begin{equation}
   \begin{matrix}
@@ -237,18 +241,8 @@ with
 \begin{equation}
   \label{eq:1}
   \begin{array}{ccc}
-    H_1=\left(\begin{array}{cc} 1.9446 & 0.4608\\ 0.4608 & 1.5760 \end{array}\right),
-                                                         &
-    \vec{f}_1[k]=\left(\begin{array}{c} -6.6624\\ -4.1280 \end{array}\right),
-                                       &
-     \bar{\Gamma}_{1}= I_{2},
-    \\
-    \\
-    H_2=\left(\begin{array}{cc} 1.7834 & 0.3456\\ 0.3456 & 1.5760 \end{array}\right),
-                                                         &
-    \vec{f}_2[k]=\left(\begin{array}{c} -7.6032\\ -5.4720 \end{array}\right),
-    &
-    \bar{\Gamma}_{2}=I_{2}.
+H_1=\left(\begin{array}{cc} 1.9446 & 0.4608\\ 0.4608 & 1.5760 \end{array}\right) & \vec{f}_1[k]=\left(\begin{array}{c} -7.4016\\ -4.7520 \end{array}\right) & \bar{\Gamma}_1=\left(\begin{array}{cc} 1 & 0\\ 0 & 1 \end{array}\right)\\
+H_2=\left(\begin{array}{cc} 1.7834 & 0.3456\\ 0.3456 & 1.5760 \end{array}\right) & \vec{f}_2[k]=\left(\begin{array}{c} -7.6032\\ -5.4720 \end{array}\right) & \bar{\Gamma}_2=\left(\begin{array}{cc} 1 & 0\\ 0 & 1 \end{array}\right)\\
   \end{array}
 \end{equation}
 The coordinator update function
@@ -270,8 +264,8 @@ If the initial ${\vec{\theta}}^{(0)}$ belongs to $\set{S}$, we can rewrite for e
  \thetai\pplusone=\thetai\p+\rho\p\left(\lambdai\p-\frac{1}{M}\sum_{j=1}^{M}\vec{\lambda}_j\p\right),\forall i\in\set{M}
 \end{equation}
 
-Using~\eqref{eq:example_local_problem} and~\eqref{eq:example_projectedSubgradient_lambda} with initial conditions ${x_{1}[0]=2}$ and ${x_{2}[0]=2}$, and state references ${w_{1}[0]=1.5x_{1}[0]}$ and ${w_{2}[0]=1.5x_{2}[0]}$, we can program Algorithm~\ref{alg:primal_decomposition_based_dmpc}.
-The dynamics of variables $\vec{\theta}_{i}[0]$ $\vec{\lambda}_{i}[0]$ during the iterative process can be seen in Figs.~\ref{fig:example_theta} and~\ref{fig:example_lambda}.
+Using~\eqref{eq:example_local_problem} and~\eqref{eq:example_projectedSubgradient_lambda} with initial conditions ${x_{1}[0]=3}$ and ${x_{2}[0]=2}$, and state references ${w_{1}[0]=1.3x_{1}[0]}$ and ${w_{2}[0]=1.5x_{2}[0]}$, we can program Algorithm~\ref{alg:primal_decomposition_based_dmpc}.
+The dynamics of variables $\vec{\theta}_{i}[0]$ and $\vec{\lambda}_{i}[0]$ during the iterative process can be seen in Figs.~\ref{fig:example_theta} and~\ref{fig:example_lambda}.
 
 \begin{figure}[h]
   \centering
@@ -288,20 +282,21 @@ In Figs.~\ref{fig:example_theta} and~\ref{fig:example_lambda} the sub-systems we
 Observe in Fig.~\ref{fig:example_theta} that the agent with the bigger values of $\thetai$ has a corresponding $\lambdai$ smaller than the other agent.
 In next iterations the bigger $\thetai$ decrease and the smaller ones increase, until they stabilize.
 
-For $\lambdai$ we see it stabilizes exactly in the middle of the initial values.
-It is true due to the global equality constraint whose simple projection onto the intersection of hyperplanes result in~\eqref{eq:example_projectedSubgradient_lambda}.
+For $\lambdai$ we see it stabilizes when values for corresponding elements of the vector meet.
+It is true due to the global equality constraint, whose simple projection onto the intersection of hyperplanes result in~\eqref{eq:example_projectedSubgradient_lambda}.
 Moreover, as one can see, the iterative process converges if ${\thetai\pplusone=\thetai\p}$, which happens when ${\lambdai\p=\frac{1}{M}\sum_{j=1}^{M}\vec{\lambda}_j\p}$.
-Although it is not necessarily true for the inequality cases it can gives an insight of the functioning of the algorithm.
-The values of $\thetai$ can represent an allocation of the maximum input given to the agents by the coordinator, and $\lambdai$ as a measure of dissatisfaction of each agent to the value allocated.
+Although it may not necessarily be true for the inequality cases it gives us an insight of the functioning of the algorithm.
+The values of $\thetai$ represent an allocation of the maximum input given to the agents by the coordinator, and $\lambdai$ is a measure of dissatisfaction of each agent to the value allocated.
 So the coordinator has as role to negotiate the values of the allocations so all agents can be equally dissatisfied.
 Due to this process of iterative allocations, other names given for this decomposition are \textbf{resource allocation} and \textbf{quantity decomposition}.
 
-We can create a parallel with the cake-cutting problem~\cite{BramsTaylor1995} where two (or more) agents want to share a cake dividing it equally so no agent envy the piece of cake of other agent.
-Usually in these kinds of problems, a protocol is created where agents cut successively the cake and the other agents take parts which they think it is the greater.
+We can create a parallel with the cake-cutting problem~\cite{BramsTaylor1995} where two (or more) agents want to share a cake, dividing it equally so no agent envy the piece of cake of other agent.
+Usually in these kinds of problems, a protocol is created where agents cut successively the cake (or parts of it) and the other agents take parts which they think it is the greater.
 But in those cases usually all agents have the same hunger.
 
-In our case, agents may have different needs (represented by the matrices $\bar{\Gamma}_{i}$).
-So the coordinator works as a mediator positioning the cake cutter, showing where it would cut the cake ($\thetai$ during the iterative process) and asks if the agents would be satisfied ($\lambdai$) and adjust the cake cutter until a consensus is reached. Due to this interpretation we call the iterative process as a \textbf{negotiation phase}.
+In our case, agents may have different needs, represented by the dynamics of the subsystems (tuples $(A_{i},B_{i})$), the matrices $\bar{\Gamma}_{i}$, state $x_{i}[k]$ and references $w_{i}[k]$.
+So, the coordinator works as a mediator, positioning the cake cutter, showing where it would cut the cake (sending $\thetai$ during the iterative process), listening if the agents would be satisfied with the partition (receiveing $\lambdai$) and adjusting the cake cutter until a consensus is reached.
+Due to this interpretation we call the iterative process as a \textbf{negotiation phase}.
 
 % \begin{remark}
 %   Observe that in this decomposition \textbf{``Liar'' agent attacks} as in \cite{VelardeEtAl2017b} cannot happen, since the input constraint is given by the coordinator.

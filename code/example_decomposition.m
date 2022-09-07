@@ -25,15 +25,16 @@ a=10;  %= for rho=1/(a+b*negot)
 b=1;  %= for rho=1/(a+b*negot)
 
 %= System
-A=[0.8;0.6]
-B=[0.3;0.4]
+A=[0.8,0.6]
+B=[0.3,0.4]
+
 
 %= Initial state
-X0(:,1,1) = [2]';
+X0(:,1,1) = [3]';
 X0(:,1,2) = [2]';
 
 %= Setpoint
-Wt = [X0(1,1)*1.50;
+Wt = [X0(1,1)*1.30;
       X0(1,2)*1.50;
      ];
 Wt_final = [Wt(1)*1.05;
@@ -60,7 +61,7 @@ u_max=Umax;
 % u_max=inf;
 
 %% Define systems
-M=size(A,1);    %= # of systems
+M=size(A,2);    %= # of systems
 %= Define continuos systems using 3R2C
 for i=M:-1:1 % make it backward to "preallocate"
     dsys(:,:,1,i)=ss(A(i),B(i),1,0,Te)
@@ -70,6 +71,8 @@ end
 ni=size(dsys.B(:,:,1,1),2); %= # of inputs
 ns=size(dsys.A(:,:,1,1),2); %= # of states
 n=Np*ni; % constant used everywhere
+Gamma(:,:,1)=eye(ni*n)
+Gamma(:,:,2)=eye(ni*n)
 
 %= Output prediction matrices, such $\vec{Y}=\mathcal{M}\vec{x}_k+\mathcal{C}\vec{U}$
 % These functions use operator overloading, see https://accacio.gitlab.io/blog/matlab_overload/
@@ -194,7 +197,7 @@ for k=1:simK
             % QUADPROG(H,f,A,b,Aeq,beq,LB,UB,X0)
             [u(:,i) ,J(k,i),~,~,l(:,p,k,i)] = quadprog(H(:,:,i), f(:,i), ...
                                                        [], [], ...
-                                                       eye(ni*n), theta(:,p,k,i), ...
+                                                       Gamma(:,:,i), theta(:,p,k,i), ...
                                                        umin(:,i)*ones(ni*n,1), ...  % Lower Bound
                                                        umax(:,i)*ones(ni*n,1), ...  % Upper Bound
                                                        [], options);
@@ -210,15 +213,17 @@ for k=1:simK
         lambdaHist(:,p,k,:) = lambda;
 
         %= Update allocation
-        thetap=reshape(theta(:,p,k,:),n,M) + rho*(lambda);
-        % Projection
-        [thetapnew ,~,~,~,~] = quadprog(eye(M*n*ni), -thetap, ...
-                                        Ac', bc, ...
-                                        [], [], ...
-                                        umin(:,i)*ones(M*ni*n,1), ...  % Lower Bound
-                                        umax(:,i)*ones(M*ni*n,1), ...  % Upper Bound
-                                        [], options);
-        theta(:,p+1,k,:) = reshape(thetapnew,n,1,1,M);
+        % thetap=reshape(theta(:,p,k,:),n,M) + rho*(lambda);
+        thetap=reshape(theta(:,p,k,:),n,M)+rho*(lambda-mean(lambda,2))
+        % % Projection
+        % [thetapnew ,~,~,~,~] = quadprog(eye(M*n*ni), -thetap, ...
+        %                                 [], [], ...
+        %                                 Ac', bc, ...
+        %                                 umin(:,i)*ones(M*ni*n,1), ...  % Lower Bound
+        %                                 umax(:,i)*ones(M*ni*n,1), ...  % Upper Bound
+        %                                 [], options);
+        % theta(:,p+1,k,:) = reshape(thetapnew,n,1,1,M);
+        theta(:,p+1,k,:) = thetap;
 
 
         theta_converged=true;
@@ -252,16 +257,17 @@ figure()
 plot(1:lastp(1),theta(:,1:lastp(1),1,1),'g')
 hold on
 plot(1:lastp(1),theta(:,1:lastp(1),1,2),'b')
+plot(1:lastp(1),(theta(:,1:lastp(1),1,1)+theta(:,1:lastp(1),1,2)),'--')
 hold off
 figure()
 plot(1:lastp(1),lambdaHist(:,1:lastp(1),1,1),'g')
 hold on
 plot(1:lastp(1),lambdaHist(:,1:lastp(1),1,2),'b')
-plot(1:lastp(1),kron(ones(1,lastp(1)),(lambdaHist(:,1,1,1)+lambdaHist(:,1,1,2))/2),'--r')
+% plot(1:lastp(1),kron(ones(1,lastp(1)),(lambdaHist(:,1,1,1)+lambdaHist(:,1,1,2))/2),'--r')
+plot(1:lastp(1),(lambdaHist(:,1:lastp(1),1,1)+lambdaHist(:,1:lastp(1),1,2))/2,'--r')
 hold off
 
-sympref('FloatingPointOutput',true);
-disp(['$H_1=' latex(sym(H(:,:,1))) '$'])
-disp(['$H_2=' latex(sym(H(:,:,2))) '$'])
-disp(['$\vec{f}_1[k]=' latex(sym(f(:,1))) '$'])
-disp(['$\vec{f}_2[k]=' latex(sym(f(:,2))) '$'])
+sympref('FloatingPointOutput',false);
+disp(['$a_1=' latex(sym(A(:,1))) '$, $a_2=' latex(sym(A(:,2))) '$, $b_1=' latex(sym(B(:,1))) '$, $b_2=' latex(sym(B(:,2))) '$,' ])
+disp(['H_1=' latex(sym(H(:,:,1))) ' & \vec{f}_1[k]=' latex(sym(f(:,1))) ' & \bar{\Gamma}_1=' latex(sym(Gamma(:,:,1))) '\\'])
+disp(['H_2=' latex(sym(H(:,:,2))) ' & \vec{f}_2[k]=' latex(sym(f(:,2))) ' & \bar{\Gamma}_2=' latex(sym(Gamma(:,:,2))) '\\'])
