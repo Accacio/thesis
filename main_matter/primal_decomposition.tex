@@ -245,17 +245,13 @@ H_1=\left(\begin{array}{cc} 1.9446 & 0.4608\\ 0.4608 & 1.5760 \end{array}\right)
 H_2=\left(\begin{array}{cc} 1.7834 & 0.3456\\ 0.3456 & 1.5760 \end{array}\right) & \vec{f}_2[k]=\left(\begin{array}{c} -7.6032\\ -5.4720 \end{array}\right) & \bar{\Gamma}_2=\left(\begin{array}{cc} 1 & 0\\ 0 & 1 \end{array}\right)\\
   \end{array}
 \end{equation}
-The coordinator update function
-\begin{equation}
-\vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p),
-\end{equation}
-with ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k] = \vec{u}_{\max}}}$, $c=n_{u}\predhorz=2$.
+The coordinator update function~\eqref{eq:projectedSubgradient_lambda} with ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k] = \vec{U}_{\max}}}$, $c=n_{u}\predhorz=2$.
 
 From now on, we remove the $[k]$ indices for convenience, since all calculation is valid for the same step $k$ unless expressly stated otherwise.
 
 This euclidean projection can be calculated explicitly yielding
 \begin{equation}
-    \vec{\theta}\pplusone=\vec{\theta}\p-\rho\p\vec{\lambda}\p-{I_{c}^M}/({I_{c}^M}\T {I_{c}^M})\left({I_{c}^M}\T(\vec{\theta}\p-\rho\p\vec{\lambda}\p) -\vec{u}_{\max}\right).
+    \vec{\theta}\pplusone=\vec{\theta}\p-\rho\p\vec{\lambda}\p-{I_{c}^M}/({I_{c}^M}\T {I_{c}^M})\left({I_{c}^M}\T(\vec{\theta}\p-\rho\p\vec{\lambda}\p) -\vec{U}_{\max}\right).
 \end{equation}
 
 If the initial ${\vec{\theta}}^{(0)}$ belongs to $\set{S}$, we can rewrite for each individual $\thetai$:
