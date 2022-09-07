@@ -955,6 +955,7 @@ backrefstyle=three,
 
 %%%%%%%%%% Gerer les en tetes dans les frontmatter mainmatter et backmatter
 \RequirePackage{geometry}
+\RequirePackage{nicefrac,xfrac}
 \RequirePackage{etoolbox}
 \RequirePackage[framemethod=TikZ]{mdframed}
 \RequirePackage{fontawesome}
