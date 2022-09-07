@@ -72,7 +72,9 @@ ni=size(dsys.B(:,:,1,1),2); %= # of inputs
 ns=size(dsys.A(:,:,1,1),2); %= # of states
 n=Np*ni; % constant used everywhere
 Gamma(:,:,1)=eye(ni*n)
-Gamma(:,:,2)=eye(ni*n)
+Gamma(:,:,2)=1*eye(ni*n)
+Gamma(:,:,2)=0.9*eye(ni*n)
+Gamma(:,:,2)=0.7*eye(ni*n)
 
 %= Output prediction matrices, such $\vec{Y}=\mathcal{M}\vec{x}_k+\mathcal{C}\vec{U}$
 % These functions use operator overloading, see https://accacio.gitlab.io/blog/matlab_overload/
@@ -257,8 +259,10 @@ figure()
 plot(1:lastp(1),theta(:,1:lastp(1),1,1),'g')
 hold on
 plot(1:lastp(1),theta(:,1:lastp(1),1,2),'b')
-plot(1:lastp(1),(theta(:,1:lastp(1),1,1)+theta(:,1:lastp(1),1,2)),'--')
+% plot(1:lastp(1),(theta(:,1:lastp(1),1,1)+theta(:,1:lastp(1),1,2)),'--')
 hold off
+legend('\theta_{1_1}','\theta_{1_2}','\theta_{2_1}','\theta_{2_2}')
+
 figure()
 plot(1:lastp(1),lambdaHist(:,1:lastp(1),1,1),'g')
 hold on
@@ -266,6 +270,7 @@ plot(1:lastp(1),lambdaHist(:,1:lastp(1),1,2),'b')
 % plot(1:lastp(1),kron(ones(1,lastp(1)),(lambdaHist(:,1,1,1)+lambdaHist(:,1,1,2))/2),'--r')
 plot(1:lastp(1),(lambdaHist(:,1:lastp(1),1,1)+lambdaHist(:,1:lastp(1),1,2))/2,'--r')
 hold off
+legend('\lambda_{1_1}','\lambda_{1_2}','\lambda_{2_1}','\lambda_{2_2}')
 
 sympref('FloatingPointOutput',false);
 disp(['$a_1=' latex(sym(A(:,1))) '$, $a_2=' latex(sym(A(:,2))) '$, $b_1=' latex(sym(B(:,1))) '$, $b_2=' latex(sym(B(:,2))) '$,' ])
