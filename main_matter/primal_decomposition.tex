@@ -94,7 +94,7 @@ From~\cite{BoydVandenberghe2004} and~\cite{BoydEtAl2015}, we can derive that the
 If we stack the $\vec{\lambda}_{i}[k]$ in $\vec{\lambda}[k]=[\vec{\lambda}_{1}[k];\dots;\vec{\lambda}_{M}[k]]$, it can be used in~\eqref{eq:projectedSubgradient}, yielding
 \begin{equation}
   \label{eq:projectedSubgradient_lambda}
-\vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p).
+  \vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p).
 \end{equation}
 
 Using~\eqref{eq:DOP_local} and~\eqref{eq:projectedSubgradient_lambda}, we can alter Algorithm~\ref{alg:decomposition_coordination} to correspond to a decomposition of the original \mpc{} problem~\eqref{eq:qp_standard_form_decomposable} using the primal decomposition:
