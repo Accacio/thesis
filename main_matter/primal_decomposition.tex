@@ -8,7 +8,7 @@
 
 In this chapter we describe the optimization decomposition framework used in this work, founded on the definitions given in chapters~\ref{sec:decomposing_mpc} to~\ref{sec:anomalous} and giving insights of interpretation of each step.
 
-Then we present the vulnerabilities of this framework illustrating with the consequences of some attacks.
+Then we present the vulnerabilities of this framework illustrating some attacks and their consequences.
 
 \minitoc
 
@@ -219,12 +219,12 @@ The systems are described by the following \ltidt{} dynamics
   x_{i}[k+1]=a_{i}x_{i}[k]+b_{i}u_{i}[k]
 \end{equation}
 with
-$a_1=\frac{4}{5}$, $a_2=\frac{3}{5}$, $b_1=\frac{3}{10}$, $b_2=\frac{2}{5}$,
+$a_1=\sfrac{4}{5}$, $a_2=\sfrac{3}{5}$, $a_3=\sfrac{2}{5}$, $b_1=\sfrac{3}{10}$, $b_2=\sfrac{1}{2}$, $b_3=\sfrac{3}{5}$,
 and
 constraint by an equality constraint
 \begin{equation}
   \label{eq:example_equality}
-  u_{1}+u_{2}=\vec{u}_{\max}
+  u_{1}+u_{2}+u_{3}=\vec{u}_{\max}
 \end{equation}
 with
 $\vec{u}_{\max}=4$
@@ -241,8 +241,9 @@ with
 \begin{equation}
   \label{eq:1}
   \begin{array}{ccc}
-H_1=\left(\begin{array}{cc} 1.9446 & 0.4608\\ 0.4608 & 1.5760 \end{array}\right) & \vec{f}_1[k]=\left(\begin{array}{c} -7.4016\\ -4.7520 \end{array}\right) & \bar{\Gamma}_1=\left(\begin{array}{cc} 1 & 0\\ 0 & 1 \end{array}\right)\\
-H_2=\left(\begin{array}{cc} 1.7834 & 0.3456\\ 0.3456 & 1.5760 \end{array}\right) & \vec{f}_2[k]=\left(\begin{array}{c} -7.6032\\ -5.4720 \end{array}\right) & \bar{\Gamma}_2=\left(\begin{array}{cc} 1 & 0\\ 0 & 1 \end{array}\right)\\
+H_1=\left(\begin{array}{cc} 1.9446 & 0.4608\\ 0.4608 & 1.5760 \end{array}\right) & \vec{f}_1[k]=\left(\begin{array}{c} -5.5182\\ -3.6313 \end{array}\right) & \bar{\Gamma}_1=\left(\begin{array}{cc} 1 & 0\\ 0 & 1 \end{array}\right)\\
+H_2=\left(\begin{array}{cc} 2.2240 & 0.5400\\ 0.5400 & 1.9000 \end{array}\right) & \vec{f}_2[k]=\left(\begin{array}{c} -5.7717\\ -4.4875 \end{array}\right) & \bar{\Gamma}_2=\left(\begin{array}{cc} 1 & 0\\ 0 & 1 \end{array}\right)\\
+H_3=\left(\begin{array}{cc} 1.6682 & 0.2304\\ 0.2304 & 1.5760 \end{array}\right) & \vec{f}_3[k]=\left(\begin{array}{c} -2.7687\\ -2.2582 \end{array}\right) & \bar{\Gamma}_3=\left(\begin{array}{cc} 1 & 0\\ 0 & 1 \end{array}\right)\\
   \end{array}
 \end{equation}
 The coordinator update function~\eqref{eq:projectedSubgradient_lambda} with ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k] = \vec{U}_{\max}}}$, $c=n_{u}\predhorz=2$.
