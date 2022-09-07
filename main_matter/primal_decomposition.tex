@@ -354,147 +354,31 @@ As we see, the values of $\vec{\lambda}_{2}$ increase as the time step $k$, driv
   \caption{Evolution of $\lambdai$ during iterative process for $k=9$ when agent $2$ is hijacked. \todo{remake figure}}\label{fig:example_liar_lambda10}
 \end{figure}
 
-As illustrated, the change in $\lambda_{i}$ may cause in a modification in the consensus found for the $\lambdai$.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.5\textwidth]{../img/example_liar_state.png}
+  \caption{Evolution of state $x_{i}[k]$ and reference $w_{i}[k]$ during control when agent $2$ is hijacked. \todo{remake figure}}\label{fig:example_liar_state}
+\end{figure}
+
+\section{Attack of interest}\label{sec:attack-interest}
+
+As illustrated, the change in $\lambda_{i}$ may cause in a modification in the consensus found for the $\lambdai$ and drive the negotiation.
 And since $\lambdai$ are a sub-gradient of the local problems~\eqref{eq:DOP_local} they carry information about the local problem, i.e.\ it has somehow embedded in itself information about the tuple $(H_{i},\vec{f}_{i}[k],\bar{\Gamma}_{i},\thetaik)$ which we will call the complete local information $\set{I}_{i}$.
-% but they will always reflect on the channel.
-% \begin{description}
-%   \item[Negotiation Stability] Show example and how cheating can destabilize negotiation
-%         \begin{enumerate}
-%           \item Analysis of eigenvalues of negotiation
-%         \end{enumerate}
-%   \item[Example of how attacker can drive negotiation to other points]
-% \end{description}
-% \begin{figure}[h]
-%   \centering
-%   \begin{subfigure}{.45\textwidth}
-%     \includegraphics[width=\textwidth]{../img/original-minimum.png}
-%     \caption{Original minimum.}
-%     \label{fig:first}
-%   \end{subfigure}
-%   \hfill
-%   \begin{subfigure}{0.45\textwidth}
-%     \includegraphics[width=\textwidth]{../img/new-minimum-selfish.png}
-%     \caption{Minimum after non-conforming behavior.}
-%     \label{fig:second}
-%   \end{subfigure}
-%   \caption{Effects of non-conforming behaviors on optimal value. \todo{Refaire les images}}
-%   \label{fig:figures}
-% \end{figure}
+So, every attack shown in~\cite{VelardeEtAl2018} (explained in \S\ref{sec:attacks_in_dmpc}) reflect into $\lambdai$.
 
-% General discussion about ways to secure negotiation, here we discuss what
-% \begin{description}
-%   \item[Discussion about Methods]
-%   \item[Discussion about Detection and Isolation]
-%         \begin{description}
-%           \item[Learning methods] Use input labeled data to train detector
-%           \item[Analytical methods] Use model of the system and residuals
-%         \end{description}
-%   \item[Discussion about Recovery] Could show different cases
-%         \begin{description}
-%           \item[Active methods] Need detection
-%           \item[Passive methods] Robust control
-%         \end{description}
-% \end{description}
+For this reason, we are interested in \fdi{} attacks in which the attacker changes its $\lambdai$.
+We suppose that before sending the $\lambdai$ to the coordinator, the attacker uses a function ${\gamma:\R^{c}\to \R^{c}}$ to modify it.
+Here we denote this modified version as
+\begin{equation}
+  \tilde{\vec{\lambda}}_{i}=\gamma(\lambdai).
+\end{equation}
 
-
-% \begin{figure}[h]
-%   \centering
-%   \begin{subfigure}{0.45\textwidth}
-%     \includegraphics[width=\textwidth]{../img/ignoreX.png}
-%     \caption{Optimal value after ignoring attacker.}
-%     \label{fig:third}
-%   \end{subfigure}
-%   \hfill
-%   \begin{subfigure}{0.45\textwidth}
-%     \includegraphics[width=\textwidth]{../img/correctX.png}
-%     \caption{Optimal value after trying to recover original behavior.}
-%     \label{fig:third}
-%   \end{subfigure}
-
-%   \caption{Recovering options.}
-%   \label{fig:figures}
-% \end{figure}
-
-% Model 3R-2C \cite{GoudaEtAl2002}
-% \begin{figure}[h]
-%   \centering
-%   \begin{circuitikz}[european]
-%     \draw (0,0) node[tlground]{} to[isource, l=$P^{\text{heat}}$] ++(0,2) to[short, -*] ++(1.5,0) coordinate (a);
-
-%     \draw (a) node[above]{$T^{\text{in}}$}  to[C=$C^{\text{air}}$] ++(0,-2) node[tlground]{};
-%     \draw (0,-3) node[tlground]{} to[isource, l=$I^{\text{sol}}$] ++(0,2)
-%     to[short, -*] ++(1.5,0) coordinate (b);
-%     \draw (b) to[C=$C^{\text{walls}}$] ++(0,-2) node[tlground]{};
-
-%     \draw (a) -- ++(2,0) coordinate (c) -- ++(0,-.5) to[R=$R^{\text{iw/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (d);
-
-%     \draw (b) node[above]{$T^{\text{walls}}$} to[short,-*] (d);
-
-%     \draw (c) --  ++(2.5,0) -- ++(0,-.5) to[R=$R^{\text{oa/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (e);
-
-%     \draw (d) to[R=$R^{\text{ow/oa}}$] (e) to[battery,l=$T^{\text{out}}$] ++(0,-2) node[tlground]{};
-%   \end{circuitikz}
-%   \caption{Thermic Model 3R-2C of a room.}
-%   \label{fig:3R2C_model}
-% \end{figure}
-
-% The state-space model of each subsystem is given by:
-% \begin{equation}
-%   \begin{matrix}
-%     \label{eq:systems_cont}
-%     \dot{\vec{x}}_{i}(t)  &=&{A_{c}}_{i}\vec{x}_{i}(t) &+& {B_{c}}_{i}\vec{u}_{i}(t)\\
-%     \vec{y}_{i}(t)        &=&{C_{c}}_{i}\vec{x}_{i}(t) &&
-%   \end{matrix},
-% \end{equation}
-% where
-% \begin{equation}
-%   \label{eq:4}
-%   \begin{matrix}
-%     A_{\mathrm{c}_{i}}=\left[
-%       \begin{matrix}
-%         -\frac{1}{C^{\text{walls}}_{i}R^{\text{oa/ia}}_{i}}-\frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}& \frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}\\
-%         \frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}} &-\frac{1}{C^{\text{air}}_{i}R^{\text{ow/oa}}o_{i}}-\frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}}
-%       \end{matrix}\right]\\
-%     \begin{matrix}
-%       B_{\mathrm{c}_{i}}=\left[
-%         \begin{matrix}  \frac{10}{C^{\text{walls}}_{i}}& 0\end{matrix}
-%       \right]\T&C_{\mathrm{c}_{i}}=\left[\begin{matrix}1 & 0\end{matrix}\right]
-%     \end{matrix}
-%   \end{matrix}
-% \end{equation}
-% where ${\vec{x}_{i}=[{{x}_{A}}_{i}\T\ {{x}_{W}}_{i}\T]\T}$. ${x_A}_i$ and ${x_W}_i$ are the mean temperatures of the air and walls inside room~$i$. $\vec{u}_{i}$ is the input (the heating power)
-% for the corresponding room. The inputs are constraint by ${\sum_{i=1}^{4}\vec{u}_{i}(t)\preceq 4\mathrm{kW}}$.
-
-% \begin{table}[b]
-%   \centering
-%   \caption{Model Parameters}\label{tab:modelParamMeaning}
-%   \begin{tabular}[b]{cl}
-%     \toprule
-%     Symbol&Meaning\\
-%     \midrule
-%     $C^{\text{air}}_{i}$  &Heat Capacity of Inside Air\\
-%     $C^{\text{walls}}_{i}$ &Heat Capacity of External Walls\\
-%     $R^{\text{iw/ia}}_{i}$ &Resist. Between Inside Air and Inside Walls\\
-%     $R^{\text{ow/oa}}_{i}$ &Resist. Between Outside Air and Outside Walls\\
-%     $R^{\text{oa/ia}}_{i}$ &Resist. Between Inside and Out.\ Air (from windows)\\
-%     \bottomrule
-%   \end{tabular}
-% \end{table}
-
-% \begin{table}[b]
-%   \centering
-%   \caption{
-%     Parameters for each agent}\label{tab:modelParam}
-%   \begin{tabular}[t]{cccccc} \toprule
-%     Symbol& I & II & III & IV &Unit\\
-%     \midrule
-%     $C^{\text{walls}}$   &$5.4$&$4.9$&$4.7$&$4.7$ &$10^{4}\mathrm{J/K}$ \\
-%     $C^{\text{air}}$     &$7.5$ &$8.4 $&$8.2$ &$7.7$&$10^{4}\mathrm{J/K}$  \\
-%     $R^{\text{oa/ia}}$   &$5.2$&$4.6$&$4.9$&$5.4$&$10^{-3}\mathrm{K/W}$ \\
-%     $R^{\text{iw/ia}}$   &$2.3$&$2.4$&$2.3$&$2.9$&$10^{-4}\mathrm{K/W}$\\
-%     $R^{\text{ow/oa}}$   &$1.5$&$0.6$&$0.7$&$0.7$& $10^{-4}\mathrm{K/W}$ \\
-%     \bottomrule
-%   \end{tabular}
-% \end{table}
+\begin{description}
+  \item[Negotiation Stability] Show example and how cheating can destabilize negotiation
+        \begin{enumerate}
+          \item Analysis of eigenvalues of negotiation
+        \end{enumerate}
+  \item[Example of how attacker can drive negotiation to other points]
+\end{description}
 
 \end{document}
