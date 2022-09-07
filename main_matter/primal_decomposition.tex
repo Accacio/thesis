@@ -210,7 +210,7 @@ We can illustrate the communication structure using Fig.~\ref{fig:dmpc_communica
 \end{remark}
 
 \section{Example and Interpretations}\label{sec:example-interpr}
-As a simple numerical example to illustrate the functioning of the algorithm we take two \mbox{$1$-dimensional} \siso{} systems coupled by the inputs ($M=2$,$n_{x}=1$,$n_{c}=1$).
+As a simple numerical example to illustrate the functioning of the algorithm we take $M=3$ \mbox{$1$-dimensional} \siso{} ($n_{x}=1$,$n_{c}=1$) systems coupled by the inputs.
 The systems have no physical meaning but due to their small scale it is easier to visualize.
 
 The systems are described by the following \ltidt{} dynamics
@@ -229,7 +229,20 @@ constraint by an equality constraint
 with
 $\vec{u}_{\max}=4$
 .
-We use a \dmpc{} with horizon ${\predhorz=2}$ and references and gains that results in the problems
+
+We use a \dmpc{} with horizon ${\predhorz=2}$,
+initial conditions
+${x_{1}[0]=3}$,
+${x_{2}[0]=2}$, and
+${x_{3}[0]=1}$
+and state references
+${w_{1}[0]=1.07x_{1}[0]},$
+${w_{2}[0]=1.10x_{2}[0]}$, and
+${w_{3}[0]=1.05x_{3}[0]}$
+and gains
+$Q_{i}=10I_{2}$ and
+$R_{i}=   I_{2}$
+that results in the problems
 \begin{equation}
   \begin{matrix}
     \underset{\vec{U}_{i}[k]}{\mathrm{minimize}}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
@@ -240,15 +253,15 @@ We use a \dmpc{} with horizon ${\predhorz=2}$ and references and gains that resu
 with
 \begin{equation}
   \label{eq:1}
-  \begin{array}{ccc}
-H_1=\left(\begin{array}{cc} 1.9446 & 0.4608\\ 0.4608 & 1.5760 \end{array}\right) & \vec{f}_1[k]=\left(\begin{array}{c} -5.5182\\ -3.6313 \end{array}\right) & \bar{\Gamma}_1=\left(\begin{array}{cc} 1 & 0\\ 0 & 1 \end{array}\right)\\
-H_2=\left(\begin{array}{cc} 2.2240 & 0.5400\\ 0.5400 & 1.9000 \end{array}\right) & \vec{f}_2[k]=\left(\begin{array}{c} -5.7717\\ -4.4875 \end{array}\right) & \bar{\Gamma}_2=\left(\begin{array}{cc} 1 & 0\\ 0 & 1 \end{array}\right)\\
-H_3=\left(\begin{array}{cc} 1.6682 & 0.2304\\ 0.2304 & 1.5760 \end{array}\right) & \vec{f}_3[k]=\left(\begin{array}{c} -2.7687\\ -2.2582 \end{array}\right) & \bar{\Gamma}_3=\left(\begin{array}{cc} 1 & 0\\ 0 & 1 \end{array}\right)\\
+  \begin{array}{lll}
+H_1=\left(\begin{array}{cc} \frac{6077}{3125} & \frac{288}{625}\\ \frac{288}{625} & \frac{197}{125} \end{array}\right), & \vec{f}_1[k]=\left(\begin{array}{c} \frac{1968}{625}\\ \frac{192}{125} \end{array}\right)x_i[k]-\left(\begin{array}{cc} \frac{12}{5} & \frac{48}{25}\\ 0 & \frac{12}{5} \end{array}\right)\vec{W}_i[k], & \bar{\Gamma}_1=I_2,\\
+H_2=\left(\begin{array}{cc} \frac{278}{125} & \frac{27}{50}\\ \frac{27}{50} & \frac{19}{10} \end{array}\right), & \vec{f}_2[k]=\left(\begin{array}{c} \frac{306}{125}\\ \frac{27}{25} \end{array}\right)x_i[k]-\left(\begin{array}{cc} 3 & \frac{9}{5}\\ 0 & 3 \end{array}\right)\vec{W}_i[k], & \bar{\Gamma}_2=I_2,\\
+H_3=\left(\begin{array}{cc} \frac{5213}{3125} & \frac{144}{625}\\ \frac{144}{625} & \frac{197}{125} \end{array}\right), & \vec{f}_3[k]=\left(\begin{array}{c} \frac{696}{625}\\ \frac{48}{125} \end{array}\right)x_i[k]-\left(\begin{array}{cc} \frac{12}{5} & \frac{24}{25}\\ 0 & \frac{12}{5} \end{array}\right)\vec{W}_i[k], & \bar{\Gamma}_3=I_2.\\
   \end{array}
 \end{equation}
-The coordinator update function~\eqref{eq:projectedSubgradient_lambda} with ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k] = \vec{U}_{\max}}}$, $c=n_{u}\predhorz=2$.
+The coordinator update function is the same as~\eqref{eq:projectedSubgradient_lambda} but with ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k] = \vec{U}_{\max}}}$, where $c=n_{u}\predhorz=2$.
 
-From now on, we remove the $[k]$ indices for convenience, since all calculation is valid for the same step $k$ unless expressly stated otherwise.
+From now on, we remove the $[k]$ indices for convenience, since all calculation is for the same step $k$ unless expressly stated otherwise.
 
 This euclidean projection can be calculated explicitly yielding
 \begin{equation}
@@ -261,7 +274,8 @@ If the initial ${\vec{\theta}}^{(0)}$ belongs to $\set{S}$, we can rewrite for e
  \thetai\pplusone=\thetai\p+\rho\p\left(\lambdai\p-\frac{1}{M}\sum_{j=1}^{M}\vec{\lambda}_j\p\right),\forall i\in\set{M}
 \end{equation}
 
-Using~\eqref{eq:example_local_problem} and~\eqref{eq:example_projectedSubgradient_lambda} with initial conditions ${x_{1}[0]=3}$ and ${x_{2}[0]=2}$, and state references ${w_{1}[0]=1.3x_{1}[0]}$ and ${w_{2}[0]=1.5x_{2}[0]}$, we can program Algorithm~\ref{alg:primal_decomposition_based_dmpc}.
+Using~\eqref{eq:example_local_problem} and~\eqref{eq:example_projectedSubgradient_lambda}
+we can program Algorithm~\ref{alg:primal_decomposition_based_dmpc} and simulate the system for $10$ time steps (${k\in\{0\mathbin{:}9\}}$).
 The dynamics of variables $\vec{\theta}_{i}[0]$ and $\vec{\lambda}_{i}[0]$ during the iterative process can be seen in Figs.~\ref{fig:example_theta} and~\ref{fig:example_lambda}.
 
 \begin{figure}[h]
@@ -275,9 +289,17 @@ The dynamics of variables $\vec{\theta}_{i}[0]$ and $\vec{\lambda}_{i}[0]$ durin
   \includegraphics[width=.5\textwidth]{../img/example_lambda.png}
   \caption{Evolution of $\lambdai$ during iterative process. \todo{remake figure}}\label{fig:example_lambda}
 \end{figure}
-In Figs.~\ref{fig:example_theta} and~\ref{fig:example_lambda} the sub-systems were color coded in nuances of \todo{blue} for agent $1$ and nuances of \todo{green} for agent $2$.
-Observe in Fig.~\ref{fig:example_theta} that the agent with the bigger values of $\thetai$ has a corresponding $\lambdai$ smaller than the other agent.
-In next iterations the bigger $\thetai$ decrease and the smaller ones increase, until they stabilize.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.5\textwidth]{../img/example_state.png}
+  \caption{Evolution of state $x_{i}[k]$ and reference $w_{i}[k]$ during control ${k\in\{0\mathbin{:}9\}}$. \todo{remake figure}}\label{fig:example_state}
+\end{figure}
+We can see in Fig.~\ref{fig:example_state} the evolution of states $x_{i}[k]$ during the simulation.
+As we can perceive, the system cannot achieved the references due to the global coupling constraint, so all agents find a compromise and get as close to the reference as possible.
+
+In Figs.~\ref{fig:example_theta} and~\ref{fig:example_lambda} the sub-systems were color-coded in nuances of \todo{blue} for agent $1$, \todo{green} for agent $2$, \todo{orange} for agent $3$.
+Observe in Fig.~\ref{fig:example_theta} that the agent which has bigger values of $\lambdai$ has a corresponding $\thetai$ which increases with the iterations, and vice versa.
 
 For $\lambdai$ we see it stabilizes when values for corresponding elements of the vector meet.
 It is true due to the global equality constraint, whose simple projection onto the intersection of hyperplanes result in~\eqref{eq:example_projectedSubgradient_lambda}.
@@ -295,14 +317,45 @@ In our case, agents may have different needs, represented by the dynamics of the
 So, the coordinator works as a mediator, positioning the cake cutter, showing where it would cut the cake (sending $\thetai$ during the iterative process), listening if the agents would be satisfied with the partition (receiveing $\lambdai$) and adjusting the cake cutter until a consensus is reached.
 Due to this interpretation we call the iterative process as a \textbf{negotiation phase}.
 
-% \begin{remark}
-%   Observe that in this decomposition \textbf{``Liar'' agent attacks} as in \cite{VelardeEtAl2017b} cannot happen, since the input constraint is given by the coordinator.
-% \end{remark}
 
-% \begin{description}
-%   \item[Show examples of Attacks]
-%   \item[False data injection/communication corruption] \todo{show that since coordinator is oblivious to what happen inside each agent what matters is what it receives, no need to specify exactly the responsible part which generated attack}
-% \end{description}
+
+\section[Anomalous behaviors and their consequences]{Anomalous behaviors and their consequences}\label{sec:vulnerabilities_PD}
+
+Since the negotiation~\eqref{eq:projectedSubgradient_lambda} on the primal decomposition depends on $\thetaik$ and $\lambdaik$, the main source of vulnerabilities is the communication between local agents and coordinator.
+
+For the equality case shown, it is clear to see that fluctuations in $\thetaik$ alter the results of local problems~\eqref{eq:example_local_problem}.
+Analogously, fluctuations in $\lambdaik$ alter the negotiation.
+An ill-intentioned local agent can exploit this fact to drive the negotiation by means of a \fdi{} attack.
+However, the system could be implemented in such way that the final allocations agreed upon are distributed physically (valves and switches for instance).
+
+This way \textbf{``Liar'' agent attacks} as in~\cite{VelardeEtAl2017b} are discouraged, since the attacker can not consume more than allocated (which would be beneficial for the attacker).
+On the other hand, an attack in which an agent is forced to use less than the allocated would still be possible, but no agent would benefit, since their allocation would not increase (allocations are fixed at the end of negotiation).
+We will call this attack as a \textbf{Hijack agent} attack.
+Moreover, during the following negotiations, the attacked agent would need more and more resources, increasing as consequence their dissatisfaction $\lambdaik$ forcing other agents to share more resources to the attacked agent.
+
+We give an example where agent $2$ does not use the resource allocated (agent does not apply $u_{2}^{\star}[0|k]$).
+In Figs.~\ref{fig:example_liar_lambda1},~\ref{fig:example_liar_lambda5} and~\ref{fig:example_liar_lambda10} we can compare the values of $\vec{\lambda}_{2}$ for different time steps $k=0$, $k=4$ and $k=9$.
+As we see, the values of $\vec{\lambda}_{2}$ increase as the time step $k$, driving as consequence all other values of $\lambdai$ and $\thetai$.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.5\textwidth]{../img/example_liar_lambda1.png}
+  \caption{Evolution of $\lambdai$ during iterative process for $k=1$ when agent $2$ is hijacked. \todo{remake figure}}\label{fig:example_liar_lambda1}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.5\textwidth]{../img/example_liar_lambda5.png}
+  \caption{Evolution of $\lambdai$ during iterative process for $k=5$ when agent $2$ is hijacked. \todo{remake figure}}\label{fig:example_liar_lambda5}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.5\textwidth]{../img/example_liar_lambda10.png}
+  \caption{Evolution of $\lambdai$ during iterative process for $k=9$ when agent $2$ is hijacked. \todo{remake figure}}\label{fig:example_liar_lambda10}
+\end{figure}
+
+As illustrated, the change in $\lambda_{i}$ may cause in a modification in the consensus found for the $\lambdai$.
+And since $\lambdai$ are a sub-gradient of the local problems~\eqref{eq:DOP_local} they carry information about the local problem, i.e.\ it has somehow embedded in itself information about the tuple $(H_{i},\vec{f}_{i}[k],\bar{\Gamma}_{i},\thetaik)$ which we will call the complete local information $\set{I}_{i}$.
 % but they will always reflect on the channel.
 % \begin{description}
 %   \item[Negotiation Stability] Show example and how cheating can destabilize negotiation
@@ -361,7 +414,6 @@ Due to this interpretation we call the iterative process as a \textbf{negotiatio
 %   \caption{Recovering options.}
 %   \label{fig:figures}
 % \end{figure}
-
 
 % Model 3R-2C \cite{GoudaEtAl2002}
 % \begin{figure}[h]

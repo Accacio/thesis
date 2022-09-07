@@ -18,7 +18,7 @@ Te=.25; %= Sampling
 Np=2;   %= Prediction horizon
 a=10;  %= for rho=1/(a+b*negot)
 b=1;  %= for rho=1/(a+b*negot)
-simK = 10;    %= Simulation horizon
+simK = 20;    %= Simulation horizon
 negotP = 200; %= max # of iteration for each negotiation
 err_theta=1e-4; %= err to test theta convergence in each negotiation
 rand('seed',2);
@@ -242,7 +242,9 @@ for k=1:simK
     for i=1:M
         u_applied=u(1:ni,i);
         u(1:ni,i)=u_applied;
-        % u_applied=0;
+        if i==2
+            u_applied=0;
+        end
         sys=dsys(:,:,1,i);
         xt(:,k+1,i)=sys.A*xt(:,k,i)+sys.B*u_applied;
     end
@@ -250,7 +252,7 @@ for k=1:simK
 end
 toc
 dataPath='../data/';
-save(getFileName(dataPath,'example_dmpc2','.mat',chSetpoint,selfish,secure),'-mat')
+save(getFileName(dataPath,'example_dmpc_liar','.mat'),'-mat')
 end
 end
 end
@@ -293,10 +295,3 @@ plot(1:simK,kron(ones(1,simK),Wt(2)),'--')
 plot(1:simK,xt(:,1:simK,3))
 plot(1:simK,kron(ones(1,simK),Wt(3)),'--')
 hold off
-
-sympref('FloatingPointOutput',false);
-disp(['$a_1=' latex(sym(A(:,1))) '$, $a_2=' latex(sym(A(:,2))) '$, $a_3=' latex(sym(A(:,3))) '$, $b_1=' latex(sym(B(:,1))) '$, $b_2=' latex(sym(B(:,2))) '$, $b_3=' latex(sym(B(:,3))) '$,' ])
-% sympref('FloatingPointOutput',true);
-disp(['H_1=' latex(sym(H(:,:,1))) ', & \vec{f}_1[k]=' latex(sym(Cmat(:,:,1)'*Qbar(:,:,1)*Mmat(:,:,1))) 'x_i[k]-' latex(sym(Cmat(:,:,1)'*Qbar(:,:,1))) '\vec{W}_i[k], & \bar{\Gamma}_1=I_2,\\'])
-disp(['H_2=' latex(sym(H(:,:,2))) ', & \vec{f}_2[k]=' latex(sym(Cmat(:,:,2)'*Qbar(:,:,2)*Mmat(:,:,2))) 'x_i[k]-' latex(sym(Cmat(:,:,2)'*Qbar(:,:,2))) '\vec{W}_i[k], & \bar{\Gamma}_2=I_2,\\'])
-disp(['H_3=' latex(sym(H(:,:,3))) ', & \vec{f}_3[k]=' latex(sym(Cmat(:,:,3)'*Qbar(:,:,3)*Mmat(:,:,3))) 'x_i[k]-' latex(sym(Cmat(:,:,3)'*Qbar(:,:,3))) '\vec{W}_i[k], & \bar{\Gamma}_3=I_2.\\'])
