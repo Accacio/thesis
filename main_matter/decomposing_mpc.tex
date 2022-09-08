@@ -6,18 +6,17 @@
 \epigraph{\centering The mystery of the universe \\ is not time \\but size.}
 {\textit{The Gunslinger}\\\textsc{Stephen King}}
 
-
-In this chapter we present the Model Predictive Control strategy and some considerations needed to decompose it.
+This chapter presents the Model Predictive Control strategy and some considerations needed to decompose it.
 
 \minitoc
 
 \section{Model Predictive Control}
 Model Predictive Control, or even \mpc, is a closed-loop control strategy based
 on the solution of optimization problems.
-Given a system model and an objective function, this strategy uses the system model to predict future states and compute a control sequence that optimizes the given objective function.
-Since the solution is found by using optimization problems, it is natural to add some restrictions on the system, which are usually defined as (in)equality constraints.
+Once given a system model and an objective function, this strategy uses the system model to predict future states and compute a control sequence that optimizes the given objective function.
+Since the solution is found through optimization problems, it is natural to add some restrictions on the system, usually defined as (in)equality constraints.
 
-The fact that constraints can be easily added to the specifications gave it a special place in the industry, where is largely used in a plethora of applications (energy management~\cite{AnandutaEtAl2018}, water distribution~\cite{ZhangEtAl2021}, control of quadrotors~\cite{BanguraMahony2014} etc.).
+The fact that we may effortlessly add constraints to the specifications gave it a special place in the industry, where it is used in a plethora of applications (energy management~\cite{AnandutaEtAl2018}, water distribution~\cite{ZhangEtAl2021}, control of quadrotors~\cite{BanguraMahony2014} and others).
 
 \subsection{General discrete \mpc\ }
 As it is generally implemented through a digital computer and the transmission of continuous signals can potentially demand infinite bandwidth~\cite{HeEtAl2022}, it is natural to assume the system to be modeled with \dt{} dynamics
@@ -30,7 +29,8 @@ The system can be under constraints
 \begin{equation}
  h(\vec{x}[k],\vec{u}[k])\preceq\0,
 \end{equation}
-with ${h:\R^{n_{x}}\times\R^{n_{u}}\to\R^{n_{c}}}$. Observe that mathematically equality constraints can be represented by a couple of inequality constraints, although for implementation in computers it can lead to poor numerical conditioning, resulting unexpected behavior~\cite{BorrelliEtAl2017}.
+with ${h:\R^{n_{x}}\times\R^{n_{u}}\to\R^{n_{c}}}$.
+Observe that mathematically equality constraints can be represented by a couple of inequality constraints, although for computer implementation, it can lead to poor numerical conditioning, resulting in unexpected behavior~\cite{BorrelliEtAl2017}.
 
 Given an objective function ${J:\R^{n_{x}}\times\R^{\predhorz\cdot n_{u}}\to \R}$, we can optimize this objective for a given horizon $\set{H}=\{1\mathbin{:}\predhorz\}$ to obtain a control sequence ${\vec{U}^{\star}[k]=[\vec{u}^{\star}[0|k];\dots; \vec{u}^{\star}[\predhorz-1|k]]}$. To calculate $\vec{U}^{\star}[k]$,
 we use states and input predictions of time $k+i$ calculated in a time $k$, represented by $\vec{x}[i|k]$ and $\vec{u}[i|k]$. The problem solved to calculate the control sequence is
@@ -56,22 +56,28 @@ we use states and input predictions of time $k+i$ calculated in a time $k$, repr
 After solving this problem, we have an optimal control sequence $\vec{U}^{\star}[k]$ and only the first element $\vec{u}^{\star}[0|k]$ is applied in the system.
 The process is repeated for ${k+1}$ following a \rhs.
 
-This formulation is as general as possible, but depending on the problem's convexity it can be hard to solve it, specially online.
-Convex problems are the most widely studied, and strategies to solve them are extensively diffused. Some of those problems even have explicit solutions~\cite{BoydVandenberghe2004}.
+This formulation is as general as possible.
+However, depending on the problem's convexity, it can be hard to solve, especially online.
+Convex problems are the most widely studied, and strategies to solve them are extensively diffused.
+Some of those problems even have explicit solutions~\cite{BoydVandenberghe2004}.
 
 \subsection{Convex \mpc\ (quadratic case) }\label{sec:qp_mpc}
 The \mpc\ community favors the use of convex problems when possible. Two families of convex problems broadly used are \qp\ and \lp.
-In this work we concentrate on \qp\ problems, whose objective functions are quadratic and constraints are affine or linear. Numerous mathematical solvers are apt to solve this kind of problem directly or through equivalent problems. We can cite non-extensivily some solvers such as MATLAB internal QP solvers\footnote{\url{https://fr.mathworks.com/help/optim/ug/quadprog.html}}, OSQP\footnote{\url{https://osqp.org}}, MOSEK\footnote{\url{https://www.mosek.com}} and ECOS\footnote{\url{https://github.com/embotech/ecos}}.
+In this work, we concentrate on \qp\ problems, which have quadratic objective functions and affine or linear constraints.
+Numerous mathematical solvers are apt to solve this kind of problem directly or through equivalent problems.
+We can cite non-extensively some solvers such as MATLAB internal QP solvers\footnote{\url{https://fr.mathworks.com/help/optim/ug/quadprog.html}}, OSQP\footnote{\url{https://osqp.org}}, MOSEK\footnote{\url{https://www.mosek.com}} and ECOS\footnote{\url{https://github.com/embotech/ecos}}.
 
 A commonly quadratic objective function used is
 \begin{equation}
   \label{eq:quadratic_objective_with_sum}
   J(\vec{x}[0|k],\vec{U}[k])=\sum_{i\in\set{H}}\left[\norm{\mpcvec{v}[ ][i][k]}^{2}_{Q} +\norm{\mpcvec{u}[ ][i-1][k]}^{2}_{R}\right]
 \end{equation}
-where $\vec{v}$ is a control objective, and ${ Q\in\semidefpos }$ and ${ R\in\defpos }$ are weighting matrices, which can represent costs of each term of the equation. The relation between these matrices describe the compromise between control signal energy and control objective.
+where $\vec{v}$ is a control objective, and ${ Q\in\semidefpos }$ and ${ R\in\defpos }$ are weighting matrices, which can represent the costs of each term of the equation.
+The ratio between these matrices describes the compromise between control signal energy and control objective.
 
 The control objectives can be for example, \emph{disturbance rejection}, where ${ \vec{v}[k]=\vec{x}[k] }$, or \emph{reference tracking}, where ${ \vec{v}[k]=\vec{w}[k]-\vec{x}[k] }$, being $\vec{w}[k]$ a setpoint.
-Observe that this last example is for state reference tracking, for output reference tracking the system output $\vec{y}[k]$ should be used instead of $\vec{x}[k]$, depending on the system an adequate relation between $\vec{y}[k]$ and $\vec{x}[k]$ can be found.
+Observe that this last example is for state reference tracking.
+For output reference tracking, the system output $\vec{y}[k]$ should be used instead of $\vec{x}[k]$, depending on the system an adequate relation between $\vec{y}[k]$ and $\vec{x}[k]$ can be found.
 
 The predictions of $\vec{v}[k]$ and $\vec{w}[k]$ can be stacked as ${ \vec{V}[k]=[\vec{v}[1|k];\dots;\vec{v}[\predhorz|k]] }$ and
 ${ \vec{W}[k]=[\vec{w}[1|k];\dots;\vec{w}[\predhorz|k]] }$ and then~\eqref{eq:quadratic_objective_with_sum} can be rewritten as
@@ -82,7 +88,7 @@ ${ \vec{W}[k]=[\vec{w}[1|k];\dots;\vec{w}[\predhorz|k]] }$ and then~\eqref{eq:qu
 where $\bar{Q}=\kron{I_{\predhorz}}{Q}$ and
 $\bar{R}=\kron{I_{\predhorz}}{R}$.
 
-For the constraints in~\eqref{eq:general_mpc} to be affine or linear, first we suppose the system is linear and we use a \lti{} model
+For the constraints in~\eqref{eq:general_mpc} to be affine or linear, first we suppose the system is linear, and we use a \lti{} model
 \begin{equation}\label{eq:large_scale_system_model}
   \begin{array}{rl}
     \vec{x}[k+1]&=A\vec{x}[k]+B\vec{u}[k]\\
@@ -90,11 +96,11 @@ For the constraints in~\eqref{eq:general_mpc} to be affine or linear, first we s
   \end{array}
 .
 \end{equation}
-In this work we concentrate in \textbf{input constraint systems} whose constraints do no depend on the system state, so we drop the $\vec{x}[k]$ terms in $h$, and since it is affine or linear we rewrite it as
+In this work, we concentrate in \textbf{input constraint systems} whose constraints do not depend on the system state, so we drop the $\vec{x}[k]$ terms in $h$, and since it is affine or linear, we rewrite it as
 \begin{equation}
   \Gamma\vec{u}[k]\preceq\vec{u}_{\max}
 \end{equation}
-which can be vectorized for an horizon in $\mathcal{H}$
+which can be vectorized for a horizon in $\mathcal{H}$
 \begin{equation}
 \bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}},
 \end{equation}
@@ -102,7 +108,7 @@ with ${ \bar{\Gamma}=\kron{I_{\predhorz}}{\Gamma} }$ and ${ \vec{U}_{\max}=\kron
 
 For the control objectives, henceforth we only consider \emph{reference tracking}, since \emph{disturbance rejection} can be described as a \emph{reference tracking} when ${ C=I_{n_{x}} }$ and ${ \vec{w}[k]=\0_{n_{x}} }$.
 
-Putting it all together we have
+Putting it all together, we have
 \begin{equation}
   \small
   \begin{aligned}
@@ -157,9 +163,9 @@ If we opt for a Batch Approach~\cite[Chapter 8.2]{BorrelliEtAl2017} to solve the
       }_{\textstyle \mathcal{Y}^{u}}
       \vec{U}[k]
     \end{matrix}
-    \quad .
+    \quad
 \end{equation}
-and substitute them in the objective function, yielding the \qp\ problem which implicitly respects these constraints
+and substitute them in the objective function, yielding the \qp\ problem, which implicitly respects these constraints
 \begin{equation}
   \label{eq:quadratic_objective_compact_batch}
   \begin{aligned}
@@ -180,7 +186,7 @@ H&=&\norm{\mathcal{Y}^{u}}^{2}_{\bar{Q}}+\bar{R}\\
 c[k]&=&\norm{\mathcal{Y}^{x}\vec{x}[0|k]}^{2}_{\bar{Q}}-2{\vec{W}[k]}^{T}\bar{Q}{\mathcal{Y}^{x}}\vec{x}[0|k]+\norm{\vec{W}[k]}^{2}_{\bar{Q}}
 \end{array}.
 \end{equation}
-By dividing the objective function by $2$ and ignoring the constant term $c[k]$ we have a problem structured in the standard \qp\ form which can be easily used in the solvers supracited
+By dividing the objective function by $2$ and ignoring the constant term $c[k]$, we have a problem structured in the standard \qp\ form, which can easily be used in the supra-cited solvers
 \begin{equation}
   \label{eq:qp_standard_form}
   \begin{aligned}
@@ -197,22 +203,22 @@ By dividing the objective function by $2$ and ignoring the constant term $c[k]$ 
   Observe that even if the problem in \eqref{eq:qp_standard_form} is equivalent (same solution) to the one in~\eqref{eq:quadratic_objective_compact_batch}, they are not the same problem, so we still need to recalculate the function in~\eqref{eq:quadratic_objective_compact_batch} using the optimal $\vec{U}^{\star}[k]$ found to obtain the correct objective function value.
 \end{remark}
 
-Although the solution of such problems can be straightforward, since solvers are widely known and the problem is well structured, in this \textbf{monolithic} form these problems can be computationally intensive depending on the sizes of $n_{x}$, $n_{u}$ and $\predhorz$.
+Although the solution to such problems can be straightforward (solvers are widely known), and the problems are well structured, in this \textbf{monolithic} form, these problems can be computationally intensive depending on the sizes of $n_{x}$, $n_{u}$ and $\predhorz$.
 For large-scale systems such as \wdns~\cite{ZhangEtAl2021}, and \dhns~\cite{TaylorEtAl2021}\todo[correct plural]{}, the computation time and memory needed to solve their associated problems may increase drastically.
-Some decomposition methods can be used to make the solution of such problems more tractable.
+We can use some decomposition methods to make the solution to such problems more tractable.
 For instance, we can decompose the parts of different time-scales~\cite{ChenEtAl2011}, use game theory~\cite{MaestreEtAl2011} or even genetic algorithms paired with state observers~\cite{XieEtAl2016}.
-In this work we will focus on decomposition techniques based on optimization decomposition such as in~\cite{GiselssonEtAl2013}.
+In this work, we will focus on decomposition techniques based on optimization decomposition, such as in~\cite{GiselssonEtAl2013}.
 
 \section{Optimization Decomposition Frameworks}\label{sec:decomp-fram}
-In this section we briefly describe the optimization decomposition frameworks finding what they have in common so we can decompose the \mpc\ problem proposed.
-As seen in~\cite{BoydVandenberghe2004}, maximization problems can be rewritten as minimization problems so we use only minimization problems henceforth.
+In this section, we briefly describe the optimization decomposition frameworks finding what they have in common so we can decompose the \mpc\ problem proposed.
+As seen in~\cite{BoydVandenberghe2004}, maximization problems can be rewritten as minimization problems, so we use only minimization problems henceforth.
 \subsection{Decomposable problems}\label{sec:decomposable_problems}
 As shown in~\cite{ConejoEtAl2006} and~\cite{BoydEtAl2015}, a \textbf{decomposable optimization problem} has more than 1 decision variable and can be decomposed into at least 2 sub-problems.
-For simplicity, the examples given in this section divide problems into 2 sub-problems.
-If the sub-problems variables can also be partitioned, we can partition the original problem even further.
+For simplicity, the examples in this section divide problems into two sub-problems.
+If the sub-problems variables can be partitioned, we can partition the original problem further.
 
 % \begin{remark}
-The examples in this section are decomposed using the primal problem which is the most direct method, other methods exist and will be shortly commented during this work.
+The examples in this section are decomposed using the primal problem which is the most direct method, other methods exist and will be shortly commented on during this work.
 % \end{remark}
 
 Be the following problem a general decomposable problem, i.e., the decision variable $\vec{x}$ can be partitioned into two groups of variables $\vec{x}_{1}$ and $\vec{x}_{2}$:
@@ -229,7 +235,7 @@ Be the following problem a general decomposable problem, i.e., the decision vari
   \end{aligned}
 \end{equation}
 
-Such family of problems can be divided into two categories:
+Such a family of problems can be divided into two categories:
 \begin{enumerate}
   \item Uncoupled
   \item Coupled
@@ -286,16 +292,17 @@ Each problem in~\eqref{eq:general_uncoupled_optimization_problem_decomposed} can
 
 \subsection{Coupled problems}\label{sec:coupled_problems}
 On the other hand, coupled problems are more frequent in the real world.
-In this category, the sub-problems can not be entirely solved in parallel since the coupling implies an exchange of information between sup-problems (one sub-problem needs information of other sub-problem to solve itself).
+In this category, we cannot solve the sub-problems
+entirely in parallel since the coupling implies exchanging information between sub-problems (each sub-problem needs information from others to solve itself).
 The coupling nature of the problem can be traced to two main sources
 \begin{enumerate}
   \item Complicating variables
   \item Complicating constraints
 \end{enumerate}
-We called them \emph{complicating} because without them the solution would be trivial (uncoupled category shown in the last section)~\cite{ConejoEtAl2006}.
+We called them \emph{complicating} because, without them, the solution would be trivial (uncoupled category shown in the last section)~\cite{ConejoEtAl2006}.
 
 \subsubsection{Complicating variables}
-For this sub-category, we suppose the variables $\vec{x}_{1}$ and $\vec{x}_{2}$ are not disjoint, there is some variables in common.
+For this sub-category, we suppose the variables $\vec{x}_{1}$ and $\vec{x}_{2}$ are not disjoint, i.e., there are some shared variables.
 To force disjointedness, we redivided $\vec{x}$ into $3$ disjoint groups $\vec{x}_{a}$ (present only in sub-problem $1$), $\vec{x}_{b}$ (present only in sub-problem $2$), and $\vec{x}_{ab}$ (present in both sub-problems).
 We suppose $J(\vec{x})$ can be rewritten  as ${J(\vec{x})=J_{1}(\vec{x}_{a},\vec{x}_{ab})+J_{2}(\vec{x}_{b},\vec{x}_{ab})}$, and the constraints can be divided into groups that depend on $\vec{x}_{a}$ and $\vec{x}_{b}$, i.e. $\set{M}_{a}$ and $\set{M}_{b}$ for the inequality constraints and $\set{P}_{a}$ and $\set{P}_{b}$ for the equality ones:
 \begin{equation}\label{eq:general_complicating_variables_optimization_problem}
@@ -345,7 +352,7 @@ Observe that the solutions of~\eqref{eq:general_complicating_variables_optimizat
 
 \subsubsection{Complicating Constraints}
 
-For complicating constraints, as the name suggests, instead of variables we have constraints which prevent complete separation into sub-problems.
+For complicating constraints, as the name suggests, instead of variables, we have constraints that prevent complete separation into sub-problems.
 
 The variables $\vec{x}_{1}$ and $\vec{x}_{2}$ are disjoint, $J(\vec{x})$ can be rewritten as ${J(\vec{x})=J_{1}(\vec{x}_{1})+J_{2}(\vec{x}_{2})}$ and besides the constraints in sets $\set{M}_{1}$ $\set{M}_{2}$ and $\set{P}_{1}$ $\set{P}_{2}$ we also have equality and inequality constraints which couple $\vec{x}_{1}$ and $\vec{x}_{2}$, denoted ${h_{i}(\vec{x}_{1},\vec{x}_{2})=h_{i_{1}}(\vec{x}_{1})+h_{i_{2}}(\vec{x}_{2}) \leq 0\text{, }i\in\set{O}}$
 and ${w_{i}(\vec{x}_{1},\vec{x}_{2})=w_{i_{1}}(\vec{x}_{1})+w_{i_{2}}(\vec{x}_{2}) =0\text{, }i\in\set{N}}$:
@@ -397,10 +404,11 @@ where $J_{1}(\vec{x}_{1}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})$ and $J_{2}(
 
 Again, observe that the solutions of~\eqref{eq:general_complicating_constraints_optimization_problem_decomposed} depend on the values of $\vec{\theta}_{o}$ and $\vec{\theta}_{n}$, thus a coordination between sub-problems is needed to find their optimal values in order to solve problem~\eqref{eq:general_complicating_constraints_optimization_main_problem} and thus the original problem~\eqref{eq:general_complicating_constraints_optimization_problem}.
 
-% This is the base of the methodology used in this work to decompose the \mpc, we will re-discuss the method and present examples of implementation in a further section (\todo[add primal decomposition section number]{\S??}).
+% This is the base of the methodology used in this work to decompose the \mpc.
+% We will re-discuss the method and present examples of implementation in another section (\todo[add primal decomposition section number]{\S?}).
 \begin{remark}
-  As seen in~\cite{BoydEtAl2015}, a complicating constraint problem can be transformed into a complicating variable problem and vice versa by the use of auxiliary variables.
-  For instance, we can substitute a complicating variable by two new local variables (one for each sub-problem) and add equality constraints to each sub-problem to force them to be equal.
+  As seen in~\cite{BoydEtAl2015}, a complicating constraint problem can be transformed into a complicating variable problem and vice versa by using auxiliary variables.
+  For instance, we can substitute a complicating variable with two new local variables (one for each sub-problem) and add equality constraints to each sub-problem to force them to be equal.
   We will use henceforth only complicating constraints.
 \end{remark}
 
@@ -446,7 +454,8 @@ where $\text{objective}^{*}_{1}(\text{auxiliary variables})+\text{objective}^{*}
     \end{matrix}
 \end{equation}
 \end{subequations}
-and a coordination is needed to find optimal auxiliary variables. We can list the common properties:
+and coordination is needed to find optimal auxiliary variables.
+We can list the common properties:
 \begin{enumerate}
   \item A problem equivalent to the original~\eqref{eq:general_coupled_optimization_problem_decomposed_main_problem} (which is solved by)
   \item sub-problems~\eqref{eq:general_coupled_optimization_problem_decomposed} (whose solutions depend on auxiliary variables and need some)
@@ -458,7 +467,7 @@ The equivalent problem we call \emph{main problem}, while the sub-problems we ca
 The coordination is usually an iterative method chosen to solve the \emph{main problem}.
 At an iteration, the coordination uses some information from the solution of the sub-problems (given a value of \emph{interface variables} as input) in order to update the \emph{interface variables} to be used in the next step.
 
-If we structure the coordination as an algorithm we have \autoref{alg:decomposition_coordination}.
+If we structure the coordination as an algorithm, we have \autoref{alg:decomposition_coordination}.
 
 \begin{algorithm2e}[H]
   \DontPrintSemicolon%
@@ -472,7 +481,7 @@ If we structure the coordination as an algorithm we have \autoref{alg:decomposit
 
 \subsection{Decomposition techniques}
 
-If we analyze \autoref{alg:decomposition_coordination}, to have a decomposition method we need
+If we analyze \autoref{alg:decomposition_coordination}, to have a decomposition method, we need
 \begin{itemize}
   \item \emph{Local problems}
   \item \emph{interface variables}
@@ -482,18 +491,18 @@ If we analyze \autoref{alg:decomposition_coordination}, to have a decomposition
 The \emph{local problems} are obtained through equivalent problems.
 For instance, we can use the original (primal) problem itself~\cite{PaulenEtAl2016, CamisaEtAl2022} (examples shown in this section), the dual problem~\cite{MorosanEtAl2011, BourdaisEtAl2012,VelardeEtAl2018},  use some operator such as the proximal operator~\cite{Iiduka2019,OconnorVandenberghe2014}, or other strategies.
 
-The \emph{interface variables} depend on the equivalent problem chosen. For instance for the primal problem, usually the dual variables are used~\cite{Cohen1978}; for the dual problem, the constraint residuals~\cite{BoydEtAl2015}; and for \ADMM, primal variables and other multipliers (name is given by the alternating update of such multipliers)~\cite{BoydEtAl2011}.
+The \emph{interface variables} depend on the equivalent problem chosen. For instance, for the primal problem, usually, the dual variables are used~\cite{Cohen1978}; for the dual problem, the constraint residuals~\cite{BoydEtAl2015}; and for \ADMM, primal variables and other multipliers (the alternating update of such multipliers gives its name)~\cite{BoydEtAl2011}.
 
-The update method is based on one optimization algorithm such as bisection, cutting-plane, or methods which use the (sub)gradient or their approximates. The last class is the most used and some examples can be the Arrow-Hurwicz-Uzawa iteration~\cite{BourdaisEtAl2012}, projected sub-gradient~\cite{BiegelEtAl2012}, and gradient ascent~\cite{BoydEtAl2011}.
+The update method is based on one optimization algorithm, such as bisection, cutting-plane, or methods that use the (sub)gradient or its approximates. The last class is the most used, and some examples can be the Arrow-Hurwicz-Uzawa iteration~\cite{BourdaisEtAl2012}, projected sub-gradient~\cite{BiegelEtAl2012}, and gradient ascent~\cite{BoydEtAl2011}.
 The exact form will depend on the topology used to solve the \emph{main problem} (to be yet discussed).
 
-In this work we will concentrate on a decomposition based on the primal problem, and the projected sub-gradient.
+This work will concentrate on a decomposition based on the primal problem and the projected sub-gradient.
 This decomposition will be explained in a future section (\S\ref{sec:primal_decomposition}).
-For other examples of decomposition the reader is referred to~\cite{MaestreEtAl2014} or~\cite{ConejoEtAl2006} and other articles cited throughout this work.
+For other examples of decomposition, the reader is referred to~\cite{MaestreEtAl2014} or~\cite{ConejoEtAl2006} and other articles cited throughout this work.
 
-Now, after having a decomposition method chosen, we need to know the topology of the problem. This topology can be chosen or imposed by some constraints (geographic or technological, for example). A brief discussion about different topologies follow.
+Now, after choosing a decomposition method, we need to know the topology of the problem.
+This topology can be chosen or imposed by some constraints (geographic or technological, for example). A brief discussion about different topologies follows.
 
 % \chapterEndOrnament
-
 
 \end{document}
