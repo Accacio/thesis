@@ -1,6 +1,6 @@
 %= Clean variables
 close all
-clear
+% clear
 
 paren = @(x, varargin) x(varargin{:}); %
                                        % apply index in created elements
@@ -17,9 +17,9 @@ warning off
 Te=.25; %= Sampling
 Np=2;   %= Prediction horizon
 a=10;  %= for rho=1/(a+b*negot)
-b=1;  %= for rho=1/(a+b*negot)
-simK = 5;    %= Simulation horizon
-negotP = 200; %= max # of iteration for each negotiation
+b=0.1;  %= for rho=1/(a+b*negot)
+simK = 10;    %= Simulation horizon
+negotP = 100; %= max # of iteration for each negotiation
 err_theta=1e-4; %= err to test theta convergence in each negotiation
 rand('seed',2);
 
@@ -123,8 +123,8 @@ umin(1:M)=u_min;
 umax(1:M)=u_max;
 
 
-%= cheating coefficients
-tau=[0:.2:0.9 1:10:100];
+%= cheating coefficients selfish tau
+tau=[0:.4:0.9 1 5 10 15 20 25 30 40];
 % tau=[100:20:200];
 
 %= Time selfish behavior activated
@@ -227,7 +227,7 @@ for k=1:simK
         for i=1:M
             theta_converged=theta_converged && (norm(theta(:,p+1,k,i)-theta(:,p,k,i),'fro')<=err_theta);
         end
-        lastp(k)=p;
+        lastp(k,cur_tau)=p;
         if (theta_converged)
             % disp('theta converged');
             break;
@@ -245,6 +245,7 @@ for k=1:simK
     uHist(:,k,:) = u(1:ni,:);
 end
 toc
+disp(tau(cur_tau))
 dataPath='../data/';
 %= save data
 save(getFileName(dataPath,'example_dmpc_vary_tau','.mat'),'-mat')
@@ -263,16 +264,19 @@ end
 %     legend('\theta_{1_1}','\lambda_{1_2}','\lambda_{2_1}','\lambda_{2_2}','\lambda_{3_1}','\lambda_{3_2}')
 %     title(['\theta_i k=' num2str(i)])
 
-%     figure()
-%     plot(1:lastp(i),lambdaHist(:,1:lastp(i),i,1),'g')
-%     hold on
-%     plot(1:lastp(i),lambdaHist(:,1:lastp(i),i,2),'b')
-%     plot(1:lastp(i),lambdaHist(:,1:lastp(i),i,3),'r')
-%     % plot(1:lastp(1),kron(ones(1,lastp(1)),(lambdaHist(:,1,1,1)+lambdaHist(:,1,1,2))/2),'--r')
-%     plot(1:lastp(i),mean(lambdaHist(:,1:lastp(i),i,:),4),'--k')
-%     hold off
-%     legend('\lambda_{1_1}','\lambda_{1_2}','\lambda_{2_1}','\lambda_{2_2}','\lambda_{3_1}','\lambda_{3_2}')
-%     title(['\lambda_i k=' num2str(i)])
+
+    i=5
+    cur_tau=7
+    figure()
+    hold on
+    plot(1:lastp(i,cur_tau),lambdaHist(:,1:lastp(i),i,1,cur_tau),'g')
+    plot(1:lastp(i,cur_tau),lambdaHist(:,1:lastp(i),i,2,cur_tau),'b')
+    plot(1:lastp(i,cur_tau),lambdaHist(:,1:lastp(i),i,3,cur_tau),'r')
+    % plot(1:lastp(1),kron(ones(1,lastp(1)),(lambdaHist(:,1,1,1)+lambdaHist(:,1,1,2))/2),'--r')
+    plot(1:lastp(i,cur_tau),mean(lambdaHist(:,1:lastp(i,cur_tau),i,:,cur_tau),4),'--k')
+    hold off
+    legend('\lambda_{1_1}','\lambda_{1_2}','\lambda_{2_1}','\lambda_{2_2}','\lambda_{3_1}','\lambda_{3_2}')
+    title(['\lambda_i k=' num2str(i)])
 % end
 
 % figure()
