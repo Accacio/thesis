@@ -323,13 +323,13 @@ Due to this interpretation we call the iterative process as a \textbf{negotiatio
 
 Since the negotiation~\eqref{eq:projectedSubgradient_lambda} on the primal decomposition depends on $\thetaik$ and $\lambdaik$, the main source of vulnerabilities is the communication between local agents and coordinator.
 
-For the equality case shown, it is clear to see that fluctuations in $\thetaik$ alter the results of local problems~\eqref{eq:example_local_problem}.
-Analogously, fluctuations in $\lambdaik$ alter the negotiation.
-An ill-intentioned local agent can exploit this fact to drive the negotiation by means of a \fdi{} attack.
+For the equality case shown, it is clear to see that fluctuations in $\thetaik$ alter the results of local problems~\eqref{eq:example_local_problem}, and analogously, fluctuations in $\lambdaik$ alter the negotiation.
+The same is true for the inequality case but not as straightforwad as inspecting equation~\eqref{eq:example_projectedSubgradient_lambda}.
+An ill-intentioned local agent can exploit those facts to drive the negotiation by means of a \fdi{} attack.
 However, the system could be implemented in such way that the final allocations agreed upon are distributed physically (valves and switches for instance).
 
-This way \textbf{``Liar'' agent attacks} as in~\cite{VelardeEtAl2017b} are discouraged, since the attacker can not consume more than allocated (which would be beneficial for the attacker).
-On the other hand, an attack in which an agent is forced to use less than the allocated would still be possible, but no agent would benefit, since their allocation would not increase (allocations are fixed at the end of negotiation).
+With the physical distribution of allocation, \textbf{``Liar'' agent attacks} as in~\cite{VelardeEtAl2017b} are discouraged, since the attacker can not consume more than allocated (which would be beneficial for the attacker).
+On the other hand, an attack in which an agent is forced to use less than the allocated would still be possible, but no agent would benefit, given that their allocation would not increase (allocations are fixed at the end of negotiation).
 We will call this attack as a \textbf{Hijack agent} attack.
 Moreover, during the following negotiations, the attacked agent would need more and more resources, increasing as consequence their dissatisfaction $\lambdaik$ forcing other agents to share more resources to the attacked agent.
 
