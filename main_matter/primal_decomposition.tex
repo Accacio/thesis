@@ -369,17 +369,17 @@ So, every attack shown in~\cite{VelardeEtAl2018} (explained in \S\ref{sec:attack
 And in the coordinator's perspective what matters is what it receives.
 
 For this reason, we are interested in \fdi{} attacks in which the attacker changes its $\lambdai$.
-We suppose that before sending the $\lambdai$ to the coordinator, the attacker uses a function ${\gamma:\R^{c}\to \R^{c}}$  to modify it.
+We suppose that before a negotiation, the attacker chooses a function ${\gamma:\R^{c}\times\R\to \R^{c}}$, which can possibly vary with respect to time $k$, to modify $\lambdai$ before sending it to the coordinator.
 This function aggregates any modification on the local information $\set{I}_{i}$.
 Here we denote this modified version as
 \begin{equation}
-  \tilde{\vec{\lambda}}_{i}=\gamma(\lambdai).
+  \tilde{\vec{\lambda}}_{i}=\gamma(\lambdaik,k).
 \end{equation}
 
 To facilitate future analysis we suppose the attacker chooses a linear function such
 \begin{equation}
   \label{eq:linear_attack}
-  \tilde{\vec{\lambda}}_{i}=T_{i}\lambdai.
+  \tilde{\vec{\lambda}}_{i}[k]=T_{i}[k]\lambdaik.
 \end{equation}
 This simple attack can be seen as a general case of the selfish attack~\cite{VelardeEtAl2018}.
 The positive constant $\alpha$ which multiplies the local objective function can be translated into a matrix $T_{i}=\alpha I_{\card{\lambdai}}$.
