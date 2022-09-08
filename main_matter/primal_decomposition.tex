@@ -275,7 +275,7 @@ If the initial ${\vec{\theta}}^{(0)}$ belongs to $\set{S}$, we can rewrite for e
 \end{equation}
 
 Using~\eqref{eq:example_local_problem} and~\eqref{eq:example_projectedSubgradient_lambda}
-we can program Algorithm~\ref{alg:primal_decomposition_based_dmpc} and simulate the system for $10$ time steps (${k\in\{0\mathbin{:}9\}}$).
+we can program Algorithm~\ref{alg:primal_decomposition_based_dmpc} and simulate the system for $10$ time steps (${k\in\set{K}=\{0\mathbin{:}9\}}$).
 The dynamics of variables $\vec{\theta}_{i}[0]$ and $\vec{\lambda}_{i}[0]$ during the iterative process can be seen in Figs.~\ref{fig:example_theta} and~\ref{fig:example_lambda}.
 
 \begin{figure}[h]
@@ -293,7 +293,7 @@ The dynamics of variables $\vec{\theta}_{i}[0]$ and $\vec{\lambda}_{i}[0]$ durin
 \begin{figure}[h]
   \centering
   \includegraphics[width=.5\textwidth]{../img/example_state.png}
-  \caption{Evolution of state $x_{i}[k]$ and reference $w_{i}[k]$ during control ${k\in\{0\mathbin{:}9\}}$. \todo{remake figure}}\label{fig:example_state}
+  \caption{Evolution of state $x_{i}[k]$ and reference $w_{i}[k]$ during control ${k\in\set{K}}$. \todo{remake figure}}\label{fig:example_state}
 \end{figure}
 We can see in Fig.~\ref{fig:example_state} the evolution of states $x_{i}[k]$ during the simulation.
 As we can perceive, the system cannot achieved the references due to the global coupling constraint, so all agents find a compromise and get as close to the reference as possible.
@@ -330,7 +330,7 @@ However, the system could be implemented in such way that the final allocations 
 
 With the physical distribution of allocation, \textbf{``Liar'' agent attacks} as in~\cite{VelardeEtAl2017b} are discouraged, since the attacker can not consume more than allocated (which would be beneficial for the attacker).
 On the other hand, an attack in which an agent is forced to use less than the allocated would still be possible, but no agent would benefit, given that their allocation would not increase (allocations are fixed at the end of negotiation).
-We will call this attack as a \textbf{Hijack agent} attack.
+We will call this kind of attack where an agent is forced to deteriorate its own performance as a \textbf{Hijack agent} attack.
 Moreover, during the following negotiations, the attacked agent would need more and more resources, increasing as consequence their dissatisfaction $\lambdaik$ forcing other agents to share more resources to the attacked agent.
 
 We use the same example in~\S\ref{sec:example-interpr} but we modify agent $2$, so it does not use the resource allocated (agent does not apply $u_{2}^{\star}[0|k]$).
@@ -368,7 +368,7 @@ Seeing that $\lambdai$ form a sub-gradient of the local problems~\eqref{eq:DOP_l
 So, every attack shown in~\cite{VelardeEtAl2018} (explained in \S\ref{sec:attacks_in_dmpc}) will somehow reflect into a modification in $\lambdai$.
 And in the coordinator's perspective what matters is what it receives.
 
-For this reason, we are interested in \fdi{} attacks in which the attacker changes its $\lambdai$.
+For this reason, we are interested in inter-agent \fdi{} attacks, in which one (or a group) of the agents changes its own $\lambdai$, so it can benefit at the expense of others.
 We suppose that before a negotiation, the attacker chooses a function ${\gamma:\R^{c}\times\R\to \R^{c}}$, which can possibly vary with respect to time $k$, to modify $\lambdai$ before sending it to the coordinator.
 This function aggregates any modification on the local information $\set{I}_{i}$.
 Here we denote this modified version as
@@ -376,20 +376,80 @@ Here we denote this modified version as
   \tilde{\vec{\lambda}}_{i}=\gamma(\lambdaik,k).
 \end{equation}
 
-To facilitate future analysis we suppose the attacker chooses a linear function such
+To facilitate future analysis, we suppose the attacker chooses a linear function such
 \begin{equation}
   \label{eq:linear_attack}
-  \tilde{\vec{\lambda}}_{i}[k]=T_{i}[k]\lambdaik.
+  \tilde{\vec{\lambda}}_{i}[k]=\gamma(\lambdaik,k)=T_{i}[k]\lambdaik.
 \end{equation}
-This simple attack can be seen as a general case of the selfish attack~\cite{VelardeEtAl2018}.
-The positive constant $\alpha$ which multiplies the local objective function can be translated into a matrix $T_{i}=\alpha I_{\card{\lambdai}}$.
-As we will see, even being a simple attack, when associated with the negotiation dynamics it can have some catastrophic consequences.
 
-\begin{description}
-  \item[Negotiation Stability] Show example and how cheating can destabilize negotiation
-        \begin{enumerate}
-          \item Analysis of eigenvalues of negotiation
-        \end{enumerate}
-\end{description}
+To ease communication, we will call the functions $\gamma_{i}$ and the matrices $T_{i}[k]$ as the \textbf{cheating} functions and matrices.
+
+This attack can be seen as a general case of the selfish attack~\cite{VelardeEtAl2018},
+where a positive constant multiplies the local objective function of the attacker.
+This attack can be translated into a matrix
+\begin{equation}
+  \label{eq:selfish_attack}
+  T_{i}[k]=\tau_{i}[k] I_{\card{\lambdai}}.
+\end{equation}
+As we will see, even being a simple attack, this attack can have some catastrophic consequences when associated with the negotiation dynamics.
+
+To illustrate, we take again the same example system in~\S\ref{sec:example-interpr}.
+We modify it so agent $3$ attacks using~\eqref{eq:selfish_attack}.
+We simulate the system for different scenarios.
+At each one of the scenarios agent $3$ uses a different cheating coefficient $\tau_{3}[k]$.
+\newcommand{\Jacc}{J^{\text{acc}}}
+\newcommand{\Jiacc}[1][i]{J_{#1}^{\text{acc}}}
+
+In Fig.~\ref{fig:example_vary_tau_objective} and~\ref{fig:example_vary_tau_objective_detail}, we accumulate the objective functions for each agent ${\Jiacc=\sum\limits_{k\in\set{K}}J_{i}^{\star}[k]}$ and also the total ${\Jacc=\sum\limits_{i\in\set{M}}J_{i}^{\text{acc}}}$ for different values of $\tau_{3}$.
+Observe (Fig.~\ref{fig:example_vary_tau_objective_detail}) that $\Jacc$ has its least value when $\tau_{3}=1$, i.e., when there is no attack.
+When $\tau_{3}$ increases, the objective function of the attacker ($\Jiacc[3]$) decreases while all other increase.
+We see the opposite happening for values of $\tau_{3}$ between $0$ and $1$.
+In this case the attacker deteriorates its own performance, what would not justify such attack, unless in a hijack scenario.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.5\textwidth]{../img/example_theta.png}
+  \caption{Accumulate objective functions for different values of $\tau_{3}$. \todo{remake figure}}\label{fig:example_vary_tau_objective}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.5\textwidth]{../img/example_theta.png}
+  \caption{Accumulate objective functions for different values of $\tau_{3}$ (detail). \todo{remake figure}}\label{fig:example_vary_tau_objective_detail}
+\end{figure}
+
+Other fact we can see in Fig.~\ref{fig:example_vary_tau_objective} is in its right side. The objectives seem to find an equilibrium but after a given value of $\tau_{3}$ it increases more and more.
+This is caused by a collapse in the negotiation.
+The agents cannot find a consensus anymore.
+To illustrate, we present the negotiation of $\lambdai$ for $3$ different values of $\tau_{3}$ (Figs.~\ref{fig:example_vary_tau_lambda_tau_1} to~\ref{fig:example_vary_tau_lambda_tau_20}).
+
+% TODO(accacio):maybe put in a same figure.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.5\textwidth]{../img/example_theta.png}
+  \caption{Evolution of $\lambdai$ during negotiation for $k=5$ with $\tau_{3}=1$. \todo{remake figure}}\label{fig:example_vary_tau_lambda_tau_1}
+\end{figure}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.5\textwidth]{../img/example_theta.png}
+  \caption{Evolution of $\lambdai$ during negotiation for $k=5$ with $\tau_{3}=5$. \todo{remake figure}}\label{fig:example_vary_tau_lambda_tau_5}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.5\textwidth]{../img/example_theta.png}
+  \caption{Evolution of $\lambdai$ during negotiation for $k=5$ with $\tau_{3}=20$. \todo{remake figure}}\label{fig:example_vary_tau_lambda_tau_20}
+\end{figure}
+As we can see, as $\tau_{3}$ increases, the negotiation presents a dampened oscillatory behavior.
+The dampening decreases if $\tau_{3}$ continues to rise, until the negotiation oscillates and no consensus is reached, breaking down the \dmpc{} and maybe causing damage to the plant.
+
+\section{Conclusion}\label{sec:conclusion}
+In this chapter, we presented the primal decomposition-based \dmpc{}, and its vulnerabilities.
+We also provided means by which an ill-intentioned agent could exploit said vulnerabilities and their main effects.
+As we have seen the main consequences are loss in global performance and complete mal-function of the system.
+
+Degradation of global performance, when working with \cps{}, in the best of the scenarios can cause little to no discomfort for a group of users, but an eventual breakdown, may endanger the users.
+So, we desire to avoid both phenomena whenever possible.
+In the next chapters we will analyze the problem and discuss what we can do to avoid such effects.
 
 \end{document}
