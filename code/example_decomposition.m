@@ -17,7 +17,7 @@ warning off
 Te=.25; %= Sampling
 Np=2;   %= Prediction horizon
 a=10;  %= for rho=1/(a+b*negot)
-b=1;  %= for rho=1/(a+b*negot)
+b=0.1;  %= for rho=1/(a+b*negot)
 simK = 10;    %= Simulation horizon
 negotP = 200; %= max # of iteration for each negotiation
 err_theta=1e-4; %= err to test theta convergence in each negotiation
