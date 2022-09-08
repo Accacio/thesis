@@ -252,6 +252,7 @@ for k=1:simK
 end
 toc
 dataPath='../data/';
+%= save data
 save(getFileName(dataPath,'example_dmpc_liar','.mat'),'-mat')
 end
 end

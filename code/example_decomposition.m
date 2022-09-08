@@ -250,7 +250,8 @@ for k=1:simK
 end
 toc
 dataPath='../data/';
-save(getFileName(dataPath,'example_dmpc2','.mat',chSetpoint,selfish,secure),'-mat')
+%= save data
+save(getFileName(dataPath,'example_dmpc','.mat',chSetpoint,selfish,secure),'-mat')
 end
 end
 end
