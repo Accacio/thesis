@@ -298,6 +298,6 @@ hold off
 sympref('FloatingPointOutput',false);
 disp(['$a_1=' latex(sym(A(:,1))) '$, $a_2=' latex(sym(A(:,2))) '$, $a_3=' latex(sym(A(:,3))) '$, $b_1=' latex(sym(B(:,1))) '$, $b_2=' latex(sym(B(:,2))) '$, $b_3=' latex(sym(B(:,3))) '$,' ])
 % sympref('FloatingPointOutput',true);
-disp(['H_1=' latex(sym(H(:,:,1))) ', & \vec{f}_1[k]=' latex(sym(Cmat(:,:,1)'*Qbar(:,:,1)*Mmat(:,:,1))) 'x_i[k]-' latex(sym(Cmat(:,:,1)'*Qbar(:,:,1))) '\vec{W}_i[k], & \bar{\Gamma}_1=I_2,\\'])
-disp(['H_2=' latex(sym(H(:,:,2))) ', & \vec{f}_2[k]=' latex(sym(Cmat(:,:,2)'*Qbar(:,:,2)*Mmat(:,:,2))) 'x_i[k]-' latex(sym(Cmat(:,:,2)'*Qbar(:,:,2))) '\vec{W}_i[k], & \bar{\Gamma}_2=I_2,\\'])
-disp(['H_3=' latex(sym(H(:,:,3))) ', & \vec{f}_3[k]=' latex(sym(Cmat(:,:,3)'*Qbar(:,:,3)*Mmat(:,:,3))) 'x_i[k]-' latex(sym(Cmat(:,:,3)'*Qbar(:,:,3))) '\vec{W}_i[k], & \bar{\Gamma}_3=I_2.\\'])
+disp(['H_1=' latex(sym(H(:,:,1))) ', & \vec{f}_1[k]=' latex(sym(Cmat(:,:,1)'*Qbar(:,:,1)*Mmat(:,:,1))) 'x_i[k]-' latex(sym(Cmat(:,:,1)'*Qbar(:,:,1))) '\vec{W}_i[k], & \bar{\Gamma}_1=I_2,\\\\'])
+disp(['H_2=' latex(sym(H(:,:,2))) ', & \vec{f}_2[k]=' latex(sym(Cmat(:,:,2)'*Qbar(:,:,2)*Mmat(:,:,2))) 'x_i[k]-' latex(sym(Cmat(:,:,2)'*Qbar(:,:,2))) '\vec{W}_i[k], & \bar{\Gamma}_2=I_2,\\\\'])
+disp(['H_3=' latex(sym(H(:,:,3))) ', & \vec{f}_3[k]=' latex(sym(Cmat(:,:,3)'*Qbar(:,:,3)*Mmat(:,:,3))) 'x_i[k]-' latex(sym(Cmat(:,:,3)'*Qbar(:,:,3))) '\vec{W}_i[k], & \bar{\Gamma}_3=I_2.\\\\'])
