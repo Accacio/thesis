@@ -1127,6 +1127,7 @@ backrefstyle=three,
    \begin{mdframed}[]\relax%
 }
 {\end{mdframed}}
+\renewcommand{\thetheorem}{\arabic{chapter}.\arabic{theorem}}
 
 \newmdenv[innertopmargin=10pt,linecolor=fondtitre!100,backgroundcolor=fonddeboite!100,%
  frametitleaboveskip=\dimexpr-\ht\strutbox\relax,
@@ -1160,6 +1161,7 @@ backrefstyle=three,
    }%
 }
 {\end{infobox}}
+\renewcommand{\theexample}{\arabic{chapter}.\arabic{example}}
 
 \newcounter{remark}[chapter]
 \newenvironment{remark}[1][]
@@ -1177,6 +1179,7 @@ backrefstyle=three,
 {
 \end{infobox}
 }
+\renewcommand{\theremark}{\arabic{chapter}.\arabic{remark}}
 
 
 %%% Switch case in latex

@@ -6,7 +6,7 @@
 \epigraph{\centering All the world\\ is birthday cake,\\ so take a piece, \\but not too much.}
 {\textit{It's All Too Much}\\\textsc{George Harrison}}
 
-In this chapter we describe the optimization decomposition framework used in this work, founded on the definitions given in chapters~\ref{sec:decomposing_mpc} to~\ref{sec:anomalous} and giving insights of interpretation of each step.
+In this chapter we describe in more details the optimization decomposition framework used in this work, founded on the definitions given in chapters~\ref{sec:decomposing_mpc} to~\ref{sec:anomalous} and giving insights of interpretation of each step.
 
 Then we present the vulnerabilities of this framework illustrating some attacks and their consequences.
 
@@ -14,7 +14,7 @@ Then we present the vulnerabilities of this framework illustrating some attacks 
 
 \section{Primal decomposition-based \dmpc{}}\label{sec:decomposition_PD}
 
-We start from the monolithic \mpc{} problem presented in~\eqref{eq:qp_standard_form}, which is reproduced here for the reader's convenience:
+We start from the monolithic \mpc{} equivalent problem presented in~\eqref{eq:qp_standard_form}, which is reproduced here for the reader's convenience:
 \begin{equation}
   \label{eq:qp_standard_form_reprise}
   \begin{aligned}
@@ -26,9 +26,10 @@ We start from the monolithic \mpc{} problem presented in~\eqref{eq:qp_standard_f
     \end{matrix}
   \end{aligned}.
 \end{equation}
-As stated in~\ref{sec:qp_mpc}, the problem is an input constrained \qp{}, which is convex.
+As stated in \S\ref{sec:qp_mpc}, this problem is an input constrained \qp{}, which is convex.
 
-To decompose the problem with the optimization decomposition frameworks shown in~\S\ref{sec:decomp-fram} we assume the objective function of problem~\eqref{eq:qp_standard_form_reprise} to be decomposable into $M$ parts, which correspond to sub divisions of the initial system~\eqref{eq:large_scale_system_model} (corresponding sub-systems and sub-problems~\S\ref{sec:distributing_computation_units}).
+To decompose the problem with the optimization decomposition frameworks shown in~\S\ref{sec:decomp-fram} we assume the objective function of problem~\eqref{eq:qp_standard_form_reprise} to be decomposable into $M$ equally sized parts, which correspond (corresponding sub-systems and sub-problems~\S\ref{sec:distributing_computation_units}) to sub divisions of the initial system~\eqref{eq:large_scale_system_model}.
+The subsystems are ruled by dynamics $(A_{i},B_{i},C_{i})$, and have states $\vec{x}_{i}[k]$, references $\vec{w}_{i}[k]$ and inputs $\vec{u}_{i}[k]$.
 
 Each sub-problem is given an index in set $\set{M}=\{1\mathbin{:}M\}$ and we can rewrite~\eqref{eq:qp_standard_form_reprise} as
 \begin{equation}
@@ -41,12 +42,12 @@ Each sub-problem is given an index in set $\set{M}=\{1\mathbin{:}M\}$ and we can
     \end{matrix}
   \end{aligned},
 \end{equation}
-with local versions $\bar{\Gamma}_{i}$, $\vec{U}_{i}[k]$, $H_{i}$ and $\vec{f}_{i}[k]$ of variables presented in~\S\ref{sec:decomp-fram}.
+with local versions $\bar{\Gamma}_{i}\in$, $\vec{U}_{i}[k]$, $H_{i}$ and $\vec{f}_{i}[k]$ of variables presented in~\S\ref{sec:decomp-fram}.
 
 Using the methodology in~\S\ref{sec:generalizing_decomposition} for coupling constraints, the primal decomposition divides the problem~\eqref{eq:qp_standard_form_decomposable} into a main problem~\eqref{eq:DOP_main} and local problems~\eqref{eq:DOP_local} based on the original primal problem~\eqref{eq:qp_standard_form_decomposable} and using interface variables $\thetaik,\forall i\in\set{M}$:
 \begin{subequations}
   \begin{equation}
-        J_{i}^{\star}(\thetaik)=
+        \bar{J}_{i}^{\star}(\thetaik)=
         \begin{matrix}
           \underset{\vec{U}_{i}[k]}{\mathrm{minimize}}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
           \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \preceq \thetaik:\lambdaik
@@ -56,7 +57,7 @@ Using the methodology in~\S\ref{sec:generalizing_decomposition} for coupling con
 
   \begin{equation}
     \begin{aligned}
-      J^{\star}=
+      \bar{J}^{\star}=
       \begin{matrix}
         \underset{\mpcvec{\theta}[i][k], \dots, \mpcvec{\theta}[M][k]}{\mathrm{minimize}} &\sum\limits_{i\in\set{M}} J^{\star}_i(\thetaik)\\
         \mathrm{subject~ to} &
@@ -401,6 +402,14 @@ At each one of the scenarios agent $3$ uses a different cheating coefficient $\t
 \newcommand{\Jiacc}[1][i]{J_{#1}^{\text{acc}}}
 
 In Fig.~\ref{fig:example_vary_tau_objective} and~\ref{fig:example_vary_tau_objective_detail}, we accumulate the objective functions for each agent ${\Jiacc=\sum\limits_{k\in\set{K}}J_{i}^{\star}[k]}$ and also the total ${\Jacc=\sum\limits_{i\in\set{M}}J_{i}^{\text{acc}}}$ for different values of $\tau_{3}$.
+
+\begin{remark}
+  Here, as observed in Remark~\ref{rem:equivalence_problems_not_same_objective}, the objective functions $J_{i}^{\star}[k]$ and $J^{\star}[k]$ were calculated by reconstructing the original objective function~\eqref{eq:quadratic_objective_compact_batch}, i.e., calculating equivalent $c_{i}[k]$ for each subsystem and using
+  \begin{equation}
+    J_{i}^{\star}[k] = 2\bar{J}_{i}^{\star}[k] + c_{i}[k].
+\end{equation}
+\end{remark}
+
 Observe (Fig.~\ref{fig:example_vary_tau_objective_detail}) that $\Jacc$ has its least value when $\tau_{3}=1$, i.e., when there is no attack.
 When $\tau_{3}$ increases, the objective function of the attacker ($\Jiacc[3]$) decreases while all other increase.
 We see the opposite happening for values of $\tau_{3}$ between $0$ and $1$.
