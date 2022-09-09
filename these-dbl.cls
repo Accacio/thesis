@@ -1551,7 +1551,7 @@ backrefstyle=three,
 
 \makeatother
 
-%% TODOS doing, warning
+%% TODO doing, warning
 \newif\ifdebug%
 \newcommand{\draft}{\debugtrue}
 \newcommand{\final}{\debugfalse}
