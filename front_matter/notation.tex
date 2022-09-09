@@ -77,6 +77,21 @@
   \item[{$[\vec{x}_{1}, \dots, \vec{x}_{n}]$}] Horizontal concatenation
   \item[{$[\vec{x}_{1}; \dots; \vec{x}_{n}]$}] Vertical concatenation
   \item[$\vec{x}'$ $A'$] Transposes of vector $\vec{x}$ and matrix $A$
+  \item[{$\blkdiag$}] Block diagonal concatenation, i.e., $A\blkdiag B=
+        \left(\begin{smallmatrix}
+                A& 0\\
+                0&B\\
+              \end{smallmatrix}\right)
+        $, and
+        $\blkdiag\limits_{i=1}^{M} A_{i}=
+        \left(\begin{smallmatrix}
+                A_{1} & 0 & 0 &0\\
+                0 & A_{2} & 0 &0\\
+                0 & 0 & \ddots &0\\
+                0&0&\cdots&A_{M}
+              \end{smallmatrix}\right)
+        $
+
   \item[$\langle \vec{x},\vec{y}\rangle$] Inner product between vectors $\vec{x}$ and $\vec{y}$, same as $\vec{x}'\vec{y}$
   % \item[$\vector0{s} (\cdot)$]
   \item[$\hadamard{}{}$ ] Hadamard product, i.e., for $A,B\in\R^{m\times n}$, $\elem[i,j]{(\hadamard{A}{B})}=\elem[i,j]{A}\elem[i,j]{B}$
