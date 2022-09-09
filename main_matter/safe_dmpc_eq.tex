@@ -1,0 +1,238 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\chapter[Resilient Primal Decomposition-based dMPC for scarce systems]{Resilient \\Primal Decomposition-based \\distributed \\Model Predictive Control\\ for scarce systems}\label{sec:safe_pddmpc_eq}
+\epigraph{\centering So you tell me 'trust me' \\I can trust you\\ Just let me show you \\But I gotta work it out in a shadow of doubt \\'Cause I don't know if I know you}
+{\textit{Lie}\\\textsc{Kevin Moore}}
+
+In this chapter, we focus on the analysis of the primal decomposition-based \dmpc{} problem for scarce systems when in the presence of the attack chosen in~\S\ref{sec:anomalous}.
+
+With the knowledge acquired after the analysis, we propose a method to detect the attacks and mitigate its effects.
+
+\minitoc
+
+
+\section{Scarce systems under attack}\label{sec:analys-scarce-syst}
+
+Different from~\cite{VelardeEtAl2018,MaestreEtAl2021} which propose robust solutions, we propose a resilient \dmpc{} based on a hybrid of analytical/learning active detection method.
+For this end, we begin with an analysis of the system under attack.
+
+\subsection{Scarce Systems}\label{sec:scarce-systems}
+First we recall the monolithic \mpc{} equivalent problem~\eqref{eq:qp_standard_form}, once more reproduced for the reader's convenience:
+\begin{equation}
+  \label{eq:qp_standard_form_again}
+  \tag{\ref*{eq:qp_standard_form}}
+  \begin{aligned}
+    \begin{matrix}
+      \underset{\vec{U}[k]}{\mathrm{minimize}} &
+                                                 \frac{1}{2}\norm{\vec{U}[k]}^{2}_{H} + {\vec{f}[k]}^{T}\vec{U}[k] &\\
+      \mathrm{subject~ to} &
+                             \bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}}
+    \end{matrix}
+  \end{aligned},
+\end{equation}
+and the local problems~\eqref{eq:DOP_local} solved in the primal decomposition, also reproduced,
+
+\begin{equation}
+  \label{eq:DOP_local_reprise}
+  \tag{\ref*{eq:DOP_local}}
+  \bar{J}_{i}^{\star}(\thetaik)=
+  \begin{matrix}
+    \underset{\vec{U}_{i}[k]}{\mathrm{minimize}}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+    \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \preceq \thetaik:\lambdaik
+  \end{matrix}.
+\end{equation}
+
+The unconstrained version of problems~\eqref{eq:qp_standard_form_again} and~\eqref{eq:DOP_local_reprise},
+\begin{align}
+  \label{eq:qp_standard_form_unconstrained}
+  \begin{aligned}
+    \begin{matrix}
+      \underset{\vec{U}[k]}{\mathrm{minimize}} &
+                                                 \frac{1}{2}\norm{\vec{U}[k]}^{2}_{H} + {\vec{f}[k]}^{T}\vec{U}[k] &\\
+    \end{matrix},
+  \end{aligned}\\
+  \label{eq:DOP_local_unconstrained}
+  \begin{aligned}
+    \begin{matrix}
+    \underset{\vec{U}_{i}[k]}{\mathrm{minimize}}&\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+    \end{matrix}
+  \end{aligned}
+\end{align}
+have analytical solutions~\cite{BoydVandenberghe2004}
+\begin{align}
+  \label{eq:qp_standard_form_unconstrained_solution}
+  \vec{U}_{\text{unc}}^{\star}[k]=-H^{-1}\vec{f}[k],\\
+  \label{eq:DOP_local_unconstrained_solution}
+  \vec{U}_{i_{\text{unc}}}^{\star}[k]=-H_{i}^{-1}\vec{f}_{i}[k].
+\end{align}
+
+We call a system scarce when its unconstrained solution $\vec{U}_{\text{unc}}^{\star}[k]$ lies outside the bounds of the polytope formed by the constraints, i.e.,
+\begin{equation}
+\bar{\Gamma}\vec{U}_{\text{unc}}[k]\succ {\vec{U}}_{\text{max}}.
+\end{equation}
+
+Furthermore, we assume that for all sub-systems, their unconstrained solutions $\vec{U}_{i_{\text{unc}}}^{\star}[k]$ neither respect the local constraints
+\begin{equation}
+\bar{\Gamma}_{i}\vec{U}_{i_{\text{unc}}}^{\star}[k]\succ {\vec{U}}_{\text{max}}, \forall i\in\set{M}.
+\end{equation}
+
+This means that the optimal solution would need more resources (more than $\vec{U}_{\max}$). So the solution of those \qp{} result on the projection of the solutions onto the polytope, which results being projected on the perimter of the polytope.
+
+We assume that given projection solves the inequality constrained problem with same solution for an equality constraint problem
+\begin{equation}
+  \label{eq:DOP_local_equality}
+  \tag{\ref*{eq:DOP_local}}
+  \bar{J}_{i}^{\star}(\thetaik)=
+  \begin{matrix}
+    \underset{\vec{U}_{i}[k]}{\mathrm{minimize}}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+    \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] = \thetaik:\lambdaik
+  \end{matrix}.
+\end{equation}
+
+\begin{remark}
+  Observe that this is not always true using the same $\bar{\Gamma}_{i}$ for both problems.
+  The constraints in~\eqref{eq:qp_standard_form_again} and~\eqref{eq:DOP_local_reprise}, can be interpreted as the intersection of the halfspaces described by the lines of $\bar{\Gamma}$ and $\vec{U}_{\max}$, i.e., the halfspaces ${\set{S}_i=\setbuild{\vec{x}}{\elem[i,\star]{\Gamma}\vec{x}\leq\elem[i,\star]{\vec{U}_{\max}}}}$, and the intersection ${\set{S}=\setbuild{\vec{x}}{\Gamma\vec{x}\preceq\vec{U}}=\bigcap\limits_{i=1}^{\card\vec{U}_{\max}}}\set{S}_{i}$.
+  For this to be true, only the halfspaces closest to the unconstrained solution are kept and transformed into intersection of hyperplanes (equality constraint).
+  This computation may be costly depending on the number of halfspaces used.
+  For our study cases where usually the values of $\Gamma$ are positive, we assume we can find the corresponding problem.
+\end{remark}
+
+\subsection{Why scarce systems?}\label{sec:why-scarce-systems}
+
+
+are forced to compromise
+This~\eqref{eq:qp_standard_form_again}
+
+\begin{enumerate}
+  \item Analysis of eigenvalues of negotiation
+\end{enumerate}
+\begin{equation}
+  \begin{matrix}
+    \lambdaik=\underset{\lambdaik}{\mathrm{argmax}}\{\underset{\vec{U}_i[k]}{\mathrm{minimize}}\;\frac{1}{2}U_i^TH_iU_i+F_i^TU_i+c_i+\lambda_i^T(U_i-\theta_i^{(p)})\}\\
+  \end{matrix}
+\end{equation}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{.45\textwidth}
+    \includegraphics[width=\textwidth]{../img/original-minimum.png}
+    \caption{Original minimum.}
+    \label{fig:first}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../img/new-minimum-selfish.png}
+    \caption{Minimum after attack.}
+    \label{fig:second}
+  \end{subfigure}
+  \caption{Effects of non-conforming behaviors on optimal value. \todo{Refaire les images}}
+  \label{fig:figures}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../img/ignoreX.png}
+    \caption{Optimal value after ignoring attacker.}
+    \label{fig:third}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../img/correctX.png}
+    \caption{Optimal value after trying to recover original behavior.}
+    \label{fig:third}
+  \end{subfigure}
+
+  \caption{Recovery options.}\label{fig:figures}
+\end{figure}
+
+\section{Study case}
+\label{sec:study-case}
+
+Model 3R-2C \cite{GoudaEtAl2002}
+\begin{figure}[h]
+  \centering
+  \begin{circuitikz}[european]
+    \draw (0,0) node[tlground]{} to[isource, l=$P^{\text{heat}}$] ++(0,2) to[short, -*] ++(1.5,0) coordinate (a);
+
+    \draw (a) node[above]{$T^{\text{in}}$}  to[C=$C^{\text{air}}$] ++(0,-2) node[tlground]{};
+    \draw (0,-3) node[tlground]{} to[isource, l=$I^{\text{sol}}$] ++(0,2)
+    to[short, -*] ++(1.5,0) coordinate (b);
+    \draw (b) to[C=$C^{\text{walls}}$] ++(0,-2) node[tlground]{};
+
+    \draw (a) -- ++(2,0) coordinate (c) -- ++(0,-.5) to[R=$R^{\text{iw/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (d);
+
+    \draw (b) node[above]{$T^{\text{walls}}$} to[short,-*] (d);
+
+    \draw (c) --  ++(2.5,0) -- ++(0,-.5) to[R=$R^{\text{oa/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (e);
+
+    \draw (d) to[R=$R^{\text{ow/oa}}$] (e) to[battery,l=$T^{\text{out}}$] ++(0,-2) node[tlground]{};
+  \end{circuitikz}
+  \caption{Thermic Model 3R-2C of a room.}
+  \label{fig:3R2C_model}
+\end{figure}
+
+The state-space model of each subsystem is given by:
+\begin{equation}
+  \begin{matrix}
+    \label{eq:systems_cont}
+    \dot{\vec{x}}_{i}(t)  &=&{A_{c}}_{i}\vec{x}_{i}(t) &+& {B_{c}}_{i}\vec{u}_{i}(t)\\
+    \vec{y}_{i}(t)        &=&{C_{c}}_{i}\vec{x}_{i}(t) &&
+  \end{matrix},
+\end{equation}
+where
+\begin{equation}
+  \label{eq:4}
+  \begin{matrix}
+    A_{\mathrm{c}_{i}}=\left[
+    \begin{matrix}
+      -\frac{1}{C^{\text{walls}}_{i}R^{\text{oa/ia}}_{i}}-\frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}& \frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}\\
+      \frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}} &-\frac{1}{C^{\text{air}}_{i}R^{\text{ow/oa}}o_{i}}-\frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}}
+    \end{matrix}\right]\\
+    \begin{matrix}
+      B_{\mathrm{c}_{i}}=\left[
+      \begin{matrix}  \frac{10}{C^{\text{walls}}_{i}}& 0\end{matrix}
+                                                       \right]\T&C_{\mathrm{c}_{i}}=\left[\begin{matrix}1 & 0\end{matrix}\right]
+    \end{matrix}
+  \end{matrix}
+\end{equation}
+where ${\vec{x}_{i}=[{{x}_{A}}_{i}\T\ {{x}_{W}}_{i}\T]\T}$. ${x_A}_i$ and ${x_W}_i$ are the mean temperatures of the air and walls inside room~$i$. $\vec{u}_{i}$ is the input (the heating power)
+for the corresponding room. The inputs are constraint by ${\sum_{i=1}^{4}\vec{u}_{i}(t)\preceq 4\mathrm{kW}}$.
+
+\begin{table}[b]
+  \centering
+  \caption{Model Parameters}\label{tab:modelParamMeaning}
+  \begin{tabular}[b]{cl}
+    \toprule
+    Symbol&Meaning\\
+    \midrule
+    $C^{\text{air}}_{i}$  &Heat Capacity of Inside Air\\
+    $C^{\text{walls}}_{i}$ &Heat Capacity of External Walls\\
+    $R^{\text{iw/ia}}_{i}$ &Resist. Between Inside Air and Inside Walls\\
+    $R^{\text{ow/oa}}_{i}$ &Resist. Between Outside Air and Outside Walls\\
+    $R^{\text{oa/ia}}_{i}$ &Resist. Between Inside and Out.\ Air (from windows)\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[b]
+  \centering
+  \caption{
+    Parameters for each agent}\label{tab:modelParam}
+  \begin{tabular}[t]{cccccc} \toprule
+    Symbol& I & II & III & IV &Unit\\
+    \midrule
+    $C^{\text{walls}}$   &$5.4$&$4.9$&$4.7$&$4.7$ &$10^{4}\mathrm{J/K}$ \\
+    $C^{\text{air}}$     &$7.5$ &$8.4 $&$8.2$ &$7.7$&$10^{4}\mathrm{J/K}$  \\
+    $R^{\text{oa/ia}}$   &$5.2$&$4.6$&$4.9$&$5.4$&$10^{-3}\mathrm{K/W}$ \\
+    $R^{\text{iw/ia}}$   &$2.3$&$2.4$&$2.3$&$2.9$&$10^{-4}\mathrm{K/W}$\\
+    $R^{\text{ow/oa}}$   &$1.5$&$0.6$&$0.7$&$0.7$& $10^{-4}\mathrm{K/W}$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+the attacker has no motivation to get more
+
+\end{document}
