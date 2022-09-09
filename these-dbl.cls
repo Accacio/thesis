@@ -959,7 +959,65 @@ backrefstyle=three,
 \RequirePackage{etoolbox}
 \RequirePackage[framemethod=TikZ]{mdframed}
 \RequirePackage{fontawesome}
+\RequirePackage{mathabx}
 
+% correct ddots
+% shamelessly taken from https://tex.stackexchange.com/a/246695/162943
+\makeatletter
+\DeclareRobustCommand\vdots{%
+  \mathpalette\@vdots{}%
+}
+\newcommand*{\@vdots}[2]{%
+  % #1: math style
+  % #2: unused
+  \sbox0{$#1\cdotp\cdotp\cdotp\m@th$}%
+  \sbox2{$#1.\m@th$}%
+  \vbox{%
+    \dimen@=\wd0 %
+    \advance\dimen@ -3\ht2 %
+    \kern.5\dimen@
+    % remove side bearings
+    \dimen@=\wd2 %
+    \advance\dimen@ -\ht2 %
+    \dimen2=\wd0 %
+    \advance\dimen2 -\dimen@
+    \vbox to \dimen2{%
+      \offinterlineskip
+      \copy2 \vfill\copy2 \vfill\copy2 %
+    }%
+  }%
+}
+\DeclareRobustCommand\ddots{%
+  \mathinner{%
+    \mathpalette\@ddots{}%
+    \mkern\thinmuskip
+  }%
+}
+\newcommand*{\@ddots}[2]{%
+  % #1: math style
+  % #2: unused
+  \sbox0{$#1\cdotp\cdotp\cdotp\m@th$}%
+  \sbox2{$#1.\m@th$}%
+  \vbox{%
+    \dimen@=\wd0 %
+    \advance\dimen@ -3\ht2 %
+    \kern.5\dimen@
+    % remove side bearings
+    \dimen@=\wd2 %
+    \advance\dimen@ -\ht2 %
+    \dimen2=\wd0 %
+    \advance\dimen2 -\dimen@
+    \vbox to \dimen2{%
+      \offinterlineskip
+      \hbox{$#1\mathpunct{.}\m@th$}%
+      \vfill
+      \hbox{$#1\mathpunct{\kern\wd2}\mathpunct{.}\m@th$}%
+      \vfill
+      \hbox{$#1\mathpunct{\kern\wd2}\mathpunct{\kern\wd2}\mathpunct{.}\m@th$}%
+    }%
+  }%
+}
+\makeatother
 
 
 
