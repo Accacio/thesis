@@ -31,7 +31,7 @@ As stated in \S\ref{sec:qp_mpc}, this problem is an input constrained \qp{}, whi
 To decompose the problem with the optimization decomposition frameworks shown in~\S\ref{sec:decomp-fram} we assume the objective function of problem~\eqref{eq:qp_standard_form_reprise} to be decomposable into $M$ equally sized parts, which correspond (corresponding sub-systems and sub-problems~\S\ref{sec:distributing_computation_units}) to sub divisions of the initial system~\eqref{eq:large_scale_system_model}.
 The subsystems are ruled by dynamics $(A_{i},B_{i},C_{i})$, and have states $\vec{x}_{i}[k]$, references $\vec{w}_{i}[k]$ and inputs $\vec{u}_{i}[k]$.
 
-Each sub-problem is given an index in set $\set{M}=\{1\mathbin{:}M\}$ and we can rewrite~\eqref{eq:qp_standard_form_reprise} as
+Each sub-problem is given an index in set $\set{M}=\{1\mathbin{:}M\}$ and we rewrite~\eqref{eq:qp_standard_form_reprise} as
 \begin{equation}
   \label{eq:qp_standard_form_decomposable}
   \begin{aligned}
@@ -42,7 +42,21 @@ Each sub-problem is given an index in set $\set{M}=\{1\mathbin{:}M\}$ and we can
     \end{matrix}
   \end{aligned},
 \end{equation}
-with local versions $\bar{\Gamma}_{i}\in$, $\vec{U}_{i}[k]$, $H_{i}$ and $\vec{f}_{i}[k]$ of variables presented in~\S\ref{sec:decomp-fram}.
+with local versions $\vec{U}_{i}[k]=\left[\vec{u}_{i}[0|k]; \dots; \vec{u}_{i}[\predhorz-1|k]\right]$, $\bar{\Gamma}_{i}$, $H_{i}$ and $\vec{f}_{i}[k]$ of variables presented in~\S\ref{sec:decomp-fram}.
+
+\begin{remark}
+  To pass from the global version of the variables in~\eqref{eq:qp_standard_form_reprise} to the local version in~\ref{eq:qp_standard_form_decomposable}, we apply a given linear transformation $Z^{T}Z=I$ to $\vec{U}[k]$ to reorder its components, such
+  \begin{equation}
+    \bar{\vec{U}}[k]=Z\vec{U}[k]=\left[\vec{U}_{1}[k]; \dots; \vec{U}_{M}[k]\right].
+  \end{equation}
+  Then we reorder other variables' elements consistently using the transformation.
+  \begin{align}
+    \label{eq:1}
+    \bar{\bar{\Gamma}}&=\bar{\Gamma}Z^{T}=\left[\bar{\Gamma}_{1}, \dots, \bar{\Gamma}_{M}\right]\\
+    \bar{\vec{f}}[k]&=Z\vec{f}[k]=\left[\vec{f}_{1}[k]; \dots; \vec{f}_{M}[k]\right]\\
+    \bar{H}&=ZHZ^{T}=\blkdiag\limits_{i\in\set{M}} H_{i}
+  \end{align}
+\end{remark}
 
 Using the methodology in~\S\ref{sec:generalizing_decomposition} for coupling constraints, the primal decomposition divides the problem~\eqref{eq:qp_standard_form_decomposable} into a main problem~\eqref{eq:DOP_main} and local problems~\eqref{eq:DOP_local} based on the original primal problem~\eqref{eq:qp_standard_form_decomposable} and using interface variables $\thetaik,\forall i\in\set{M}$:
 \begin{subequations}
