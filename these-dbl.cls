@@ -59,6 +59,7 @@
 \RequirePackage[inner=30mm,outer=20mm,top=30mm,bottom=20mm]{geometry}
 \RequirePackage{setspace}
 \RequirePackage{xargs}
+\RequirePackage[author={Accacio}]{pdfcomment}
 
 \RequirePackage{minitoc}
 
@@ -1566,3 +1567,5 @@ backrefstyle=three,
   {%
     \color{red}
     #1}\fi}
+\newcommand\note[1]{\ifdebug%
+  {\pdfcomment[color=orange,opacity=0.4,subject=note]{#1}} \fi}
