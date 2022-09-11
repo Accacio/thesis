@@ -251,7 +251,7 @@ end
 toc
 dataPath='../data/';
 %= save data
-save(getFileName(dataPath,'example_dmpc','.mat',chSetpoint,selfish,secure),'-mat')
+save(getFileName(dataPath,'example_dmpc','.mat'),'-mat')
 end
 end
 end
