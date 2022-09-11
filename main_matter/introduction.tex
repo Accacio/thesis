@@ -22,6 +22,12 @@ Thus the \emph{renaissance} of some optimization based methods, such as \todo{Ne
 For other more common methods such \mpc~\cite{GarciaEtAl1989}, this development meant solving more significant problems in less time, sometimes even in realtime~\todo[add realtime MPC]{\cite{BesselmannEtAl2008}} and using small computation units that can fit in the palm of a hand~\cite{BanguraMahony2014}.
 Nevertheless, the calculation is still expensive for some large-scale systems, and we need subterfuges, such as distributing it into different computation units.
 As we will see, one of these strategies is called \dmpc.
+%   \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=.75\textwidth]{../img/district_3d_cycles.png}
+% % ./docstheseplot -o ../../docs/img/quantiteAvecTriche4 -i  ../../data/matlab/tricheQuantite/dmpcQuantity4systemsTriche_.mat --quantiteAvecTriche4
+%     \caption{A Cul-de-sac with 4 houses}\label{fig:culdesac}
+%   \end{figure}
 
 This work studies what happens when these computation units do not work collaboratively.
 Moreover, for a specific \dmpc{} framework, we search for a method to mitigate the effects of this non-cooperative behavior.

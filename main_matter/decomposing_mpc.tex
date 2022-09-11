@@ -104,7 +104,14 @@ which can be vectorized for a horizon in $\mathcal{H}$
 \begin{equation}
 \bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}},
 \end{equation}
-with ${ \bar{\Gamma}=\kron{I_{\predhorz}}{\Gamma} }$ and ${ \vec{U}_{\max}=\kron{\1_{\predhorz}}{\vec{u_{max}}} }$.
+with
+\begin{align}
+  \label{eq:construction_Gamma}
+ \bar{\Gamma}&=\kron{I_{\predhorz}}{\Gamma}\\
+  \label{eq:construction_Umax}
+   \vec{U}_{\max}&=\kron{\1_{\predhorz}}{\vec{u_{max}}}.
+\end{align}
+
 
 For the control objectives, henceforth we only consider \emph{reference tracking}, since \emph{disturbance rejection} can be described as a \emph{reference tracking} when ${ C=I_{n_{x}} }$ and ${ \vec{w}[k]=\0_{n_{x}} }$.
 
