@@ -148,9 +148,44 @@ When the system suffer from scarcity the agents are forced to compete and compro
 \begin{enumerate}
   \item Analysis of eigenvalues of negotiation
 \end{enumerate}
+\newcommand{\lagrangianname}{\mathscr{L}}
+\newcommand{\lagrangian}{\lagrangianname(\vec{U}_{i}[k],\lambdaik,\thetaik)}
+\newcommand{\dualfunctionname}{\mathscr{D}}
+\newcommand{\dualfunction}{\dualfunctionname(\lambdaik,\thetaik)}
+\newcommand{\equalityfunctionname}{h}
+\newcommand{\equalityfunction}{\equalityfunctionname(\vec{U}_{i}[k],\thetaik)}
+
+First we define a function $\equalityfunctionname:\R^{\card\vec{U}_{i}[k]}\times \R^{\card\thetaik}$ to put the problem in standard form~\cite{BoydVandenberghe2004}:
+\begin{equation}
+  \label{eq:lagrangian_equality}
+  \equalityfunction=\bar{\Gamma}_{i}\vec{U}_i[k]-\thetaik
+\end{equation}
+
+
+We define the \emph{Lagrangian} function $\lagrangianname : \R^{\card\vec{U}_{i}[k]}\times \R^{\card\lambdaik} \times \R^{\card\thetaik} \to \R$ as
+\begin{equation}
+  \label{eq:lagrangian_equality}
+  \lagrangian=\obji+\lambdaik^T\equalityfunction
+\end{equation}
+
+We define the domain $\set{F}=\dom \equalityfunctionname$
+we can calculate the dual function $\dualfunctionname:\R^{\card\lambdaik} \times \R^{\card\thetaik} \to \R$ as
+\begin{equation}
+  \label{eq:dual_function_equality}
+  \dualfunction=\inf_{x\in\set{F}} \lagrangian,
+\end{equation}
+which is concave.
+we can solve the dual problem
 \begin{equation}
   \begin{matrix}
-    \lambdaik=\underset{\lambdaik}{\mathrm{argmax}}\{\underset{\vec{U}_i[k]}{\mathrm{minimize}}\;\frac{1}{2}U_i^TH_iU_i+F_i^TU_i+c_i+\lambda_i^T(U_i-\theta_i^{(p)})\}\\
+    \underset{\lambdaik}{\mathrm{maximize}}&\dualfunction\\
+  \end{matrix}
+\end{equation}
+
+
+\begin{equation}
+  \begin{matrix}
+    \lambdaik=\underset{\lambdaik}{\mathrm{argmax}}\{\underset{\vec{U}_i[k]}{\mathrm{minimize}}\;\}\\
   \end{matrix}
 \end{equation}
 
