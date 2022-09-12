@@ -333,7 +333,7 @@ And as we have attested, the cheating matrices $T_{i}[k]$ can change the eigenva
 As one can notice, we could create an anomaly detector by supervising the matrix $\mathcal{A}$.
 Once there is a change in some of the variables (or eigenvalues) the attack is detected.
 
-Unfortunately, this method gives us only a detection, but not necessarily from which agent the attack comes.
+Unfortunately, this method gives us only a detection, but not necessarily from which agent the attack comes, what could useful for a mitigation algorithm.
 Besides, if we were to estimate all elements of $\mathcal{A}$, we would need to estimate $M^{2}{(\card\thetai)}^{2}$ elements\footnote{$M^{2}$ blocks of size ${\card\thetai}$}.
 Exploiting the known structures of the matrix and their blocks, we could reduce to at least $2M{(\frac{\card\thetai+{\card\thetai}^{2}}{2})}$ elements\footnote{($M$ diagonal + $M$ off diagonal) symmetric blocks of size ${\card\thetai}$ (only upper triangle)}.
 
