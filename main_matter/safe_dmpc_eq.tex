@@ -142,173 +142,217 @@ Furthermore, since no negotiation is needed, there is no communication and the a
 
 When the system suffer from scarcity the agents are forced to compete and compromise, what may result in attacks as shown in \S\ref{sec:primal_decomposition} and their dire consequences.
 
-\subsection{Analysis of negotiation}\label{sec:analysis-negotiation}
-
-
-
-\begin{enumerate}
-  \item Analysis of eigenvalues of negotiation
-\end{enumerate}
 \newcommand{\lagrangianname}{\mathscr{L}}
 \newcommand{\lagrangian}{\lagrangianname(\vec{U}_{i}[k],\lambdaik,\thetaik)}
 \newcommand{\dualfunctionname}{\mathscr{D}}
 \newcommand{\dualfunction}{\dualfunctionname(\lambdaik,\thetaik)}
-\newcommand{\equalityfunctionname}{h}
+\newcommand{\equalityfunctionname}{h_i}
 \newcommand{\equalityfunction}{\equalityfunctionname(\vec{U}_{i}[k],\thetaik)}
+\newcommand{\linearcoefi}{\bar{\Gamma}_{i}H_{i}^{-1}\bar{\Gamma_{i}}^{T}}
 
-First we define a function $\equalityfunctionname:\R^{\card\vec{U}_{i}[k]}\times \R^{\card\thetaik}$ to put the problem in standard form~\cite{BoydVandenberghe2004}:
+\subsection{Analysis of local problems}\label{sec:analysis-local-problems}
+Since the optimization problems~\eqref{eq:example_local_problem_reprise} are \qp{} problems with equality constraints, it is known that it has analytical solution~\cite{BoydVandenberghe2004}.
+To find this solution we usually use the lagrange duality, so $\lambdaik$ will also have analytical solution in this case.
+First, to simplify the notation we define a function $\equalityfunctionname:\R^{\card\vec{U}_{i}[k]}\times \R^{\card\thetaik}$, defined as
 \begin{equation}
   \label{eq:lagrangian_equality}
-  \equalityfunction=\bar{\Gamma}_{i}\vec{U}_i[k]-\thetaik
+  \equalityfunction=\bar{\Gamma}_{i}\vec{U}_i[k]-\thetaik,
+\end{equation}
+to put the problem in standard form for equality constraint \qp{} programs:
+\begin{equation}
+  \begin{matrix}
+  \label{eq:local_problem_equality_standard_notation}
+    \minimize\limits_{\vec{U}_{i}[k]}&\obji(\vec{U}_{i}[k],\thetaik)\\
+    \mathrm{subject~ to} & \equalityfunction= 0:\lambdaik
+  \end{matrix}
 \end{equation}
 
-
-We define the \emph{Lagrangian} function $\lagrangianname : \R^{\card\vec{U}_{i}[k]}\times \R^{\card\lambdaik} \times \R^{\card\thetaik} \to \R$ as
+With this form, we define the \emph{Lagrangian} function $\lagrangianname : \R^{\card\vec{U}_{i}[k]}\times \R^{\card\lambdaik} \times \R^{\card\thetaik} \to \R$ as
 \begin{equation}
   \label{eq:lagrangian_equality}
-  \lagrangian=\obji+\lambdaik^T\equalityfunction
+  \lagrangian=\obji+\lambdaik^T\equalityfunction,
 \end{equation}
+which embeds the equality constraint into the objective function using $\lambdaik$, called the lagrangian multiplier for equality.
+In this chapter, since there is only one type of lagrangian multiplier, we will call it the dual variable.
+\begin{remark}
+  Observe that by complementary slackness, ${\lambdaikstar}^T\equalityfunctionname(\vec{U}_{i}^{\star}[k],\thetaik)$ will always be zero.
+ If any element of $\equalityfunctionname(\vec{U}_{i}^{\star}[k],\thetaik)$ is different from zero, the corresponding element on the dual variable $\lambdaikstar$ will be zero, indicating the constraint is active.
+\end{remark}
 
-We define the domain $\set{F}=\dom \equalityfunctionname$
-we can calculate the dual function $\dualfunctionname:\R^{\card\lambdaik} \times \R^{\card\thetaik} \to \R$ as
+Then we define the dual function $\dualfunctionname:\R^{\card\lambdaik} \times \R^{\card\thetaik} \to \R$ which is calculated by solving
 \begin{equation}
   \label{eq:dual_function_equality}
-  \dualfunction=\inf_{x\in\set{F}} \lagrangian,
+  \dualfunction=\inf_{\vec{U}_{i}[k]\in\set{F}} \lagrangian,
 \end{equation}
-which is concave.
-we can solve the dual problem
+where $\set{F}=\dom \equalityfunctionname=\bigcap\limits_{i=1}^{\card\vec{U}_{\max}}\set{P}_{i}$, with $\set{P}_{i}$ being the hyperplanes
+${\set{P}_i=\setbuild{\vec{x}}{\elem[i,\star]{{\bar{\Gamma}}}\vec{x}=\elem[i,\star]{\vec{U}_{\max}}}}$.
+
+The solution to $\dualfunction$ is given by the first order \KKT{} optimality condition
+\begin{equation}
+\nabla_{\vec{U}_{i}[k]}\lagrangian=0
+\end{equation}
+which results in
+\begin{equation}
+\vec{U}_{i}[k]=-H_{i}^{-1}(-\bar{\Gamma}_{i}^{T}\lambdai[k]-\vec{f}_{i}[k]).
+\end{equation}
+
+Substituting it in $\lagrangian$ yields
+\begin{equation}
+  \label{eq:dual_function_solution_lambda_theta}
+\dualfunction=-\frac{1}{2}\lambdaik^{T}\linearcoefi\lambdaik-\lambdaik^{T}\bar{\Gamma}_{i}H_{i}^{-1}\vec{f}[k]-\lambdaik^{T}\thetaik.
+\end{equation}
+
+As presented in~\cite{BoydVandenberghe2004} and as we can see from inspecting~\eqref{eq:dual_function_solution_lambda_theta}, $\dualfunction$ is concave. Thus, we can find $\lambdaikstar$ by solving
 \begin{equation}
   \begin{matrix}
-    \underset{\lambdaik}{\mathrm{maximize}}&\dualfunction\\
+    \lambdaikstar=\argmax\limits_{\lambdaik}\maximize\limits_{\lambdaik}&\dualfunction.
   \end{matrix}
 \end{equation}
 
-
+Similarly, using first order \KKT{} condition we make the gradient of $\dualfunction$ vanish
 \begin{equation}
-  \begin{matrix}
-    \lambdaik=\underset{\lambdaik}{\mathrm{argmax}}\{\underset{\vec{U}_i[k]}{\mathrm{minimize}}\;\}\\
-  \end{matrix}
+\nabla_{\lambdaik}\dualfunction=0,
 \end{equation}
-
-\begin{figure}[h]
-  \centering
-  \begin{subfigure}{.45\textwidth}
-    \includegraphics[width=\textwidth]{../img/original-minimum.png}
-    \caption{Original minimum.}
-    \label{fig:first}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../img/new-minimum-selfish.png}
-    \caption{Minimum after attack.}
-    \label{fig:second}
-  \end{subfigure}
-  \caption{Effects of non-conforming behaviors on optimal value. \todo{Refaire les images}}
-  \label{fig:figures}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \begin{subfigure}{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../img/ignoreX.png}
-    \caption{Optimal value after ignoring attacker.}
-    \label{fig:third}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../img/correctX.png}
-    \caption{Optimal value after trying to recover original behavior.}
-    \label{fig:third}
-  \end{subfigure}
-
-  \caption{Recovery options.}\label{fig:figures}
-\end{figure}
-
-\section{Study case}
-\label{sec:study-case}
-
-Model 3R-2C \cite{GoudaEtAl2002}
-\begin{figure}[h]
-  \centering
-  \begin{circuitikz}[european]
-    \draw (0,0) node[tlground]{} to[isource, l=$P^{\text{heat}}$] ++(0,2) to[short, -*] ++(1.5,0) coordinate (a);
-
-    \draw (a) node[above]{$T^{\text{in}}$}  to[C=$C^{\text{air}}$] ++(0,-2) node[tlground]{};
-    \draw (0,-3) node[tlground]{} to[isource, l=$I^{\text{sol}}$] ++(0,2)
-    to[short, -*] ++(1.5,0) coordinate (b);
-    \draw (b) to[C=$C^{\text{walls}}$] ++(0,-2) node[tlground]{};
-
-    \draw (a) -- ++(2,0) coordinate (c) -- ++(0,-.5) to[R=$R^{\text{iw/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (d);
-
-    \draw (b) node[above]{$T^{\text{walls}}$} to[short,-*] (d);
-
-    \draw (c) --  ++(2.5,0) -- ++(0,-.5) to[R=$R^{\text{oa/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (e);
-
-    \draw (d) to[R=$R^{\text{ow/oa}}$] (e) to[battery,l=$T^{\text{out}}$] ++(0,-2) node[tlground]{};
-  \end{circuitikz}
-  \caption{Thermic Model 3R-2C of a room.}
-  \label{fig:3R2C_model}
-\end{figure}
-
-The state-space model of each subsystem is given by:
+which yields
 \begin{equation}
-  \begin{matrix}
-    \label{eq:systems_cont}
-    \dot{\vec{x}}_{i}(t)  &=&{A_{c}}_{i}\vec{x}_{i}(t) &+& {B_{c}}_{i}\vec{u}_{i}(t)\\
-    \vec{y}_{i}(t)        &=&{C_{c}}_{i}\vec{x}_{i}(t) &&
-  \end{matrix},
+\lambdaik=-P_{i}\thetaik-\vec{s}_{i}[k],
 \end{equation}
-where
-\begin{equation}
-  \label{eq:4}
-  \begin{matrix}
-    A_{\mathrm{c}_{i}}=\left[
-    \begin{matrix}
-      -\frac{1}{C^{\text{walls}}_{i}R^{\text{oa/ia}}_{i}}-\frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}& \frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}\\
-      \frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}} &-\frac{1}{C^{\text{air}}_{i}R^{\text{ow/oa}}o_{i}}-\frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}}
-    \end{matrix}\right]\\
-    \begin{matrix}
-      B_{\mathrm{c}_{i}}=\left[
-      \begin{matrix}  \frac{10}{C^{\text{walls}}_{i}}& 0\end{matrix}
-                                                       \right]\T&C_{\mathrm{c}_{i}}=\left[\begin{matrix}1 & 0\end{matrix}\right]
-    \end{matrix}
-  \end{matrix}
-\end{equation}
-where ${\vec{x}_{i}=[{{x}_{A}}_{i}\T\ {{x}_{W}}_{i}\T]\T}$. ${x_A}_i$ and ${x_W}_i$ are the mean temperatures of the air and walls inside room~$i$. $\vec{u}_{i}$ is the input (the heating power)
-for the corresponding room. The inputs are constraint by ${\sum_{i=1}^{4}\vec{u}_{i}(t)\preceq 4\mathrm{kW}}$.
+where $P_{i}={(\linearcoefi)}^{-1}$ and $\vec{s}_{i}[k]=P_{i}\bar{\Gamma}_{i}\vec{f}_{i}[k]$.
 
-\begin{table}[b]
-  \centering
-  \caption{Model Parameters}\label{tab:modelParamMeaning}
-  \begin{tabular}[b]{cl}
-    \toprule
-    Symbol&Meaning\\
-    \midrule
-    $C^{\text{air}}_{i}$  &Heat Capacity of Inside Air\\
-    $C^{\text{walls}}_{i}$ &Heat Capacity of External Walls\\
-    $R^{\text{iw/ia}}_{i}$ &Resist. Between Inside Air and Inside Walls\\
-    $R^{\text{ow/oa}}_{i}$ &Resist. Between Outside Air and Outside Walls\\
-    $R^{\text{oa/ia}}_{i}$ &Resist. Between Inside and Out.\ Air (from windows)\\
-    \bottomrule
-  \end{tabular}
-\end{table}
+As we expected, the value of $\lambdaik$ depends on $\thetaik$.
+Furthermore, because of the quadratic form, the solution is an affine function.
 
-\begin{table}[b]
-  \centering
-  \caption{
-    Parameters for each agent}\label{tab:modelParam}
-  \begin{tabular}[t]{cccccc} \toprule
-    Symbol& I & II & III & IV &Unit\\
-    \midrule
-    $C^{\text{walls}}$   &$5.4$&$4.9$&$4.7$&$4.7$ &$10^{4}\mathrm{J/K}$ \\
-    $C^{\text{air}}$     &$7.5$ &$8.4 $&$8.2$ &$7.7$&$10^{4}\mathrm{J/K}$  \\
-    $R^{\text{oa/ia}}$   &$5.2$&$4.6$&$4.9$&$5.4$&$10^{-3}\mathrm{K/W}$ \\
-    $R^{\text{iw/ia}}$   &$2.3$&$2.4$&$2.3$&$2.9$&$10^{-4}\mathrm{K/W}$\\
-    $R^{\text{ow/oa}}$   &$1.5$&$0.6$&$0.7$&$0.7$& $10^{-4}\mathrm{K/W}$ \\
-    \bottomrule
-  \end{tabular}
-\end{table}
+\begin{remark}
+  One can notice, as foreshadowed in \S\ref{sec:attack-interest}, that the solution embeds information not only of the objective function and the reference and state (presence of $H_{i}$ and $\vec{f}_{i}[k]$), but also of the constraints (presence of $\bar{\Gamma}_{i}$ and $\thetaik$).
+  So, changes in these parameters affect the resulting value of $\lambdaik$.
+\end{remark}
+\subsection{attack}
+\label{sec:attack}
 
-the attacker has no motivation to get more
+\begin{enumerate}
+  \item Analysis of eigenvalues of negotiation
+\end{enumerate}
+
+
+% \begin{figure}[h]
+%   \centering
+%   \begin{subfigure}{.45\textwidth}
+%     \includegraphics[width=\textwidth]{../img/original-minimum.png}
+%     \caption{Original minimum.}
+%     \label{fig:first}
+%   \end{subfigure}
+%   \hfill
+%   \begin{subfigure}{0.45\textwidth}
+%     \includegraphics[width=\textwidth]{../img/new-minimum-selfish.png}
+%     \caption{Minimum after attack.}
+%     \label{fig:second}
+%   \end{subfigure}
+%   \caption{Effects of non-conforming behaviors on optimal value. \todo{Refaire les images}}
+%   \label{fig:figures}
+% \end{figure}
+
+% \begin{figure}[h]
+%   \centering
+%   \begin{subfigure}{0.45\textwidth}
+%     \includegraphics[width=\textwidth]{../img/ignoreX.png}
+%     \caption{Optimal value after ignoring attacker.}
+%     \label{fig:third}
+%   \end{subfigure}
+%   \hfill
+%   \begin{subfigure}{0.45\textwidth}
+%     \includegraphics[width=\textwidth]{../img/correctX.png}
+%     \caption{Optimal value after trying to recover original behavior.}
+%     \label{fig:third}
+%   \end{subfigure}
+
+%   \caption{Recovery options.}\label{fig:figures}
+% \end{figure}
+
+% \section{Study case}
+% \label{sec:study-case}
+
+% Model 3R-2C \cite{GoudaEtAl2002}
+% \begin{figure}[h]
+%   \centering
+%   \begin{circuitikz}[european]
+%     \draw (0,0) node[tlground]{} to[isource, l=$P^{\text{heat}}$] ++(0,2) to[short, -*] ++(1.5,0) coordinate (a);
+
+%     \draw (a) node[above]{$T^{\text{in}}$}  to[C=$C^{\text{air}}$] ++(0,-2) node[tlground]{};
+%     \draw (0,-3) node[tlground]{} to[isource, l=$I^{\text{sol}}$] ++(0,2)
+%     to[short, -*] ++(1.5,0) coordinate (b);
+%     \draw (b) to[C=$C^{\text{walls}}$] ++(0,-2) node[tlground]{};
+
+%     \draw (a) -- ++(2,0) coordinate (c) -- ++(0,-.5) to[R=$R^{\text{iw/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (d);
+
+%     \draw (b) node[above]{$T^{\text{walls}}$} to[short,-*] (d);
+
+%     \draw (c) --  ++(2.5,0) -- ++(0,-.5) to[R=$R^{\text{oa/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (e);
+
+%     \draw (d) to[R=$R^{\text{ow/oa}}$] (e) to[battery,l=$T^{\text{out}}$] ++(0,-2) node[tlground]{};
+%   \end{circuitikz}
+%   \caption{Thermic Model 3R-2C of a room.}
+%   \label{fig:3R2C_model}
+% \end{figure}
+
+% The state-space model of each subsystem is given by:
+% \begin{equation}
+%   \begin{matrix}
+%     \label{eq:systems_cont}
+%     \dot{\vec{x}}_{i}(t)  &=&{A_{c}}_{i}\vec{x}_{i}(t) &+& {B_{c}}_{i}\vec{u}_{i}(t)\\
+%     \vec{y}_{i}(t)        &=&{C_{c}}_{i}\vec{x}_{i}(t) &&
+%   \end{matrix},
+% \end{equation}
+% where
+% \begin{equation}
+%   \label{eq:4}
+%   \begin{matrix}
+%     A_{\mathrm{c}_{i}}=\left[
+%     \begin{matrix}
+%       -\frac{1}{C^{\text{walls}}_{i}R^{\text{oa/ia}}_{i}}-\frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}& \frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}\\
+%       \frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}} &-\frac{1}{C^{\text{air}}_{i}R^{\text{ow/oa}}o_{i}}-\frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}}
+%     \end{matrix}\right]\\
+%     \begin{matrix}
+%       B_{\mathrm{c}_{i}}=\left[
+%       \begin{matrix}  \frac{10}{C^{\text{walls}}_{i}}& 0\end{matrix}
+%                                                        \right]\T&C_{\mathrm{c}_{i}}=\left[\begin{matrix}1 & 0\end{matrix}\right]
+%     \end{matrix}
+%   \end{matrix}
+% \end{equation}
+% where ${\vec{x}_{i}=[{{x}_{A}}_{i}\T\ {{x}_{W}}_{i}\T]\T}$. ${x_A}_i$ and ${x_W}_i$ are the mean temperatures of the air and walls inside room~$i$. $\vec{u}_{i}$ is the input (the heating power)
+% for the corresponding room. The inputs are constraint by ${\sum_{i=1}^{4}\vec{u}_{i}(t)\preceq 4\mathrm{kW}}$.
+
+% \begin{table}[b]
+%   \centering
+%   \caption{Model Parameters}\label{tab:modelParamMeaning}
+%   \begin{tabular}[b]{cl}
+%     \toprule
+%     Symbol&Meaning\\
+%     \midrule
+%     $C^{\text{air}}_{i}$  &Heat Capacity of Inside Air\\
+%     $C^{\text{walls}}_{i}$ &Heat Capacity of External Walls\\
+%     $R^{\text{iw/ia}}_{i}$ &Resist. Between Inside Air and Inside Walls\\
+%     $R^{\text{ow/oa}}_{i}$ &Resist. Between Outside Air and Outside Walls\\
+%     $R^{\text{oa/ia}}_{i}$ &Resist. Between Inside and Out.\ Air (from windows)\\
+%     \bottomrule
+%   \end{tabular}
+% \end{table}
+
+% \begin{table}[b]
+%   \centering
+%   \caption{
+%     Parameters for each agent}\label{tab:modelParam}
+%   \begin{tabular}[t]{cccccc} \toprule
+%     Symbol& I & II & III & IV &Unit\\
+%     \midrule
+%     $C^{\text{walls}}$   &$5.4$&$4.9$&$4.7$&$4.7$ &$10^{4}\mathrm{J/K}$ \\
+%     $C^{\text{air}}$     &$7.5$ &$8.4 $&$8.2$ &$7.7$&$10^{4}\mathrm{J/K}$  \\
+%     $R^{\text{oa/ia}}$   &$5.2$&$4.6$&$4.9$&$5.4$&$10^{-3}\mathrm{K/W}$ \\
+%     $R^{\text{iw/ia}}$   &$2.3$&$2.4$&$2.3$&$2.9$&$10^{-4}\mathrm{K/W}$\\
+%     $R^{\text{ow/oa}}$   &$1.5$&$0.6$&$0.7$&$0.7$& $10^{-4}\mathrm{K/W}$ \\
+%     \bottomrule
+%   \end{tabular}
+% \end{table}
+
+% the attacker has no motivation to get more
 
 \end{document}
