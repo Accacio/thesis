@@ -32,7 +32,7 @@ The system can be under constraints
 with ${h:\R^{n_{x}}\times\R^{n_{u}}\to\R^{n_{c}}}$.
 Observe that mathematically equality constraints can be represented by a couple of inequality constraints, although for computer implementation, it can lead to poor numerical conditioning, resulting in unexpected behavior~\cite{BorrelliEtAl2017}.
 
-Given an objective function ${J:\R^{n_{x}}\times\R^{\predhorz\cdot n_{u}}\to \R}$, we can optimize this objective for a given horizon $\set{H}=\{1\mathbin{:}\predhorz\}$ to obtain a control sequence ${\vec{U}^{\star}[k]=[\vec{u}^{\star}[0|k];\dots; \vec{u}^{\star}[\predhorz-1|k]]}$. To calculate $\vec{U}^{\star}[k]$,
+Given an objective function ${J:\R^{n_{x}}\times\R^{\predhorz\cdot n_{u}}\to \R}$, we can optimize this objective for a given horizon $\predictionSet=\{1\mathbin{:}\predhorz\}$ to obtain a control sequence ${\vec{U}^{\star}[k]=[\vec{u}^{\star}[0|k];\dots; \vec{u}^{\star}[\predhorz-1|k]]}$. To calculate $\vec{U}^{\star}[k]$,
 we use states and input predictions of time $k+i$ calculated in a time $k$, represented by $\vec{x}[i|k]$ and $\vec{u}[i|k]$. The problem solved to calculate the control sequence is
 
 \begin{equation}\label{eq:general_mpc}
@@ -48,7 +48,7 @@ we use states and input predictions of time $k+i$ calculated in a time $k$, repr
         \end{aligned}\qquad        \right\}
 
       \begin{aligned}
-        \forall i\in\set{H}
+        \forall i\in\predictionSet
       \end{aligned}
     \end{matrix}
   \end{aligned}
@@ -70,7 +70,7 @@ We can cite non-extensively some solvers such as MATLAB internal QP solvers\foot
 A commonly quadratic objective function used is
 \begin{equation}
   \label{eq:quadratic_objective_with_sum}
-  J(\vec{x}[0|k],\vec{U}[k])=\sum_{i\in\set{H}}\left[\norm{\mpcvec{v}[ ][i][k]}^{2}_{Q} +\norm{\mpcvec{u}[ ][i-1][k]}^{2}_{R}\right]
+  J(\vec{x}[0|k],\vec{U}[k])=\sum_{i\in\predictionSet}\left[\norm{\mpcvec{v}[ ][i][k]}^{2}_{Q} +\norm{\mpcvec{u}[ ][i-1][k]}^{2}_{R}\right]
 \end{equation}
 where $\vec{v}$ is a control objective, and ${ Q\in\semidefpos }$ and ${ R\in\defpos }$ are weighting matrices, which can represent the costs of each term of the equation.
 The ratio between these matrices describes the compromise between control signal energy and control objective.
@@ -100,7 +100,7 @@ In this work, we concentrate in \textbf{input constraint systems} whose constrai
 \begin{equation}
   \Gamma\vec{u}[k]\preceq\vec{u}_{\max}
 \end{equation}
-which can be vectorized for a horizon in $\mathcal{H}$
+which can be vectorized for a horizon in $\predictionSet$
 \begin{equation}
 \bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}},
 \end{equation}
@@ -124,7 +124,7 @@ Putting it all together, we have
       \mathrm{subject~ to} &
       \vec{x}[i|k]=A\vec{x}[i-1|k]+B\vec{u}[i-1|k]
       &
-       \forall i\in\set{H} \\
+       \forall i\in\predictionSet \\
       &\bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}}&
 
     \end{matrix}
