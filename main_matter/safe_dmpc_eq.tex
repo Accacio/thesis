@@ -25,7 +25,7 @@ First we recall the monolithic \mpc{} equivalent problem~\eqref{eq:qp_standard_f
   \tag{\ref*{eq:qp_standard_form}}
   \begin{aligned}
     \begin{matrix}
-      \underset{\vec{U}[k]}{\mathrm{minimize}} &
+      \minimize\limits_{\vec{U}[k]} &
                                                  \frac{1}{2}\norm{\vec{U}[k]}^{2}_{H} + {\vec{f}[k]}^{T}\vec{U}[k] &\\
       \mathrm{subject~ to} &
                              \bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}}
@@ -39,7 +39,7 @@ and the local problems~\eqref{eq:DOP_local} solved in the primal decomposition, 
   \tag{\ref*{eq:DOP_local}}
   \bar{J}_{i}^{\star}(\thetaik)=
   \begin{matrix}
-    \underset{\vec{U}_{i}[k]}{\mathrm{minimize}}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+    \minimize\limits_{\vec{U}_{i}[k]}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
     \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \preceq \thetaik:\lambdaik
   \end{matrix}.
 \end{equation}
@@ -49,14 +49,14 @@ The unconstrained version of problems~\eqref{eq:qp_standard_form_again} and~\eqr
   \label{eq:qp_standard_form_unconstrained}
   \begin{aligned}
     \begin{matrix}
-      \underset{\vec{U}[k]}{\mathrm{minimize}} &
+      \minimize\limits_{\vec{U}[k]} &
                                                  \frac{1}{2}\norm{\vec{U}[k]}^{2}_{H} + {\vec{f}[k]}^{T}\vec{U}[k] &\\
     \end{matrix},
   \end{aligned}\\
   \label{eq:DOP_local_unconstrained}
   \begin{aligned}
     \begin{matrix}
-    \underset{\vec{U}_{i}[k]}{\mathrm{minimize}}&\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+    \minimize\limits_{\vec{U}_{i}[k]}&\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
     \end{matrix},
   \end{aligned}
 \end{align}
@@ -78,14 +78,15 @@ Furthermore, in this chapter, we assume that for all sub-systems, their unconstr
 \bar{\Gamma}_{i}\vec{U}_{i_{\text{unc}}}^{\star}[k]\succ \thetaik, \forall i\in\set{M}, \forall k.
 \end{equation}
 
-This means that the optimal solution would need more resources (more than $\vec{U}_{\max}$). So the solution of those \qp{} result on the projection of the solutions onto the polytope, which results being projected on the perimter of the polytope.
+This means that the optimal solution would need more resources (more than $\vec{U}_{\max}$).
+So the solution to those \qp{} problems is the projection of the unconstrained solutions onto the polytope. Thus, projecting onto the perimeter of the polytope.
 
 We assume that given projection solves the inequality constrained problem equivalent to an equality constraint problem
 \begin{equation}
   \label{eq:qp_standard_form_equality}
   \begin{aligned}
     \begin{matrix}
-      \underset{\vec{U}[k]}{\mathrm{minimize}} &
+      \minimize\limits_{\vec{U}[k]} &
                                                  \frac{1}{2}\norm{\vec{U}[k]}^{2}_{H} + {\vec{f}[k]}^{T}\vec{U}[k] &\\
       \mathrm{subject~ to} &
                              \bar{\Gamma}\vec{U}[k]= {\vec{U}}_{\text{max}}
@@ -110,7 +111,7 @@ with local problems~\eqref{eq:example_local_problem} and negotiation equation~\e
   \begin{matrix}
   \label{eq:example_local_problem_reprise}
   \tag{\ref*{eq:example_local_problem}}
-    \underset{\vec{U}_{i}[k]}{\mathrm{minimize}}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+    \minimize\limits_{\vec{U}_{i}[k]}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
     \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] = \thetaik:\lambdaik
   \end{matrix}
 \end{equation}
@@ -130,7 +131,7 @@ When a system does not suffer from scarcity, the solution of the unconstrained p
 \end{equation}
 
 This way, the elements of $\vec{U}_{\text{unc}}$ lie inside the polytope and none of the constraints is active.
-As a consequence, no projection onto the polytope is needed, since it would result on the same point.
+As a consequence, no projection onto the polytope is needed, since it would result in the same point.
 That means the solution of the constrained problem is the same as the unconstrained, so the problem is in fact unconstrained.
 
 Instead of needing to solve the local problems~\eqref{eq:DOP_local_reprise} and use a negotiation to decompose the system, the problem doesn't need coordination.

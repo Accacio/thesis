@@ -39,7 +39,7 @@ we use states and input predictions of time $k+i$ calculated in a time $k$, repr
   \small
   \begin{aligned}
     \begin{matrix}
-      \underset{\vec{U}[k]}{\mathrm{minimize}} & J(\vec{x}[0|k],\vec{U}[k])&\\
+      \minimize\limits_{\vec{U}[k]} & J(\vec{x}[0|k],\vec{U}[k])&\\
       \mathrm{subject~ to} &
 
       \left.  \begin{aligned}
@@ -63,7 +63,7 @@ Some of those problems even have explicit solutions~\cite{BoydVandenberghe2004}.
 
 \subsection{Convex \mpc\ (quadratic case) }\label{sec:qp_mpc}
 The \mpc\ community favors the use of convex problems when possible. Two families of convex problems broadly used are \qp\ and \lp.
-In this work, we concentrate on \qp\ problems, which have quadratic objective functions and affine or linear constraints.
+In this work, we concentrate on \qp{} problems, which have quadratic objective functions and affine or linear constraints.
 Numerous mathematical solvers are apt to solve this kind of problem directly or through equivalent problems.
 We can cite non-extensively some solvers such as MATLAB internal QP solvers\footnote{\url{https://fr.mathworks.com/help/optim/ug/quadprog.html}}, OSQP\footnote{\url{https://osqp.org}}, MOSEK\footnote{\url{https://www.mosek.com}} and ECOS\footnote{\url{https://github.com/embotech/ecos}}.
 
@@ -120,7 +120,7 @@ Putting it all together, we have
   \small
   \begin{aligned}
     \begin{matrix}
-      \underset{\vec{U}[k]}{\mathrm{minimize}} &\norm{\vec{V}[k]}^{2}_{\bar{Q}} + \norm{\vec{U}[k] }^{2}_{\bar{R}}&\\
+      \minimize\limits_{\vec{U}[k]} &\norm{\vec{V}[k]}^{2}_{\bar{Q}} + \norm{\vec{U}[k] }^{2}_{\bar{R}}&\\
       \mathrm{subject~ to} &
       \vec{x}[i|k]=A\vec{x}[i-1|k]+B\vec{u}[i-1|k]
       &
@@ -172,12 +172,12 @@ If we opt for a Batch Approach~\cite[Chapter 8.2]{BorrelliEtAl2017} to solve the
     \end{matrix}
     \quad
 \end{equation}
-and substitute them in the objective function, yielding the \qp\ problem, which implicitly respects these constraints
+and substitute them in the objective function, yielding the \qp{} problem, which implicitly respects these constraints
 \begin{equation}
   \label{eq:quadratic_objective_compact_batch}
   \begin{aligned}
     \begin{matrix}
-      \underset{\vec{U}[k]}{\mathrm{minimize}} &
+      \minimize\limits_{\vec{U}[k]} &
       \norm{\vec{U}[k]}^{2}_{H} + 2{\vec{f}[k]}^{T}\vec{U}[k] + c[k] &\\
       \mathrm{subject~ to} &
 \bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}}
@@ -198,7 +198,7 @@ By dividing the objective function by $2$ and ignoring the constant term $c[k]$,
   \label{eq:qp_standard_form}
   \begin{aligned}
     \begin{matrix}
-      \underset{\vec{U}[k]}{\mathrm{minimize}} &
+      \minimize\limits_{\vec{U}[k]} &
       \frac{1}{2}\norm{\vec{U}[k]}^{2}_{H} + {\vec{f}[k]}^{T}\vec{U}[k] &\\
       \mathrm{subject~ to} &
 \bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}}
@@ -233,7 +233,7 @@ Be the following problem a general decomposable problem, i.e., the decision vari
   \small
   \begin{aligned}
     \begin{matrix}
-      \underset{\vec{x}_{1},\vec{x}_{2}}{\mathrm{minimize}}  &J(\vec{x}_{1},\vec{x}_{2})&\\
+      \minimize\limits_{\vec{x}_{1},\vec{x}_{2}}  &J(\vec{x}_{1},\vec{x}_{2})&\\
       \mathrm{subject~ to} &
 
            f_{i}(\vec{x}_{1},\vec{x}_{2}) \leq 0 \text{, } i\in\set{M}=\{1\mathbin{:}m\}\\
@@ -256,7 +256,7 @@ The decomposition of uncoupled problems is straightforward and trivial, being so
   \small
   \begin{aligned}
     \begin{matrix}
-      \underset{\vec{x}_{1},\vec{x}_{2}}{\mathrm{minimize}}  &J_{1}(\vec{x}_{1})&+&J_{2}(\vec{x}_{2})&\\
+      \minimize\limits_{\vec{x}_{1},\vec{x}_{2}}  &J_{1}(\vec{x}_{1})&+&J_{2}(\vec{x}_{2})&\\
       \mathrm{subject~ to} &
 
            f_{i}(\vec{x}_{1}) \leq 0 \text{, } i\in\set{M}_{1}& & f_{i}(\vec{x}_{2}) \leq 0 \text{, } i\in\set{M}_{2}\\
@@ -270,7 +270,7 @@ We can trivially rewrite~\eqref{eq:general_uncoupled_optimization_problem} as
   \small
   \begin{aligned}
     \begin{matrix}
-      \underset{\vec{x}_{1},\vec{x}_{2}}{\mathrm{minimize}}  &{J_{1}(\vec{x}_{1}^{\star})}+{J_{2}(\vec{x}_{2}^{\star})}
+      \minimize\limits_{\vec{x}_{1},\vec{x}_{2}}  &{J_{1}(\vec{x}_{1}^{\star})}+{J_{2}(\vec{x}_{2}^{\star})}
     \end{matrix}
   \end{aligned},
 \end{equation}
@@ -278,7 +278,7 @@ where ${J_{1}(\vec{x}_{1}^{\star})}$ and ${J_{2}(\vec{x}_{2}^{\star})}$ can be f
 \begin{subequations}\label{eq:general_uncoupled_optimization_problem_decomposed}
 \begin{equation}\label{eq:general_uncoupled_optimization_problem_decomposed_1}
     {J_{1}(\vec{x}_{1}^{\star})}=\begin{matrix}
-      \underset{\vec{x}_{1}}{\mathrm{minimize}}  &J_{1}(\vec{x}_{1})\\
+      \minimize\limits_{\vec{x}_{1}}  &J_{1}(\vec{x}_{1})\\
       \mathrm{subject~ to} &
 
            f_{i}(\vec{x}_{1}) \leq 0 \text{, } i\in\set{M}_{1}\\
@@ -287,7 +287,7 @@ where ${J_{1}(\vec{x}_{1}^{\star})}$ and ${J_{2}(\vec{x}_{2}^{\star})}$ can be f
 \end{equation}
 \begin{equation}\label{eq:general_uncoupled_optimization_problem_decomposed_2}
     {J_{2}(\vec{x}_{2}^{\star})}=\begin{matrix}
-      \underset{\vec{x}_{2}}{\mathrm{minimize}}  &J_{2}(\vec{x}_{2})\\
+      \minimize\limits_{\vec{x}_{2}}  &J_{2}(\vec{x}_{2})\\
       \mathrm{subject~ to} &
 
            f_{i}(\vec{x}_{2}) \leq 0 \text{, } i\in\set{M}_{2}\\
@@ -316,7 +316,7 @@ We suppose $J(\vec{x})$ can be rewritten  as ${J(\vec{x})=J_{1}(\vec{x}_{a},\vec
   \small
   \begin{aligned}
     \begin{matrix}
-      \underset{\vec{x}_{a},\vec{x}_{ab},\vec{x}_{b}}{\mathrm{minimize}}  &J_{1}(\vec{x}_{a},\vec{x}_{ab})&+&J_{2}(\vec{x}_{b},\vec{x}_{ab})&\\
+      \minimize\limits_{\vec{x}_{a},\vec{x}_{ab},\vec{x}_{b}}  &J_{1}(\vec{x}_{a},\vec{x}_{ab})&+&J_{2}(\vec{x}_{b},\vec{x}_{ab})&\\
       \mathrm{subject~ to} &
 
       f_{i}(\vec{x}_{a}) \leq 0 \text{, } i\in\set{M}_{a} & & f_{i}(\vec{x}_{b}) \leq 0 \text{, } i\in\set{M}_{b}\\
@@ -330,7 +330,7 @@ Similarly, we can rewrite~\eqref{eq:general_complicating_variables_optimization_
   \small
   \begin{aligned}
     \begin{matrix}
-      \underset{\vec{x}_{a},\vec{x}_{ab},\vec{x}_{b}}{\mathrm{minimize}}  &J_{1}(\vec{x}_{a}^{\star},\vec{x}_{ab})+{J_{2}(\vec{x}_{b}^{\star},\vec{x}_{ab})}
+      \minimize\limits_{\vec{x}_{a},\vec{x}_{ab},\vec{x}_{b}}  &J_{1}(\vec{x}_{a}^{\star},\vec{x}_{ab})+{J_{2}(\vec{x}_{b}^{\star},\vec{x}_{ab})}
     \end{matrix}
   \end{aligned},
 \end{equation}
@@ -338,7 +338,7 @@ where $J_{1}(\vec{x}_{a}^{\star},\vec{x}_{ab})$ and $J_{2}(\vec{x}_{b}^{\star},\
 \begin{subequations}\label{eq:general_complicating_variables_optimization_problem_decomposed}
 \begin{equation}\label{eq:general_complicating_variables_optimization_problem_decomposed_1}
     J_{1}(\vec{x}_{a}^{\star},\vec{x}_{ab})=\begin{matrix}
-      \underset{\vec{x}_{a}}{\mathrm{minimize}}  &J_{1}(\vec{x}_{a},\vec{x}_{ab})&\\
+      \minimize\limits_{\vec{x}_{a}}  &J_{1}(\vec{x}_{a},\vec{x}_{ab})&\\
       \mathrm{subject~ to} &
 
            f_{i}(\vec{x}_{a}) \leq 0 \text{, } &i\in\set{M}_{a}\\
@@ -347,7 +347,7 @@ where $J_{1}(\vec{x}_{a}^{\star},\vec{x}_{ab})$ and $J_{2}(\vec{x}_{b}^{\star},\
 \end{equation}
 \begin{equation}\label{eq:general_complicating_variables_optimization_problem_decomposed_2}
     J_{2}(\vec{x}_{b}^{\star},\vec{x}_{ab})=\begin{matrix}
-      \underset{\vec{x}_{b}}{\mathrm{minimize}}  &J_{2}(\vec{x}_{b},\vec{x}_{ab})&\\
+      \minimize\limits_{\vec{x}_{b}}  &J_{2}(\vec{x}_{b},\vec{x}_{ab})&\\
       \mathrm{subject~ to} &
 
            f_{i}(\vec{x}_{b}) \leq 0 \text{, } &i\in\set{M}_{b}\\
@@ -368,7 +368,7 @@ and ${w_{i}(\vec{x}_{1},\vec{x}_{2})=w_{i_{1}}(\vec{x}_{1})+w_{i_{2}}(\vec{x}_{2
   \small
   \begin{aligned}
     \begin{matrix}
-      \underset{\vec{x}_{1},\vec{x}_{2}}{\mathrm{minimize}}  &J_{1}(\vec{x}_{1})&+&J_{2}(\vec{x}_{2})&\\
+      \minimize\limits_{\vec{x}_{1},\vec{x}_{2}}  &J_{1}(\vec{x}_{1})&+&J_{2}(\vec{x}_{2})&\\
       \mathrm{subject~ to} &
 
            f_{i}(\vec{x}_{1}) \leq 0 \text{, } i\in\set{M}_{1}& & f_{i}(\vec{x}_{2}) \leq 0 \text{, } i\in\set{M}_{2}\\
@@ -384,7 +384,7 @@ Adding auxiliary variables $\vec{\theta}_{o}$ and $\vec{\theta}_{n}$ we can rewr
   \small
   \begin{aligned}
     \begin{matrix}
-      \underset{\vec{x}_{1},\vec{x}_{2},\vec{\theta_{o}},\vec{\theta}_{n}}{\mathrm{minimize}}  &J_{1}(\vec{x}_{1}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})+J_{2}(\vec{x}_{2}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})
+      \minimize\limits_{\vec{x}_{1},\vec{x}_{2},\vec{\theta_{o}},\vec{\theta}_{n}}  &J_{1}(\vec{x}_{1}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})+J_{2}(\vec{x}_{2}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})
     \end{matrix}
   \end{aligned},
 \end{equation}
@@ -393,7 +393,7 @@ where $J_{1}(\vec{x}_{1}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})$ and $J_{2}(
 \begin{subequations}\label{eq:general_complicating_constraints_optimization_problem_decomposed}
   \begin{equation}
     J_{1}(\vec{x}_{1}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})=\begin{matrix}
-      \underset{\vec{x}_{a}}{\mathrm{minimize}}  &&J_{1}(\vec{x}_{1})&\\
+      \minimize\limits_{\vec{x}_{a}}  &&J_{1}(\vec{x}_{1})&\\
       \mathrm{subject~ to} &
       f_{i}(\vec{x}_{a}) \leq 0 \text{, } i\in\set{M}_{1} & & h_{m_{1}}(\vec{x}_{1}) \leq \vec{\theta}_{o}\text{, } m\in\set{O}\\
       & g_{j}(\vec{x}_{a}) = 0\text{, } j\in\set{P}_{1} & & w_{n_{1}}(\vec{x}_{1}) = \vec{\theta}_{n} \text{, }  i\in\set{N}
@@ -401,7 +401,7 @@ where $J_{1}(\vec{x}_{1}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})$ and $J_{2}(
   \end{equation}\label{eq:general_complicating_constraints_optimization_problem_decomposed_1}%
   \begin{equation}
     J_{2}(\vec{x}_{2}^{\star},\vec{\theta}_{o},\vec{\theta}_{n})=\begin{matrix}
-      \underset{\vec{x}_{b}}{\mathrm{minimize}}  &&J_{2}(\vec{x}_{2})&\\
+      \minimize\limits_{\vec{x}_{b}}  &&J_{2}(\vec{x}_{2})&\\
       \mathrm{subject~ to} &
       f_{i}(\vec{x}_{b}) \leq 0 \text{, } i\in\set{M}_{2} & & \hspace{-1em}h_{m_{2}}(\vec{x}_{2}) \leq -\vec{\theta}_{o}\text{, } m\in\set{O}\\
       & g_{j}(\vec{x}_{b}) = 0\text{, } j\in\set{P}_{2} & & \hspace{-1em}w_{n_{2}}(\vec{x}_{2}) = -\vec{\theta}_{n} \text{, }  i\in\set{N}
@@ -427,7 +427,7 @@ A problem
   \small
   \begin{aligned}
     \begin{matrix}
-      \underset{\text{decision variables}}{\mathrm{minimize}}  &\text{objective}_{1}&+&\text{objective}_{2}&\\
+      \minimize\limits_{\text{decision variables}}  &\text{objective}_{1}&+&\text{objective}_{2}&\\
       \mathrm{subject~ to} & \text{constraints}_{1},&&  \text{constraints}_{2}\\
       &&\text{coupling constraints}_{12}&
     \end{matrix}
@@ -438,7 +438,7 @@ is rewritten as
   \small
   \begin{aligned}
     \begin{matrix}
-      \underset{\mathop{\operatorname{+}}\limits^{\text{decision variables}}_{\text{auxiliary variables}}}{\mathrm{minimize}}  &\text{objective}^{*}_{1}(\text{auxiliary variables})+\text{objective}^{*}_{2}(\text{auxiliary variables})&\\
+      \minimize\limits_{\mathop{\operatorname{+}}\limits^{\text{decision variables}}_{\text{auxiliary variables}}}  &\text{objective}^{*}_{1}(\text{auxiliary variables})+\text{objective}^{*}_{2}(\text{auxiliary variables})&\\
     \end{matrix}
   \end{aligned}
 \end{equation}
@@ -446,7 +446,7 @@ where $\text{objective}^{*}_{1}(\text{auxiliary variables})+\text{objective}^{*}
 \begin{subequations}\label{eq:general_coupled_optimization_problem_decomposed}
 \begin{equation}\label{eq:general_coupled_optimization_problem_decomposed_1}
     \begin{matrix}
-      \underset{\text{decision variables}_{1}}{\mathrm{minimize}}  &\text{objective}_{1}&\\
+      \minimize\limits_{\text{decision variables}_{1}}  &\text{objective}_{1}&\\
 
       \mathrm{subject~ to} & \text{constraints}_{1}\\
       &\text{coupling constraints}_{12_{1}}(\text{auxiliary variables})
@@ -454,7 +454,7 @@ where $\text{objective}^{*}_{1}(\text{auxiliary variables})+\text{objective}^{*}
 \end{equation}
 \begin{equation}\label{eq:general_coupled_optimization_problem_decomposed_2}
     \begin{matrix}
-      \underset{\text{decision variables}_{2}}{\mathrm{minimize}}  &\text{objective}_{2}&\\
+      \minimize\limits_{\text{decision variables}_{2}}  &\text{objective}_{2}&\\
 
       \mathrm{subject~ to} & \text{constraints}_{2}\\
       &\text{coupling constraints}_{12_{2}}(\text{auxiliary variables})

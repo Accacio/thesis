@@ -20,14 +20,14 @@ We start from the monolithic \mpc{} equivalent problem presented in~\eqref{eq:qp
   \tag{\ref*{eq:qp_standard_form}}
   \begin{aligned}
     \begin{matrix}
-      \underset{\vec{U}[k]}{\mathrm{minimize}} &
+      \minimize\limits_{\vec{U}[k]} &
       \frac{1}{2}\norm{\vec{U}[k]}^{2}_{H} + {\vec{f}[k]}^{T}\vec{U}[k] &\\
       \mathrm{subject~ to} &
 \bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}}
     \end{matrix}
   \end{aligned}.
 \end{equation}
-As stated in \S\ref{sec:qp_mpc}, this problem is an input constrained \qp{}, which is convex.
+As stated in \S\ref{sec:qp_mpc}, this problem is an input constrained \qp{} problem, which is convex.
 
 To decompose the problem with the optimization decomposition frameworks shown in~\S\ref{sec:decomp-fram} we assume the objective function of problem~\eqref{eq:qp_standard_form_reprise} to be decomposable into $M$ equally sized parts, which correspond (corresponding sub-systems and sub-problems~\S\ref{sec:distributing_computation_units}) to sub divisions of the initial system~\eqref{eq:large_scale_system_model}.
 The subsystems are ruled by dynamics $(A_{i},B_{i},C_{i})$, and have states $\vec{x}_{i}[k]$, references $\vec{w}_{i}[k]$ and inputs $\vec{u}_{i}[k]$.
@@ -37,7 +37,7 @@ Each sub-problem is given an index in set $\set{M}=\{1\mathbin{:}M\}$ and we rew
   \label{eq:qp_standard_form_decomposable}
   \begin{aligned}
     \begin{matrix}
-      \underset{\vec{U}_{1}[k],\dots, \vec{U}_{M}[k]}{\mathrm{minimize}} &
+      \minimize\limits_{\vec{U}_{1}[k],\dots, \vec{U}_{M}[k]} &
       \sum\limits_{i\in\set{M}}\left[\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\right]&\\
       \mathrm{subject~ to} & \sum\limits_{i\in\set{M}}\left[\bar{\Gamma}_{i}\vec{U}_{i}[k]\right] \preceq {\vec{U}}_{\text{max}}
     \end{matrix}
@@ -64,7 +64,7 @@ Using the methodology in~\S\ref{sec:generalizing_decomposition} for coupling con
   \begin{equation}
         \bar{J}_{i}^{\star}(\thetaik)=
         \begin{matrix}
-          \underset{\vec{U}_{i}[k]}{\mathrm{minimize}}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+          \minimize\limits_{\vec{U}_{i}[k]}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
           \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \preceq \thetaik:\lambdaik
       \end{matrix}
     \label{eq:DOP_local}
@@ -74,7 +74,7 @@ Using the methodology in~\S\ref{sec:generalizing_decomposition} for coupling con
     \begin{aligned}
       \bar{J}^{\star}=
       \begin{matrix}
-        \underset{\mpcvec{\theta}[i][k], \dots, \mpcvec{\theta}[M][k]}{\mathrm{minimize}} &\sum\limits_{i\in\set{M}} J^{\star}_i(\thetaik)\\
+        \minimize\limits_{\mpcvec{\theta}[i][k], \dots, \mpcvec{\theta}[M][k]} &\sum\limits_{i\in\set{M}} J^{\star}_i(\thetaik)\\
         \mathrm{subject~ to} &
           \begin{aligned}
             \quad \sum_{i\in\set{M}}\thetaik\preceq\vec{U}_{\max}\\
@@ -261,7 +261,7 @@ $R_{i}=   I_{2}$
 that results in the problems
 \begin{equation}
   \begin{matrix}
-    \underset{\vec{U}_{i}[k]}{\mathrm{minimize}}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+    \minimize\limits_{\vec{U}_{i}[k]}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
     \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] = \thetaik:\lambdaik
   \end{matrix}
   \label{eq:example_local_problem}
