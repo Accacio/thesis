@@ -84,16 +84,6 @@ axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[0,0:lastp[k],k,2]),color_
 axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[1,0:lastp[k],k,2]),color_map[5])
 
 axs.plot(np.arange(0,lastp[k]),np.transpose(np.mean(lambdaHist[:,0:lastp[k],k,:],axis=2)),'--k')
-liar = sio.loadmat("../data/example_dmpc_liar.mat")
-lastp=np.transpose(example['lastp'])[0]
-theta=liar['theta']
-lambdaHist=liar['lambdaHist']
-xt=liar['xt'][0]
-Wt=liar['Wt']
-simK=liar['simK'][0][0]
-
-print(np.shape(theta))
-print((theta))
 
 plt.xlabel('Negotiation step ($p$)',usetex=True,fontsize=16)
 plt.xticks(fontsize = 20)
@@ -121,5 +111,88 @@ plt.savefig("../img/example_state" +  ".png",bbox_inches='tight',facecolor=fig.g
 
 
 # plt.show()
+liar = sio.loadmat("../data/example_dmpc_liar.mat")
+lastp=np.transpose(liar['lastp'])[0]
+theta=liar['theta']
+lambdaHist=liar['lambdaHist']
+xt=liar['xt'][0]
+Wt=liar['Wt']
+simK=liar['simK'][0][0]
+
+print(np.shape(lambdaHist))
+print(np.shape(lastp))
+# print((theta))
+
+k=0
+fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
+axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[0,0:lastp[k],k,0]),color_map[0])
+axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[1,0:lastp[k],k,0]),color_map[1])
+axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[0,0:lastp[k],k,1]),color_map[2])
+axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[1,0:lastp[k],k,1]),color_map[3])
+axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[0,0:lastp[k],k,2]),color_map[4])
+axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[1,0:lastp[k],k,2]),color_map[5])
+
+axs.plot(np.arange(0,lastp[k]),np.transpose(np.mean(lambdaHist[:,0:lastp[k],k,:],axis=2)),'--k')
+
+plt.xlabel('Negotiation step ($p$)',usetex=True,fontsize=16)
+plt.xticks(fontsize = 20)
+plt.yticks(fontsize = 20)
+plt.legend((  '$\\lambda_{1_1}$', '$\\lambda_{1_2}$', '$\\lambda_{2_1}$', '$\\lambda_{2_2}$','$\\lambda_{3_1}$', '$\\lambda_{3_2}$'),ncol=3,fontsize=16)
+plt.savefig("../img/example_liar_lambda_k_" + str(k)  +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig("../img/example_liar_lambda_k_" + str(k)  +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
+
+k=4
+fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
+axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[0,0:lastp[k],k,0]),color_map[0])
+axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[1,0:lastp[k],k,0]),color_map[1])
+axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[0,0:lastp[k],k,1]),color_map[2])
+axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[1,0:lastp[k],k,1]),color_map[3])
+axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[0,0:lastp[k],k,2]),color_map[4])
+axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[1,0:lastp[k],k,2]),color_map[5])
+
+axs.plot(np.arange(0,lastp[k]),np.transpose(np.mean(lambdaHist[:,0:lastp[k],k,:],axis=2)),'--k')
+
+plt.xlabel('Negotiation step ($p$)',usetex=True,fontsize=16)
+plt.xticks(fontsize = 20)
+plt.yticks(fontsize = 20)
+plt.legend((  '$\\lambda_{1_1}$', '$\\lambda_{1_2}$', '$\\lambda_{2_1}$', '$\\lambda_{2_2}$','$\\lambda_{3_1}$', '$\\lambda_{3_2}$'),ncol=3,fontsize=16)
+plt.savefig("../img/example_liar_lambda_k_" + str(k)  +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig("../img/example_liar_lambda_k_" + str(k)  +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
+
+k=9
+fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
+axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[0,0:lastp[k],k,0]),color_map[0])
+axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[1,0:lastp[k],k,0]),color_map[1])
+axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[0,0:lastp[k],k,1]),color_map[2])
+axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[1,0:lastp[k],k,1]),color_map[3])
+axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[0,0:lastp[k],k,2]),color_map[4])
+axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[1,0:lastp[k],k,2]),color_map[5])
+
+axs.plot(np.arange(0,lastp[k]),np.transpose(np.mean(lambdaHist[:,0:lastp[k],k,:],axis=2)),'--k')
+
+plt.xlabel('Negotiation step ($p$)',usetex=True,fontsize=16)
+plt.xticks(fontsize = 20)
+plt.yticks(fontsize = 20)
+plt.legend((  '$\\lambda_{1_1}$', '$\\lambda_{1_2}$', '$\\lambda_{2_1}$', '$\\lambda_{2_2}$','$\\lambda_{3_1}$', '$\\lambda_{3_2}$'),ncol=3,fontsize=16)
+plt.savefig("../img/example_liar_lambda_k_" + str(k)  +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig("../img/example_liar_lambda_k_" + str(k)  +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
+
+
+fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
+axs.plot(np.arange(0,simK),np.repeat(Wt[0],simK),lineStyle='--',color=color_map[0])
+axs.plot(np.arange(0,simK),np.transpose(xt[0:simK,0]),color_map[1])
+
+axs.plot(np.arange(0,simK),np.repeat(Wt[1],simK),lineStyle='--',color=color_map[2])
+axs.plot(np.arange(0,simK),np.transpose(xt[0:simK,1]),color_map[3])
+
+axs.plot(np.arange(0,simK),np.repeat(Wt[2],simK),lineStyle='--',color=color_map[4])
+axs.plot(np.arange(0,simK),np.transpose(xt[0:simK,2]),color_map[5])
+
+plt.xlabel('Time ($k$)',usetex=True,fontsize=16)
+plt.xticks(fontsize = 20)
+plt.yticks(fontsize = 20)
+plt.legend(('$w_1[k]$', '$x_1[k]$','$w_2[k]$', '$x_2[k]$','$w_3[k]$', '$x_3[k]$'),loc='right',fontsize=16)
+plt.savefig("../img/example_liar_state" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig("../img/example_liar_state" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
 
 exit()
