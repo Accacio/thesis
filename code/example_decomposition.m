@@ -180,7 +180,7 @@ for k=1:simK
     %= Negotiation
     %= initialize theta for negotiation
     for i=1:M
-        theta(:,1,k,i) = 1*rand(n,1);
+        theta(:,1,k,i) = umax(i).'/M;
     end
     % Projection
     [thetapnew ,~,~,~,~] = quadprog(eye(M*n*ni), -paren(theta(:,1,k,:),':'), ...
