@@ -84,6 +84,16 @@ axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[0,0:lastp[k],k,2]),color_
 axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[1,0:lastp[k],k,2]),color_map[5])
 
 axs.plot(np.arange(0,lastp[k]),np.transpose(np.mean(lambdaHist[:,0:lastp[k],k,:],axis=2)),'--k')
+liar = sio.loadmat("../data/example_dmpc_liar.mat")
+lastp=np.transpose(example['lastp'])[0]
+theta=liar['theta']
+lambdaHist=liar['lambdaHist']
+xt=liar['xt'][0]
+Wt=liar['Wt']
+simK=liar['simK'][0][0]
+
+print(np.shape(theta))
+print((theta))
 
 plt.xlabel('Negotiation step ($p$)',usetex=True,fontsize=16)
 plt.xticks(fontsize = 20)

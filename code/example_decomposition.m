@@ -183,13 +183,13 @@ for k=1:simK
         theta(:,1,k,i) = umax(i).'/M;
     end
     % Projection
-    [thetapnew ,~,~,~,~] = quadprog(eye(M*n*ni), -paren(theta(:,1,k,:),':'), ...
-                                    [], [], ...
-                                    Ac', bc, ...
-                                    umin(:,i)*ones(M*ni*n,1), ...  % Lower Bound
-                                    umax(:,i)*ones(M*ni*n,1), ...  % Upper Bound
-                                    [], options);
-    theta(:,1,k,:) = reshape(thetapnew,[n,M]);
+    % [thetapnew ,~,~,~,~] = quadprog(eye(M*n*ni), -paren(theta(:,1,k,:),':'), ...
+    %                                 [], [], ...
+    %                                 Ac', bc, ...
+    %                                 umin(:,i)*ones(M*ni*n,1), ...  % Lower Bound
+    %                                 umax(:,i)*ones(M*ni*n,1), ...  % Upper Bound
+    %                                 [], options);
+    % theta(:,1,k,:) = reshape(thetapnew,[n,M]);
 
     for p=1:negotP
 
