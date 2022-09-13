@@ -229,8 +229,94 @@ Furthermore, because of the quadratic form, the solution is an affine function.
 \end{remark}
 
 \subsection{Analysis of negotiation}\label{sec:analysis-negotiation}
-Taking the negotiation equation~\eqref{eq:example_projectedSubgradient_lambda_reprise},
-and substituting the values found in~\eqref{eq:lambda_function_theta} into~\eqref{eq:example_projectedSubgradient_lambda_reprise} yields in
+Using the results of equation~\eqref{eq:example_projectedSubgradient_lambda_reprise}, we can observe the dynamics of $\thetai$ and $\lambdai$ during a negotiation, and from this get some insight for future detection and mitigation methods.
+
+\subsubsection{Dynamics of $\lambdai$}
+We can analyze the dynamics of $\lambdai$ by substituting
+~\eqref{eq:example_projectedSubgradient_lambda_reprise} into~\eqref{eq:lambda_function_theta}, which yields
+\begin{equation}
+  \label{eq:lambda_dynamics}
+\lambdai\pplusone=-P_{i}\left(\thetai\p+\rho\p\left(\lambdai\p-\frac{1}{M}\sum_{j=1}^{M}\vec{\lambda}_j\p\right)\right)-\vec{s}_{i}[k].
+\end{equation}
+
+We can distribute the terms, resulting in
+\begin{equation}
+  \label{eq:lambda_dynamics_with_P_and_s}
+\lambdai\pplusone=-P_{i}\rho\p\lambdai\p+P_{i}\rho\p\frac{1}{M}\sum_{j=1}^{M}\vec{\lambda}_j\p-P_{i}\thetai\p-\vec{s}_{i}[k].
+\end{equation}
+From inspection of~\eqref{eq:lambda_function_theta}, the last term ($-P_{i}\theta_{i}\p-\vec{s}_{i}[k]$) is equals to $\lambdai\p$, substituting it into~\eqref{eq:lambda_dynamics_with_P_and_s} and using a matrix form, we have
+\begin{equation}
+  \label{eq:negotiation_equation_substituting_organizing}
+  \vec{\lambda}\pplusone=\mathcal{A}_{\lambda}\vec{\lambda}\p,
+\end{equation}
+with
+\begin{equation}
+\mathcal{A}_{\lambda}=\left[
+\begin{matrix}
+I-\frac{M-1}{M}\rho\p P_{1} & \frac{1}{M}\rho\p P_{1}&\dots&\frac{1}{M}\rho\p P_{1}\\
+\frac{1}{M}\rho\p P_{2}&I-\frac{M-1}{M}\rho\p P_{2}&\dots&\frac{1}{M}\rho\p P_{2}\\
+\vdots&\vdots&\ddots&\vdots\\
+\frac{1}{M}\rho\p P_{M}&\frac{1}{M}\rho\p P_{M}&\dots&I-\frac{M-1}{M}\rho\p P_{M}\\
+\end{matrix}
+\right],
+\end{equation}
+which is a \dt{} homogeneous system.
+The system varies with time, since $p$ changes, but usually it vanishes as it approaches infinity, as seen in~\eqref{eq:rho_update}.
+So, we can use Lyapunov criteria~\cite[\S8.6]{Hespanha2009}, i.e., the eigenvalues of $\mathcal{A}_{\lambda}$, must be inside the unit circle for the system to be stable.
+For smaller systems, we can use Jury's criteria to test the system~\cite{Jury1962}.
+
+Analyzing $\mathcal{A}_{\lambda}$ a little further, we see that the sum of its columns is equal to one\footnote{$I+\frac{M-1}{M}\rho\p P_{i}+\sum\limits_{j=1}^{M-1}\frac{1}{M}\rho\p P_{i}=I$},
+which means that $1$ is a right eigenvalue of $\mathcal{A}_{\lambda}$:
+\begin{equation*}
+  \mathcal{A}_{\lambda}\1=\1
+\end{equation*}
+So, supposing the other eigenvalues are inside the unit circle, the system converges to a state $\1c$, i.e., where all lambdas are equal~\cite{GarinSchenato2010,XiaoEtAl2007}.
+On the other hand, the sum of rows is not equal, which means the sum of all states is not constant, or as said in the consensus community, the mass is not conserved.
+This way, we could not use average consensus strategies, unless all subsystems had the same $P_{i}$, which would render the problem extremely uninteresting (solution is divide the resources equally).
+
+If we suppose the system is under attack, we can use the attack model~\eqref{eq:linear_attack}, reproduced here,
+\begin{equation}
+  \label{eq:linear_attack_reprise}
+  \tag{\ref*{eq:linear_attack}}
+  \tilde{\vec{\lambda}}_{i}[k]=T_{i}[k]\lambdaik.
+\end{equation}
+Any agent could be the perpetrator of the attack (potentially multiple agents may attack simultaneously), so we use the model for all agents.
+Remaking the last steps with this attack model we can finally have the dynamics of the attacked system:
+% \begin{equation}
+% \tilde{\lambdai}\pplusone=T_{i}[k]\left(-P_{i}\left(\thetai\p+\rho\p\left(\tilde{\vec{\lambda}}_{i}\p-\frac{1}{M}\sum_{j=1}^{M}\tilde{\vec{\lambda}}_{j}\p\right)\right)-\vec{s}_{i}[k]\right).
+% \end{equation}
+% \begin{equation}
+%   \label{eq:lambda_dynamics_with_P_and_s}
+% \tilde{\lambdai}\pplusone=-T_{i}[k]P_{i}\rho\p\tilde{\vec{\lambda}}_{i}\p+T_{i}[k]P_{i}\rho\p\frac{1}{M}\sum_{j=1}^{M}\tilde{\vec{\lambda}}_j\p+T_{i}[k]\left(-P_{i}\thetai\p-\vec{s}_{i}[k]\right).
+% \end{equation}
+\begin{equation}
+  \label{eq:negotiation_equation_substituting_organizing_under_attack}
+  \tilde{\vec{\lambda}}\pplusone=\tilde{\mathcal{A}}_{\lambda}\tilde{\vec{\lambda}}\p,
+\end{equation}
+with
+\begin{equation}
+\tilde{\mathcal{A}}_{\lambda}=\left[
+\begin{matrix}
+I-\frac{M-1}{M}\rho\p T_{1}[k]P_{1} & \frac{1}{M}\rho\p T_{1}[k]P_{1}&\dots&\frac{1}{M}\rho\p T_{1}[k]P_{1}\\
+\frac{1}{M}\rho\p T_{2}[k]P_{2}&I-\frac{M-1}{M}\rho\p T_{2}[k]P_{2}&\dots&\frac{1}{M}\rho\p T_{2}[k]P_{2}\\
+\vdots&\vdots&\ddots&\vdots\\
+\frac{1}{M}\rho\p T_{M}[k]P_{M}&\frac{1}{M}\rho\p T_{M}[k]P_{M}&\dots&I-\frac{M-1}{M}\rho\p T_{M}[k]P_{M}\\
+\end{matrix}
+\right],
+\end{equation}
+
+As we have attested before through the simple example in \S\ref{sec:attack-interest}, the cheating matrices $T_{i}[k]$ can change the eigenvalues of the matrix, making the system oscillate and not converge to the optimal value.
+
+\begin{remark}
+  Observe that as $p$ increases, $\rho\p$ vanishes, and as consequence the matrix $\mathcal{A}_{\lambda}$ presents less and less influence of $P_{i}$ (and $T_i[k]$) and its eigenvalues approach $1$.
+  This measure ensures convergence in finite time but with a loss in accuracy.
+\end{remark}
+
+
+\subsubsection{Dynamics of $\thetai$}
+Conversely, we can analyze the dynamics of $\thetai$ by
+taking the negotiation equation~\eqref{eq:example_projectedSubgradient_lambda_reprise},
+and substituting $\lambdaik$ by~\eqref{eq:lambda_function_theta}, which yields
 \begin{equation}
   \label{eq:negotiation_equation_substituting}
  \thetai\pplusone=\thetai\p+\rho\p\left((-P_{i}\thetai\p-\vec{s}_{i}[k])-\frac{1}{M}\sum_{j\in\set{M}}(-P_{j}\vec{\theta}_{j}\p-\vec{s}_{j}[k])\right),\forall i\in\set{M}.
@@ -245,11 +331,11 @@ As we can see, we can separate the function into two parts, one which depends on
 We can finally write it in matrix form:
 \begin{equation}
   \label{eq:negotiation_equation_substituting_organizing}
-  \vec{\theta}\pplusone=\mathcal{A}\vec{\theta}\p+\mathcal{\vec{B}}[k]
+  \vec{\theta}\pplusone=\mathcal{A}_{\theta}\vec{\theta}\p+\mathcal{\vec{B}}_{\theta}[k]
 \end{equation}
 where
 \begin{equation}
-\mathcal{A}=\left[
+\mathcal{A}_{\theta}=\left[
 \begin{matrix}
 I-\frac{M-1}{M}\rho\p P_{1} & \frac{1}{M}\rho\p P_{2}&\dots&\frac{1}{M}\rho\p P_{M}\\
 \frac{1}{M}\rho\p P_{1}&I-\frac{M-1}{M}\rho\p P_{2}&\dots&\frac{1}{M}\rho\p P_{M}\\
@@ -259,7 +345,7 @@ I-\frac{M-1}{M}\rho\p P_{1} & \frac{1}{M}\rho\p P_{2}&\dots&\frac{1}{M}\rho\p P_
 \right]
 \end{equation}
 \begin{equation}
-\mathcal{\vec{B}}[k]=\left[
+\mathcal{\vec{B}}_{\theta}[k]=\left[
 \begin{matrix}
 -\frac{M-1}{M}\rho\p \vec{s}_{1}[k]+\frac{1}{M}\rho\p \vec{s}_{2}[k]\dots-\frac{1}{M}\rho\p \vec{s}_{M}[k]\\
 \frac{1}{M}\rho\p \vec{s}_{1}[k]-\frac{M-1}{M}\rho\p \vec{s}_{2}[k] \dots-\frac{1}{M}\rho\p \vec{s}_{M}[k]\\
@@ -268,47 +354,42 @@ I-\frac{M-1}{M}\rho\p P_{1} & \frac{1}{M}\rho\p P_{2}&\dots&\frac{1}{M}\rho\p P_
 \end{matrix}
 \right]
 \end{equation}
-which is a \dt{} system with forced input ($\mathcal{\vec{B}}$).
-The system varies with time, since $p$ changes, but it vanishes as it approaches infinity, usually with~\eqref{eq:rho_update}.
-So, we can use Lyapunov criteria~\cite[\S8.6]{Hespanha2009}, i.e., the eigenvalues of $\mathcal{A}$, must be inside the unit circle for the system to be stable.
-For smaller systems, we can use Jury's criteria to test the system~\cite{Jury1962}.
-\begin{remark}
-  Observe that there is a linear dependence between the rows of $\mathcal{A}$ embeded on the negotiation due to the equality constraint.
-  So, some eigenvalues (more precisely $\card\thetai$) are bound to be equal to $1$ (sum of all rows equals to 1).
-  \begin{equation}
-    \label{eq:1}
-    \1^{T}\mathcal{A}=\1^{T}
-  \end{equation}
-  So to calculate the eigenvalues we need to remove accordingly one of the $\theta_{i}$ (rows and columns).
-\end{remark}
+which is a \dt{} system with forced input ($\mathcal{\vec{B}}_{\theta}$).
+We can analyze the stability of $\mathcal{A}_{\theta}$ with the same tools used for $\mathcal{A}_{\lambda}$.
+For it to be stable, the eigenvalues must reside inside the unit circle.
+
+We can also do the same analysis of the sum of the rows and columns.
+If we observe the sum of rows, we acknowledge it is equal to $1$.
+So, $1$ is one of the left eigenvalues of the matrix:
+\begin{equation}
+  \label{eq:1}
+  \1^{T}\mathcal{A}_{\theta}=\1^{T}
+\end{equation}
+As expected the system conserves mass, i.e., the $\theta_{i}$ must respect the global equality constraint.
+This way, the linear dependence between $\theta_{i}$ is explicit.
+If we analyze the columns, on the other hand, we see that they not sum to $1$.
+This means, if the system converges, not necessarily it will converge in such way the $\theta_{i}$ are equal.
+Again, it would be the case if the $P_{i}$ were equal.
 
 As we can see, the values of the eigenvalues depend only on the values of $P_{i}$ and $\rho\p$.
 Since the $P_{i}$ are system parameters, the designer of the control can only tune $\rho\p$.
 
-\begin{remark}
-  Observe that as $p$ increases, $\rho\p$ vanishes, and as consequence the matrix $\mathcal{A}$ presents less and less influence of $P_{i}$ and its eigenvalues approach $1$.
-\end{remark}
-
-Once $\rho\p$ is well tuned for the corresponding system, the matrix $\mathcal{A}$ evolves always in the same way.
+Once $\rho\p$ is well tuned for the corresponding system, the matrix $\mathcal{A}_{\theta}$ evolves always in the same way.
 So if there is a change in this evolution, it means an the system presents an anomalous behavior.
 
-If we suppose the system is attacked, any attack in $P_{i}$ (objective function or constraints) changes the system's dynamic (change in $\mathcal{A}$), and may destabilize it if drives the eigenvalues outside the unit circle, as shown in \S\ref{sec:attack-interest}.
-On the other hand, attacks in $\vec{s}_{i}[k]$ (objective function, constraints or state/reference) may change the steady state value (change in $\mathcal{\vec{B}}[k]$).
+As can be observed, any disturbance in $P_{i}$ (change in objective function or constraints) changes the values of $\mathcal{A}_{\theta}$, thus the system's dynamic. This change may destabilize it if drives the eigenvalues outside the unit circle, as shown in \S\ref{sec:attack-interest}.
+On the other hand, perturbations in $\vec{s}_{i}[k]$ (modification of objective function, constraints or state/reference) may change the steady state value (change in $\mathcal{\vec{B}}_{\theta}[k]$).
 
-If we take the attack model~\ref{eq:selfish_attack}, reproduced here,
-\begin{equation}
-  \label{eq:linear_attack_reprise}
-  \tag{\ref*{eq:linear_attack}}
-  \tilde{\vec{\lambda}}_{i}[k]=T_{i}[k]\lambdaik,
-\end{equation}
-modify adequately~\eqref{eq:lambda_function_theta}, and substitute into~\eqref{eq:example_projectedSubgradient_lambda_reprise}, we can have the dynamics of an attacked system
+If we suppose the system is under attack, we use again the attack model~\eqref{eq:linear_attack_reprise}.
+We suspect all agents and we modify~\eqref{eq:lambda_function_theta} accordingly. Then we substitute it into~\eqref{eq:example_projectedSubgradient_lambda_reprise}.
+Then, we can have the dynamics of an attacked system
 \begin{equation}
   \label{eq:negotiation_equation_substituting_organizing_tilde}
-  \vec{\theta}\pplusone=\tilde{\mathcal{A}}[k]\vec{\theta}\p+\tilde{\mathcal{\vec{B}}}[k]
+  \vec{\theta}\pplusone=\tilde{\mathcal{A}}_{\theta}[k]\vec{\theta}\p+\tilde{\mathcal{\vec{B}}}_{\theta}[k]
 \end{equation}
 where
 \begin{equation}
-\tilde{\mathcal{A}}[k]=\left[
+\tilde{\mathcal{A}_{\theta}}[k]=\left[
 \begin{matrix}
 I-\frac{M-1}{M}\rho\p T_{1}[k]P_{1} & \frac{1}{M}\rho\p T_{2}[k]P_{2}&\dots&\frac{1}{M}\rho\p T_{M}[k]P_{M}\\
 \frac{1}{M}\rho\p T_{1}[k]P_{1}&I-\frac{M-1}{M}\rho\p T_{2}[k]P_{2}&\dots&\frac{1}{M}\rho\p T_{M}[k]P_{M}\\
@@ -318,7 +399,7 @@ I-\frac{M-1}{M}\rho\p T_{1}[k]P_{1} & \frac{1}{M}\rho\p T_{2}[k]P_{2}&\dots&\fra
 \right]
 \end{equation}
 \begin{equation}
-\tilde{\mathcal{\vec{B}}}[k]=\left[
+\tilde{\mathcal{\vec{B}}}_{\theta}[k]=\left[
 \begin{matrix}
 -\frac{M-1}{M}\rho\p T_{1}[k]\vec{s}_{1}[k]+\frac{1}{M}\rho\p T_{2}[k]\vec{s}_{2}[k]\dots-\frac{1}{M}\rho\p T_{M}[k]\vec{s}_{M}[k]\\
 \frac{1}{M}\rho\p T_{1}[k]\vec{s}_{1}[k]-\frac{M-1}{M}\rho\p T_{2}[k]\vec{s}_{2}[k] \dots-\frac{1}{M}\rho\p T_{M}[k]\vec{s}_{M}[k]\\
@@ -328,13 +409,16 @@ I-\frac{M-1}{M}\rho\p T_{1}[k]P_{1} & \frac{1}{M}\rho\p T_{2}[k]P_{2}&\dots&\fra
 \right]
 \end{equation}
 
-And as we have attested, the cheating matrices $T_{i}[k]$ can change the eigenvalues of the matrix, making the system oscillate and not converge. It can also be adjusted to only drive the negotiation to a new point, modifying $\mathcal{B}$, but as we see it modifies at the same time the dynamics. This way, the attacker may compromise between its greediness and not breaking the system, what is worse for every agent, the attacker included.
 
-As one can notice, we could create an anomaly detector by supervising the matrix $\mathcal{A}$.
-Once there is a change in some of the variables (or eigenvalues) the attack is detected.
+As in the case with $\mathcal{A}_{\theta}$, by adjusting $T_{i}[k]$, an attacker can change the eigenvalues of $\mathcal{A}_{\lambda}$.
+It can also be adjusted to drive the negotiation to a new point, modifying $\mathcal{B}$, but as we see, it modifies at the same time the dynamics.
+This way, the attackers need to compromise between their greediness and not breaking the system, which is worse for every agent, the attackers included.
 
-Unfortunately, this method gives us only a detection, but not necessarily from which agent the attack comes, what could useful for a mitigation algorithm.
-Besides, if we were to estimate all elements of $\mathcal{A}$, we would need to estimate $M^{2}{(\card\thetai)}^{2}$ elements\footnote{$M^{2}$ blocks of size ${\card\thetai}$}.
+As one can notice, we could create an anomaly detector by supervising the matrix $\mathcal{A}_{\theta}$.
+Once there is a change in some of the variables (or in its eigenvalues) an anomalous behavior is detected.
+
+Unfortunately, this method gives us only a detection, but not necessarily from which agent the anomaly comes, what could useful for a mitigation algorithm.
+Besides, if we were to estimate all elements of $\mathcal{A}_{\theta}$, we would need to estimate $M^{2}{(\card\thetai)}^{2}$ elements\footnote{$M^{2}$ blocks of size ${\card\thetai}$}.
 Exploiting the known structures of the matrix and their blocks, we could reduce to at least $2M{(\frac{\card\thetai+{\card\thetai}^{2}}{2})}$ elements\footnote{($M$ diagonal + $M$ off diagonal) symmetric blocks of size ${\card\thetai}$ (only upper triangle)}.
 
 In the next section, we derive a detection mechanism, also based on estimation, which can not only detect the attacks, but also isolate the perpetrators, estimating only half of the elements cited.
