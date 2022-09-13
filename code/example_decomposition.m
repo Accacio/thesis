@@ -216,17 +216,18 @@ for k=1:simK
         lambdaHist(:,p,k,:) = lambda;
 
         %= Update allocation
-        thetap=reshape(theta(:,p,k,:),n,M) + rho*(lambda);
-        % thetap=reshape(theta(:,p,k,:),n,M)+rho*(lambda-mean(lambda,2));
-        % % Projection
-        [thetapnew ,~,~,~,~] = quadprog(eye(M*n*ni), -thetap, ...
-                                        [], [], ...
-                                        Ac', bc, ...
-                                        umin(:,i)*ones(M*ni*n,1), ...  % Lower Bound
-                                        umax(:,i)*ones(M*ni*n,1), ...  % Upper Bound
-                                        [], options);
-        theta(:,p+1,k,:) = reshape(thetapnew,n,1,1,M);
-        % theta(:,p+1,k,:) = thetap;
+        theta(:,p+1,k,:) = theta(:,p,k,:) + rho*(lambdaHist(:,p,k,:)-mean(lambdaHist(:,p,k,:),4));
+
+        %= Update by Projection
+        % thetap=reshape(theta(:,p,k,:),n,M) + rho*(lambda);
+        % [thetapnew ,~,~,~,~] = quadprog(eye(M*n*ni), -thetap, ...
+        %                                 [], [], ...
+        %                                 Ac', bc, ...
+        %                                 umin(:,i)*ones(M*ni*n,1), ...  % Lower Bound
+        %                                 umax(:,i)*ones(M*ni*n,1), ...  % Upper Bound
+        %                                 [], options);
+        % theta(:,p+1,k,:) = reshape(thetapnew,n,1,1,M);
+
 
 
         theta_converged=true;
