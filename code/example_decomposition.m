@@ -109,6 +109,7 @@ for i=M:-1:1
     Mmat(:,:,i)=Mmat_fun(dsys(:,:,1,i),Np);
     Cmat(:,:,i)=Cmat_fun(dsys(:,:,1,i),Np);
     H(:,:,i)=H_fun(Cmat(:,:,i),Qbar(:,:,i),Rbar(:,:,i));
+    P(:,:,i)=inv(Gamma(:,:,i)*inv(H(:,:,i))*Gamma(:,:,i).');
 end
 
 Ac = kron(ones(M,1),eye(n)); %
@@ -169,6 +170,7 @@ for k=1:simK
         f(:,i)=f_fun(Cmat(:,:,i),Mmat(:,:,i),Qbar(:,:,i),xt(:,k,i),Wt(i));
         fHist(:,k,i)=f(:,i);
         cHist(k,i)=c_fun(Mmat(:,:,i),Qbar(:,:,i),xt(:,k,i),kron(ones(Np,1),Wt(i)));
+        sHist(:,k,i)=P(:,:,i)*Gamma(:,:,i)*inv(H(:,:,i))*f(:,i);
     end
 
     modes=2^n;
