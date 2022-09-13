@@ -205,11 +205,6 @@ for k=1:simK
                                                        [], options);
             % lambda(:,i)=l(:,p,k,i).ineqlin;
             lambda(:,i)=l(:,p,k,i).eqlin;
-            if selfish
-                if k>selfish_time(i)
-                    lambda(:,i)=T(:,:,i)*lambda(:,i);
-                end
-            end
 
         end
 
