@@ -20,6 +20,14 @@
 \newcommand{\p}{^{(p)}}
 \newcommand{\pplusone}{^{(p+1)}}
 \renewcommand{\vec}[1]{\boldsymbol{#1}}
+\newcommand{\random}[1]{\underline{#1}}
+\newcommand{\randomvec}[1]{{\underline{\vec{#1}}}}
+\newcommand{\probability}[1]{\mathbb{P}(#1)}
+\newcommand{\pdf}[1]{p(#1)}
+\newcommand{\expectation}[2][]{\mathbb{E}_{#1}\left[#2\right]}
+\newcommand{\indicator}[1]{\mathbb{1}_{\{#1\}}}
+
+
 \newcommand{\setbuild}[2]{\{#1\mid#2\}}
 \newcommand{\seq}[2][n]{\lbrace #2_{0},\ldots,\,#2_{#1} \rbrace}
 \newcommand{\hadamard}[2]{#1\circ #2}
@@ -150,9 +158,12 @@
 % \newcommand{\Tik}{\mpcval{T}}
 \newcommand{\Tik}[1][i]{T_{#1}[k]}
 \newcommand{\Plin}[1][i]{{P}_{#1}}
-\newcommand{\Plintilde}[1][i]{\tilde{P}_{#1}}
+\newcommand{\Plinnominal}[1][i]{\bar{{P}}_{#1}}
+\newcommand{\Plintilde}[1][i]{\tilde{P}_{#1}[k]}
+\newcommand{\Plintildeestimate}[1][i]{\widehat{\tilde{P}}_{#1}[k]}
 \newcommand{\sik}[1][i]{\vec{s}_{#1}[k]}
 \newcommand{\siktilde}[1][i]{\tilde{\vec{s}}_{#1}[k]}
+\newcommand{\siktildeestimate}[1][i]{\widehat{\tilde{\vec{s}}}_{#1}[k]}
 
 \newcommand{\lagrangianname}{\mathscr{L}}
 \newcommand{\lagrangian}{\lagrangianname(\vec{U}_{i}[k],\lambdaik,\thetaik)}

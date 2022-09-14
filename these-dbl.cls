@@ -70,6 +70,8 @@
 \RequirePackage{amsthm}
 \RequirePackage{amssymb}
 \RequirePackage{mathrsfs}
+\RequirePackage{mathbbol}
+
 \RequirePackage{eucal}
 
 \RequirePackage{subcaption}

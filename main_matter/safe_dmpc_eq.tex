@@ -423,13 +423,45 @@ In the next section, we derive a detection mechanism, also based on estimation, 
 
 \section{A detection mechanism}\label{sec:detection-mechanism}
 
-Using~\eqref{eq:linear_attack_reprise} we can rewrie~\eqref{eq:lambda_function_theta} as
+Using~\eqref{eq:linear_attack_reprise} we can rewrite~\eqref{eq:lambda_function_theta} as
 \begin{equation}
   \label{eq:lambda_function_theta_tilde}
-\tilde{\vec{\lambda}}_{i}[k]=-\tilde{P}_{i}\thetaik-\tilde{\vec{s}}_{i}[k],
+\tilde{\vec{\lambda}}_{i}[k]=-\Plintilde\thetaik-\tilde{\vec{s}}_{i}[k],
 \end{equation}
 where $\Plintilde=\Tik\Plin$ and $\tilde{\vec{s}}_{i}[k]=\Tik\sik$.
-This way we can interpret as the cheating matrix $\Tik$ alters both $\\Plin$ and $\siktilde[1]$
+We can interpret as the cheating matrix $\Tik$ alters both $\Plin$ and $\sik$.
+
+Since $\Plin$ is constant, any change between two different negotiation is a consequence of an anomalous behavior, in this case caused by $\Tik$.
+
+Using the relationship between $\thetaik$ and $\lambdaik$, we can supervise the exchanges between coordinator and agents, and find estimates $\Plintildeestimate$ and $\siktildeestimate$ such
+\begin{equation}
+  \tilde{\vec{\lambda}}_{i}[k]=-\Plintilde\thetaik-\tilde{\vec{s}}_{i}[k],
+\end{equation}
+
+\begin{remark}
+  Observe that if the estimation does not converge, it means the linear relation ceased to exist and there is an anomalous behavior.
+\end{remark}
+
+If we have access to a nominal value of $\Plin$ , noted $\Plinnominal$, we can create a detection rule for each agent $i$.
+Given an arbitrary bound $\epsilon_{\Plin}$, we can define the error
+\begin{equation}
+  E_{i}[k] =\norm{\Plintildeestimate-\Plinnominal}_{F},
+\end{equation}
+and an detection function $d_{i}$:
+\begin{equation}
+  d_{i}=\indicator{E_{i}[k]\geq\epsilon_{\Plin}},
+\end{equation}
+detecting an attack when the bound is disrespected.
+
+But yet, we need to estimate $\Plintildeestimate$.
+So, a brief discussion about the estimation follows.
+\begin{remark}
+  The nominal values $\Plinnominal$ may be given or estimated using the same method shown next, but using reliable attack-free historical data, for instance, as a cold start of the system.
+\end{remark}
+
+\section{Considerations about parameter estimation}\label{sec:about-estimation}
+As exposed we can gather multiple values of $\thetai$ and $\lambdai$
+
 
 
 % \begin{figure}[h]

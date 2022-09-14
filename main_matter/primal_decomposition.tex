@@ -398,17 +398,17 @@ Here we denote this modified version as
 To facilitate future analysis, we suppose the attacker chooses a linear function such
 \begin{equation}
   \label{eq:linear_attack}
-  \tilde{\vec{\lambda}}_{i}[k]=\gamma(\lambdaik,k)=T_{i}[k]\lambdaik.
+  \tilde{\vec{\lambda}}_{i}[k]=\gamma(\lambdaik,k)=\Tik\lambdaik.
 \end{equation}
 
-To ease communication, we will call the functions $\gamma_{i}$ and the matrices $T_{i}[k]$ as the \textbf{cheating} functions and matrices.
+To ease communication, we will call the functions $\gamma_{i}$ and the matrices $\Tik$ as the \textbf{cheating} functions and matrices.
 
 This attack can be seen as a general case of the selfish attack~\cite{VelardeEtAl2018},
 where a positive constant multiplies the local objective function of the attacker.
 This attack can be translated into a matrix
 \begin{equation}
   \label{eq:selfish_attack}
-  T_{i}[k]=\tau_{i}[k] I_{\card{\lambdai}}.
+  \Tik=\tau_{i}[k] I_{\card{\lambdai}}.
 \end{equation}
 As we will see, even being a simple attack, this attack can have some catastrophic consequences when associated with the negotiation dynamics.
 
