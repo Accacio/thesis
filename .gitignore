@@ -35,8 +35,10 @@
 # synctex
 *.synctex*
 
-*.pdf
+[f,m,b]*/*.pdf
 
+*.upa
+*.upb
 *.el
 *.fdb_latexmk
 *.fls
