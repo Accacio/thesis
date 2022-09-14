@@ -147,5 +147,17 @@
 \newcommand{\lambdaicheat}{\tilde{\vec{\lambda}}_i}
 \newcommand{\optlambdai}{\vec{\lambda}_i^{\star}}
 
-\newcommand{\Tik}{\mpcval{T}}
+% \newcommand{\Tik}{\mpcval{T}}
+\newcommand{\Tik}[1][i]{T_{#1}[k]}
+\newcommand{\Plin}[1][i]{{P}_{#1}}
+\newcommand{\Plintilde}[1][i]{\tilde{P}_{#1}}
+\newcommand{\sik}[1][i]{\vec{s}_{#1}[k]}
+\newcommand{\siktilde}[1][i]{\tilde{\vec{s}}_{#1}[k]}
 
+\newcommand{\lagrangianname}{\mathscr{L}}
+\newcommand{\lagrangian}{\lagrangianname(\vec{U}_{i}[k],\lambdaik,\thetaik)}
+\newcommand{\dualfunctionname}{\mathscr{D}}
+\newcommand{\dualfunction}{\dualfunctionname(\lambdaik,\thetaik)}
+\newcommand{\equalityfunctionname}{h_i}
+\newcommand{\equalityfunction}{\equalityfunctionname(\vec{U}_{i}[k],\thetaik)}
+\newcommand{\linearcoefi}{\bar{\Gamma}_{i}H_{i}^{-1}\bar{\Gamma_{i}}^{T}}
