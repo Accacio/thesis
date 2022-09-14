@@ -563,7 +563,7 @@ Algorithm~\ref{alg:update_rls} shows how to calculate a new parameter estimate $
 
 \begin{algorithm2e}[h]
   \DontPrintSemicolon%
-  \KwIn{Current estimation step $p$, Forgetting rate $\rlsforget$, Current parameter estimate $\rlsparam\p$, Current gain $\rlsgain\p$, Current input $\thetai\p$, Current output $\rlssysoutput\p$}\;
+  \KwIn{Current estimation step $p$, Forgetting rate $\rlsforget$, Current parameter estimate $\rlsparam\p$, Current gain $\rlsgain\p$, Current input $\thetai\p$, Current output $\rlssysoutput\p$}
   \KwOut{New estimate $\rlsparam\p$}
   $\rlssysinput\gets\left[\text{\structDataSym}(\thetai\p),I_{\card{\thetai\p}}\right]$\;
   Calculate residual $\rlsresidual$: $\rlsresidual\gets \rlssysoutput-\rlssysinput\rlsparam$\;
