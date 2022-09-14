@@ -293,9 +293,41 @@ plot(1:simK,xt(:,1:simK,3))
 plot(1:simK,kron(ones(1,simK),Wt(3)),'--')
 hold off
 
+
+%% print to tex
 sympref('FloatingPointOutput',false);
 disp(['$a_1=' latex(sym(A(:,1))) '$, $a_2=' latex(sym(A(:,2))) '$, $a_3=' latex(sym(A(:,3))) '$, $b_1=' latex(sym(B(:,1))) '$, $b_2=' latex(sym(B(:,2))) '$, $b_3=' latex(sym(B(:,3))) '$,' ])
 % sympref('FloatingPointOutput',true);
-disp(['H_1=' latex(sym(H(:,:,1))) ', & \vec{f}_1[k]=' latex(sym(Cmat(:,:,1)'*Qbar(:,:,1)*Mmat(:,:,1))) 'x_i[k]-' latex(sym(Cmat(:,:,1)'*Qbar(:,:,1))) '\vec{W}_i[k], & \bar{\Gamma}_1=I_2,\\\\'])
-disp(['H_2=' latex(sym(H(:,:,2))) ', & \vec{f}_2[k]=' latex(sym(Cmat(:,:,2)'*Qbar(:,:,2)*Mmat(:,:,2))) 'x_i[k]-' latex(sym(Cmat(:,:,2)'*Qbar(:,:,2))) '\vec{W}_i[k], & \bar{\Gamma}_2=I_2,\\\\'])
-disp(['H_3=' latex(sym(H(:,:,3))) ', & \vec{f}_3[k]=' latex(sym(Cmat(:,:,3)'*Qbar(:,:,3)*Mmat(:,:,3))) 'x_i[k]-' latex(sym(Cmat(:,:,3)'*Qbar(:,:,3))) '\vec{W}_i[k], & \bar{\Gamma}_3=I_2.\\\\'])
+fileid=fopen("../data/example_predhorz.tex",'w');
+fprintf(fileid,"%d",Np)
+fclose(fileid);
+
+fileid=fopen("../data/example_states.tex",'w');
+states_text=['${x_{1}[0]=' latex(sym(xt(:,1,1))) '}$, '];
+fprintf(fileid,'%s\n',states_text);
+states_text=['${x_{2}[0]=' latex(sym(xt(:,1,2))) '}$, '];
+fprintf(fileid,'%s\n',states_text);
+fprintf(fileid,'and \n',states_text);
+states_text=['${x_{3}[0]=' latex(sym(xt(:,1,3))) '}$']
+fprintf(fileid,'%s\n',states_text);
+fclose(fileid);
+
+% sympref('FloatingPointOutput',true);
+fileid=fopen("../data/example_references.tex",'w');
+states_text=['${w_{1}[0]=' latex(sym(Wt(1)/xt(:,1,1))) 'x_{1}[0]}$, '];
+fprintf(fileid,'%s\n',states_text);
+states_text=['${w_{2}[0]=' latex(sym(Wt(2)/xt(:,1,2))) 'x_{2}[0]}$, '];
+fprintf(fileid,'%s\n',states_text);
+fprintf(fileid,'and \n',states_text);
+states_text=['${w_{3}[0]=' latex(sym(Wt(3)/xt(:,1,3))) 'x_{3}[0]}$'];
+fprintf(fileid,'%s\n',states_text);
+fclose(fileid);
+
+H1_text=['H_1=' latex(sym(H(:,:,1))) ', & \vec{f}_1[k]=' latex(sym(Cmat(:,:,1)'*Qbar(:,:,1)*Mmat(:,:,1))) 'x_i[k]-' latex(sym(Cmat(:,:,1)'*Qbar(:,:,1))) '\vec{W}_i[k], & \bar{\Gamma}_1=I_2,\\\\'];
+H2_text=['H_2=' latex(sym(H(:,:,2))) ', & \vec{f}_2[k]=' latex(sym(Cmat(:,:,2)'*Qbar(:,:,2)*Mmat(:,:,2))) 'x_i[k]-' latex(sym(Cmat(:,:,2)'*Qbar(:,:,2))) '\vec{W}_i[k], & \bar{\Gamma}_2=I_2,\\\\'];
+H3_text=['H_3=' latex(sym(H(:,:,3))) ', & \vec{f}_3[k]=' latex(sym(Cmat(:,:,3)'*Qbar(:,:,3)*Mmat(:,:,3))) 'x_i[k]-' latex(sym(Cmat(:,:,3)'*Qbar(:,:,3))) '\vec{W}_i[k], & \bar{\Gamma}_3=I_2.\\\\'];
+fileid=fopen("../data/example_system_params.tex",'w');
+fprintf(fileid,"%s\n",H1_text);
+fprintf(fileid,"%s\n",H2_text);
+fprintf(fileid,"%s\n",H3_text);
+fclose(fileid);
