@@ -588,9 +588,21 @@ Using all the knowledge harvested, we can systematize the detection technique in
 
 \begin{algorithm2e}[h]
   \DontPrintSemicolon%
+  \KwIn{Nominal $\Plinnominal$, Maximum number of iterations $h_{\max}$, Bound $\epsilon_{\rlsparam}$, Bound $\epsilon_{\Plin}$, }
+  \KwOut{Detection $d_{i}$}
+  $h\gets0$\;
+  \Repeat{$\left[\norm{\rlsparam\pplusone-\rlsparam\p}\leq\epsilon_{\rlsparam}\right] ||\ \left[h\geq h_{\max}\right]$}
+  {
+    Coordinator sends random $\vec{\theta}_{i}^{(h+1)}$ to $i$ \;
+    Subsystem solves~\eqref{eq:DOP_local}, and sends $\vec{\lambda}^{\star}_{i}(\vec{\theta}^{(h)})$ back\;
+    Coordinator updates estimates $\rlsparam$ using Algorithm~\ref{alg:update_rls}\;
+    $h\gets h+1$\;
+  }
+  Reconstruct $\Plintildeestimate$ from $\rlsparam$\;
+  $E_{i}[k]\gets\norm{\Plintildeestimate-\Plinnominal}_{F}$\;
+  Coordinator calculates $d_{i}$: $d_{i}\gets\indicator{E_{i}[k]\geq\epsilon_{\Plin}}$\;
 
-  \KwIn{Current estimation step $p$, Forgetting rate $\rlsforget$, Current parameter estimate $\rlsparam\p$, Current gain $\rlsgain\p$, Current input $\thetai\p$, Current output $\rlssysoutput\p$}\;
-  \caption{Detection algorithm}\label{alg:detection_rls}
+  \caption{Detection algorithm during a given step $k$ (Possibly in parallel).}\label{alg:detection_rls}
 \end{algorithm2e}
 \todo{maybe use negotiation + random noise}.
 as on the makes the evolution of the system
