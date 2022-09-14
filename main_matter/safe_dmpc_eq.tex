@@ -460,7 +460,118 @@ So, a brief discussion about the estimation follows.
 \end{remark}
 
 \section{Considerations about parameter estimation}\label{sec:about-estimation}
-As exposed we can gather multiple values of $\thetai$ and $\lambdai$
+As commented, we can suppervise the exchanges and gather multiple values of $\thetai$ and $\lambdai$ to serve as an input dataset to the chosen estimation method.
+
+For instance we can choose any of the method in the \LS{} family~\cite{AstroemWittenmark1989}.
+We have chosen \RLS{}, because for the normal \LS{} we would need at least as many inputs tuples $(\thetai,\lambdai)$ as parameters to estimate ($\card\Plin\card\sik$ elements in the worst case).
+However, since the values of $\Plin$ should not vary from one negotiation to other, if we use the last estimation as initial condition for a \RLS{} algorithm, we can gain in the time for estimation convergence.
+\begin{remark}
+  Observe that since we are estimating simultaneously $\sik$, which changes w.r.t. time $k$ for smaller systems the difference between convergence times may be negligible.
+\end{remark}
+
+Initially, we use~\eqref{eq:lambda_function_theta_tilde} as regression model, transforming it in the usual form
+\SetKwFunction{structDataSym}{structDataSym}%
+\newcommand{\rlsparam}{{\vec{\nu}_{i}}}
+\newcommand{\rlssysinput}{{B_i}}
+\newcommand{\rlssysoutput}{{\lambdai}}
+\newcommand{\rlsgain}{{\Phi}}
+\newcommand{\rlsforget}{{\phi}}
+\newcommand{\rlsresidual}{{\epsilon}}
+\begin{equation}
+  \rlssysinput\rlsparam=\rlssysoutput,
+\end{equation}
+where $\rlsparam$ is the parameter vector we want to estimate ($\Plintildeestimate$ and $\siktildeestimate$ vectorized), and $\rlssysinput$ is created using $\thetai$ but taking into account the entries corresponding $\siktildeestimate$ inside $\rlsparam$, i.e.,
+\begin{equation}
+  \rlsparam=\left[
+    \begin{matrix}
+      \vectorize{\Plintildeestimate}\\
+      \siktildeestimate\\
+    \end{matrix}
+  \right],
+\end{equation}
+\begin{equation}
+  \rlssysinput=\left[
+    \begin{matrix}
+      \kron{I_{\card{\thetai}}}{\thetai\T}&I_{\card{\thetai}}\\
+    \end{matrix}
+  \right].
+\end{equation}
+
+Using this methods, we need to estimate all elements of $\Plintildeestimate$ and $\siktildeestimate$, which results into $\card{\thetai}^{2}+\card{\thetai}$ elements. But as the $\Plintildeestimate$ are symmetric, we can estimate only their upper triangle, reducing the number of total estimated elements to $\frac{\card{\thetai}^{2}+3\card{\thetai}}{2}$.
+
+Then, we restructure $\rlsparam$ accordingly:
+\begin{equation}
+  \rlsparam=\left[
+    \begin{matrix}
+      \elem[1,1:\card{\thetai}]{\Plintildeestimate}\T\\
+      \elem[2,2:\card{\thetai}]{\Plintildeestimate}\T\\
+      \vdots\\
+      \elem[\card{\thetai},\card{\thetai}]{\Plintildeestimate}\T\\
+      \siktildeestimate\\
+    \end{matrix}
+  \right].
+\end{equation}
+However, for $\rlssysinput$, its form becomes more complex, needing an algorithm (Algorithm~\ref{alg:struct_symmetric}) to calculate it:
+\begin{equation}
+  \rlssysinput=\left[
+    \begin{matrix}
+      \text{\structDataSym}(\thetai\p) &  I_{\card{\thetai\p}}
+    \end{matrix}
+  \right].
+\end{equation}
+
+\SetKwProg{Fn}{}{}{}
+\begin{algorithm2e}[h]
+  \DontPrintSemicolon%
+  \Fn{\structDataSym($\vec{x}$)}{
+    $s\gets\card\vec{x}$\;
+    \If{$s==1$}{
+      $Y\gets \vec{x}$\;
+      return $Y$\;
+    }
+    % $y\gets[[\vec{x}\T ;[\0_{s-1}, \elem[1,*]{\vec{x}}I_{s-1}]], [\0_{\frac{s^{2}-s}{2}}\T; \text{\structDataSym}(\elem[2:s]{\vec{x}})] ]$\;
+    $y\gets \left[\begin{smallmatrix}
+                \left[\begin{smallmatrix}
+                        \vec{x}\T \\
+                        \left[\begin{matrix}
+                                \0_{s-1}& \elem[1]{\vec{x}}I_{s-1}
+                              \end{matrix} \right]
+                      \end{smallmatrix} \right]
+                & \begin{smallmatrix}
+                    \0_{\frac{s^{2}-s}{2}}\T \\
+                    \text{\structDataSym}(\elem[2:s]{\vec{x}})
+                  \end{smallmatrix}
+    \end{smallmatrix}\right]$\;
+    return $Y$\;
+    }
+  \caption{Struct input for symmetric parameter.}\label{alg:struct_symmetric}
+\end{algorithm2e}
+To better grasp the structure, we give a simple example.
+If we take a $\thetai$ with ${\card{\thetai}=3}$ elements, by applying \structDataSym, it would result in
+\begin{equation}
+  \text{\structDataSym}(\theta_i)=
+  \left[
+  \begin{matrix}
+     \elem[1]{\theta_{i}}  &   \elem[2]{\theta_{i}}   &  \elem[3]{\theta_{i}} &    0  &   0  &   0 \\
+     0  &   \elem[1]{\theta_{i}}   &  0 &    \elem[2]{\theta_{i}}  &   \elem[3]{\theta_{i}}  &   0 \\
+     0  &   0   &  \elem[1]{\theta_{i}} &    0  &   \elem[2]{\theta_{i}}  &   \elem[3]{\theta_{i}}
+  \end{matrix}
+  \right]
+\end{equation}
+
+Using the construction above and applying to the \RLS{} algorithm in~\cite{AstroemWittenmark1989}, we can describe an iteration of the \RLS{} algorithm to estimate the symmetric matrix $\Plintildeestimate$ and the vector $\siktildeestimate$ simultaneously.
+Algorithm~\ref{alg:update_rls} shows how to calculate a new parameter estimate $\rlsparam$.
+
+\begin{algorithm2e}[h]
+  \DontPrintSemicolon%
+  \KwIn{Current estimation step $p$, Forgetting rate $\rlsforget$, Current parameter estimate $\rlsparam\p$, Current gain $\rlsgain\p$, Current input $\thetai\p$, Current output $\rlssysoutput\p$}\;
+  $\rlssysinput\gets\left[\text{\structDataSym}(\thetai\p),I_{\card{\thetai\p}}\right]$\;
+  Calculate residual $\rlsresidual$: $\rlsresidual\gets \rlssysoutput-\rlssysinput\rlsparam$\;
+  Update gain $\rlsgain$: $\rlsgain\pplusone\gets \rlsforget^{-1}\rlsgain\p-\rlsforget^{-2}\rlsgain\p\rlssysinput\T{(I_{\card{\thetai\p}}+\rlsforget^{-1}\rlssysinput\rlsgain\p\rlssysinput\T)}^{-1}\rlssysinput\rlsgain\p$\;
+  Calculate new estimate $\rlsparam$ $\rlsparam\pplusone\gets\rlsparam\p+\rlsgain\pplusone\rlssysinput\T\rlsresidual$
+  \caption{Update of \RLS{} to estimate $\Plintildeestimate$ and $\siktildeestimate$ simultaneously.}\label{alg:update_rls}
+\end{algorithm2e}
+
 
 
 
