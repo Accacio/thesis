@@ -429,9 +429,9 @@ Using~\eqref{eq:linear_attack_reprise} we can rewrite~\eqref{eq:lambda_function_
 \tilde{\vec{\lambda}}_{i}[k]=-\Plintilde\thetaik-\tilde{\vec{s}}_{i}[k],
 \end{equation}
 where $\Plintilde=\Tik\Plin$ and $\tilde{\vec{s}}_{i}[k]=\Tik\sik$.
-We can interpret as the cheating matrix $\Tik$ alters both $\Plin$ and $\sik$.
+We can interpret as the cheating matrix $\Tik$ altering both $\Plin$ and $\sik$.
 
-Since $\Plin$ is constant, any change between two different negotiation is a consequence of an anomalous behavior, in this case caused by $\Tik$.
+Since $\Plin$ is constant, any change between two different negotiations is a consequence of an anomalous behavior, in this case, caused by $\Tik$.
 
 Using the relationship between $\thetaik$ and $\lambdaik$, we can supervise the exchanges between coordinator and agents, and find estimates $\Plintildeestimate$ and $\siktildeestimate$ such
 \begin{equation}
@@ -459,8 +459,8 @@ So, a brief discussion about the estimation follows.
   The nominal values $\Plinnominal$ may be given or estimated using the same method shown next, but using reliable attack-free historical data, for instance, as a cold start of the system.
 \end{remark}
 
-\section{Considerations about parameter estimation}\label{sec:about-estimation}
-As commented, we can suppervise the exchanges and gather multiple values of $\thetai$ and $\lambdai$ to serve as an input dataset to the chosen estimation method.
+\subsection{Considerations about parameter estimation}\label{sec:about-estimation}
+As commented, we can supervise the exchanges and gather multiple values of $\thetai$ and $\lambdai$ to serve as an input dataset to the chosen estimation method.
 
 For instance we can choose any of the method in the \LS{} family~\cite{AstroemWittenmark1989}.
 We have chosen \RLS{}, because for the normal \LS{} we would need at least as many inputs tuples $(\thetai,\lambdai)$ as parameters to estimate ($\card\Plin\card\sik$ elements in the worst case).
@@ -571,6 +571,29 @@ Algorithm~\ref{alg:update_rls} shows how to calculate a new parameter estimate $
   Calculate new estimate $\rlsparam$ $\rlsparam\pplusone\gets\rlsparam\p+\rlsgain\pplusone\rlssysinput\T\rlsresidual$\;
   \caption{Update of \RLS{} to estimate $\Plintildeestimate$ and $\siktildeestimate$ simultaneously.}\label{alg:update_rls}
 \end{algorithm2e}
+
+Observe, that as much we could be tempted to use the algorithm to estimate during the negotiation, such algorithm would not work throughout the negotiation exchanges.
+The fact that $\lambdai$ depends on $\thetai$ and vice-versa makes them both to behave as \dt{} system (as we saw in~\S\ref{sec:analysis-negotiation}).
+This dependency decreases the excitation of the algorithm as the negotiation gets closer to a consensus (converging case) and less new information about the system is given.
+As seen in~\cite{AstroemWittenmark1989}, this makes the solution of the \LS{} problem not unique, regressor matrix becomes singular.
+One way to artificially increase the excitation of the inputs is to change the inputs.
+For instance, the coordinator would supervise the agents by sending $\thetai$ which do not follow~\eqref{eq:example_projectedSubgradient_lambda_reprise}.
+
+We opted to use a random noise as input, and once the estimates converge, we can resume the negotiation.
+As seen in~\cite[\S3.4]{AstroemWittenmark1989}, a random signal has persistent excitation of any order, i.e., any system will continue to be excited as long the signal is applied.
+
+
+\subsection{Complete detection technique}\label{sec:compl-detect-algor}
+Using all the knowledge harvested, we can systematize the detection technique in a algorithm.
+
+\begin{algorithm2e}[h]
+  \DontPrintSemicolon%
+
+  \KwIn{Current estimation step $p$, Forgetting rate $\rlsforget$, Current parameter estimate $\rlsparam\p$, Current gain $\rlsgain\p$, Current input $\thetai\p$, Current output $\rlssysoutput\p$}\;
+  \caption{Detection algorithm}\label{alg:detection_rls}
+\end{algorithm2e}
+\todo{maybe use negotiation + random noise}.
+as on the makes the evolution of the system
 
 
 
