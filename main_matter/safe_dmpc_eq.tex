@@ -122,7 +122,7 @@ These are the equations we will use for our analysis.
 
   If we assume the feasible regions of $\bar{\Gamma}$ (and $\bar{\Gamma}_{i}$) to form a cone, if the systems is scarce, $\bar{\Gamma}_{\text{eq}}=\bar{\Gamma}$ (and $\bar{\Gamma}_{i_\text{eq}}=\bar{\Gamma}_i$)\footnote{This can be easily proven geometrically, when a point do not respect any of the inequality constraints the projection onto the cone will be its apex (which coincides with the intersection of the equivalent hyperplanes).}.
 
-One way to assure this is to make the original constraint~\eqref{eq:linear_constraint} to have at most as many rows as columns, i.e., $\card{\vec{u}_{\max}}\leq n_{u}$, although it may be a little restrictive.
+One way to ensure this, is to make the original constraint~\eqref{eq:linear_constraint} to have at most as many rows as columns, i.e., $\card{\vec{u}_{\max}}\leq n_{u}$, although it may be a little restrictive.
 
 So, from now on, we make this assumption and use $\bar{\Gamma}$ and $\bar{\Gamma}_{i}$.
 
@@ -157,7 +157,7 @@ When the system suffer from scarcity the agents are forced to compete and compro
 \newcommand{\linearcoefi}{\bar{\Gamma}_{i}H_{i}^{-1}\bar{\Gamma_{i}}^{T}}
 
 \subsection{Analysis of local problems}\label{sec:analysis-local-problems}
-Since the optimization problems~\eqref{eq:example_local_problem_reprise} are \qp{} problems with equality constraints, it is known that it has analytical solution~\cite{BoydVandenberghe2004}.
+Since the optimization problems~\eqref{eq:example_local_problem_reprise} are \qp{} problems with equality constraints, it is known that they have analytical solution~\cite{BoydVandenberghe2004}.
 To find this solution we usually use the lagrange duality, so $\lambdaik$ will also have analytical solution in this case.
 First, to simplify the notation we define a function $\equalityfunctionname:\R^{\card\vec{U}_{i}[k]}\times \R^{\card\thetaik}$, defined as
 \begin{equation}
