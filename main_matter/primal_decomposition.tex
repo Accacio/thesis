@@ -119,10 +119,9 @@ If we stack the $\vec{\lambda}_{i}[k]$ in $\vec{\lambda}[k]=[\vec{\lambda}_{1}[k
 Using~\eqref{eq:DOP_local} and~\eqref{eq:projectedSubgradient_lambda}, we can alter Algorithm~\ref{alg:decomposition_coordination} to correspond to a decomposition of the original \mpc{} problem~\eqref{eq:qp_standard_form_decomposable} using the primal decomposition:
 \begin{algorithm2e}[h]
   \DontPrintSemicolon%
+  \KwIn{Maximum number of iteration $p_{\max}$, Bound $\epsilon$}
+  \KwOut{Optimal allocations $\vec{\theta}[k]$}
   $p\gets 0$\;
-  Initialize $a$ and $b$\;
-  Initialize an arbitrary maximum number of iterations $p_{\max}$\;
-  Initialize an arbitrary bound $\epsilon$\;
   Initialize ${\thetaik}^{(p)},$ $\forall i\in\set{M}$, such that ${\vec{\theta}[k]}^{(p)}\in\set{S}$\;
   \Repeat{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\ ||\ \left[p\geq p_{\max}\right]$}{
     Solve local sub-problems~\eqref{eq:DOP_local} and calculate ${\vec{\lambda}_{i}[k]}^{(p)}$ (potentially in parallel)\;
