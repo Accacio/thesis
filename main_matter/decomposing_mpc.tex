@@ -98,9 +98,12 @@ For the constraints in~\eqref{eq:general_mpc} to be affine or linear, first we s
 \end{equation}
 In this work, we concentrate in \textbf{input constraint systems} whose constraints do not depend on the system state, so we drop the $\vec{x}[k]$ terms in $h$, and since it is affine or linear, we rewrite it as
 \begin{equation}
-  \Gamma\vec{u}[k]\preceq\vec{u}_{\max}
+  \label{eq:linear_constraint}
+  \Gamma\vec{u}[k]\preceq\vec{u}_{\max},
 \end{equation}
-which can be vectorized for a horizon in $\predictionSet$
+with $\Gamma$ of adequate size $\R^{\card{\vec{u}_{\max}}\times n_{u} }$.
+
+Equation~\eqref{eq:linear_constraint} can be vectorized for a horizon in $\predictionSet$
 \begin{equation}
 \bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}},
 \end{equation}

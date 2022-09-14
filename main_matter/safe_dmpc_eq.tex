@@ -89,30 +89,19 @@ We assume that given projection solves the inequality constrained problem equiva
       \minimize\limits_{\vec{U}[k]} &
                                                  \frac{1}{2}\norm{\vec{U}[k]}^{2}_{H} + {\vec{f}[k]}^{T}\vec{U}[k] &\\
       \mathrm{subject~ to} &
-                             \bar{\Gamma}\vec{U}[k]= {\vec{U}}_{\text{max}}
+                             \bar{\Gamma}_{\text{eq}}\vec{U}[k]= {\vec{U}}_{\text{max}}
     \end{matrix}
   \end{aligned}.
 \end{equation}
 
-\begin{remark}
-  Observe that this is not always true using the same $\bar{\Gamma}$ (or $\bar{\Gamma}_{i}$).
-  The constraints in~\eqref{eq:qp_standard_form_again} and~\eqref{eq:DOP_local_reprise}, can be interpreted as the intersection of the halfspaces described by the rows of $\bar{\Gamma}$ (or $\bar{\Gamma}_{i}$) and $\vec{U}_{\max}$ (or $\thetaik$), i.e., the halfspaces
-  ${\set{S}_i=\setbuild{\vec{x}}{\elem[i,\star]{{\bar{\Gamma}}}\vec{x}\leq\elem[i,\star]{\vec{U}_{\max}}}}$, and the intersection ${\set{S}=\setbuild{\vec{x}}{\bar{\Gamma}\vec{x}\preceq\vec{U}_{\max}}=\bigcap\limits_{i=1}^{\card\vec{U}_{\max}}}\set{S}_{i}$ (and conversely for $\bar{\Gamma}_{i}$ and $\thetaik$).
-
-  For this to be true, only the halfspaces closest to the unconstrained solution are kept and transformed into intersection of hyperplanes (equality constraint).
-  This computation of active sets and distances may be costly depending on the number of halfspaces used and the dimensions of the variables.
-
-  For our study cases where $\Gamma$ has all its elements positive (such as postive weighted sum of all inputs), and block diagonal structure with repeating pattern (from the \mpc{} definition~\eqref{eq:construction_Gamma}), we assume we can find the corresponding problem and change $\bar{\Gamma}$ (and $\bar{\Gamma}_i$) accordingly, by removing the proper rows.
-\end{remark}
-
-As one can perceive, it leads to a decomposition exactly as in \S\ref{sec:example-interpr}
+And as one could perceive, it leads to a decomposition exactly as in \S\ref{sec:example-interpr}
 with local problems~\eqref{eq:example_local_problem} and negotiation equation~\eqref{eq:example_projectedSubgradient_lambda}, reproduced here,
 \begin{equation}
   \begin{matrix}
   \label{eq:example_local_problem_reprise}
   \tag{\ref*{eq:example_local_problem}}
     \minimize\limits_{\vec{U}_{i}[k]}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
-    \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] = \thetaik:\lambdaik
+    \mathrm{subject~ to} & \bar{\Gamma}_{i_{\text{eq}}}\vec{U}_{i}[k] = \thetaik:\lambdaik
   \end{matrix}
 \end{equation}
 \begin{equation}
@@ -122,6 +111,23 @@ with local problems~\eqref{eq:example_local_problem} and negotiation equation~\e
 \end{equation}
 
 These are the equations we will use for our analysis.
+
+\begin{remark}
+  Observe that not necessarily $\bar{\Gamma}_{\text{eq}}$ (or $\bar{\Gamma}_{\text{eq}}$) is the same as $\bar{\Gamma}$ (or $\bar{\Gamma}_{i}$).
+  The constraints in~\eqref{eq:qp_standard_form_again} and~\eqref{eq:DOP_local_reprise}, can be interpreted as the intersection of the halfspaces described by the rows of $\bar{\Gamma}$ (or $\bar{\Gamma}_{i}$) and $\vec{U}_{\max}$ (or $\thetaik$), i.e., the halfspaces
+  ${\set{S}_i=\setbuild{\vec{x}}{\elem[i,\star]{{\bar{\Gamma}}}\vec{x}\leq\elem[i,\star]{\vec{U}_{\max}}}}$, and the intersection ${\set{S}=\setbuild{\vec{x}}{\bar{\Gamma}\vec{x}\preceq\vec{U}_{\max}}=\bigcap\limits_{i=1}^{\card\vec{U}_{\max}}}\set{S}_{i}$ (and conversely for $\bar{\Gamma}_{i}$ and $\thetaik$).
+
+  So, to find the equivalent $\bar{\Gamma}_{\text{eq}}$ (or $\bar{\Gamma}_{i_{\text{eq}}}$) for the equality constraint problem, only the active halfspaces are kept and transformed into intersection of hyperplanes (equality constraint).
+  This computation of active sets may be costly depending on the number of halfspaces used and the dimensions of the variables.
+
+  If we assume the feasible regions of $\bar{\Gamma}$ (and $\bar{\Gamma}_{i}$) to form a cone, if the systems is scarce, $\bar{\Gamma}_{\text{eq}}=\bar{\Gamma}$ (and $\bar{\Gamma}_{i_\text{eq}}=\bar{\Gamma}_i$)\footnote{This can be easily proven geometrically, when a point do not respect any of the inequality constraints the projection onto the cone will be its apex (which coincides with the intersection of the equivalent hyperplanes).}.
+
+One way to assure this is to make the original constraint~\eqref{eq:linear_constraint} to have at most as many rows as columns, i.e., $\card{\vec{u}_{\max}}\leq n_{u}$, although it may be a little restrictive.
+
+So, from now on, we make this assumption and use $\bar{\Gamma}$ and $\bar{\Gamma}_{i}$.
+
+  % For our study cases where $\Gamma$ has all its elements positive (such as postive weighted sum of all inputs), and block diagonal structure with repeating pattern (from the \mpc{} definition~\eqref{eq:construction_Gamma}), we assume we can find the corresponding problem and change $\bar{\Gamma}$ (and $\bar{\Gamma}_i$) accordingly, by removing the proper rows.
+\end{remark}
 
 \subsection{Why scarce systems?}\label{sec:why-scarce-systems}
 
@@ -216,7 +222,7 @@ Similarly, using first order \KKT{} condition we make the gradient of $\dualfunc
 which yields
 \begin{equation}
   \label{eq:lambda_function_theta}
-\lambdaik=-P_{i}\thetaik-\vec{s}_{i}[k],
+  \lambdaik=-P_{i}\thetaik-\vec{s}_{i}[k],
 \end{equation}
 where $P_{i}={(\linearcoefi)}^{-1}$ and $\vec{s}_{i}[k]=P_{i}\bar{\Gamma}_{i}H_{i}^{-1}\vec{f}_{i}[k]$.
 
