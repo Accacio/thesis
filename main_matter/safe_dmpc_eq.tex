@@ -75,10 +75,11 @@ We call a system scarce when its unconstrained solution $\vec{U}_{\text{unc}}^{\
 
 Furthermore, in this chapter, we assume that for all sub-systems, their unconstrained solutions $\vec{U}_{i_{\text{unc}}}^{\star}[k]$ neither respect the local constraints
 \begin{equation}
-\bar{\Gamma}_{i}\vec{U}_{i_{\text{unc}}}^{\star}[k]\succ \thetaik, \forall i\in\set{M}, \forall k.
+\bar{\Gamma}_{i}\vec{U}_{i_{\text{unc}}}^{\star}[k]\succ \thetaik, \forall i\in\set{M}, \forall k,
 \end{equation}
+i.e., even if all resources were allocated for a single subsystem, it still could not fulfill its needs.
 
-This means that the optimal solution would need more resources (more than $\vec{U}_{\max}$).
+These assumptions mean that the optimal solution for each problem would need more resources (more than $\vec{U}_{\max}$).
 So the solution to those \qp{} problems is the projection of the unconstrained solutions onto the polytope. Thus, projecting onto the perimeter of the polytope.
 
 We assume that given projection solves the inequality constrained problem equivalent to an equality constraint problem
