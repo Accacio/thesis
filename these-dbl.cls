@@ -963,7 +963,7 @@ backrefstyle=three,
 \RequirePackage[framemethod=TikZ]{mdframed}
 \RequirePackage{fontawesome}
 \RequirePackage{mathabx}
-
+\RequirePackage{accents}
 % correct ddots
 % shamelessly taken from https://tex.stackexchange.com/a/246695/162943
 \makeatletter
