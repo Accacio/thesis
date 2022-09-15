@@ -31,9 +31,9 @@ jobs:
           draft: false
           prerelease: false
           files: |
-          main.pdf
-          ${{ steps.date.outputs.date }}.zip
-          ${{ steps.date.outputs.date }}.tar.gz
+                 main.pdf
+                 ${{ steps.date.outputs.date }}.zip
+                 ${{ steps.date.outputs.date }}.tar.gz
       # - name: Upload Normal PDF
       #   uses: actions/upload-release-asset@v1
       #   env:
