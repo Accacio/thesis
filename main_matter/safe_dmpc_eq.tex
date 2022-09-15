@@ -80,7 +80,8 @@ Furthermore, in this chapter, we assume that for all sub-systems, their unconstr
 i.e., even if all resources were allocated for a single subsystem, it still could not fulfill its needs.
 
 These assumptions mean that the optimal solution for each problem would need more resources (more than $\vec{U}_{\max}$).
-So the solution to those \qp{} problems is the projection of the unconstrained solutions onto the polytope. Thus, projecting onto the perimeter of the polytope.
+So, the solution to those \qp{} problems is the weighted\footnote{A \qp{} problem can be seen as weighted projection, in which the set measure is weighted by $H$ and the original pointed is translated using $\vec{f}_i[k]$} projection of the unconstrained solutions onto the polytope.
+Thus, projecting onto the perimeter of the polytope.
 
 We assume that given projection solves the inequality constrained problem equivalent to an equality constraint problem
 \begin{equation}
