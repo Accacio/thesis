@@ -192,7 +192,7 @@ The solution to $\dualfunction$ is given by the first order \KKT{} optimality co
 \end{equation}
 which results in
 \begin{equation}
-\vec{U}_{i}[k]=-H_{i}^{-1}(-\bar{\Gamma}_{i}^{T}\lambdai[k]-\vec{f}_{i}[k]).
+\vec{U}_{i}[k]=-H_{i}^{-1}(-\bar{\Gamma}_{i}^{T}\lambdaik-\vec{f}_{i}[k]).
 \end{equation}
 
 Substituting it in $\lagrangian$ yields
@@ -277,16 +277,16 @@ If we suppose the system is under attack, we can use the attack model~\eqref{eq:
 \begin{equation}
   \label{eq:linear_attack_reprise}
   \tag{\ref*{eq:linear_attack}}
-  \tilde{\vec{\lambda}}_{i}[k]=\Tik\lambdaik.
+  \lambdaicheat[k]=\Tik\lambdaik.
 \end{equation}
 Any agent could be the perpetrator of the attack (potentially multiple agents may attack simultaneously), so we use the model for all agents.
 Remaking the last steps with this attack model we can finally have the dynamics of the attacked system:
 % \begin{equation}
-% \tilde{\lambdai}\pplusone=\Tik\left(-\Plin\left(\thetai\p+\rho\p\left(\tilde{\vec{\lambda}}_{i}\p-\frac{1}{M}\sum_{j=1}^{M}\tilde{\vec{\lambda}}_{j}\p\right)\right)-\sik\right).
+% \tilde{\lambdai}\pplusone=\Tik\left(-\Plin\left(\thetai\p+\rho\p\left(\lambdaicheat\p-\frac{1}{M}\sum_{j=1}^{M}\tilde{\vec{\lambda}}_{j}\p\right)\right)-\sik\right).
 % \end{equation}
 % \begin{equation}
 %   \label{eq:lambda_dynamics_with_P_and_s}
-% \tilde{\lambdai}\pplusone=-\Tik\Plin\rho\p\tilde{\vec{\lambda}}_{i}\p+\Tik\Plin\rho\p\frac{1}{M}\sum_{j=1}^{M}\tilde{\vec{\lambda}}_j\p+\Tik\left(-\Plin\thetai\p-\sik\right).
+% \tilde{\lambdai}\pplusone=-\Tik\Plin\rho\p\lambdaicheat\p+\Tik\Plin\rho\p\frac{1}{M}\sum_{j=1}^{M}\tilde{\vec{\lambda}}_j\p+\Tik\left(-\Plin\thetai\p-\sik\right).
 % \end{equation}
 \begin{equation}
   \label{eq:negotiation_equation_substituting_organizing_under_attack}
@@ -427,7 +427,7 @@ In the next section, we derive a detection mechanism, also based on estimation, 
 Using~\eqref{eq:linear_attack_reprise} we can rewrite~\eqref{eq:lambda_function_theta} as
 \begin{equation}
   \label{eq:lambda_function_theta_tilde}
-\tilde{\vec{\lambda}}_{i}[k]=-\Plintilde\thetaik-\tilde{\vec{s}}_{i}[k],
+\lambdaicheat[k]=-\Plintilde\thetaik-\tilde{\vec{s}}_{i}[k],
 \end{equation}
 where $\Plintilde=\Tik\Plin$ and $\tilde{\vec{s}}_{i}[k]=\Tik\sik$.
 We can interpret as the cheating matrix $\Tik$ altering both $\Plin$ and $\sik$.
@@ -436,7 +436,7 @@ Since $\Plin$ is constant, any change between two different negotiations is a co
 
 Using the relationship between $\thetaik$ and $\lambdaik$, we can supervise the exchanges between coordinator and agents, and find estimates $\Plintildeestimate$ and $\siktildeestimate$ such
 \begin{equation}
-  \tilde{\vec{\lambda}}_{i}[k]=-\Plintilde\thetaik-\tilde{\vec{s}}_{i}[k],
+  \lambdaicheat[k]=-\Plintilde\thetaik-\tilde{\vec{s}}_{i}[k],
 \end{equation}
 
 \begin{remark}
@@ -608,7 +608,7 @@ We can systematize the detection technique in Algorithm~\ref{alg:detection_rls}.
   \Repeat{$\left[\norm{\rlsparam\hplusone-\rlsparam\h}\leq\epsilon_{\rlsparam}\right] ||\ \left[h\geq h_{\max}\right]$}
   {
     Coordinator sends random $\thetai\h$ to $i$ \;
-    Subsystem solves~\eqref{eq:DOP_local}, and sends $\vec{\lambda}^{\star}_{i}(\thetai\p)$ back\;
+    Subsystem solves~\eqref{eq:DOP_local}, and sends $\lambdaikstar(\thetai\p)$ back\;
     Coordinator updates estimates $\rlsparam$ using Algorithm~\ref{alg:update_rls}\;
     $h\gets h+1$\;
   }
