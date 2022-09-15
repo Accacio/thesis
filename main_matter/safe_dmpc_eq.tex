@@ -440,10 +440,6 @@ Using the relationship between $\thetaik$ and $\lambdaik$, we can supervise the 
   \lambdaicheat[k]=-\Plintilde\thetaik-\tilde{\vec{s}}_{i}[k],
 \end{equation}
 
-\begin{remark}
-  Observe that if the estimation does not converge, it means the linear relation ceased to exist and there is an anomalous behavior.
-\end{remark}
-
 If we have access to a nominal value of $\Plin$ , noted $\Plinnominal$, we can create a detection rule for each agent $i$.
 Given an arbitrary bound $\epsilon_{\Plin}$, we can define the error
 \begin{equation}
@@ -453,13 +449,19 @@ and an detection function $d_{i}$:
 \begin{equation}
   d_{i}=\indicator{E_{i}[k]\geq\epsilon_{\Plin}},
 \end{equation}
-detecting an attack when the bound is disrespected.
+detecting an attack when the bound is disrespected, i.e., $d_{i}=1$.
+
+\begin{remark}
+  Observe that if the estimation does not converge, it means the linear relation ceased to exist and there is an anomalous behavior, we can also set the indicator to $1$.
+\end{remark}
 
 But yet, we need to estimate $\Plintildeestimate$.
 So, a brief discussion about the estimation follows.
+
 \begin{remark}
   The nominal values $\Plinnominal$ may be given or estimated using the same method shown next, but using reliable attack-free historical data, for instance, as a cold start of the system.
 \end{remark}
+
 
 \subsection{Considerations about parameter estimation}\label{sec:about-estimation}
 As commented, we can supervise the exchanges and gather multiple values of $\thetai$ and $\lambdai$ to serve as an input dataset to the chosen estimation method.
@@ -597,7 +599,7 @@ As seen in~\cite[\S3.4]{AstroemWittenmark1989}, a random signal has persistent e
 
 \subsection{Complete detection technique}\label{sec:compl-detect-algor}
 Using all the pieces presented in the last subsections, we can finally put them together and create a detection algorithm.
-First, we estimate $\Plintildeestimate$ and then we compare the estimate with a $\Plin$ when the system behaves nominally.
+First, we estimate $\Plintildeestimate$ and then we compare the estimate with the nominal value of $\Plin$.
 We can systematize the detection technique in Algorithm~\ref{alg:detection_rls}.
 
 \begin{algorithm2e}[h]
@@ -611,6 +613,10 @@ We can systematize the detection technique in Algorithm~\ref{alg:detection_rls}.
     Coordinator sends random $\thetai\h$ to $i$ \;
     Subsystem solves~\eqref{eq:DOP_local}, and sends $\lambdaikstar(\thetai\p)$ back\;
     Coordinator updates estimates $\rlsparam$ using Algorithm~\ref{alg:update_rls}\;
+    \If{$\ \left[h\geq h_{\max}\right]$}{
+      Coordinator sets $d_{i}$: $d_{i}\gets 1$\;
+      break\;
+    }
     $h\gets h+1$\;
   }
   Reconstruct $\Plintildeestimate$ and $\siktildeestimate$ from $\rlsparam$\;
@@ -620,129 +626,201 @@ We can systematize the detection technique in Algorithm~\ref{alg:detection_rls}.
   \caption{Detection algorithm during a given step $k$ (Possibly in parallel).}\label{alg:detection_rls}
 \end{algorithm2e}
 
-\section{Mitigation}\label{sec:mitigation}
 Once the attackers are identified via function $d_{i}$, we need to mitigate the possible effects of the attack.
+In the next section we considerate some hints on how to mitigate the effects changing minimally the decomposition, and after the analyze we propose a mitigation method.
+
+\section{Mitigation}\label{sec:mitigation}
+
+The first effect we want to mitigate, is the possible destabilization of matrix $\tilde{\mathcal{A}_{\theta}}[k]$.
+And the second is the drift caused by changes in $\tilde{\mathcal{\vec{B}}}_{\theta}[k]$.
+
+As we saw, in the coordinator's perspective, the attack comes from the modification of $\lambdai$ by the attacking agent.
+So, the first idea is to instead of using the $\lambdai$ received from the attacker, the coordinator uses a modified version, here we denote $\lambdaimodified$.
+
+The value of the modified $\lambdaimodified$, depends on the type of mitigation chosen.
+For instance, we can give a simple qualitative example.
+
+\subsubsection{Qualitative example}\label{sec:qualitative-example}
+
+Imagine a simple system composed of two \ltidt{} $1$-dimensional sub-systems, input constrained, controlled using the \dmpc{} framework presented in this work, \qp{} problems
+and all other conditions set in this chapter.
+To facilitate visualization we suppose the prediction horizon is $\predhorz=1$ and the agents have local constraints $\vec{u}_{i}\geq\0$.
+
+If we plot the level curves of the system (Fig.~\ref{fig:original_minimum}), we can see how the unconstrained minimum is projected (weighted projection) onto the hyperplane.
+The projection yields the constrained solution of the problem (\todo{blue} dot).
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.8\textwidth]{../img/original-minimum.png}
+  \caption[Original minimum.]{Original minimum. \todo{remake figure}}\label{fig:original_minimum}
+\end{figure}
+
+Once one the agents attacks the system using~\eqref{eq:linear_attack_reprise}, the level curves are distorded, as seen in Fig.~\ref{fig:minimum_after_attack}.
+This distortion changes the projection, resulting in a new constrained solution (in \todo{green}).
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.8\textwidth]{../img/new-minimum-selfish.png}
+  \caption[Minimum after attack.]{Minimum after attack. \todo{remake figure}}\label{fig:minimum_after_attack}
+\end{figure}
+
+If the attacker is detected, one of our options to mitigate this drift is to substitute the $\lambdaicheat$ received during a negotiation by $\0$.
+It can be interpreted as the coordinator punishing the attacker by assuming it will always be satisfied independent of the allocation given.
+The negligence against the attacker will result in it receiving less and less resources. Asymptotically, the system will behave as the attacker was unplugged, since the negotiation will be maintained with the other agents, somehow similar to the examples in~\cite{VelardeEtAl2018,MaestreEtAl2021}.
+
+In Fig.~\ref{fig:minimum_ignoring_attacker}, we see the new level curves and the new solution found (in \todo{magenta}) when ignoring the attacker.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.8\textwidth]{../img/ignoreX.png}
+  \caption{Optimal value after ignoring attacker. \todo{remake figure}}\label{fig:minimum_ignoring_attacker}
+\end{figure}
+
+Although the idea of punishing the attacker by ignoring it may appear reasonably, since the system is a \cps{}, it may control some amenity that needs a minimal \QoS{}.
+If we are controlling a \HVAC{} system, for instance, depending on the region of the planet, turning the heat off of the attacker could make the users extremely cold\todo{, as in the introductory example in Chapter~\ref{sec:intro}}.
+
+A solution would be to, before the negotiation, allocate minimal resources for the attacker, and then ignore it throughout the negotiation using the remainder of the resources, subtracting the maximum by the allocated for the attacker.
+However, it would be needed to assess somehow what would be the fair amount to give to the attacker, which would not prejudice other agents.
+
+We propose yet another solution, in which we try to recover the nominal behavior if some assumptions are guaranteed.
+Passing from the level curves of the attacked system (Fig.~\ref{fig:minimum_after_attack}) to the shown in Fig.~\ref{fig:minimum_recovered}, where the new minimum lies in a neighboorhood of the original one (in Fig.~\ref{fig:original_minimum}).
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{../img/correctX.png}
+  \caption{Optimal value after trying to recover original behavior.}\label{fig:minimum_recovered}
+\end{figure}
+
+\subsubsection{Recovering nominal behavior}\label{sec:recov-nomin-behav}
+If we observe the formula of the linear attack~\eqref{eq:linear_attack_reprise}, we can make some assumptions.
+
+As seen in \S\ref{sec:example-interpr}, $\lambdai$ correspond to dissatisfaction with the allocation $\thetai$ given.
+If $\lambdai=\0$, it means the agent is satisfied with the allocation.
+So, we do not expect that the attacker will use a cheating matrix $\Tik$ that generates a $\lambdaicheat=\0$ when $\lambdai\neq\0$.
+
+Given that we assume
+\begin{equation}
+  \left[\lambdaicheat=\0 \right] \implies \left[\lambdai=\0 \right],
+\end{equation}
+which translates to
+\begin{equation}
+  \lambdaicheat=\Tik\lambdai=\0\text{, only if }\lambdai=\0,
+\end{equation}
+which implies $\Tik$ is \textbf{invertible}.
+
+Observing~\eqref{eq:lambda_function_theta_tilde}, we also assume that the choice of $\Tik$ does not change the structure of $\Plin$, i.e., $\Plintilde$ is also symmetric and thus also is $\Tik$.
+
+Having the estimate $\Plintildeestimate$ and the nominal $\Plinnominal$ and using these assumptions, we can try to estimate the inverse of $\Tik$ using
+\begin{equation}
+{\Tikinvestimate=\Plinnominal{\Plintildeestimate}^{-1}}.
+\end{equation}
+
+And with the estimate $\Tikinvestimate$, we can try to reconstruct $\lambdai$:
+\begin{equation}
+  \label{eq:lambdareconstruction}
+  \lambdaireconstructed=-\Plinnominal\thetai-\Tikinvestimate\siktildeestimate
+\end{equation}
+
+So, we can modulate the negotiation algorithm, by using $\lambdaimodified$ choosing what version of $\lambdai$ to choose, i.e.,
+\begin{equation}
+  \lambdaimodified=
+          \begin{cases}
+            \lambdaicheat, &\text{if } d_{i}=0\\
+            \lambdaireconstructed, &\text{if }d_{i}=1\\
+        \end{cases}
+\end{equation}
+
+\begin{remark}
+  Observe that if estimate of $\Plin$ do not converge, we cannot reconstruct $\lambdaik$ so we need to use one of the other options proposed, ignore the attacker, or use minimal allocation.
+  Since it may be difficult to asses the minimal allocation, we ignore the cases when the estimation does not converge.\note{or I can just ignore}
+\end{remark}
+
+\section{Complete safe dMPC for scarce systems}\label{sec:complete-safe-dmpc}
+
+\section{Numerical experiment}\label{sec:numerical-experiment}
+
+\subsection{Case study}\label{sec:case-study}
+
+Model 3R-2C \cite{GoudaEtAl2002}
+\begin{figure}[h]
+  \centering
+  \begin{circuitikz}[european]
+    \draw (0,0) node[tlground]{} to[isource, l=$P^{\text{heat}}$] ++(0,2) to[short, -*] ++(1.5,0) coordinate (a);
+
+    \draw (a) node[above]{$T^{\text{in}}$}  to[C=$C^{\text{air}}$] ++(0,-2) node[tlground]{};
+    \draw (0,-3) node[tlground]{} to[isource, l=$I^{\text{sol}}$] ++(0,2)
+    to[short, -*] ++(1.5,0) coordinate (b);
+    \draw (b) to[C=$C^{\text{walls}}$] ++(0,-2) node[tlground]{};
+
+    \draw (a) -- ++(2,0) coordinate (c) -- ++(0,-.5) to[R=$R^{\text{iw/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (d);
+
+    \draw (b) node[above]{$T^{\text{walls}}$} to[short,-*] (d);
+
+    \draw (c) --  ++(2.5,0) -- ++(0,-.5) to[R=$R^{\text{oa/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (e);
+
+    \draw (d) to[R=$R^{\text{ow/oa}}$] (e) to[battery,l=$T^{\text{out}}$] ++(0,-2) node[tlground]{};
+  \end{circuitikz}
+  \caption{Thermic Model 3R-2C of a room.}
+  \label{fig:3R2C_model}
+\end{figure}
+
+The state-space model of each subsystem is given by:
+\begin{equation}
+  \begin{matrix}
+    \label{eq:systems_cont}
+    \dot{\vec{x}}_{i}(t)  &=&{A_{c}}_{i}\vec{x}_{i}(t) &+& {B_{c}}_{i}\vec{u}_{i}(t)\\
+    \vec{y}_{i}(t)        &=&{C_{c}}_{i}\vec{x}_{i}(t) &&
+  \end{matrix},
+\end{equation}
+where
+\begin{equation}
+  \label{eq:4}
+  \begin{matrix}
+    A_{\mathrm{c}_{i}}=\left[
+    \begin{matrix}
+      -\frac{1}{C^{\text{walls}}_{i}R^{\text{oa/ia}}_{i}}-\frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}& \frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}\\
+      \frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}} &-\frac{1}{C^{\text{air}}_{i}R^{\text{ow/oa}}o_{i}}-\frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}}
+    \end{matrix}\right]\\
+    \begin{matrix}
+      B_{\mathrm{c}_{i}}=\left[
+      \begin{matrix}  \frac{10}{C^{\text{walls}}_{i}}& 0\end{matrix}
+                                                       \right]\T&C_{\mathrm{c}_{i}}=\left[\begin{matrix}1 & 0\end{matrix}\right]
+    \end{matrix}
+  \end{matrix}
+\end{equation}
+where ${\vec{x}_{i}=[{{x}_{A}}_{i}\T\ {{x}_{W}}_{i}\T]\T}$. ${x_A}_i$ and ${x_W}_i$ are the mean temperatures of the air and walls inside room~$i$. $\vec{u}_{i}$ is the input (the heating power)
+for the corresponding room. The inputs are constraint by ${\sum_{i=1}^{4}\vec{u}_{i}(t)\preceq 4\mathrm{kW}}$.
+
+\begin{table}[b]
+  \centering
+  \caption{Model Parameters}\label{tab:modelParamMeaning}
+  \begin{tabular}[b]{cl}
+    \toprule
+    Symbol&Meaning\\
+    \midrule
+    $C^{\text{air}}_{i}$  &Heat Capacity of Inside Air\\
+    $C^{\text{walls}}_{i}$ &Heat Capacity of External Walls\\
+    $R^{\text{iw/ia}}_{i}$ &Resist. Between Inside Air and Inside Walls\\
+    $R^{\text{ow/oa}}_{i}$ &Resist. Between Outside Air and Outside Walls\\
+    $R^{\text{oa/ia}}_{i}$ &Resist. Between Inside and Out.\ Air (from windows)\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[b]
+  \centering
+  \caption{
+    Parameters for each agent}\label{tab:modelParam}
+  \begin{tabular}[t]{cccccc} \toprule
+    Symbol& I & II & III & IV &Unit\\
+    \midrule
+    $C^{\text{walls}}$   &$5.4$&$4.9$&$4.7$&$4.7$ &$10^{4}\mathrm{J/K}$ \\
+    $C^{\text{air}}$     &$7.5$ &$8.4 $&$8.2$ &$7.7$&$10^{4}\mathrm{J/K}$  \\
+    $R^{\text{oa/ia}}$   &$5.2$&$4.6$&$4.9$&$5.4$&$10^{-3}\mathrm{K/W}$ \\
+    $R^{\text{iw/ia}}$   &$2.3$&$2.4$&$2.3$&$2.9$&$10^{-4}\mathrm{K/W}$\\
+    $R^{\text{ow/oa}}$   &$1.5$&$0.6$&$0.7$&$0.7$& $10^{-4}\mathrm{K/W}$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 
-
-% \begin{figure}[h]
-%   \centering
-%   \begin{subfigure}{.45\textwidth}
-%     \includegraphics[width=\textwidth]{../img/original-minimum.png}
-%     \caption{Original minimum.}
-%     \label{fig:first}
-%   \end{subfigure}
-%   \hfill
-%   \begin{subfigure}{0.45\textwidth}
-%     \includegraphics[width=\textwidth]{../img/new-minimum-selfish.png}
-%     \caption{Minimum after attack.}
-%     \label{fig:second}
-%   \end{subfigure}
-%   \caption{Effects of non-conforming behaviors on optimal value. \todo{Refaire les images}}
-%   \label{fig:figures}
-% \end{figure}
-
-% \begin{figure}[h]
-%   \centering
-%   \begin{subfigure}{0.45\textwidth}
-%     \includegraphics[width=\textwidth]{../img/ignoreX.png}
-%     \caption{Optimal value after ignoring attacker.}
-%     \label{fig:third}
-%   \end{subfigure}
-%   \hfill
-%   \begin{subfigure}{0.45\textwidth}
-%     \includegraphics[width=\textwidth]{../img/correctX.png}
-%     \caption{Optimal value after trying to recover original behavior.}
-%     \label{fig:third}
-%   \end{subfigure}
-
-%   \caption{Recovery options.}\label{fig:figures}
-% \end{figure}
-
-% \section{Study case}
-% \label{sec:study-case}
-
-% Model 3R-2C \cite{GoudaEtAl2002}
-% \begin{figure}[h]
-%   \centering
-%   \begin{circuitikz}[european]
-%     \draw (0,0) node[tlground]{} to[isource, l=$P^{\text{heat}}$] ++(0,2) to[short, -*] ++(1.5,0) coordinate (a);
-
-%     \draw (a) node[above]{$T^{\text{in}}$}  to[C=$C^{\text{air}}$] ++(0,-2) node[tlground]{};
-%     \draw (0,-3) node[tlground]{} to[isource, l=$I^{\text{sol}}$] ++(0,2)
-%     to[short, -*] ++(1.5,0) coordinate (b);
-%     \draw (b) to[C=$C^{\text{walls}}$] ++(0,-2) node[tlground]{};
-
-%     \draw (a) -- ++(2,0) coordinate (c) -- ++(0,-.5) to[R=$R^{\text{iw/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (d);
-
-%     \draw (b) node[above]{$T^{\text{walls}}$} to[short,-*] (d);
-
-%     \draw (c) --  ++(2.5,0) -- ++(0,-.5) to[R=$R^{\text{oa/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (e);
-
-%     \draw (d) to[R=$R^{\text{ow/oa}}$] (e) to[battery,l=$T^{\text{out}}$] ++(0,-2) node[tlground]{};
-%   \end{circuitikz}
-%   \caption{Thermic Model 3R-2C of a room.}
-%   \label{fig:3R2C_model}
-% \end{figure}
-
-% The state-space model of each subsystem is given by:
-% \begin{equation}
-%   \begin{matrix}
-%     \label{eq:systems_cont}
-%     \dot{\vec{x}}_{i}(t)  &=&{A_{c}}_{i}\vec{x}_{i}(t) &+& {B_{c}}_{i}\vec{u}_{i}(t)\\
-%     \vec{y}_{i}(t)        &=&{C_{c}}_{i}\vec{x}_{i}(t) &&
-%   \end{matrix},
-% \end{equation}
-% where
-% \begin{equation}
-%   \label{eq:4}
-%   \begin{matrix}
-%     A_{\mathrm{c}_{i}}=\left[
-%     \begin{matrix}
-%       -\frac{1}{C^{\text{walls}}_{i}R^{\text{oa/ia}}_{i}}-\frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}& \frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}\\
-%       \frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}} &-\frac{1}{C^{\text{air}}_{i}R^{\text{ow/oa}}o_{i}}-\frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}}
-%     \end{matrix}\right]\\
-%     \begin{matrix}
-%       B_{\mathrm{c}_{i}}=\left[
-%       \begin{matrix}  \frac{10}{C^{\text{walls}}_{i}}& 0\end{matrix}
-%                                                        \right]\T&C_{\mathrm{c}_{i}}=\left[\begin{matrix}1 & 0\end{matrix}\right]
-%     \end{matrix}
-%   \end{matrix}
-% \end{equation}
-% where ${\vec{x}_{i}=[{{x}_{A}}_{i}\T\ {{x}_{W}}_{i}\T]\T}$. ${x_A}_i$ and ${x_W}_i$ are the mean temperatures of the air and walls inside room~$i$. $\vec{u}_{i}$ is the input (the heating power)
-% for the corresponding room. The inputs are constraint by ${\sum_{i=1}^{4}\vec{u}_{i}(t)\preceq 4\mathrm{kW}}$.
-
-% \begin{table}[b]
-%   \centering
-%   \caption{Model Parameters}\label{tab:modelParamMeaning}
-%   \begin{tabular}[b]{cl}
-%     \toprule
-%     Symbol&Meaning\\
-%     \midrule
-%     $C^{\text{air}}_{i}$  &Heat Capacity of Inside Air\\
-%     $C^{\text{walls}}_{i}$ &Heat Capacity of External Walls\\
-%     $R^{\text{iw/ia}}_{i}$ &Resist. Between Inside Air and Inside Walls\\
-%     $R^{\text{ow/oa}}_{i}$ &Resist. Between Outside Air and Outside Walls\\
-%     $R^{\text{oa/ia}}_{i}$ &Resist. Between Inside and Out.\ Air (from windows)\\
-%     \bottomrule
-%   \end{tabular}
-% \end{table}
-
-% \begin{table}[b]
-%   \centering
-%   \caption{
-%     Parameters for each agent}\label{tab:modelParam}
-%   \begin{tabular}[t]{cccccc} \toprule
-%     Symbol& I & II & III & IV &Unit\\
-%     \midrule
-%     $C^{\text{walls}}$   &$5.4$&$4.9$&$4.7$&$4.7$ &$10^{4}\mathrm{J/K}$ \\
-%     $C^{\text{air}}$     &$7.5$ &$8.4 $&$8.2$ &$7.7$&$10^{4}\mathrm{J/K}$  \\
-%     $R^{\text{oa/ia}}$   &$5.2$&$4.6$&$4.9$&$5.4$&$10^{-3}\mathrm{K/W}$ \\
-%     $R^{\text{iw/ia}}$   &$2.3$&$2.4$&$2.3$&$2.9$&$10^{-4}\mathrm{K/W}$\\
-%     $R^{\text{ow/oa}}$   &$1.5$&$0.6$&$0.7$&$0.7$& $10^{-4}\mathrm{K/W}$ \\
-%     \bottomrule
-%   \end{tabular}
-% \end{table}
 
 % the attacker has no motivation to get more
 

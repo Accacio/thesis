@@ -157,12 +157,15 @@
 \newcommand{\lambdai}{\vec{\lambda}_i}
 % \newcommand{\modified}[1]{\underaccent{\sim}{#1}}
 \newcommand{\modified}[1]{\accentset{\todo{\text{mod}}}{#1}}
-\newcommand{\lambdamodifiedi}{\modified{\vec{\lambda}}_i}
+\newcommand{\reconstructed}[1]{\accentset{\todo{\text{rec}}}{#1}}
+\newcommand{\lambdaimodified}{\modified{\vec{\lambda}}_{i}}
 \newcommand{\lambdamodified}{\modified{\vec{\lambda}}}
-\newcommand{\lambdaicheat}{\tilde{\vec{\lambda}}_i}
+\newcommand{\lambdaireconstructed}{\reconstructed{\vec{\lambda}}_{i}}
+\newcommand{\lambdaicheat}{\tilde{\vec{\lambda}}_{i}}
 
 % \newcommand{\Tik}{\mpcval{T}}
 \newcommand{\Tik}[1][i]{T_{#1}[k]}
+\newcommand{\Tikinvestimate}[1][i]{\widehat{\Tik[#1]^{-1}}}
 \newcommand{\Plin}[1][i]{{P}_{#1}}
 \newcommand{\Plinnominal}[1][i]{\bar{{P}}_{#1}}
 \newcommand{\Plintilde}[1][i]{\tilde{P}_{#1}[k]}
