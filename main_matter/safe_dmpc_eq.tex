@@ -497,7 +497,8 @@ where $\rlsparam$ is the parameter vector we want to estimate ($\Plintildeestima
   \right].
 \end{equation}
 
-Using this methods, we need to estimate all elements of $\Plintildeestimate$ and $\siktildeestimate$, which results into $\card{\thetai}^{2}+\card{\thetai}$ elements. But as the $\Plintildeestimate$ are symmetric, we can estimate only their upper triangle, reducing the number of total estimated elements to $\frac{\card{\thetai}^{2}+3\card{\thetai}}{2}$.
+Using this methods, we need to estimate all elements of $\Plintildeestimate$ and $\siktildeestimate$, which results into ${\card{\thetai}^{2}+\card{\thetai}}$ elements. But as the $\Plintildeestimate$ are symmetric, we can estimate only their upper triangle, reducing the number of total estimated elements to ${\frac{\card{\thetai}^{2}+3\card{\thetai}}{2}}$.
+
 
 Then, we restructure $\rlsparam$ accordingly:
 \begin{equation}
@@ -555,10 +556,17 @@ If we take a $\thetai$ with ${\card{\thetai}=3}$ elements, by applying \structDa
      0  &   \elem[1]{\theta_{i}}   &  0 &    \elem[2]{\theta_{i}}  &   \elem[3]{\theta_{i}}  &   0 \\
      0  &   0   &  \elem[1]{\theta_{i}} &    0  &   \elem[2]{\theta_{i}}  &   \elem[3]{\theta_{i}}
   \end{matrix}
-  \right]
+  \right].
 \end{equation}
 
-Using the construction above and applying to the \RLS{} algorithm in~\cite{AstroemWittenmark1989}, we can describe an iteration of the \RLS{} algorithm to estimate the symmetric matrix $\Plintildeestimate$ and the vector $\siktildeestimate$ simultaneously.
+\begin{remark}
+  Observe that for our detection, we do not need to estimate $\sik$.
+  We could use the difference between two different values of $\lambdai$ to suppress the $\sik$ term.
+  Preventing the estimation of $\siktildeestimate$ would need some changes in $\rlsparam$ and $\rlssysinput$, thus reducing the number of elements to ${\frac{\card{\thetai}^{2}+\card{\thetai}}{2}}$.
+  However, we foreshadow that $\siktildeestimate$ may be used for the mitigation phase, so we estimate it anyway.
+\end{remark}
+
+Using the construction of $\rlsparam$ and $\rlssysinput$ above and applying to the \RLS{} algorithm in~\cite{AstroemWittenmark1989}, we can describe an iteration of the \RLS{} algorithm to estimate the symmetric matrix $\Plintildeestimate$ and the vector $\siktildeestimate$ simultaneously.
 Algorithm~\ref{alg:update_rls} shows how to calculate a new parameter estimate $\rlsparam$.
 
 \begin{algorithm2e}[h]
@@ -582,19 +590,25 @@ For instance, the coordinator would supervise the agents by sending $\thetai$ wh
 We opted to use a random noise as input, and once the estimates converge, we can resume the negotiation.
 As seen in~\cite[\S3.4]{AstroemWittenmark1989}, a random signal has persistent excitation of any order, i.e., any system will continue to be excited as long the signal is applied.
 
+\begin{remark}
+  Other considerations about initialization of $\rlsparam$ and the choice of forgetting parameter $\rlsforget$ can be made, but is out of the scope of this work.
+\end{remark}
 
 \subsection{Complete detection technique}\label{sec:compl-detect-algor}
-Using all the knowledge harvested, we can systematize the detection technique in a algorithm.
+Using all the pieces presented in the last subsections, we can finally put them together and create a detection algorithm.
+First, we estimate $\Plintildeestimate$ and then we compare the estimate with a $\Plin$ when the system behaves nominally.
+We can systematize the detection technique in Algorithm~\ref{alg:detection_rls}.
 
 \begin{algorithm2e}[h]
   \DontPrintSemicolon%
   \KwIn{Nominal $\Plinnominal$, Maximum number of iterations $h_{\max}$, Bound $\epsilon_{\rlsparam}$, Bound $\epsilon_{\Plin}$, }
   \KwOut{Detection $d_{i}$, Estimates $\Plintildeestimate$ and $\siktildeestimate$}
   $h\gets0$\;
+  Initialize $\rlsparam\p$
   \Repeat{$\left[\norm{\rlsparam\hplusone-\rlsparam\h}\leq\epsilon_{\rlsparam}\right] ||\ \left[h\geq h_{\max}\right]$}
   {
-    Coordinator sends random $\vec{\theta}_{i}^{(h+1)}$ to $i$ \;
-    Subsystem solves~\eqref{eq:DOP_local}, and sends $\vec{\lambda}^{\star}_{i}(\vec{\theta}^{(h)})$ back\;
+    Coordinator sends random $\thetai\h$ to $i$ \;
+    Subsystem solves~\eqref{eq:DOP_local}, and sends $\vec{\lambda}^{\star}_{i}(\thetai\p)$ back\;
     Coordinator updates estimates $\rlsparam$ using Algorithm~\ref{alg:update_rls}\;
     $h\gets h+1$\;
   }
@@ -604,8 +618,6 @@ Using all the knowledge harvested, we can systematize the detection technique in
 
   \caption{Detection algorithm during a given step $k$ (Possibly in parallel).}\label{alg:detection_rls}
 \end{algorithm2e}
-\todo{maybe use negotiation + random noise}.
-as on the makes the evolution of the system
 
 \section{Mitigation}\label{sec:mitigation}
 Once the attackers are identified via function $d_{i}$, we need to mitigate the possible effects of the attack.
