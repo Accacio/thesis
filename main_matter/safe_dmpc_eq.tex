@@ -606,7 +606,7 @@ We can systematize the detection technique in Algorithm~\ref{alg:detection_rls}.
   \KwOut{Detection $d_{i}$, Estimates $\Plintildeestimate$ and $\siktildeestimate$}
   $h\gets0$\;
   Initialize $\rlsparam\p$
-  \Repeat{$\left[\norm{\rlsparam\hplusone-\rlsparam\h}\leq\epsilon_{\rlsparam}\right] ||\ \left[h\geq h_{\max}\right]$}
+  \Repeat{$\norm{\rlsparam\hplusone-\rlsparam\h}\leq\epsilon_{\rlsparam}$}
   {
     Coordinator sends random $\thetai\h$ to $i$ \;
     Subsystem solves~\eqref{eq:DOP_local}, and sends $\lambdaikstar(\thetai\p)$ back\;
@@ -615,7 +615,7 @@ We can systematize the detection technique in Algorithm~\ref{alg:detection_rls}.
   }
   Reconstruct $\Plintildeestimate$ and $\siktildeestimate$ from $\rlsparam$\;
   $E_{i}[k]\gets\norm{\Plintildeestimate-\Plinnominal}_{F}$\;
-  Coordinator calculates $d_{i}$: $d_{i}\gets\indicator{E_{i}[k]\geq\epsilon_{\Plin}}$\;
+  Coordinator calculates $d_{i}$: $d_{i}\gets d_{i}\lor \indicator{E_{i}[k]\geq\epsilon_{\Plin}}$\;
 
   \caption{Detection algorithm during a given step $k$ (Possibly in parallel).}\label{alg:detection_rls}
 \end{algorithm2e}

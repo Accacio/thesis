@@ -123,7 +123,7 @@ Using~\eqref{eq:DOP_local} and~\eqref{eq:projectedSubgradient_lambda}, we can al
   \KwOut{Optimal allocations $\vec{\theta}[k]$}
   $p\gets 0$\;
   Initialize ${\thetaik}^{(p)},$ $\forall i\in\set{M}$, such that ${\vec{\theta}[k]}^{(p)}\in\set{S}$\;
-  \Repeat{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\ ||\ \left[p\geq p_{\max}\right]$}{
+  \Repeat{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\lor \left[p\geq p_{\max}\right]$}{
     Solve local sub-problems~\eqref{eq:DOP_local} and calculate ${\vec{\lambda}_{i}[k]}^{(p)}$ (potentially in parallel)\;
     Update $\vec{\theta}[k]$: $\vec{\theta}[k]\pplusone\gets\Proj^{\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p)$ \;
     $p\gets p+1$\;
@@ -151,7 +151,7 @@ We can illustrate the communication structure using Fig.~\ref{fig:dmpc_communica
     Initialize ${\thetaik}^{(p)},$ $\forall i\in\set{M}$, such that ${\vec{\theta}[k]}^{(p)}\in\set{S}$\;
     Coordinator sends $\thetaik^{(p)}$ for all agents\;
     \exchange{
-      \Repeat{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\ ||\ \left[p\geq p_{\max}\right]$}{
+      \Repeat{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\lor \left[p\geq p_{\max}\right]$}{
         Agents solve local sub-problems~\eqref{eq:DOP_local} and send ${\vec{\lambda}_{i}[k]}^{(p)}$ to coordinator\;
         Coordinator updates $\vec{\theta}[k]$ using~\eqref{eq:projectedSubgradient_lambda} and sends to local agents\;
         $p\gets p+1$\;
