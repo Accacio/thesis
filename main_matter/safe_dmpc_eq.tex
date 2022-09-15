@@ -479,7 +479,7 @@ Since the exact paramater values are not known initially, a initial estimate is 
 To reduce errors caused by the initial estimate and possible discrepant input-output data (noisy data), a forgetting term $\rlsforget$ is used to update the gain $\rlsgain$, forgetting past events and maintaining new ones.
 
 Initially, we use~\eqref{eq:lambda_function_theta_tilde} directly as regression model, transforming it in the usual form
-\SetKwFunction{structDataSym}{structDataSym}%
+
 \begin{equation}
   \rlssysinput\rlsparam=\rlssysoutput,
 \end{equation}
@@ -524,7 +524,6 @@ However, for $\rlssysinput$, its form becomes more complex, needing an algorithm
   \right].
 \end{equation}
 
-\SetKwProg{Fn}{}{}{}
 \begin{algorithm2e}[h]
   \DontPrintSemicolon%
   \Fn{\structDataSym($\vec{x}$)}{
@@ -733,12 +732,96 @@ So, we can modulate the negotiation algorithm, by using $\lambdaimodified$ choos
 \end{remark}
 
 \section{Complete safe dMPC for scarce systems}\label{sec:complete-safe-dmpc}
+Compiling the detection and mitigation schemes described in the last sections, we can finally have our resilient primal decomposition-based \dmpc{} for scarce systems.
+Algorithm~\ref{alg:rpdbdmpcss} systematizes the method.
+
+% \begin{algorithm2e}[h]
+%   \DontPrintSemicolon%
+%   \coordinit{
+%     Initialize $k$, $p$, $a$, $b$, $p_{\max}$ and $\epsilon$\;
+%   }
+%   \While{$k\geq 0$}{
+%     Initialize ${\thetaik}^{(p)},$ $\forall i\in\set{M}$, such that ${\vec{\theta}[k]}^{(p)}\in\set{S}$\;
+%     Coordinator sends $\thetaik^{(p)}$ for all agents\;
+%     \exchange{
+%       \Repeat{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\lor \left[p\geq p_{\max}\right]$}{
+%         Agents solve local sub-problems~\eqref{eq:DOP_local} and send ${\vec{\lambda}_{i}[k]}^{(p)}$ to coordinator\;
+%         Coordinator updates $\vec{\theta}[k]$ using~\eqref{eq:projectedSubgradient_lambda} and sends to local agents\;
+%         $p\gets p+1$\;
+%       }
+%     }
+%     Agents apply on respective sub-systems the last calculated $\vec{u}_{i}^{\star}[0|k]$\;
+%     $k\gets k+1$\;
+%   }
+%   \caption{Primal decomposition-based \dmpc{}.}\label{alg:primal_decomposition_based_dmpc}
+% \end{algorithm2e}
+\begin{algorithm2e}[h]
+  \DontPrintSemicolon
+  \detectPhase{
+  $h:=0$\;
+    \Repeat{
+$\|\eta_{i}^{h}-\eta^{h-1}\|\leq\epsilon$
+}{
+    Coordinator sets random $\vec{\theta}_{i}^{(h+1)}$ \;
+    Subsystems solve~\eqref{eq:DOP_local}, and send $\vec{\lambda}^{\star}_{i}(\vec{\theta}^{(h)})$\;
+    Coordinator estimates $\widehat{\tilde{P}}_{i}(k)^{(h)}$ and $\widehat{\tilde{\vec{s}}}_{i}(k)^{(h)}$ \;
+    $h:=h+1$\;
+    }
+    Coordinator computes $d_{i}$ using~\eqref{eq:2}\;
+  }
+  \negotPhase{
+  Coordinator initializes $\vec{\theta}^{(0)}$ \;
+  $p:=0$\;
+
+  \Repeat{$\|\vec{\theta}^{(p)} -\vec{\theta}^{(p-1)}\|\leq\epsilon$}{
+  Subsystems solve~\eqref{eq:DOP_local}, and send $\vec{\lambda}^{\star}_{i}(\vec{\theta}\p)$\;
+
+  Coordinator updates allocation~\eqref{eq:thetaNegot} using adequate versions of $\vec{\lambda}_{i}$ for each agent: $\vec{\lambda}_{i}^{\star}(\vec{\theta}\p)$, if $d_{i}=0$ and ${\vec{\lambda}_{i}}_{\mathrm{rec}}$, if ${d_{i}=1}$\;
+  $p:=p+1$
+ }}
+ \caption{Secure DMPC. \todo{rework algo}}\label{alg:rpdbdmpcss}
+\end{algorithm2e}
+
 
 \section{Numerical experiment}\label{sec:numerical-experiment}
 
-\subsection{Case study}\label{sec:case-study}
+We illustrate the operation of the resilient algorithm just presented with an academic example.
+This example is more complex and based on reality than the others presented so far.
+The case studied will be used for the rest of this work with some minor adjustments when needed (inclusion or suppression of assumptions).
 
-Model 3R-2C \cite{GoudaEtAl2002}
+\subsection{Case study}\label{sec:case-study}
+We analyze the case of a simple \dhn{} composed of ${M=4}$ distinct small sized houses.
+Each house has a different temperature references $\vec{w}_{i}(t)$ and states $\vec{x}_{i}$ (users have different needs).
+Each house consumes $\vec{u}_{i}(t)\succeq\0$ in order to heat the environment.
+In Fig.~\ref{fig:houses} we see the houses consuming from a centralized heat provider.
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[node distance=1cm and 1cm,scale=1]
+    \node[color=mpc_agent] (house1) at (0,0) {\scalebox{2.5}{\faHome}};
+    \node[minimum height=1cm,below=of house1] (medium) {};
+    \node[color=mpc_agent,right=of medium] (house2)  {\scalebox{3.5}{\faHome}};
+    \node[color=mpc_agent,below=of medium] (house3)  {\scalebox{3}{\faHome}};
+    \node[color=mpc_agent,left=5cm of medium] (house4)  {\scalebox{7}{\faHome}};
+
+    \draw[latex-,line width=1pt] (house1) -- (medium.center);
+    \draw[latex-,line width=1pt] (house2) -- (medium.center);
+    \draw[latex-,line width=1pt] (house3) -- (medium.center);
+    \draw[latex-,line width=1pt] (house4) -- (medium.center) node[above,midway] {\large $\vec{u}_{i}(t)$};
+    \draw[color=black,fill=mpc_coordinator,] (medium) circle [radius=.2cm];
+
+    \node[latex-,line width=7pt] at ($(house4) +(-1,1)$) {\large $w_{i}(t)$};
+    \node[latex-,line width=7pt] at ($(house4)$) {$\vec{x}_{i}(t)$};
+
+  \end{tikzpicture}
+  \caption{District with 4 houses.}\label{fig:houses}
+\end{figure}
+
+To model each house, we can use the 3R-2C Model~\cite{GoudaEtAl2002}, where the thermic elements are represented as equivalent electric elements in a 3 resistors, 2 capacitors electric circuit.
+Current sources are added to correspond to solar irradiation and the heating power, and voltage source to represent the temperature outside the house.
+The electric circuit is depicted in Fig.~\ref{fig:3R2C_model}.
+The meaning of each component is given in Tab.~\ref{tab:modelParamMeaning}, and the respective values for each one of the houses is given in Tab.~\ref{tab:modelParam}.
+
 \begin{figure}[h]
   \centering
   \begin{circuitikz}[european]
@@ -757,38 +840,10 @@ Model 3R-2C \cite{GoudaEtAl2002}
 
     \draw (d) to[R=$R^{\text{ow/oa}}$] (e) to[battery,l=$T^{\text{out}}$] ++(0,-2) node[tlground]{};
   \end{circuitikz}
-  \caption{Thermic Model 3R-2C of a room.}
-  \label{fig:3R2C_model}
+  \caption{Thermic Model 3R-2C of a house. \todo{verify model}}\label{fig:3R2C_model}
 \end{figure}
 
-The state-space model of each subsystem is given by:
-\begin{equation}
-  \begin{matrix}
-    \label{eq:systems_cont}
-    \dot{\vec{x}}_{i}(t)  &=&{A_{c}}_{i}\vec{x}_{i}(t) &+& {B_{c}}_{i}\vec{u}_{i}(t)\\
-    \vec{y}_{i}(t)        &=&{C_{c}}_{i}\vec{x}_{i}(t) &&
-  \end{matrix},
-\end{equation}
-where
-\begin{equation}
-  \label{eq:4}
-  \begin{matrix}
-    A_{\mathrm{c}_{i}}=\left[
-    \begin{matrix}
-      -\frac{1}{C^{\text{walls}}_{i}R^{\text{oa/ia}}_{i}}-\frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}& \frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}\\
-      \frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}} &-\frac{1}{C^{\text{air}}_{i}R^{\text{ow/oa}}o_{i}}-\frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}}
-    \end{matrix}\right]\\
-    \begin{matrix}
-      B_{\mathrm{c}_{i}}=\left[
-      \begin{matrix}  \frac{10}{C^{\text{walls}}_{i}}& 0\end{matrix}
-                                                       \right]\T&C_{\mathrm{c}_{i}}=\left[\begin{matrix}1 & 0\end{matrix}\right]
-    \end{matrix}
-  \end{matrix}
-\end{equation}
-where ${\vec{x}_{i}=[{{x}_{A}}_{i}\T\ {{x}_{W}}_{i}\T]\T}$. ${x_A}_i$ and ${x_W}_i$ are the mean temperatures of the air and walls inside room~$i$. $\vec{u}_{i}$ is the input (the heating power)
-for the corresponding room. The inputs are constraint by ${\sum_{i=1}^{4}\vec{u}_{i}(t)\preceq 4\mathrm{kW}}$.
-
-\begin{table}[b]
+\begin{table}[h]
   \centering
   \caption{Model Parameters}\label{tab:modelParamMeaning}
   \begin{tabular}[b]{cl}
@@ -804,7 +859,7 @@ for the corresponding room. The inputs are constraint by ${\sum_{i=1}^{4}\vec{u}
   \end{tabular}
 \end{table}
 
-\begin{table}[b]
+\begin{table}[h]
   \centering
   \caption{
     Parameters for each agent}\label{tab:modelParam}
@@ -821,7 +876,52 @@ for the corresponding room. The inputs are constraint by ${\sum_{i=1}^{4}\vec{u}
 \end{table}
 
 
+The electric circuit corresponds to a \ltict{} system, which can be represented in the state-space model by
+\todo[verify]{
+  \begin{equation}
+  \begin{matrix}
+    \label{eq:systems_cont}
+    \dot{\vec{x}}_{i}(t)  &=&{A_{c}}_{i}\vec{x}_{i}(t) &+& {B_{c}}_{i}\vec{u}_{i}(t)+{D_{c}}_{i}\vec{d}_{i}(t)\\
+    \vec{y}_{i}(t)        &=&{C_{c}}_{i}\vec{x}_{i}(t) &&
+  \end{matrix},
+\end{equation}
+}
+where
+\todo[verify]{
+\begin{equation}
+  \label{eq:4}
+    A_{\mathrm{c}_{i}}=\left[
+    \begin{matrix}
+      -\frac{1}{C^{\text{walls}}_{i}R^{\text{oa/ia}}_{i}}-\frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}& \frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}\\
+      \frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}} &-\frac{1}{C^{\text{air}}_{i}R^{\text{ow/oa}}o_{i}}-\frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}}
+    \end{matrix}\right]
+\end{equation}
+}
+\todo[verify]{
+\begin{equation}
+    \begin{matrix}
+      B_{\mathrm{c}_{i}}=\left[
+      \begin{matrix}  \frac{10}{C^{\text{walls}}_{i}}& 0\end{matrix}
+                                                       \right]\T&C_{\mathrm{c}_{i}}=\left[\begin{matrix}1 & 0\end{matrix}\right]
+    \end{matrix}
+\end{equation}
+}
+where
+\todo{${\vec{x}_{i}=[{{x}_{A}}_{i}\T\ {{x}_{W}}_{i}\T]\T}$},
+\todo{${\vec{d}_{i}=[{{x}_{A}}_{i}\T\ {{x}_{W}}_{i}\T]\T}$}.
+${x_A}_i$ and ${x_W}_i$ are the mean temperatures of the air and walls inside room~$i$.
 
-% the attacker has no motivation to get more
+Their heating inputs $\vec{u}_{i}(t)$ are constraint by the maximum heat power such
+\begin{equation}
+\sum\limits_{i\in\set{M}}\left[\vec{u}_{i}(t)\right]\preceq \vec{u}_{\max}
+\end{equation}
+with $\vec{u}_{\max}=4\mathrm{kW}$.
+
+\begin{remark}
+  For our examples, we ignore the disturbances caused by the outside and the sun, i.e., $\vec{d}_{i}(t)=\0$.
+\end{remark}
+
+We want to control the system using \mpc{}, so we discretize the system using a zero-order holder and sampling time o $T_{s}=0.25\mathrm{h}$, resulting in the $3$-tuples $(A_{i},B_{i},C_{i})$.
+
 
 \end{document}
