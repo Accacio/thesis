@@ -673,7 +673,7 @@ In Fig.~\ref{fig:minimum_ignoring_attacker}, we see the new level curves and the
 \end{figure}
 
 Although the idea of punishing the attacker by ignoring it may appear reasonably, since the system is a \cps{}, it may control some amenity that needs a minimal \QoS{}.
-If we are controlling a \HVAC{} system, for instance, depending on the region of the planet, turning the heat off of the attacker could make the users extremely cold\todo{, as in the introductory example in Chapter~\ref{sec:intro}}.
+If we are controlling a \HVAC{} system, for instance, depending on the region of the planet, turning the heat off of the attacker could make the users extremely cold\todo{, as in the introductory example in Chapter~\ref{sec:introduction}}.
 
 A solution would be to, before the negotiation, allocate minimal resources for the attacker, and then ignore it throughout the negotiation using the remainder of the resources, subtracting the maximum by the allocated for the attacker.
 However, it would be needed to assess somehow what would be the fair amount to give to the attacker, which would not prejudice other agents.
@@ -732,7 +732,7 @@ So, we can modulate the negotiation algorithm, by using $\lambdaimodified$ choos
 \end{remark}
 
 \section{Complete safe dMPC for scarce systems}\label{sec:complete-safe-dmpc}
-Compiling the detection and mitigation schemes described in the last sections, we can finally have our resilient primal decomposition-based \dmpc{} for scarce systems.
+Compiling the detection and mitigation schemes described in the last sections, we can finally have our \rpdmpcss{}.
 Algorithm~\ref{alg:rpdbdmpcss} systematizes the method.
 
 % \begin{algorithm2e}[h]
@@ -779,7 +779,7 @@ $\|\eta_{i}^{h}-\eta^{h-1}\|\leq\epsilon$
   Coordinator updates allocation~\eqref{eq:thetaNegot} using adequate versions of $\vec{\lambda}_{i}$ for each agent: $\vec{\lambda}_{i}^{\star}(\vec{\theta}\p)$, if $d_{i}=0$ and ${\vec{\lambda}_{i}}_{\mathrm{rec}}$, if ${d_{i}=1}$\;
   $p:=p+1$
  }}
- \caption{Secure DMPC. \todo{rework algo}}\label{alg:rpdbdmpcss}
+ \caption{Resilient Primal Decomposition-based dMPC for scarce systems. \todo{rework algo}}\label{alg:rpdbdmpcss}
 \end{algorithm2e}
 
 
@@ -789,10 +789,10 @@ We illustrate the operation of the resilient algorithm just presented with an ac
 This example is more complex and based on reality than the others presented so far.
 The case studied will be used for the rest of this work with some minor adjustments when needed (inclusion or suppression of assumptions).
 
-\subsection{Case study}\label{sec:case-study}
-We analyze the case of a simple \dhn{} composed of ${M=4}$ distinct small sized houses.
-Each house has a different temperature references $\vec{w}_{i}(t)$ and states $\vec{x}_{i}$ (users have different needs).
-Each house consumes $\vec{u}_{i}(t)\succeq\0$ in order to heat the environment.
+\subsection{\dhnlong}\label{sec:case-study}
+We analyze the case of a simple \dhn{} composed of ${M=4}$ distinct \todo{small sized} houses (called I, II, II and IV).
+Each house has state $\vec{x}_{i}$, and a different temperature reference $\vec{w}_{i}(t)$ for the inside air (users have different needs).
+The houses are equipped with convectors, and the total heating power consumed by each house is $\vec{u}_{i}(t)\succeq\0$.
 In Fig.~\ref{fig:houses} we see the houses consuming from a centralized heat provider.
 
 \begin{figure}[h]
@@ -817,9 +817,10 @@ In Fig.~\ref{fig:houses} we see the houses consuming from a centralized heat pro
   \caption{District with 4 houses.}\label{fig:houses}
 \end{figure}
 
-To model each house, we can use the 3R-2C Model~\cite{GoudaEtAl2002}, where the thermic elements are represented as equivalent electric elements in a 3 resistors, 2 capacitors electric circuit.
-Current sources are added to correspond to solar irradiation and the heating power, and voltage source to represent the temperature outside the house.
+To model each house, we can use the 3R-2C monozone model with a window~\cite{GoudaEtAl2002}, where the thermic elements are represented as equivalent electric elements in a 3 resistors, and 2 capacitors electric circuit.
 The electric circuit is depicted in Fig.~\ref{fig:3R2C_model}.
+Current sources are added to correspond to solar irradiation and the heating power.
+A voltage source represents the temperature outside the house.
 The meaning of each component is given in Tab.~\ref{tab:modelParamMeaning}, and the respective values for each one of the houses is given in Tab.~\ref{tab:modelParam}.
 
 \begin{figure}[h]
@@ -850,11 +851,15 @@ The meaning of each component is given in Tab.~\ref{tab:modelParamMeaning}, and 
     \toprule
     Symbol&Meaning\\
     \midrule
-    $C^{\text{air}}_{i}$  &Heat Capacity of Inside Air\\
-    $C^{\text{walls}}_{i}$ &Heat Capacity of External Walls\\
-    $R^{\text{iw/ia}}_{i}$ &Resist. Between Inside Air and Inside Walls\\
-    $R^{\text{ow/oa}}_{i}$ &Resist. Between Outside Air and Outside Walls\\
-    $R^{\text{oa/ia}}_{i}$ &Resist. Between Inside and Out.\ Air (from windows)\\
+    $C^{\text{air}}_{i}$  &Heat capacity of inside air\\
+    $C^{\text{walls}}_{i}$ &Heat capacity of external walls\\
+    $R^{\text{iw/ia}}_{i}$ &Resist.\ between inside air and inside walls\\
+    $R^{\text{ow/oa}}_{i}$ &Resist.\ between outside air and outside walls\\
+    $R^{\text{oa/ia}}_{i}$ &Resist.\ between inside and out.\ air (from windows)\\
+    $P^{\text{heat}}$ &Convector's heating power\\
+    $I^{\text{sol}}$ &Sun's heating Power (by irradiance)\\
+    $T^{\text{in}}$ &Mean temperature of Inside Air\\
+    $T^{\text{walls}}$ &Mean temperature of Inside Walls\\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -890,38 +895,89 @@ where
 \todo[verify]{
 \begin{equation}
   \label{eq:4}
+  \begin{matrix}
     A_{\mathrm{c}_{i}}=\left[
     \begin{matrix}
       -\frac{1}{C^{\text{walls}}_{i}R^{\text{oa/ia}}_{i}}-\frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}& \frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}\\
       \frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}} &-\frac{1}{C^{\text{air}}_{i}R^{\text{ow/oa}}o_{i}}-\frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}}
     \end{matrix}\right]
-\end{equation}
-}
-\todo[verify]{
-\begin{equation}
+                                                         &
+      B_{\mathrm{c}_{i}}=\left[\begin{matrix}  \frac{P^{\text{heat}}}{C^{\text{air}}_{i}}\\ 0\end{matrix}\right]\T
+  \\\\
+    D_{\mathrm{c}_{i}}=\left[
     \begin{matrix}
-      B_{\mathrm{c}_{i}}=\left[
-      \begin{matrix}  \frac{10}{C^{\text{walls}}_{i}}& 0\end{matrix}
-                                                       \right]\T&C_{\mathrm{c}_{i}}=\left[\begin{matrix}1 & 0\end{matrix}\right]
-    \end{matrix}
+      0& \frac{1}{C^{\text{air}}_{i}R^{\text{ow/oa}}_{i}}\\
+      \frac{1}{C^{\text{air}}_{i}} &\frac{1}{C^{\text{air}}_{i}R^{\text{ow/oa}}}
+    \end{matrix}\right]&C_{\mathrm{c}_{i}}=\left[\begin{matrix}1 & 0\end{matrix}\right]
+
+\end{matrix}
 \end{equation}
 }
 where
 ${\vec{x}_{i}(t)=\left[T^{\text{in}}_{i}(t)\ T^{\text{walls}}_{i}(t)\right]\T}$,
+${\vec{u}_{i}(t)=P^{\text{heat}}_{i}}$,
 ${\vec{d}_{i}(t)=\left[I^{\text{sol}}(t)\ T^{\text{out}}(t)\right]\T}$.
-${x_A}_i$ and ${x_W}_i$ are the mean temperatures of the air and walls inside room~$i$.
 
 Their heating inputs $\vec{u}_{i}(t)$ are constraint by the maximum heat power such
 \begin{equation}
 \sum\limits_{i\in\set{M}}\left[\vec{u}_{i}(t)\right]\preceq \vec{u}_{\max}
 \end{equation}
-with $\vec{u}_{\max}=4\mathrm{kW}$.
+with
+\todo{$\vec{u}_{\max}=4\mathrm{kW}$}
+.
 
 \begin{remark}
-  For our examples, we ignore the disturbances caused by the outside and the sun, i.e., $\vec{d}_{i}(t)=\0$.
+  For our examples, we ignore the disturbances caused by the outside temperature and the sun, i.e., $\vec{d}_{i}(t)=\0$.
 \end{remark}
 
-We want to control the system using \mpc{}, so we discretize the system using a zero-order holder and sampling time o $T_{s}=0.25\mathrm{h}$, resulting in the $3$-tuples $(A_{i},B_{i},C_{i})$.
+We want to control the system using \mpc{}, so we discretize the system using a zero-order holder and sampling time of $T_{s}=0.25\mathrm{h}$, resulting in the $3$-tuples $(A_{i},B_{i},C_{i})$.
 
+\subsection{Applying \rpdmpcss{}}
+First, to use the \rpdmpcss{}, we assume the houses have references $\vec{w}_{i}[k]$ which cannot be achieved given an initial state $\vec{x}_{i}[0]$, due to input constraints.
+
+For example, we suppose they have initial states
+\todo[use from simulation]{
+  $\vec{x}_{\text{I}}[0]=$,
+  $\vec{x}_{\text{II}}[0]=$,
+  $\vec{x}_{\text{III}}[0]=$,
+  and
+  $\vec{x}_{\text{IV}}[0]=$
+}
+, and references
+\todo[use from simulation]{
+  $w_{\text{I}}[0]=$,
+  $w_{\text{II}}[0]=$,
+  $w_{\text{III}}[0]=$,
+  and
+  $w_{\text{IV}}[0]=$
+}.
+Using gains
+$Q=10I$
+
+
+\subsubsection{Results}\label{sec:results}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=7cm]{AirTempAndDecisionVariable.pdf}
+\caption{Air temperature in room I and the decision variable $E_{I}(k)$ for
+different scenarios: nominal (N), with selflish behavior without correction (S)
+and with selfish behavior with correction (C)}\label{fig:response3Scenarios}
+\end{figure}
+
+\begin{table}[t]
+  \centering
+  \caption{Comparison of costs $J_{i}^{N}$ and $J_{G}^{N}$}\label{tab:costsGlobalLocal}
+  \begin{tabular}[t]{cccc} \toprule
+    Agent  & Nominal & Selfish & Selfish + correction\\
+    \midrule
+    I      & 103  &  64  & 104  \\
+    II     &  73  &  91  &  73  \\
+    III    & 100  & 123  & 101  \\
+    IV     & 132  & 154  & 131  \\
+    Global & 408  & 442  & 409  \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \end{document}
