@@ -649,7 +649,7 @@ If we plot the level curves of the system (Fig.~\ref{fig:original_minimum}), we 
 The projection yields the constrained solution of the problem (\todo{blue} dot).
 \begin{figure}[h]
   \centering
-  \includegraphics[width=.6\textwidth]{../img/original-minimum.png}
+  \includegraphics[width=7cm]{../img/original-minimum.png}
   \caption[Original minimum.]{Original minimum. \todo{remake figure}}\label{fig:original_minimum}
 \end{figure}
 
@@ -657,7 +657,7 @@ Once one the agents attacks the system using~\eqref{eq:linear_attack_reprise}, t
 This distortion changes the projection, resulting in a new constrained solution (in \todo{green}).
 \begin{figure}[h]
   \centering
-  \includegraphics[width=.6\textwidth]{../img/new-minimum-selfish.png}
+  \includegraphics[width=7cm]{../img/new-minimum-selfish.png}
   \caption[Minimum after attack.]{Minimum after attack. \todo{remake figure}}\label{fig:minimum_after_attack}
 \end{figure}
 
@@ -668,7 +668,7 @@ The negligence against the attacker will result in it receiving less and less re
 In Fig.~\ref{fig:minimum_ignoring_attacker}, we see the new level curves and the new solution found (in \todo{magenta}) when ignoring the attacker.
 \begin{figure}[h]
   \centering
-  \includegraphics[width=.6\textwidth]{../img/ignoreX.png}
+  \includegraphics[width=7cm]{../img/ignoreX.png}
   \caption{Optimal value after ignoring attacker. \todo{remake figure}}\label{fig:minimum_ignoring_attacker}
 \end{figure}
 
@@ -683,7 +683,7 @@ Passing from the level curves of the attacked system (Fig.~\ref{fig:minimum_afte
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=.6\textwidth]{../img/correctX.png}
+  \includegraphics[width=7cm]{../img/correctX.png}
   \caption{Optimal value after trying to recover original behavior.}\label{fig:minimum_recovered}
 \end{figure}
 
@@ -797,12 +797,12 @@ In Fig.~\ref{fig:houses} we see the houses consuming from a centralized heat pro
 
 \begin{figure}[h]
   \centering
-  \begin{tikzpicture}[node distance=1cm and 1cm,scale=1]
+  \begin{tikzpicture}[node distance=.5cm and .75cm,scale=1]
     \node[color=mpc_agent] (house1) at (0,0) {\scalebox{2.5}{\faHome}};
     \node[minimum height=1cm,below=of house1] (medium) {};
     \node[color=mpc_agent,right=of medium] (house2)  {\scalebox{3.5}{\faHome}};
     \node[color=mpc_agent,below=of medium] (house3)  {\scalebox{3}{\faHome}};
-    \node[color=mpc_agent,left=5cm of medium] (house4)  {\scalebox{7}{\faHome}};
+    \node[color=mpc_agent,left=3cm of medium] (house4)  {\scalebox{7}{\faHome}};
 
     \draw[latex-,line width=1pt] (house1) -- (medium.center);
     \draw[latex-,line width=1pt] (house2) -- (medium.center);
@@ -869,7 +869,7 @@ The meaning of each component is given in Tab.~\ref{tab:modelParamMeaning}, and 
   \caption{
     Parameters for each agent}\label{tab:modelParam}
   \begin{tabular}[t]{cccccc} \toprule
-    Symbol& I & II & III & IV &Unit\\
+    Element& I & II & III & IV &Unit\\
     \midrule
     $C^{\text{walls}}$   &$5.4$&$4.9$&$4.7$&$4.7$ &$10^{4}\mathrm{J/K}$ \\
     $C^{\text{air}}$     &$7.5$ &$8.4 $&$8.2$ &$7.7$&$10^{4}\mathrm{J/K}$  \\
@@ -918,7 +918,7 @@ ${\vec{x}_{i}(t)=\left[T^{\text{in}}_{i}(t)\ T^{\text{walls}}_{i}(t)\right]\T}$,
 ${\vec{u}_{i}(t)=P^{\text{heat}}_{i}}$,
 ${\vec{d}_{i}(t)=\left[I^{\text{sol}}(t)\ T^{\text{out}}(t)\right]\T}$.
 
-Their heating inputs $\vec{u}_{i}(t)$ are constraint by the maximum heat power such
+Their heating inputs $\vec{u}_{i}(t)$ are constraint by the maximum heat power available by the provider, i.e.,
 \begin{equation}
 \sum\limits_{i\in\set{M}}\left[\vec{u}_{i}(t)\right]\preceq \vec{u}_{\max}
 \end{equation}
@@ -933,7 +933,7 @@ with
 We want to control the system using \mpc{}, so we discretize the system using a zero-order holder and sampling time of $T_{s}=0.25\mathrm{h}$, resulting in the $3$-tuples $(A_{i},B_{i},C_{i})$.
 
 \subsection{Applying \rpdmpcss{}}
-First, to use the \rpdmpcss{}, we assume the houses have references $\vec{w}_{i}[k]$ which cannot be achieved given an initial state $\vec{x}_{i}[0]$, due to input constraints.
+First, to use the \rpdmpcss{}, we assume the heating sysmtem is scarce, in other words, given an initial state $\vec{x}_{i}[0]$, references $\vec{w}_{i}[k]$ cannot be achieved due to input constraints.
 
 For example, we suppose they have initial states
 \todo[use from simulation]{
@@ -952,32 +952,97 @@ For example, we suppose they have initial states
   $w_{\text{IV}}[0]=$
 }.
 Using gains
-$Q=10I$
+\todo[verify size]{$Q_{i}=10I$,}
+and
+$R_{i}=   I_{2}$,
+and choosing to control the system using a prediction horizon
+\todo{$\predhorz=4$,}
+we can structure the \dmpc{} problem similar to the one in~\eqref{eq:qp_standard_form_equality} and decompose the system using the usual primal decomposition, with local problems
+\begin{equation}
+  \label{eq:houses_scarce_local_problem}
+  \begin{matrix}
+    \minimize\limits_{\vec{U}_{i}[k]}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+    \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] = \thetaik:\lambdaik\\
+                                     &\vec{U}_{i}[k]\succeq\0
+  \end{matrix}
+\end{equation}
 
+and update equation~\eqref{eq:example_projectedSubgradient_lambda_reprise}.
 
 \subsubsection{Results}\label{sec:results}
+We test the algorithm by simulating the system over a period of
+\todo{$5$}
+hours, i.e.,
+\todo{${k\in\{0,5/T_{s}\}}$},
+in some different scenarios:
+\begin{enumerate}
+  \item Nominal behavior (denoted as N)
+  \item Agent I attacks system controlled by standard \dmpc{} (denoted as S)\label{it:case_selfish}
+  \item Agent I attacks system controlled by \rpdmpcss{} (denoted as C)\label{it:case_selfish_recovered}
+  \todo{\item Agents I and IV attack system controlled by standard \dmpc{} (denoted as MS)\label{it:case_selfish_multiple}\note{only if a have time to simulate}}
+  \todo{\item Agents I and IV attack system controlled by \rpdmpcss{} (denoted as MC)\label{it:case_selfish_multiple_recovered}\note{only if a have time to simulate}}
+\end{enumerate}
+
+The attack\todo{s} chosen for scenarios~\ref{it:case_selfish} \todo{and~\ref{it:case_selfish_recovered},
+are}
+\begin{align}
+  T_{I}=\begin{cases}
+          \todo{4I_{\card{\lambdai}}\text{, if }k< 4}\\
+          I_{\card{\lambdai}}\text{, otherwise}
+        \end{cases}\\
+  T_{IV}=\begin{cases}
+          \todo{4I_{\card{\lambdai}}\text{, if }k< 6}\\
+          I_{\card{\lambdai}}\text{, otherwise}
+        \end{cases}
+\end{align}
+.
+
+In Fig.~\ref{fig:response_houseI_3Scenarios}, we compare the temperature in house I ($\vec{y}_{I}[k]$) with its reference $\vec{w}_{I}[k]$, and then the
+decision variable ${E_{I}(k)}$ with the threshold
+\todo{$\epsilon_{P}=10^{-4}$}.
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=7cm]{AirTempAndDecisionVariable.pdf}
-\caption{Air temperature in room I and the decision variable $E_{I}(k)$ for
-different scenarios: nominal (N), with selflish behavior without correction (S)
-and with selfish behavior with correction (C)}\label{fig:response3Scenarios}
+\caption{Temperature in house I and the decision variable $E_{I}(k)$ for different scenarios. \todo{remake figure}}\label{fig:response_houseI_3Scenarios}
+\end{figure}
+As expected, the decision variable lies under the threshold $\epsilon_{P}=10^{-4}$ in the nominal scenario.
+But for scenarios S and C, where the agent attacks the system, the detection variable surpasses the threshold, indicating the change of behavior of agent I.
+In scenario S, we can observe the tracking error ${w_{I}-y_{I}}$ reducing when attack is activated, suggesting that the attacker drives the negotiation to get more resources.
+On the other hand, the other agents receive less resources, as we can see the tracking error increase in Fig.~\ref{fig:response_housesII_to_IV_3Scenarios}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=7cm]{AirTempAndDecisionVariable.pdf}
+\caption{Temperature of houses II to IV, and respective references for different scenarios. \todo{remake figure}}\label{fig:response_housesII_to_IV_3Scenarios}
 \end{figure}
 
-\begin{table}[t]
+When the \rpdmpcss{} is activated in scenario C, the temperatures recover behavior close to the nominal one, as we can see in~\ref{fig:response_houseI_3Scenarios} and~\ref{fig:response_housesII_to_IV_3Scenarios}.
+
+\todo{
+  Similarly, we can show the method works for cases where multiple agents attack the system (Fig.~\ref{fig:response_houses_N_M}),
+\begin{figure}[h]
   \centering
-  \caption{Comparison of costs $J_{i}^{N}$ and $J_{G}^{N}$}\label{tab:costsGlobalLocal}
-  \begin{tabular}[t]{cccc} \toprule
-    Agent  & Nominal & Selfish & Selfish + correction\\
+  \includegraphics[width=7cm]{AirTempAndDecisionVariable.pdf}
+\caption{Temperature of all houses, and respective references for scenarios N,MS and MC. \todo{remake figure}}\label{fig:response_houses_N_M}
+\end{figure}
+}
+
+We can also compare the accumulate local and global objectives $\Jiacc$ and $\Jacc$ for the scenarios N, C and S in Tab.~\ref{tab:eq_costsGlobalLocal}.
+As expected, when no secure \dmpc{} is applied and the system is attacked, the objective funciton of the attackers decrease, while the others increase, together with the global objective $\Jacc$.
+However, we can see for the scenarios where the \rpdmpcss{} is activated the objectives are close to the original.
+
+\begin{table}[h]
+  \centering
+  \caption{Objective functions $J_{i}$ (\% error)}\label{tab:eq_costsGlobalLocal}
+  \begin{tabular}[t]{cccc}
+    \toprule
+    Agent  & Scenario N& Scenario S & Scenario C\\
     \midrule
-    I      & 103  &  64  & 104  \\
-    II     &  73  &  91  &  73  \\
-    III    & 100  & 123  & 101  \\
-    IV     & 132  & 154  & 131  \\
-    Global & 408  & 442  & 409  \\
+    \input{../data/eq_table_costs_all_rooms_error.tex}\\
     \bottomrule
   \end{tabular}
 \end{table}
+
 
 \end{document}

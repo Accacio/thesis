@@ -6,6 +6,8 @@
   {
     \acrPl{#1}{#2}{#3}{#4}{#5}
   }
+  \expandafter\newcommand\csname #1long\endcsname{\glsdesc{#1}}
+  \expandafter\newcommand\csname #1short\endcsname{\glsname{#1}}
 }
 
 \newcommandx\symbl[4][4=,]{
@@ -51,6 +53,8 @@
 \acr{dDoS}{DDoS}{Distributed Denial of Service}
 \acr{dhn}{DHN}{District Heating Network}[DHNs][District Heating Networks]
 \acr{dmpc}{dMPC}{distributed Model based Predictive Control}
+\acr{rpdmpcss}{RPdMPC-SS}{Resilient Primal Decomposition-based dMPC for scarce systems}
+
 \acr{DoS}{DoS}{Denial of Service}
 \acr{dt}{DT}{Discrete Time}
 \acr{EFT}{EFT}{Electronic Funds Transfer}
