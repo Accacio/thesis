@@ -37,9 +37,9 @@ and the local problems~\eqref{eq:DOP_local} solved in the primal decomposition, 
 \begin{equation}
   \label{eq:DOP_local_reprise}
   \tag{\ref*{eq:DOP_local}}
-  \bar{J}_{i}^{\star}(\thetaik)=
+  \eqoptobji(\thetaik)[k]=
   \begin{matrix}
-    \minimize\limits_{\vec{U}_{i}[k]}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+    \minimize\limits_{\vec{U}_{i}[k]}&\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
     \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \preceq \thetaik:\lambdaik
   \end{matrix}.
 \end{equation}
@@ -73,7 +73,7 @@ We call a system scarce when its unconstrained solution $\vec{U}_{\text{unc}}^{\
 \bar{\Gamma}\vec{U}_{\text{unc}}[k]\succ {\vec{U}}_{\text{max}}, \forall k.
 \end{equation}
 
-Furthermore, in this chapter, we assume that for all sub-systems, their unconstrained solutions $\vec{U}_{i_{\text{unc}}}^{\star}[k]$ neither respect the local constraints
+Furthermore, in this chapter, we assume that for all sub-systems, their unconstrained solutions $\vec{U}_{i_{\text{unc}}}^{\star}[k]$ neither respect the local constraints, that means,
 \begin{equation}
 \bar{\Gamma}_{i}\vec{U}_{i_{\text{unc}}}^{\star}[k]\succ \thetaik, \forall i\in\set{M}, \forall k,
 \end{equation}
@@ -99,11 +99,11 @@ We assume that given projection solves the inequality constrained problem equiva
 And as one could perceive, it leads to a decomposition exactly as in \S\ref{sec:example-interpr}
 with local problems~\eqref{eq:example_local_problem} and negotiation equation~\eqref{eq:example_projectedSubgradient_lambda}, reproduced here,
 \begin{equation}
-  \begin{matrix}
   \label{eq:example_local_problem_reprise}
   \tag{\ref*{eq:example_local_problem}}
-    \minimize\limits_{\vec{U}_{i}[k]}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
-    \mathrm{subject~ to} & \bar{\Gamma}_{i_{\text{eq}}}\vec{U}_{i}[k] = \thetaik:\lambdaik
+   \eqoptobji(\thetaik)[k]= \begin{matrix}
+    \minimize\limits_{\vec{U}_{i}[k]}&\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+    \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] = \thetaik:\lambdaik
   \end{matrix}
 \end{equation}
 \begin{equation}
@@ -170,7 +170,7 @@ to put the problem in standard form for equality constraint \qp{} programs:
 With this form, we define the \emph{Lagrangian} function $\lagrangianname : \R^{\card\vec{U}_{i}[k]}\times \R^{\card\lambdaik} \times \R^{\card\thetaik} \to \R$ as
 \begin{equation}
   \label{eq:lagrangian_equality}
-  \lagrangian=\obji+\lambdaik^T\equalityfunction,
+  \lagrangian=\obji(\vec{U}_{i}[k],\thetaik)+\lambdaik^T\equalityfunction,
 \end{equation}
 which embeds the equality constraint into the objective function using $\lambdaik$, called the lagrangian multiplier for equality.
 In this chapter, since there is only one type of lagrangian multiplier, we will call it the dual variable.
@@ -696,11 +696,11 @@ So, we do not expect that the attacker will use a cheating matrix $\Tik$ that ge
 
 Given that we assume
 \begin{equation}
-  \left[\lambdaicheat=\0 \right] \implies \left[\lambdai=\0 \right],
+  \left[\lambdaicheat=\0 \right] \iff \left[\lambdai=\0 \right],
 \end{equation}
 which translates to
 \begin{equation}
-  \lambdaicheat=\Tik\lambdai=\0\text{, only if }\lambdai=\0,
+  \lambdaicheat=\Tik\lambdai=\0\text{, if and only if }\lambdai=\0,
 \end{equation}
 which implies $\Tik$ is \textbf{invertible}.
 

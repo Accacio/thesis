@@ -120,10 +120,16 @@
 \newcommand{\globobj}{\mpcval{J}[][k]}
 \newcommand{\optglobobj}{\mpcval*{J}[][k]}
 
-\newcommand{\obji}{\mpcval{J}[i][k]}
-\newcommand{\optobji}{\mpcval*{J}[i][k]}
-\newcommand{\Jacc}{J^{\text{acc}}}
-\newcommand{\Jiacc}[1][i]{J_{#1}^{\text{acc}}}
+\newcommand{\eqobj}{\bar{J}}
+\newcommand{\eqoptobj}{\eqobj^{\star}}
+\newcommand{\eqobji}{\eqobj_{i}}
+\newcommand{\eqoptobji}{\eqobj_{i}^{\star}}
+\newcommand{\obj}{J}
+\newcommand{\optobj}{\obj^{\star}}
+\newcommand{\obji}{\obj_{i}}
+\newcommand{\optobji}{\obj_{i}^{\star}}
+\newcommand{\Jacc}{\obj^{\text{acc}}}
+\newcommand{\Jiacc}[1][i]{\obj_{#1}^{\text{acc}}}
 
 
 \newcommand{\xik}{\mpcvec{x}}

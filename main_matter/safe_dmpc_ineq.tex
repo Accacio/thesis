@@ -7,14 +7,58 @@
 {\textit{Title}\\\textsc{Author}}
 
 In this chapter, we carry on the work from the last chapter relaxing some assumptions to make the problem to be solved more generic.
+We apply the primal decomposition to the problem, and then, we compare the cases when the system presents nominal behavior and when the system is under the proposed attack model.
 
-We apply the primal decomposition to te problem,  and the we analyze its nominal solutions and when the system is under the proposed attack model.
+From the analysis, we notice how the relaxation of the assumption increases drastically the complexity of the problem.
 
-From the analysis we see perceived that the relaxation of the assumption increase drastically the complexity of the problem.
-
+Employing some assumptions, we take a powerful tool of our identification utility belt, and use it to create an approach to circumvent the complexity of the system, allowing us to adapt the detection and mitigation presented in the last chapter.
 
 \minitoc
 
+\section{Relaxing the problem}\label{sec:not-so-scarce}
+We begin again with the monolithic \mpc{} equivalent problem~\eqref{eq:qp_standard_form}.
+We reproduce yet another time the problem, but with a twist, now the problem also has a decomposable constraint set $\set{U}$:
+\begin{equation}
+  \label{eq:qp_standard_form_again_set_constraint}
+  \begin{aligned}
+    \begin{matrix}
+      \minimize\limits_{\vec{U}[k]} &
+                                                 \frac{1}{2}\norm{\vec{U}[k]}^{2}_{H} + {\vec{f}[k]}^{T}\vec{U}[k] &\\
+      \mathrm{subject~ to} & \bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}} \\
+                                    & \vec{U}[k]\in \set{U}
+    \end{matrix}
+  \end{aligned}.
+\end{equation}
+We decompose the system using the primal decomposition, and the local problems also have constraint sets, denoted $\set{U}_{i}$:
+\begin{equation}
+  \label{eq:DOP_local_set_constraint}
+  \eqoptobji(\thetaik)[k]=
+  \begin{matrix}
+    \minimize\limits_{\vec{U}_{i}[k]}&\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+    \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \preceq \thetaik:\lambdaik\\
+    & \vec{U}_{i}[k]\in \set{U}_{i}
+  \end{matrix}.
+\end{equation}
+\begin{remark}
+  As seen in~\cite{BoydEtAl2015}, if we have separable constraints sets, such as the $\set{U}_{i}$ in our problem, we can modify the local objectives $\obji$ so \begin{equation*}
+    J_{i}(\optthetai)=\infty\text{, if }\vec{U}_{i}^{\star}\notin\dom{\obji}.
+  \end{equation*}
+  Since this change modifies the objective functions, it also modifies the corresponding gradients, and $\lambdai$ as consequence.
+  So, this change guides the coordinator to choose $\thetai$ which respect $\dom{\obji}$.
+\end{remark}
+
+In this chapter, we still assume the original constraint~\eqref{eq:linear_constraint} to have at most as many rows as columns, i.e., $\card{\vec{u}_{\max}}\leq n_{u}$.
+However, we relax the assumption made in \S\ref{sec:scarce-systems}.
+The systems are not necesserily scarce, i.e., the unconstrained solutions $\vec{U}_{\text{unc}}^{\star}[k]=-H^{-1}\vec{f}[k]$ and $\vec{U}_{i_{\text{unc}}}^{\star}[k]=-H_{i}^{-1}\vec{f}_{i}[k]$ may or may not respect the constraints.
+
+As we will see in next section, despite the relaxation of this assumption, making the problem more generic, it causes the solution of the local problems exponentially more complex.
+
+\todo{Nonetheless, to assure some properties we make another assumption, we assume the unconstrained solutions respect the constraint sets,\note{where to put this?? Maybe when discussing artificial scarcity}
+\begin{align}
+  \vec{U}_{\text{unc}}^{\star}[k]\in\set{U}\\
+  \vec{U}_{i_{\text{unc}}}^{\star}[k]\in\set{U}_{i}.
+\end{align}
+}
 
 
 \end{document}

@@ -62,9 +62,9 @@ with local versions $\vec{U}_{i}[k]=\left[\vec{u}_{i}[0|k]; \dots; \vec{u}_{i}[\
 Using the methodology in~\S\ref{sec:generalizing_decomposition} for coupling constraints, the primal decomposition divides the problem~\eqref{eq:qp_standard_form_decomposable} into a main problem~\eqref{eq:DOP_main} and local problems~\eqref{eq:DOP_local} based on the original primal problem~\eqref{eq:qp_standard_form_decomposable} and using interface variables $\thetaik,\forall i\in\set{M}$:
 \begin{subequations}
   \begin{equation}
-        \bar{J}_{i}^{\star}(\thetaik)=
+        \eqoptobji(\thetaik)[k]=
         \begin{matrix}
-          \minimize\limits_{\vec{U}_{i}[k]}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+          \minimize\limits_{\vec{U}_{i}[k]}&\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
           \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \preceq \thetaik:\lambdaik
       \end{matrix}
     \label{eq:DOP_local}
@@ -72,7 +72,7 @@ Using the methodology in~\S\ref{sec:generalizing_decomposition} for coupling con
 
   \begin{equation}
     \begin{aligned}
-      \bar{J}^{\star}=
+      \eqoptobj[k]=
       \begin{matrix}
         \minimize\limits_{\mpcvec{\theta}[i][k], \dots, \mpcvec{\theta}[M][k]} &\sum\limits_{i\in\set{M}} J^{\star}_i(\thetaik)\\
         \mathrm{subject~ to} &
@@ -222,7 +222,7 @@ We can illustrate the communication structure using Fig.~\ref{fig:dmpc_communica
 \begin{remark}
   The same decomposition can be used if the coupling constraints are equalities or if there are local constraints for the subsystems.
   We can change problems~\eqref{eq:DOP_local} and~\eqref{eq:projectedSubgradient_lambda} accordingly to respect such modifications, i.e.\ adding the local constraints to the local problems and changing the inequality constraints to equality ones, including in the set $\set{S}$.
-  An example is given in the next section.
+  Examples of each are given in the next section and chapters.
 \end{remark}
 
 \section{Example and Interpretations}\label{sec:example-interpr}
@@ -256,8 +256,9 @@ and gains
 $R_{i}=   I_{2}$
 that results in the problems
 \begin{equation}
-  \begin{matrix}
-    \minimize\limits_{\vec{U}_{i}[k]}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+    \eqoptobji(\thetaik)[k]=
+    \begin{matrix}
+    \minimize\limits_{\vec{U}_{i}[k]}&\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
     \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] = \thetaik:\lambdaik
   \end{matrix}
   \label{eq:example_local_problem}
@@ -374,7 +375,7 @@ If we compare Fig.~\ref{fig:example_liar_state} with Fig.~\ref{fig:example_state
 \subsection{Attack of interest}\label{sec:attack-interest}
 
 As illustrated, the change in $\lambdai$ may cause a modification in the consensus and drive the negotiation.
-Seeing that $\lambdai$ form a sub-gradient of the local problems~\eqref{eq:DOP_local}, it is perceivable that they carry information about the local problem, i.e.\ it has somehow embedded in itself information about the tuple $(H_{i},\vec{f}_{i}[k],\bar{\Gamma}_{i},\thetaik)$ which we will call the complete local information $\set{I}_{i}$.
+Seeing that $\lambdai$ form a sub-gradient of the local problems~\eqref{eq:DOP_local}, it is perceivable that they carry information about the local problem, i.e.\ it has somehow embedded in itself information about the $5$-tuple $(H_{i},\vec{f}_{i}[k],\bar{\Gamma}_{i},\thetaik)$ which we will call the complete local information $\set{I}_{i}$.
 So, every attack shown in~\cite{VelardeEtAl2018} (explained in \S\ref{sec:attacks_in_dmpc}) will somehow reflect into a modification in $\lambdai$.
 And in the coordinator's perspective what matters is what it receives.
 
@@ -408,12 +409,14 @@ We modify it so agent $3$ attacks using~\eqref{eq:selfish_attack}.
 We simulate the system for different scenarios.
 At each one of the scenarios agent $3$ uses a different cheating coefficient $\tau_{3}[k]$.
 
-In Fig.~\ref{fig:example_vary_tau_objective} and~\ref{fig:example_vary_tau_objective_detail}, we accumulate the objective functions for each agent ${\Jiacc=\sum\limits_{k\in\set{K}}J_{i}^{\star}[k]}$ and also the total ${\Jacc=\sum\limits_{i\in\set{M}}J_{i}^{\text{acc}}}$ for different values of $\tau_{3}$.
+In Fig.~\ref{fig:example_vary_tau_objective} and~\ref{fig:example_vary_tau_objective_detail}, we accumulate the local objective functions
+${\Jiacc=\sum\limits_{k\in\set{K}}\optobji(\optthetai[k])[k]}$
+and also the total ${\Jacc=\sum\limits_{i\in\set{M}}J_{i}^{\text{acc}}}$ for different values of $\tau_{3}$.
 
 \begin{remark}
   Here, as observed in Remark~\ref{rem:equivalence_problems_not_same_objective}, the objective functions $J_{i}^{\star}[k]$ and $J^{\star}[k]$ were calculated by reconstructing the original objective function~\eqref{eq:quadratic_objective_compact_batch}, i.e., calculating equivalent $c_{i}[k]$ for each subsystem and using
   \begin{equation}
-    J_{i}^{\star}[k] = 2\bar{J}_{i}^{\star}[k] + c_{i}[k].
+    \optobji[k] = 2\eqoptobji[k] + c_{i}[k].
 \end{equation}
 \end{remark}
 
