@@ -49,7 +49,7 @@ We decompose the system using the primal decomposition, and the local problems a
 
 In this chapter, we still assume the original constraint~\eqref{eq:linear_constraint} to have at most as many rows as columns, i.e., $\card{\vec{u}_{\max}}\leq n_{u}$.
 However, we relax the assumption made in \S\ref{sec:scarce-systems}.
-The systems are not necesserily scarce, i.e., the unconstrained solutions $\vec{U}_{\text{unc}}^{\star}[k]=-H^{-1}\vec{f}[k]$ and $\vec{U}_{i_{\text{unc}}}^{\star}[k]=-H_{i}^{-1}\vec{f}_{i}[k]$ may or may not respect the constraints.
+The systems are not necesserily scarce anymore, i.e., the unconstrained solutions $\vec{U}_{\text{unc}}^{\star}[k]=-H^{-1}\vec{f}[k]$ and $\vec{U}_{i_{\text{unc}}}^{\star}[k]=-H_{i}^{-1}\vec{f}_{i}[k]$ may or may not respect the constraints.
 
 As we will see in next section, despite the relaxation of this assumption, making the problem more generic, it causes the solution of the local problems exponentially more complex.
 
@@ -76,8 +76,8 @@ and use it to put the problem in standard form for inequality constraint \qp{} p
   \label{eq:local_problem_equality_standard_notation}
     \minimize\limits_{\vec{U}_{i}[k]}&\obji(\vec{U}_{i}[k],\thetaik)\\
     \mathrm{subject~ to} & \inequalityfunction\preceq 0:\lambdaik
-  \end{matrix}
-\end{equation},
+  \end{matrix},
+\end{equation}
 with variables $\lambdaik$ associated to the constraints.
 \begin{remark}
   Usually we make the distinction between the dual variables associated to the inequality and equality constraints by using different symbols.
@@ -108,17 +108,17 @@ Using the first order \KKT{} optimality condition we have
 \begin{equation}
 \nabla_{\vec{U}_{i}[k]}\lagrangian=0
 \end{equation}
-yielding as well in
+yielding as well
 \begin{equation}
 \vec{U}_{i}[k]=-H_{i}^{-1}(-\bar{\Gamma}_{i}^{T}\lambdaik-\vec{f}_{i}[k]).
 \end{equation}
 
-Substituting it in $\lagrangian$ yields
+Substituting it in $\lagrangian$ results
 \begin{equation}
   \label{eq:dual_function_solution_lambda_theta_ineq}
 \dualfunction=-\frac{1}{2}\lambdaik^{T}\linearcoefi\lambdaik-\lambdaik^{T}\bar{\Gamma}_{i}H_{i}^{-1}\vec{f}[k]-\lambdaik^{T}\thetaik,
 \end{equation}
-which also is concave.
+which is also concave.
 
 Then, similarly we can find $\lambdaikstar$ by solving an optimization problem.
 However, since we are using inequalities, we can only have $\lambdaik$ positive~\cite{BoydVandenberghe2004}:
@@ -132,4 +132,83 @@ However, since we are using inequalities, we can only have $\lambdaik$ positive~
   \end{matrix}
 \end{equation}
 
+As we know, by complementary slackness, the value of the elements of $\lambdaik$ being $0$ (or different of $0$) will depend on the status of the corresponding constraint.
+So the value of $\lambdaik$ will depend of the permutation of the status of the inequality constraint.
+Depending on the form of the constraints (angle between the normals and equivalent affine term), if we have $n_{\text{ineq}}$ constraints, as each constraint can be active or inactive, we have potentially $2^{n_{\text{ineq}}}$ permutations.
+\begin{remark}
+  Here we say potentially because not necessarily all combinations are possible.
+  In \S\ref{sec:cons-about-stat} we discuss about the number of permutations and show some cases where the number of permutations is not equal to $2^{n_{\text{ineq}}}$.
+\end{remark}
+
+
+
+\subsection{Considerations about status of constraints}\label{sec:cons-about-stat}
+It is important to observe that some sets of constraints in which the permutation is not necessarily $2^{n_{\text{ineq}}}$.
+
+For example, in some cases there is no partition where all constraints are active, i.e., the intersection of halfspaces is empty (see Fig.~\ref{fig:non_feasible}).
+Problems with such constraints are infeasible, thus we ignore them in this work.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\ang{-35}
+    \def\vecmag{.25}
+    \node at (0,0) {} coordinate(p1) ++(\ang:2.5) coordinate(p2) ++(\ang-90:1.5) coordinate(p3) ++(\ang-180:2.5) coordinate(p4);
+
+    \path (p1) -- (p2) coordinate[pos=-0.2](a1l) coordinate[pos=1.2](a1r) coordinate[pos=0.8](m12);
+    \draw (a1l) -- (a1r);
+    \draw[-latex] (m12) -- ($ (m12)!\vecmag!90:(p1) $)node[left]{$\vec{\eta}_1$};
+
+    \path (p3) -- (p4) coordinate[pos=-0.2](a3l) coordinate[pos=1.2](a3r) coordinate[pos=0.8](m34);
+    \draw (a3l) -- (a3r);
+    \draw[-latex] (m34) -- ($ (m34)!\vecmag!90:(p3) $)node[right]{$\vec{\eta}_2$};
+
+  \end{tikzpicture}
+  \caption{Set of constraints with no intersection.}\label{fig:non_feasible}
+\end{figure}
+
+In other cases, there is no combination where all constraints are inactive.
+We give some different examples.
+For instance, for constraints with normals $\vec{\vec{\eta}}_{i}$, if the angles of adjacent halfspaces $\vecangle{\vec{\eta}_{i}}{\vec{\eta}_{j}}$ is $180^{o}$ and the intersection is not nil (see Fig.~\ref{fig:parallel_only_one_active}), one of the constraints will always be active.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\ang{25}
+    \def\vecmag{.5}
+    \node at (0,0) {} coordinate(p1) ++(\ang:2.5) coordinate(p2) ++(\ang-90:1.) coordinate(p3) ++(\ang-180:2.5) coordinate(p4);
+    \path[fill=gray!60] (p1) -- (p2) -- (p3) -- (p4);
+    \node at (barycentric cs:p1=1,p2=1,p3=1,p4=1) {$\mathcal{P}$};
+
+    \path (p1) -- (p2) coordinate[pos=-0.2](a1l) coordinate[pos=1.2](a1r) coordinate[pos=0.5](m12);
+    \draw (a1l) -- (a1r);
+    \draw[-latex] (m12) -- ($ (m12)!\vecmag!-90:(p1) $)node[right]{$\vec{\eta}_1$};
+
+    \path (p3) -- (p4) coordinate[pos=-0.2](a3l) coordinate[pos=1.2](a3r) coordinate[pos=0.5](m34);
+    \draw (a3l) -- (a3r);
+    \draw[-latex] (m34) -- ($ (m34)!\vecmag!-90:(p3) $)node[right]{$\vec{\eta}_2$};
+  \end{tikzpicture}
+  \caption{Two constraints with $\vecangle{\vec{\eta}_{1}}{\vec{\eta}_{2}}=180^{o}$.}\label{fig:parallel_only_one_active}
+\end{figure}
+
+Yet another example, are when the constraints form a convex polyhedron.
+We present a minimal example of polyhedron in Fig.~\ref{fig:triangle_inequality}, a triangle in $\R^{2}$ formed by $3$ inequality constraints.
+In this case, there will always be at least $2$ active constraints.
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    \node at (0,0) {} coordinate(p1) ++(15:2.5) coordinate(p2) ++(-45:2.5) coordinate(p3) ++ (-195:4.0) coordinate(p4);
+    \path[fill=gray!60] (p1) -- (p2) -- (p3);
+    \node at (barycentric cs:p1=1,p2=1,p3=1) {$\mathcal{P}$};
+
+    \foreach \X [count=\Y] in {2,...,4}
+    {
+      \path (p\Y) -- (p\X) coordinate[pos=-0.2](a\Y{}l) coordinate[pos=1.2](a\Y{}r) coordinate[pos=0.5](m\Y\X);
+      \draw (a\Y{}l) -- (a\Y{}r);
+      \draw[-latex] (m\Y\X) -- ($ (m\Y\X)!.5!90:(p\X) $)node[right]{$\vec{\eta}_\Y$};
+    }
+  \end{tikzpicture}
+  \caption{A $3$-sided polyhedron.}\label{fig:triangle_inequality}
+\end{figure}
+
+Since we suppose there are at most the number of constraints as dimensions, it is not possible to create polyhedrons.
 \end{document}
