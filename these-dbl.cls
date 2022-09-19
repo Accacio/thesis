@@ -178,7 +178,7 @@
 
 \usetikzlibrary {chains}
 \usetikzlibrary{arrows.meta}
-\usetikzlibrary{calc,shapes,positioning}
+\usetikzlibrary{calc,shapes,positioning,intersections}
 \usetikzlibrary{overlay-beamer-styles}
  \usetikzlibrary{plotmarks}
   \usetikzlibrary{arrows.meta}
