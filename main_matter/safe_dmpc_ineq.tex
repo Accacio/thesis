@@ -60,5 +60,76 @@ As we will see in next section, despite the relaxation of this assumption, makin
 \end{align}
 }
 
+\section{Impact on local problems' solution}\label{sec:impact-local-problem}
+We can repeat the analysis made in the last chapter to see how the change on assumption influences the solutions of the problem.
+
+Although now we have \qp{} problems with inequality constraints, we still can use the same method to find a analytical solution.
+
+We similarly define a function $\inequalityfunctionname:\R^{\card\vec{U}_{i}[k]}\times \R^{\card\thetaik}$:
+\begin{equation}
+  \label{eq:lagrangian_inequality}
+  \inequalityfunction=\bar{\Gamma}_{i}\vec{U}_i[k]-\thetaik,
+\end{equation}
+and use it to put the problem in standard form for inequality constraint \qp{} programs:
+\begin{equation}
+  \begin{matrix}
+  \label{eq:local_problem_equality_standard_notation}
+    \minimize\limits_{\vec{U}_{i}[k]}&\obji(\vec{U}_{i}[k],\thetaik)\\
+    \mathrm{subject~ to} & \inequalityfunction\preceq 0:\lambdaik
+  \end{matrix}
+\end{equation},
+with variables $\lambdaik$ associated to the constraints.
+\begin{remark}
+  Usually we make the distinction between the dual variables associated to the inequality and equality constraints by using different symbols.
+  However, as in the problems we have only one kind, we use the same symbol and by context the reader can distinguish to which kind the symbol corresponds.
+\end{remark}
+
+We can again define the \emph{Lagrangian} function $\lagrangianname : \R^{\card\vec{U}_{i}[k]}\times \R^{\card\lambdaik} \times \R^{\card\thetaik} \to \R$ as
+\begin{equation}
+  \label{eq:lagrangian_equality}
+  \lagrangian=\obji(\vec{U}_{i}[k],\thetaik)+\lambdaik^T\inequalityfunction,
+\end{equation}
+which embeds the inequality constraint into the objective function using $\lambdaik$, in this case the lagrangian multiplier for \emph{inequality}.
+Again, since there is only one type of lagrangian multiplier, we will call it simply as the dual variable.
+
+\begin{remark}
+  The complementary slackness still holds, ${\lambdaikstar}^T\inequalityfunctionname(\vec{U}_{i}^{\star}[k],\thetaik)$ will always be zero.
+  If any element of $\inequalityfunctionname(\vec{U}_{i}^{\star}[k],\thetaik)$ is greater than zero, the corresponding element on the dual variable $\lambdaikstar$ will be zero, indicating the constraint is inactive.
+\end{remark}
+
+We can define the dual function $\dualfunctionname:\R^{\card\lambdaik} \times \R^{\card\thetaik} \to \R$ also calculated by solving
+\begin{equation}
+  \label{eq:dual_function_equality}
+  \dualfunction=\inf_{\vec{U}_{i}[k]\in\set{F}} \lagrangian,
+\end{equation}
+but now where $\set{F}=\dom \inequalityfunctionname=\bigcap\limits_{i=1}^{\card\vec{U}_{\max}}\set{H}_{i}$, with $\set{H}_{i}$ being the halfspaces
+${\set{H}_i=\setbuild{\vec{x}}{\elem[i,\star]{{\bar{\Gamma}}}\vec{x}\leq\elem[i,\star]{\vec{U}_{\max}}}}$.
+Using the first order \KKT{} optimality condition we have
+\begin{equation}
+\nabla_{\vec{U}_{i}[k]}\lagrangian=0
+\end{equation}
+yielding as well in
+\begin{equation}
+\vec{U}_{i}[k]=-H_{i}^{-1}(-\bar{\Gamma}_{i}^{T}\lambdaik-\vec{f}_{i}[k]).
+\end{equation}
+
+Substituting it in $\lagrangian$ yields
+\begin{equation}
+  \label{eq:dual_function_solution_lambda_theta_ineq}
+\dualfunction=-\frac{1}{2}\lambdaik^{T}\linearcoefi\lambdaik-\lambdaik^{T}\bar{\Gamma}_{i}H_{i}^{-1}\vec{f}[k]-\lambdaik^{T}\thetaik,
+\end{equation}
+which also is concave.
+
+Then, similarly we can find $\lambdaikstar$ by solving an optimization problem.
+However, since we are using inequalities, we can only have $\lambdaik$ positive~\cite{BoydVandenberghe2004}:
+\begin{equation}
+  \begin{matrix}
+    \lambdaikstar=\argmax\limits_{\lambdaik}\left\{
+    \begin{matrix}
+    \maximize\limits_{\lambdaik}&\dualfunction\\
+      \mathrm{subject~ to}& \lambdaik\preceq\0
+    \end{matrix}\right\}.
+  \end{matrix}
+\end{equation}
 
 \end{document}
