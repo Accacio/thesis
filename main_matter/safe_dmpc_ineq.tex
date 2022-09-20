@@ -37,8 +37,15 @@ We decompose the system using the primal decomposition, and the local problems a
     \minimize\limits_{\vec{U}_{i}[k]}&\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
     \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \preceq \thetaik:\lambdaik\\
     & \vec{U}_{i}[k]\in \set{U}_{i}
-  \end{matrix}.
+  \end{matrix},
 \end{equation}
+and we use the projected subgradient method~\eqref{eq:projectedSubgradient_lambda} (reproduced for convenience) to solve the main problem:
+\begin{equation}
+  \label{eq:projectedSubgradient_lambda_reprise}
+  \tag{\ref*{eq:projectedSubgradient_lambda}}
+  \vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p),
+\end{equation}
+with ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k]\preceq \vec{U}_{\max}}}$.
 \begin{remark}
   As seen in~\cite{BoydEtAl2015}, if we have separable constraints sets, such as the $\set{U}_{i}$ in our problem, we can modify the local objectives $\obji$ so \begin{equation*}
     J_{i}(\optthetai)=\infty\text{, if }\vec{U}_{i}^{\star}\notin\dom{\obji}.
