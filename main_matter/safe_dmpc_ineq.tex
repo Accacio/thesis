@@ -346,4 +346,90 @@ In this case, there will always be at least $2$ active constraints.
 \end{figure}
 
 Since we suppose there are at most the number of constraints as dimensions, it is not possible to create polyhedrons.
+
+\section{Impact on negotiation}\label{sec:impact-local-problem}
+We can try to apply the same logic used in \S\ref{sec:analysis-negotiation}, by substituting~\eqref{eq:lambdafuntheta} into~\eqref{eq:projectedSubgradient_lambda_reprise} and vice-versa.
+In this attempt we can fully contemplate how the relaxation of the assumptions increases the problem's complexity.
+
+The first difficulty is already on the projected subgradient method, which due to the set
+$\set{S}$ being intersection of halfplanes, does not have a straightforward solution as in the equality constraint case~\eqref{eq:example_projectedSubgradient_lambda_reprise}. The solution is found by applying the definition of the euclidean projection, which is by itself a \qp{} problem
+
+\begin{equation}
+  \Proj^{\set{X}}(\vec{x}_{0})=
+  \argmin\limits_{\vec{x}}
+  \left\{
+  \begin{matrix}
+    \minimize\limits_{\vec{x}} &
+                                    \norm{\vec{x}-\vec{x}_{0}}^{2}\\
+    \mathrm{subject~ to} & \vec{x}\in\set{X}\\
+  \end{matrix}
+  \right\},
+\end{equation}
+which translates to the problem
+\begin{equation}
+  \label{eq:projected_subgradient_qp}
+  \Proj^{\set{S}}(\vec{x}_{0})=
+  \argmin\limits_{\vec{x}}
+  \left\{
+  \begin{matrix}
+    \minimize\limits_{\vec{U}[k]} &
+                                    \norm{\vec{x}-\vec{x}_{0}}\\
+    \mathrm{subject~ to} & I_{c}^{M}\vec{x}\preceq \vec{U}_{\max}:\vec{\mu}\\
+  \end{matrix}
+  \right\},
+\end{equation}
+with corresponding dual variable $\vec{\mu}$.
+For notation sake we call $\vec{x}_{0}=\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$.
+
+The problem is solved similarly to how we made in \S\ref{sec:impact-local-problem}.
+Skipping some steps we will find that the solution of the projection has the same form that~\eqref{eq:lambdafuntheta}.
+However, we need to change $\bar{\Gamma}_{i}$ for $I_{c}^{M}$, $H_{i}$ for $I$, and $\vec{f}_{i}$ for $-(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p)$.
+And the partitions are defined by the active and inactive constraints in $I_{c}^{M}\vec{x}_{0}\preceq \vec{U}_{\max}$.
+
+This also results in a \pwa{} function for $\vec{\theta}[k]$ with at most $2^{c}$ different modes ($\card{\elem[*,1]{I_{c}^{M}}}=c$):
+\begin{equation}
+  \label{eq:projection_result_zones}
+  \begin{aligned}
+    \vec{\theta}[k]\pplusone=
+    \begin{cases}
+      \vec{x}_{0}+
+      {I_{c}^{M}}^{(0)}\left[-P_{\vec{\mu}}^{(0)}\vec{U}_{max}+\vec{s}_{\vec{\mu}}^{(0)}[k]\right],&\text{if}\ G_{\vec{\mu}}^{0}[k]\vec{x}_{0} \preceq \vec{U}_{\max}^{0}[k] \\
+      \qquad\quad \vdots&\qquad\quad \vdots\\
+      \vec{x}_{0},&\text{if}\ G_{\vec{\mu}}^{2^{c}-1}[k]\vec{x}_{0} \preceq \vec{U}_{\max}^{2^{c}-1}[k] \\
+    \end{cases}
+  \end{aligned},
+\end{equation}
+where $P_{\vec{\mu}}^{(n)}={({I_{c}^{M}}^{(n)}{{I_{c}^{M}}^{(n)}}\T)}^{-1}$, $\vec{s}_{\vec{\mu}}^{(n)}[k]=P_{\vec{\mu}}^{(n)}{I_{c}^{M}}^{(n)}\vec{x}_{0}$, ${I_{c}^{M}}^{(n)}$ is constructed by keeping/removing the constraints as coded by index $(n)$, and the halfspaces described by tuples $(G_{\vec{\mu}}^{n},U_{\max}^{n})$ represent the different regions of the partitions of the solution space of $\vec{x}_{0}$.
+
+Observe that when all constraints are inactive, the solution is the same as in the equality case~\eqref{eq:euclidean_projection_equality_solution} ($\card{I_{c}^{M}}=c\times Mc$).
+And when all constraints are active (coded $2^{c}-1$), the solution is the same as the unconstrained solution, since $\vec{\mu}=\0$ (see Remark~\ref{rem:sparse_solutions}).
+
+So, we can conclude that the next value $\thetaik\pplusone$ depends on where $\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$ will lie, giving at least $2^{c}$ possibilities.
+In turn, $\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$ depends on the values of each $\lambdaik$, which conversely can have $2^{\nineq}$ different modes each.
+
+As in \S\ref{sec:analysis-negotiation} when substituting the equations one in another gave us expressions of \dt{} systems, similarly here if we substitute the results for $\lambdaik$ in~\eqref{eq:projection_result_zones} we will have a switched \dt{} system with to determine the dynamics of $\thetaik$.
+And conversely a switched \dt{} homogenous system for the dynamics of $\lambdaik$.
+
+If we develop the calculations we can estimate an upper bound on the number of total different permutations $\bar{\epsilon}$, which totals to
+\begin{equation}
+  \label{eq:1}
+  \bar{\epsilon}=\overbrace{2^{c}}^{\text{modes on projection}}\times \underbrace{2^{\nineq}\times \dots \times 2^{{\nineq}}}_{M\times \text{modes in each }\lambdai }=2^{c+M\nineq}.
+\end{equation}
+Probably some of those permutations may not be possible, but still we have exponential growth on the number of modes of the switched systems.
+The exact calculation for the regions is not the scope of this work.
+
+The case for scarce systems seen in the last chapter, settles the solution of the projection to the case $(0)$, where we project onto the intersection of all halfspaces.
+And due to another assumption (that $\bar{\Gamma}_{i}\optuncUik\succ \thetaik, \forall i\in\set{M}, \forall k$), we fix all $\lambdai$ to the first solution in~\eqref{eq:lambdafuntheta}.
+This consecutive choices of assumptions reduces the total number of switching modes to exactly one, presented by equations~\eqref{eq:negotiation_equation_substituting_organizing_matrix_lambda} and~\eqref{eq:negotiation_equation_substituting_organizing_matrix_theta}, reproduced here.
+
+\begin{equation}
+  \label{eq:negotiation_equation_substituting_organizing_matrix_lambda_reprise}
+  \tag{\ref*{eq:negotiation_equation_substituting_organizing_matrix_lambda}}
+  \vec{\lambda}\pplusone=\mathcal{A}_{\lambda}\vec{\lambda}\p,
+\end{equation}
+\begin{equation}
+  \label{eq:negotiation_equation_substituting_organizing_matrix_theta_reprise}
+  \tag{\ref*{eq:negotiation_equation_substituting_organizing_matrix_theta}}
+  \vec{\theta}\pplusone=\mathcal{A}_{\theta}\vec{\theta}\p+\mathcal{\vec{B}}_{\theta}[k]
+\end{equation}
 \end{document}
