@@ -94,7 +94,7 @@ Again, since there is only one type of lagrangian multiplier, we will call it si
 
 \begin{remark}
   The complementary slackness still holds, ${\lambdaikstar}^T\inequalityfunctionname(\vec{U}_{i}^{\star}[k],\thetaik)$ will always be zero.
-  If any element of $\inequalityfunctionname(\vec{U}_{i}^{\star}[k],\thetaik)$ is greater than zero, the corresponding element on the dual variable $\lambdaikstar$ will be zero, indicating the constraint is inactive.
+  If any element of $\inequalityfunctionname(\vec{U}_{i}^{\star}[k],\thetaik)$ is smaller than zero, the corresponding element on the dual variable $\lambdaikstar$ will be zero, indicating the constraint is active.
 \end{remark}
 
 We can define the dual function $\dualfunctionname:\R^{\card\lambdaik} \times \R^{\card\thetaik} \to \R$ also calculated by solving
@@ -123,6 +123,7 @@ which is also concave.
 Then, similarly we can find $\lambdaikstar$ by solving an optimization problem.
 However, since we are using inequalities, we can only have $\lambdaik$ positive~\cite{BoydVandenberghe2004}:
 \begin{equation}
+  \label{eq:ineq_lambda_equation}
   \begin{matrix}
     \lambdaikstar=\argmax\limits_{\lambdaik}\left\{
     \begin{matrix}
@@ -134,13 +135,130 @@ However, since we are using inequalities, we can only have $\lambdaik$ positive~
 
 As we know, by complementary slackness, the value of the elements of $\lambdaik$ being $0$ (or different of $0$) will depend on the status of the corresponding constraint.
 So the value of $\lambdaik$ will depend of the permutation of the status of the inequality constraint.
-Depending on the form of the constraints (angle between the normals and equivalent affine term), if we have $n_{\text{ineq}}$ constraints, as each constraint can be active or inactive, we have potentially $2^{n_{\text{ineq}}}$ permutations.
+Depending on the form of the constraints, if we have $\nineq$ constraints, we have potentially $2^{\nineq}$ permutations.
 \begin{remark}
   Here we say potentially because not necessarily all combinations are possible.
-  In \S\ref{sec:cons-about-stat} we discuss about the number of permutations and show some cases where the number of permutations is not equal to $2^{n_{\text{ineq}}}$.
+  In \S\ref{sec:cons-about-stat} we discuss briefly about the number of permutations and show some cases where the number of permutations is not equal to $2^{\nineq}$.
 \end{remark}
 
+To solve~\eqref{eq:ineq_lambda_equation}, we can use the fact that the status of the constraints depends on the value of $\thetaik$.
+This way, we can notice that the set of constraints divides the space of $\thetaik$ into multiple regions, depending if the constraint is active or not.
 
+
+
+Imagine an example where we have $2$ constraints with associated $\elem[1]{\lambdai}$ and $\elem[2]{\lambdai}$, the $\thetai$ solution space is partitioned like in Fig.~\ref{fig:constraints_partition_theta} (indices $[k]$ suppressed for brevity).
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[every node/.style={align=center}]
+\def\height{3}
+\def\length{5}
+\node at (0,0) {} coordinate (p0)  ++(0:\length*2.4/5) coordinate (p1) ;
+\node at (0,0) {} ++(90:\height*2.7/5) coordinate (p2) ;
+
+\draw[black] (p2) ++(-1:5) coordinate (p3);
+\draw[black] (p1) ++(80:3) coordinate (p4);
+\coordinate (p6) at (p3|-p4);
+
+\coordinate (p5) at (intersection cs:first line={(p2)--(p3)}, second line={(p1)--(p4)});
+\path[fill=gray!20] (p6) -- (p4) -- (p5) -- (p3);
+\draw[black] (p2) -- (p3);
+\draw[black] (p1) -- (p4);
+
+\draw[-latex] (0,-.1) - - (0,\height) node[left]{$\elem[2]{\thetai}$};
+\draw[-latex] (-.1,0) - - (\length,0) node[below]{$\elem[1]{\thetai}$};
+
+\node at (\length*1.2/5,\height*1.25/5) {$\elem[1]{\lambdai}\neq0$\\$\elem[2]{\lambdai}\neq0$};
+\node at (\length*1.2/5,\height*3.8/5) {$\elem[1]{\lambdai}=0$\\$\elem[2]{\lambdai}\neq0$};
+\node at (\length*4/5,\height*1.25/5) {$\elem[1]{\lambdai}\neq0$\\$\elem[2]{\lambdai}=0$};
+\node at (\length*4/5,\height*3.8/5) {$\elem[1]{\lambdai}=0$\\$\elem[2]{\lambdai}=0$};
+\end{tikzpicture}
+\caption{Constraints partitioning $\thetai$ solution space.}\label{fig:constraints_partition_theta}
+\end{figure}
+For any $\thetai$ inside the grey area, the solution to~\eqref{eq:local_problem_equality_standard_notation} will be unconstrained, i.e., the constraint will be active.
+Thus, for this case, by definition the value of $\lambdai=\0$.
+For all other cases, where we know at least one constraint in~\eqref{eq:local_problem_equality_standard_notation} is inactive, we can remove the constraint in~\eqref{eq:ineq_lambda_equation} for the element of $\lambdai$ corresponding to the inactive constraint.
+For instance, if all constraints in~\eqref{eq:local_problem_equality_standard_notation} are inactive, we can remove all constraints of~\eqref{eq:ineq_lambda_equation}, which will result in problem~\eqref{eq:eq_lambda_equation}, whose solution we known already:
+\begin{equation}
+  \label{eq:lambda_function_theta_reprise}
+  \tag{\ref*{eq:lambda_function_theta}}
+  \lambdaik=-\Plin\thetaik-\sik,
+\end{equation}
+\newcommand{\Plinineqnonzero}[1][\star]{\overset{#1}{\Plin}}
+\newcommand{\sikineqnonzero}[1][\star]{\overset{#1}{\vec{s}_{i}}[k]}
+
+By removing a set of constraints, we can solve a similar problem, but with reduced number of elements in $\thetai$ and $\lambdai$.
+For example, let us suppose the first constraint in~\eqref{eq:local_problem_equality_standard_notation} is active.
+We make $\elem[1]{\lambdai}=0$ and set it aside, we remove the corresponding lines of $\bar{\Gamma}_{i}$ and $\thetai$, and then we solve for all other elements of $\lambdai$, removing the remaining constraints in~\eqref{eq:ineq_lambda_equation}. This results in
+\begin{equation}
+  \label{eq:lambda_function_theta_some_active}
+  \elem[2:\elemend]{\lambdai}[k]=-\Plinineqnonzero[2:\card{\lambdai}] \elem[2:\elemend]{\thetai}[k]-\sikineqnonzero[2:\card{\lambdai}],
+\end{equation}
+where $\Plinineqnonzero[2:\card{\lambdai}]={(\linearcoefiineqnonzero[2:\elemend,\star])}^{-1}$ and $\sikineqnonzero[2:\card{\lambdai}]=\Plinineqnonzero[2:\card{\lambdai}]\elem[2:\elemend,\star]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]$.
+
+If we do this for all partitions, i.e., all possible permutations of active and inactive constraints, we will have as many equations similar to~\eqref{eq:lambda_function_theta_some_active} as permutations.
+This result is the base for calculating the solution of the original problem~\eqref{eq:local_problem_equality_standard_notation} as shown in~\cite{BemporadEtAl2002,AlessioBemporad2009}, which is the base for explicit \mpc{}.
+
+However, the equations have different sizes of elements (as many elements as inactive constraints).
+To make all equations same-sized, we recover the elements of $\lambdai$ set to zero and set aside.
+If we take the same example, Eq.~\eqref{eq:lambda_function_theta_some_active} would become
+\begin{equation}
+  \label{eq:lambda_function_theta_some_active_same_size}
+  \lambdaik=
+  \left[
+    \begin{matrix}
+      0\\
+      \elem[2:\elemend]{\lambdai}[k]
+    \end{matrix}
+  \right]
+  =
+  -
+  \left[
+    \begin{matrix}
+      0&0\\
+      0&\Plinineqnonzero[2:\card{\lambdai}]
+    \end{matrix}
+  \right]
+  \thetaik
+  -
+  \left[
+    \begin{matrix}
+      0\\
+      \sikineqnonzero[2:\card{\lambdai}]
+    \end{matrix}
+  \right]
+\end{equation}
+
+
+To facilitate the notation, let's use a binary representation such if we have $\nineq$, we use $\nineq$ binary digits to represent the active constraints.
+And we will mark the digtis $1$ if the constraint is active and $0$ if inactive, indicating which constraints were removed or kept.
+
+If we retake the $2$-constraints example in Fig.~\ref{fig:constraints_partition_theta}, ${00}_{(2)}$ would represent both constraints inactive (bottom left quadrant), ${01}_{(2)}$ and ${10}_{(2)}$ represents one of the constraints are active (bottom right and top left quadrants, respectively) and ${11}_{(2)}$ where both constraints are active (grey area in top right quadrant).
+We can then use the base 10 to represent such partitions.
+This way~\eqref{eq:lambda_function_theta_some_active_same_size} can be written as
+\begin{equation}
+  \label{eq:lambda_function_theta_same_size_coded}
+  \lambdaik=-\Plin^{(2^{n_{\text{ineq}-1}})}\thetaik-\sik^{(2^{n_{\text{ineq}-1}})},
+\end{equation}
+with index $(2^{n_{\text{ineq}-1}})$ indicating that only the first constraint is active.
+
+Then, we can write the complete solution of~\eqref{eq:ineq_lambda_equation} as
+\begin{equation}
+      \label{eq:lambdafuntheta}
+    \begin{aligned}
+      \lambdaik=
+      \begin{cases}
+        -\Plinineq\thetaik-\sikineq,&\text{if}\ G^{(0)}[k]\thetaik \preceq b^{(0)}[k] \\
+        \qquad\quad \vdots&\qquad\quad \vdots\\
+        -\Plinineq[i][\nineq-1]\thetaik-\sikineq[i][\nineq-1],&\text{if}\ G^{(\nineq-1)}[k]\thetaik \preceq b^{(\nineq-1)}[k] \\
+      \end{cases}
+    \end{aligned}
+\end{equation}
+with halfspaces defined by the pairs $(G^{n}[k],\vec{b}^{n}[k])$ representing the partitions of the solution space which may vary with time $k$.
+\begin{remark}
+  Determining the exact halfspaces is not in the scope of this work.
+\end{remark}
+
+As one may expect, by definition, the $\Plinineq[i][n]$ and $\sikineq[i][n]$ are potentially sparse, culminating in a $\Plinineq[i][\nineq-1]=0_{\card{\lambdai}}$ and $\sikineq[i][n]=\0_{\card{\lambdai}}$.
 
 \subsection{Considerations about status of constraints}\label{sec:cons-about-stat}
 It is important to observe that some sets of constraints in which the permutation is not necessarily $2^{n_{\text{ineq}}}$.
@@ -176,7 +294,7 @@ For instance, for constraints with normals $\vec{\vec{\eta}}_{i}$, if the angles
     \def\ang{25}
     \def\vecmag{.5}
     \node at (0,0) {} coordinate(p1) ++(\ang:2.5) coordinate(p2) ++(\ang-90:1.) coordinate(p3) ++(\ang-180:2.5) coordinate(p4);
-    \path[fill=gray!60] (p1) -- (p2) -- (p3) -- (p4);
+    \path[fill=gray!20] (p1) -- (p2) -- (p3) -- (p4);
     \node at (barycentric cs:p1=1,p2=1,p3=1,p4=1) {$\mathcal{P}$};
 
     \path (p1) -- (p2) coordinate[pos=-0.2](a1l) coordinate[pos=1.2](a1r) coordinate[pos=0.5](m12);
@@ -197,7 +315,7 @@ In this case, there will always be at least $2$ active constraints.
   \centering
   \begin{tikzpicture}
     \node at (0,0) {} coordinate(p1) ++(15:2.5) coordinate(p2) ++(-45:2.5) coordinate(p3) ++ (-195:4.0) coordinate(p4);
-    \path[fill=gray!60] (p1) -- (p2) -- (p3);
+    \path[fill=gray!20] (p1) -- (p2) -- (p3);
     \node at (barycentric cs:p1=1,p2=1,p3=1) {$\mathcal{P}$};
 
     \foreach \X [count=\Y] in {2,...,4}

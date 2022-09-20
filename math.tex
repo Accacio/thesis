@@ -46,6 +46,7 @@
 \newcommand{\maximize}{\mathop{\textrm{maximize}}}
 \newcommand{\minimize}{\mathop{\textrm{minimize}}}
 
+\DeclareMathOperator{\elemend}{end}
 \DeclareMathOperator{\fix}{fix}
 \DeclareMathOperator{\Proj}{Proj}
 \DeclareMathOperator{\dom}{dom}
@@ -62,6 +63,7 @@
 \newcommand{\umax}{\vec{u}_{\mathrm{\max}}}
 \newcommand{\predhorz}{N}
 \newcommand{\predictionSet}{\set{N}}
+\newcommand{\nineq}{n_{\text{ineq}}}
 
 \NewDocumentCommand \mpcvec { s m o o o } {%
   \IfBooleanTF{#1}{
@@ -180,9 +182,11 @@
 \newcommand{\Plinnominal}[1][i]{\bar{{P}}_{#1}}
 \newcommand{\Plintilde}[1][i]{\tilde{P}_{#1}[k]}
 \newcommand{\Plintildeestimate}[1][i]{\widehat{\tilde{P}}_{#1}[k]}
+\newcommandx*\Plinineq[2][1=i, 2=0]{\Plin[#1]^{\left(#2\right)}}
 \newcommand{\sik}[1][i]{\vec{s}_{#1}[k]}
 \newcommand{\siktilde}[1][i]{\tilde{\vec{s}}_{#1}[k]}
 \newcommand{\siktildeestimate}[1][i]{\widehat{\tilde{\vec{s}}}_{#1}[k]}
+\newcommandx*\sikineq[2][1=i, 2=0]{\vec{s}_{#1}^{\left(#2\right)}[k]}
 
 \newcommand{\lagrangianname}{\mathscr{L}}
 \newcommand{\lagrangian}{\lagrangianname(\vec{U}_{i}[k],\lambdaik,\thetaik)}
@@ -193,6 +197,7 @@
 \newcommand{\equalityfunctionname}{h_i}
 \newcommand{\equalityfunction}{\equalityfunctionname(\vec{U}_{i}[k],\thetaik)}
 \newcommand{\linearcoefi}{\bar{\Gamma}_{i}H_{i}^{-1}\bar{\Gamma_{i}}^{T}}
+\newcommand{\linearcoefiineqnonzero}[1][\star,\star]{\elem[#1]{\bar{\Gamma}_{i}}H_{i}^{-1}{(\elem[#1]{\bar{\Gamma}_{i}})}^{T}}
 
 \newcommand{\rlsparam}{{\vec{\nu}_{i}}}
 \newcommand{\rlssysinput}{{B_i}}
