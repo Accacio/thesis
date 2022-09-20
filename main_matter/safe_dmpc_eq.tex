@@ -63,19 +63,19 @@ The unconstrained version of problems~\eqref{eq:qp_standard_form_again} and~\eqr
 and have analytical solutions~\cite{BoydVandenberghe2004}
 \begin{align}
   \label{eq:qp_standard_form_unconstrained_solution}
-  \vec{U}_{\text{unc}}^{\star}[k]=-H^{-1}\vec{f}[k],\\
+  \optuncU=-H^{-1}\vec{f}[k],\\
   \label{eq:DOP_local_unconstrained_solution}
-  \vec{U}_{i_{\text{unc}}}^{\star}[k]=-H_{i}^{-1}\vec{f}_{i}[k].
+  \optuncUik=-H_{i}^{-1}\vec{f}_{i}[k].
 \end{align}
 
-We call a system scarce when its unconstrained solution $\vec{U}_{\text{unc}}^{\star}[k]$ lies outside the bounds of the polytope formed by the constraints for all $k$, i.e.,
+We call a system scarce when its unconstrained solution $\optuncU$ lies outside the bounds of the polytope formed by the constraints for all $k$, i.e.,
 \begin{equation}
-\bar{\Gamma}\vec{U}_{\text{unc}}[k]\succ {\vec{U}}_{\text{max}}, \forall k.
+\bar{\Gamma}\optuncU\succ {\vec{U}}_{\text{max}}, \forall k.
 \end{equation}
 
-Furthermore, in this chapter, we assume that for all sub-systems, their unconstrained solutions $\vec{U}_{i_{\text{unc}}}^{\star}[k]$ neither respect the local constraints, that means,
+Furthermore, in this chapter, we assume that for all sub-systems, their unconstrained solutions $\optuncUik$ neither respect the local constraints, that means,
 \begin{equation}
-\bar{\Gamma}_{i}\vec{U}_{i_{\text{unc}}}^{\star}[k]\succ \thetaik, \forall i\in\set{M}, \forall k,
+\bar{\Gamma}_{i}\optuncUik\succ \thetaik, \forall i\in\set{M}, \forall k,
 \end{equation}
 i.e., even if all resources were allocated for a single subsystem, it still could not fulfill its needs.
 
@@ -119,8 +119,8 @@ These are the equations we will use for our analysis.
   The constraints in~\eqref{eq:qp_standard_form_again} and~\eqref{eq:DOP_local_reprise}, can be interpreted as the intersection of the halfspaces described by the rows of $\bar{\Gamma}$ (or $\bar{\Gamma}_{i}$) and $\vec{U}_{\max}$ (or $\thetaik$), i.e., the halfspaces
   ${\set{S}_i=\setbuild{\vec{x}}{\elem[i,\star]{{\bar{\Gamma}}}\vec{x}\leq\elem[i,\star]{\vec{U}_{\max}}}}$, and the intersection ${\set{S}=\setbuild{\vec{x}}{\bar{\Gamma}\vec{x}\preceq\vec{U}_{\max}}=\bigcap\limits_{i=1}^{\card\vec{U}_{\max}}}\set{S}_{i}$ (and conversely for $\bar{\Gamma}_{i}$ and $\thetaik$).
 
-  So, to find the equivalent $\bar{\Gamma}_{\text{eq}}$ (or $\bar{\Gamma}_{i_{\text{eq}}}$) for the equality constraint problem, only the active halfspaces are kept and transformed into intersection of hyperplanes (equality constraint).
-  This computation of active sets may be costly depending on the number of halfspaces used and the dimensions of the variables.
+  So, to find the equivalent $\bar{\Gamma}_{\text{eq}}$ (or $\bar{\Gamma}_{i_{\text{eq}}}$) for the equality constraint problem, only the inactive halfspaces are kept and transformed into intersection of hyperplanes (equality constraint).
+  This computation of active/inactive sets may be costly depending on the number of halfspaces used and the dimensions of the variables.
 
   If we assume the feasible regions of $\bar{\Gamma}$ (and $\bar{\Gamma}_{i}$) to form a cone, if the systems is scarce, $\bar{\Gamma}_{\text{eq}}=\bar{\Gamma}$ (and $\bar{\Gamma}_{i_\text{eq}}=\bar{\Gamma}_i$)\footnote{This can be easily proven geometrically, when a point do not respect any of the inequality constraints the projection onto the cone will be its apex (which coincides with the intersection of the equivalent hyperplanes).}.
 
@@ -135,10 +135,10 @@ So, from now on, we make this assumption and use $\bar{\Gamma}$ and $\bar{\Gamma
 
 When a system does not suffer from scarcity, the solution of the unconstrained problem~\eqref{eq:qp_standard_form_unconstrained_solution} respects the inequalities, i.e.,
 \begin{equation}
-\bar{\Gamma}\vec{U}_{\text{unc}}[k]\preceq {\vec{U}}_{\text{max}},\forall k.
+\bar{\Gamma}\optuncU\preceq {\vec{U}}_{\text{max}},\forall k.
 \end{equation}
 
-This way, the elements of $\vec{U}_{\text{unc}}$ lie inside the polytope and none of the constraints is active.
+This way, the elements of $\optuncU$ lie inside the polytope and all the constraints are active.
 As a consequence, no projection onto the polytope is needed, since it would result in the same point.
 That means the solution of the constrained problem is the same as the unconstrained, so the problem is in fact unconstrained.
 
