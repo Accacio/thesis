@@ -45,7 +45,7 @@ and we use the projected subgradient method~\eqref{eq:projectedSubgradient_lambd
   \tag{\ref*{eq:projectedSubgradient_lambda}}
   \vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p),
 \end{equation}
-with ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k]\preceq \vec{U}_{\max}}}$.
+but with ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k]\preceq \vec{U}_{\max}}}$.
 \begin{remark}
   As seen in~\cite{BoydEtAl2015}, if we have separable constraints sets, such as the $\set{U}_{i}$ in our problem, we can modify the local objectives $\obji$ so \begin{equation*}
     J_{i}(\optthetai)=\infty\text{, if }\vec{U}_{i}^{\star}\notin\dom{\obji}.
@@ -118,7 +118,11 @@ Using the first order \KKT{} optimality condition we have
 \end{equation}
 yielding as well
 \begin{equation}
-\vec{U}_{i}[k]=-H_{i}^{-1}(-\bar{\Gamma}_{i}^{T}\lambdaik-\vec{f}_{i}[k]).
+\vec{U}_{i}[k]=-H_{i}^{-1}\vec{f}_{i}[k]+H_{i}^{-1}\bar{\Gamma}_{i}^{T}\lambdaik,
+\end{equation}
+which we know is
+\begin{equation}
+\vec{U}_{i}[k]=\optuncUik-H_{i}^{-1}\bar{\Gamma}_{i}^{T}\lambdaik.
 \end{equation}
 
 Substituting it in $\lagrangian$ results
@@ -251,24 +255,28 @@ This way~\eqref{eq:lambda_function_theta_some_active_same_size} can be written a
 with index $(2^{n_{\text{ineq}-1}})$ indicating that only the first constraint is active.
 
 Then, we can write the complete solution of~\eqref{eq:ineq_lambda_equation} as
+a \pwa{} function
 \begin{equation}
-      \label{eq:lambdafuntheta}
-    \begin{aligned}
-      \lambdaik=
-      \begin{cases}
-        -\Plinineq\thetaik-\sikineq,&\text{if}\ G^{(0)}[k]\thetaik \preceq b^{(0)}[k] \\
-        \qquad\quad \vdots&\qquad\quad \vdots\\
-        -\Plinineq[i][\nineq-1]\thetaik-\sikineq[i][\nineq-1],&\text{if}\ G^{(\nineq-1)}[k]\thetaik \preceq b^{(\nineq-1)}[k] \\
-      \end{cases}
-    \end{aligned}
+  \label{eq:lambdafuntheta}
+  \begin{aligned}
+    \lambdaik=
+    \begin{cases}
+      -\Plinineq\thetaik-\sikineq,&\text{if}\ G^{0}[k]\thetaik \preceq b^{0}[k] \\
+      \qquad\quad \vdots&\qquad\quad \vdots\\
+      -\Plinineq[i][2^{\nineq}-1]\thetaik-\sikineq[i][2^{\nineq}-1],&\text{if}\ G^{2^{\nineq}-1}[k]\thetaik \preceq b^{2^{\nineq}-1}[k] \\
+    \end{cases}
+  \end{aligned}
 \end{equation}
 with halfspaces defined by the pairs $(G^{n}[k],\vec{b}^{n}[k])$ representing the partitions of the solution space which may vary with time $k$.
 \begin{remark}
   Determining the exact halfspaces is not in the scope of this work.
 \end{remark}
 
-As one may expect, by definition, the $\Plinineq[i][n]$ and $\sikineq[i][n]$ are potentially sparse, culminating in a $\Plinineq[i][\nineq-1]=0_{\card{\lambdai}}$ and $\sikineq[i][n]=\0_{\card{\lambdai}}$.
+Here we can begin to regard the change caused by the relaxation, whereas we had only one equation relating $\lambdai$ to $\thetai$, when the system was scarce, now we have potentially $2^{\nineq}$ different equations.
 
+\begin{remark}\label{rem:sparse_solutions}
+  As one may expect, by definition, the $\Plinineq[i][n]$ and $\sikineq[i][n]$ are increasingly sparse, as $n$ increases more constraints are active and more blocks are equal to zero, culminating in $\Plinineq[i][2^{\nineq}-1]=0_{\card{\lambdai}}$ and $\sikineq[i][2^{\nineq}-1]=\0_{\card{\lambdai}}$.
+\end{remark}
 \subsection{Considerations about status of constraints}\label{sec:cons-about-stat}
 It is important to observe that some there are some sets of constraints in which the permutation is not necessarily $2^{\nineq}$.
 

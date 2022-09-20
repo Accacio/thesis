@@ -191,9 +191,13 @@ The solution to $\dualfunction$ is given by the first order \KKT{} optimality co
 \begin{equation}
 \nabla_{\vec{U}_{i}[k]}\lagrangian=0
 \end{equation}
-which results in
+resulting in
 \begin{equation}
-\vec{U}_{i}[k]=-H_{i}^{-1}(-\bar{\Gamma}_{i}^{T}\lambdaik-\vec{f}_{i}[k]).
+\vec{U}_{i}[k]=H_{i}^{-1}(-\bar{\Gamma}_{i}^{T}\lambdaik-\vec{f}_{i}[k]).
+\end{equation}
+which is
+\begin{equation}
+\vec{U}_{i}[k]=\optuncUik-H_{i}^{-1}\bar{\Gamma}_{i}^{T}\lambdaik.
 \end{equation}
 
 Substituting it in $\lagrangian$ yields
@@ -247,7 +251,7 @@ We can distribute the terms, resulting in
 \end{equation}
 From inspection of~\eqref{eq:lambda_function_theta}, the last term ($-\Plin\theta_{i}\p-\sik$) is equals to $\lambdai\p$, substituting it into~\eqref{eq:lambda_dynamics_with_P_and_s} and using a matrix form, we have
 \begin{equation}
-  \label{eq:negotiation_equation_substituting_organizing}
+  \label{eq:negotiation_equation_substituting_organizing_matrix_lambda}
   \vec{\lambda}\pplusone=\mathcal{A}_{\lambda}\vec{\lambda}\p,
 \end{equation}
 with
@@ -331,7 +335,7 @@ As we can see, we can separate the function into two parts, one which depends on
 
 We can finally write it in matrix form:
 \begin{equation}
-  \label{eq:negotiation_equation_substituting_organizing}
+  \label{eq:negotiation_equation_substituting_organizing_matrix_theta}
   \vec{\theta}\pplusone=\mathcal{A}_{\theta}\vec{\theta}\p+\mathcal{\vec{B}}_{\theta}[k]
 \end{equation}
 where
