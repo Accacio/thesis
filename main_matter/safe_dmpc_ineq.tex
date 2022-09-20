@@ -56,14 +56,15 @@ with ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k]\preceq \vec
 
 In this chapter, we still assume the original constraint~\eqref{eq:linear_constraint} to have at most as many rows as columns, i.e., $\card{\vec{u}_{\max}}\leq n_{u}$.
 However, we relax the assumption made in \S\ref{sec:scarce-systems}.
-The systems are not necesserily scarce anymore, i.e., the unconstrained solutions $\vec{U}_{\text{unc}}^{\star}[k]=-H^{-1}\vec{f}[k]$ and $\vec{U}_{i_{\text{unc}}}^{\star}[k]=-H_{i}^{-1}\vec{f}_{i}[k]$ may or may not respect the constraints.
+The systems are not necessarily scarce anymore, i.e., the unconstrained solutions
+$\optuncU=-H^{-1}\vec{f}[k]$ and $\optuncUik=-H_{i}^{-1}\vec{f}_{i}[k]$ may or may not respect the constraints.
 
 As we will see in next section, despite the relaxation of this assumption, making the problem more generic, it causes the solution of the local problems exponentially more complex.
 
 \todo{Nonetheless, to assure some properties we make another assumption, we assume the unconstrained solutions respect the constraint sets,\note{where to put this?? Maybe when discussing artificial scarcity}
 \begin{align}
-  \vec{U}_{\text{unc}}^{\star}[k]\in\set{U}\\
-  \vec{U}_{i_{\text{unc}}}^{\star}[k]\in\set{U}_{i}.
+  \optuncU\in\set{U}\\
+  \optuncUik\in\set{U}_{i}.
 \end{align}
 }
 
@@ -140,18 +141,19 @@ However, since we are using inequalities, we can only have $\lambdaik$ positive~
   \end{matrix}
 \end{equation}
 
-As we know, by complementary slackness, the value of the elements of $\lambdaik$ being $0$ (or different of $0$) will depend on the status of the corresponding constraint.
-So the value of $\lambdaik$ will depend of the permutation of the status of the inequality constraint.
-Depending on the form of the constraints, if we have $\nineq$ constraints, we have potentially $2^{\nineq}$ permutations.
+As we know, by complementary slackness, the value of the elements of $\lambdaik$ being $0$ (or different of $0$) will depend on the status of the corresponding constraint for the unconstrained solution $\optuncUik$.
+So the complete value of $\lambdaik$ will depend of the permutation of the status of the inequality constraint.
+Depending on the form of the constraints, if we have $\nineq$ constraints, we may have potentially $2^{\nineq}$ permutations.
 \begin{remark}
   Here we say potentially because not necessarily all combinations are possible.
   In \S\ref{sec:cons-about-stat} we discuss briefly about the number of permutations and show some cases where the number of permutations is not equal to $2^{\nineq}$.
 \end{remark}
 
 To solve~\eqref{eq:ineq_lambda_equation}, we can use the fact that the status of the constraints depends on the value of $\thetaik$.
-This way, we can notice that the set of constraints divides the space of $\thetaik$ into multiple regions, depending if the constraint is active or not.
+This way, we can notice that the set of constraints divides the space of $\thetaik$ into multiple regions, depending if the constraints are active or not for $\optuncUik$.
 
-
+$\optuncUik$
+$\optuncU$
 
 Imagine an example where we have $2$ constraints with associated $\elem[1]{\lambdai}$ and $\elem[2]{\lambdai}$, the $\thetai$ solution space is partitioned like in Fig.~\ref{fig:constraints_partition_theta} (indices $[k]$ suppressed for brevity).
 \begin{figure}[h]
@@ -268,7 +270,7 @@ with halfspaces defined by the pairs $(G^{n}[k],\vec{b}^{n}[k])$ representing th
 As one may expect, by definition, the $\Plinineq[i][n]$ and $\sikineq[i][n]$ are potentially sparse, culminating in a $\Plinineq[i][\nineq-1]=0_{\card{\lambdai}}$ and $\sikineq[i][n]=\0_{\card{\lambdai}}$.
 
 \subsection{Considerations about status of constraints}\label{sec:cons-about-stat}
-It is important to observe that some sets of constraints in which the permutation is not necessarily $2^{n_{\text{ineq}}}$.
+It is important to observe that some there are some sets of constraints in which the permutation is not necessarily $2^{\nineq}$.
 
 For example, in some cases there is no partition where all constraints are active, i.e., the intersection of halfspaces is empty (see Fig.~\ref{fig:non_feasible}).
 Problems with such constraints are infeasible, thus we ignore them in this work.
@@ -281,12 +283,12 @@ Problems with such constraints are infeasible, thus we ignore them in this work.
     \node at (0,0) {} coordinate(p1) ++(\ang:2.5) coordinate(p2) ++(\ang-90:1.5) coordinate(p3) ++(\ang-180:2.5) coordinate(p4);
 
     \path (p1) -- (p2) coordinate[pos=-0.2](a1l) coordinate[pos=1.2](a1r) coordinate[pos=0.8](m12);
-    \draw (a1l) -- (a1r);
-    \draw[-latex] (m12) -- ($ (m12)!\vecmag!90:(p1) $)node[left]{$\vec{\eta}_1$};
+    \draw[-latex] (a1l) -- (m12) -- ([turn] -90:0.5) node[left]{$\vec{\eta}_1$};
+    \draw  (m12) -- (a1r);
 
     \path (p3) -- (p4) coordinate[pos=-0.2](a3l) coordinate[pos=1.2](a3r) coordinate[pos=0.8](m34);
-    \draw (a3l) -- (a3r);
-    \draw[-latex] (m34) -- ($ (m34)!\vecmag!90:(p3) $)node[right]{$\vec{\eta}_2$};
+    \draw[-latex] (a3l) -- (m34) -- ([turn] -90:0.5) node[right]{$\vec{\eta}_2$};
+    \draw  (m34) -- (a3r);
 
   \end{tikzpicture}
   \caption{Set of constraints with no intersection.}\label{fig:non_feasible}
@@ -305,12 +307,12 @@ For instance, for constraints with normals $\vec{\vec{\eta}}_{i}$, if the angles
     \node at (barycentric cs:p1=1,p2=1,p3=1,p4=1) {$\mathcal{P}$};
 
     \path (p1) -- (p2) coordinate[pos=-0.2](a1l) coordinate[pos=1.2](a1r) coordinate[pos=0.5](m12);
-    \draw (a1l) -- (a1r);
-    \draw[-latex] (m12) -- ($ (m12)!\vecmag!-90:(p1) $)node[right]{$\vec{\eta}_1$};
+    \draw[-latex] (a1l) -- (m12) -- ([turn] 90:0.5) node[right]{$\vec{\eta}_1$};
+    \draw  (m12) -- (a1r);
 
     \path (p3) -- (p4) coordinate[pos=-0.2](a3l) coordinate[pos=1.2](a3r) coordinate[pos=0.5](m34);
-    \draw (a3l) -- (a3r);
-    \draw[-latex] (m34) -- ($ (m34)!\vecmag!-90:(p3) $)node[right]{$\vec{\eta}_2$};
+    \draw[-latex] (a3l) -- (m34) -- ([turn] 90:0.5) node[right]{$\vec{\eta}_2$};
+    \draw  (m34) -- (a3r);
   \end{tikzpicture}
   \caption{Two constraints with $\vecangle{\vec{\eta}_{1}}{\vec{\eta}_{2}}=180^{o}$.}\label{fig:parallel_only_one_active}
 \end{figure}
@@ -328,8 +330,8 @@ In this case, there will always be at least $2$ active constraints.
     \foreach \X [count=\Y] in {2,...,4}
     {
       \path (p\Y) -- (p\X) coordinate[pos=-0.2](a\Y{}l) coordinate[pos=1.2](a\Y{}r) coordinate[pos=0.5](m\Y\X);
-      \draw (a\Y{}l) -- (a\Y{}r);
-      \draw[-latex] (m\Y\X) -- ($ (m\Y\X)!.5!90:(p\X) $)node[right]{$\vec{\eta}_\Y$};
+      \draw[-latex] (a\Y{}l) -- (m\Y\X) -- ([turn]90:.5) node[right]{$\vec{\eta}_\Y$};
+      \draw (m\Y\X) -- (a\Y{}r);
     }
   \end{tikzpicture}
   \caption{A $3$-sided polyhedron.}\label{fig:triangle_inequality}
