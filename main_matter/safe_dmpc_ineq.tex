@@ -720,9 +720,9 @@ the respective constraint sets
 We call \emph{artificial scarcity} the method of forcing the constraints to be inactive.
 And supposing there is a value $\thetairestricted$ that deactivates all constraints, we call it the \emph{artificial scarcity point}.
 
-So, if we can generate points in a ball around $\thetairestricted$\note{choose a better notation, please} (See Fig.~\ref{fig:ball_around_theta_restricted}), we can use the same method of supervision of communication of the coordinator and agents used in the last chapter to estimate $\Plinineq$.
+So, if we can generate points in a ball ($\set{B}(\vec{x}_{c},r)=\setbuild{\vec{x}}{\norm{\vec{x}-\vec{x}_{c}}\leq r}$) around $\thetairestricted$\note{choose a better notation, please} (See Fig.~\ref{fig:ball_around_theta_restricted}), we can use the same method of supervision of communication of the coordinator and agents used in the last chapter to estimate $\Plinineq$.
 
-However, the complication is while choosing the size of the ball around $\thetairestricted$, we may traverse one of the frontiers of the polytope and generate points corresponding to other modes (See Fig.~\ref{fig:ball_around_theta_restricted_traversing}).
+However, one complication arises when choosing the size of the ball around $\thetairestricted$, since it may traverse one of the frontiers of the polytope and generate points corresponding to other modes (See Fig.~\ref{fig:ball_around_theta_restricted_traversing}).
 
 \begin{figure}[h]
   \centering
@@ -748,7 +748,7 @@ However, the complication is while choosing the size of the ball around $\thetai
 
       \node[draw,circle,minimum width=1cm] at (\length*.375,\height*0.3) {$\thetairestricted$};
     \end{tikzpicture}
-    \caption{Ball around $\thetairestricted$.}\label{fig:ball_around_theta_restricted}
+    \caption{Ball $\set{B}(\thetairestricted,r)$.}\label{fig:ball_around_theta_restricted}
   \end{subfigure}
   \hfill
   \begin{subfigure}{0.4\textwidth}
@@ -773,12 +773,13 @@ However, the complication is while choosing the size of the ball around $\thetai
 
       \node[draw,circle,minimum width=2.5cm] at (\length*.375,\height*0.3) {$\thetairestricted$};
     \end{tikzpicture}
-    \caption{Ball around $\thetairestricted$ traversing zones.}\label{fig:ball_around_theta_restricted_traversing}
+    \caption{Ball $\set{B}(\thetairestricted,r)$ traversing zones.}\label{fig:ball_around_theta_restricted_traversing}
   \end{subfigure}
-  \caption{Generating points close to $\thetairestricted$.}
+  \caption{Effects of different radii $r$ when generating points close to $\thetairestricted$.}
 \end{figure}
 
-Therefore, we need an estimation method which can classify simultaneously the points, indicating to which zone they correspond and we take only the parameters corresponding to the $0$-zones, that is $\Plinineq$.
+Therefore, we need an estimation method which can also classify simultaneously the points, indicating to which zone they correspond.
+Then, we take only the parameters which interest us, that is $\Plinineq$.
 
 In \S\ref{sec:cons-about-mult}, we will discuss estimation methods and we describe the proposed method to solve this problem.
 
