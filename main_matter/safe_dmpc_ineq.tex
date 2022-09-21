@@ -185,7 +185,7 @@ Imagine an example where we have $2$ constraints with associated $\elem[1]{\lamb
 \node at (\length*4/5,\height*1.25/5) {$\elem[1]{\lambdai}\neq0$\\$\elem[2]{\lambdai}=0$};
 \node at (\length*4/5,\height*3.8/5) {$\elem[1]{\lambdai}=0$\\$\elem[2]{\lambdai}=0$};
 \end{tikzpicture}
-\caption{Constraints partitioning $\thetai$ solution space.}\label{fig:constraints_partition_theta}
+\caption{Two constraints partitioning $\thetai$ solution space.}\label{fig:constraints_partition_theta}
 \end{figure}
 For any $\thetai$ inside the grey area, the solution to~\eqref{eq:local_problem_equality_standard_notation} will be unconstrained, i.e., the constraint will be active.
 Thus, for this case, by definition the value of $\lambdai=\0$.
@@ -347,9 +347,9 @@ In this case, there will always be at least $2$ active constraints.
 
 Since we suppose there are at most the number of constraints as dimensions, it is not possible to create polyhedrons.
 
-\section{Impact on negotiation}\label{sec:impact-local-problem}
-We can try to apply the same logic used in \S\ref{sec:analysis-negotiation}, by substituting~\eqref{eq:lambdafuntheta} into~\eqref{eq:projectedSubgradient_lambda_reprise} and vice-versa.
-In this attempt we can fully contemplate how the relaxation of the assumptions increases the problem's complexity.
+\section{Impact on negotiation equations}\label{sec:impact-local-problem}
+We can try to apply the same logic used in \S\ref{sec:analysis-negotiation}, by substituting~\eqref{eq:lambdafuntheta} into~\eqref{eq:projectedSubgradient_lambda_reprise} and vice-versa, and compare with the results in \S\ref{sec:analysis-negotiation}.
+In this attempt, we can fully contemplate how the relaxation of the assumptions increases the problem's complexity.
 
 The first difficulty is already on the projected subgradient method, which due to the set
 $\set{S}$ being intersection of halfplanes, does not have a straightforward solution as in the equality constraint case~\eqref{eq:example_projectedSubgradient_lambda_reprise}. The solution is found by applying the definition of the euclidean projection, which is by itself a \qp{} problem
@@ -368,25 +368,25 @@ $\set{S}$ being intersection of halfplanes, does not have a straightforward solu
 which translates to the problem
 \begin{equation}
   \label{eq:projected_subgradient_qp}
-  \Proj^{\set{S}}(\vec{x}_{0})=
+  \Proj^{\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p)=
   \argmin\limits_{\vec{x}}
   \left\{
   \begin{matrix}
     \minimize\limits_{\vec{U}[k]} &
-                                    \norm{\vec{x}-\vec{x}_{0}}\\
+                                    \norm{\vec{x}-\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p}\\
     \mathrm{subject~ to} & I_{c}^{M}\vec{x}\preceq \vec{U}_{\max}:\vec{\mu}\\
   \end{matrix}
   \right\},
 \end{equation}
 with corresponding dual variable $\vec{\mu}$.
-For notation sake we call $\vec{x}_{0}=\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$.
+For notation sake we use $\vec{x}_{0}=\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$.
 
 The problem is solved similarly to how we made in \S\ref{sec:impact-local-problem}.
-Skipping some steps we will find that the solution of the projection has the same form that~\eqref{eq:lambdafuntheta}.
+Skipping some steps (calculating lagrangians and optimizing for the dual variables) we will find that the solution of $\vec{\mu}$ has the same form that~\eqref{eq:lambdafuntheta}.
 However, we need to change $\bar{\Gamma}_{i}$ for $I_{c}^{M}$, $H_{i}$ for $I$, and $\vec{f}_{i}$ for $-(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p)$.
 And the partitions are defined by the active and inactive constraints in $I_{c}^{M}\vec{x}_{0}\preceq \vec{U}_{\max}$.
 
-This also results in a \pwa{} function for $\vec{\theta}[k]$ with at most $2^{c}$ different modes ($\card{\elem[*,1]{I_{c}^{M}}}=c$):
+Substituting the solution of the dual variables into the lagrangian, and making the gradient vanish, will also result in a \pwa{} function with at most $2^{c}$ different modes (${\card{\elem[*,1]{I_{c}^{M}}}=c}$):
 \begin{equation}
   \label{eq:projection_result_zones}
   \begin{aligned}
@@ -399,26 +399,29 @@ This also results in a \pwa{} function for $\vec{\theta}[k]$ with at most $2^{c}
     \end{cases}
   \end{aligned},
 \end{equation}
-where $P_{\vec{\mu}}^{(n)}={({I_{c}^{M}}^{(n)}{{I_{c}^{M}}^{(n)}}\T)}^{-1}$, $\vec{s}_{\vec{\mu}}^{(n)}[k]=P_{\vec{\mu}}^{(n)}{I_{c}^{M}}^{(n)}\vec{x}_{0}$, ${I_{c}^{M}}^{(n)}$ is constructed by keeping/removing the constraints as coded by index $(n)$, and the halfspaces described by tuples $(G_{\vec{\mu}}^{n},U_{\max}^{n})$ represent the different regions of the partitions of the solution space of $\vec{x}_{0}$.
+where the non-zero elements (coded by $0$ digits in the binary representation of $(n)$) of $P_{\vec{\mu}}^{(n)}$ are ${({I_{c}^{M}}^{(n)}{{I_{c}^{M}}^{(n)}}\T)}^{-1}$, and those of $\vec{s}_{\vec{\mu}}^{(n)}[k]$ are $P_{\vec{\mu}}^{(n)}{I_{c}^{M}}^{(n)}\vec{x}_{0}$, ${I_{c}^{M}}^{(n)}$ is constructed by keeping/removing the constraints as coded by index $(n)$, and the halfspaces described by tuples $(G_{\vec{\mu}}^{n},U_{\max}^{n})$ represent the different regions of the partitions of the solution space of $\vec{x}_{0}$.
 
-Observe that when all constraints are inactive, the solution is the same as in the equality case~\eqref{eq:euclidean_projection_equality_solution} ($\card{I_{c}^{M}}=c\times Mc$).
-And when all constraints are active (coded $2^{c}-1$), the solution is the same as the unconstrained solution, since $\vec{\mu}=\0$ (see Remark~\ref{rem:sparse_solutions}).
+Observe that when all constraints are inactive ($n=0$), the solution is the same as in the equality case~\eqref{eq:euclidean_projection_equality_solution} ($\card{I_{c}^{M}}=c\times Mc$).
+And when all constraints are active ($n=2^{c}-1$), the solution is the same as the unconstrained solution, since $\vec{\mu}=\0$ (see Remark~\ref{rem:sparse_solutions}).
 
 So, we can conclude that the next value $\thetaik\pplusone$ depends on where $\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$ will lie, giving at least $2^{c}$ possibilities.
 In turn, $\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$ depends on the values of each $\lambdaik$, which conversely can have $2^{\nineq}$ different modes each.
 
-As in \S\ref{sec:analysis-negotiation} when substituting the equations one in another gave us expressions of \dt{} systems, similarly here if we substitute the results for $\lambdaik$ in~\eqref{eq:projection_result_zones} we will have a switched \dt{} system with to determine the dynamics of $\thetaik$.
-And conversely a switched \dt{} homogenous system for the dynamics of $\lambdaik$.
+As in \S\ref{sec:analysis-negotiation}, when substituting the equations one in another gave us expressions of \dt{} systems, similarly here if we substitute the results for $\lambdaik$ in~\eqref{eq:projection_result_zones} we will have a switched \dt{} systems.
+One with constant (in the same mode) input for $\thetaik$, and conversely a switched homogenous system for the dynamics of $\lambdaik$.
 
 If we develop the calculations we can estimate an upper bound on the number of total different permutations $\bar{\epsilon}$, which totals to
 \begin{equation}
   \label{eq:1}
   \bar{\epsilon}=\overbrace{2^{c}}^{\text{modes on projection}}\times \underbrace{2^{\nineq}\times \dots \times 2^{{\nineq}}}_{M\times \text{modes in each }\lambdai }=2^{c+M\nineq}.
 \end{equation}
-Probably some of those permutations may not be possible, but still we have exponential growth on the number of modes of the switched systems.
-The exact calculation for the regions is not the scope of this work.
 
-The case for scarce systems seen in the last chapter, settles the solution of the projection to the case $(0)$, where we project onto the intersection of all halfspaces.
+\begin{remark}
+  Probably some of those permutations may not be possible, but still we have exponential growth on the number of modes of the switched systems.
+  The exact calculation for the regions is not the scope of this work.
+\end{remark}
+
+The case for scarce systems seen in the last chapter, settles the solution of the projection to the case $(0)$, where $\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$ is projected onto the intersection of all halfspaces.
 And due to another assumption (that $\bar{\Gamma}_{i}\optuncUik\succ \thetaik, \forall i\in\set{M}, \forall k$), we fix all $\lambdai$ to the first solution in~\eqref{eq:lambdafuntheta}.
 This consecutive choices of assumptions reduces the total number of switching modes to exactly one, presented by equations~\eqref{eq:negotiation_equation_substituting_organizing_matrix_lambda} and~\eqref{eq:negotiation_equation_substituting_organizing_matrix_theta}, reproduced here.
 
@@ -432,4 +435,130 @@ This consecutive choices of assumptions reduces the total number of switching mo
   \tag{\ref*{eq:negotiation_equation_substituting_organizing_matrix_theta}}
   \vec{\theta}\pplusone=\mathcal{A}_{\theta}\vec{\theta}\p+\mathcal{\vec{B}}_{\theta}[k]
 \end{equation}
+
+If we concatenate the binary representations of the modes of the projection and of each local problem, we will have a number with $c+M\nineq$ digits.
+And thus, the solutions in ~\eqref{eq:negotiation_equation_substituting_organizing_matrix_lambda} and~\eqref{eq:negotiation_equation_substituting_organizing_matrix_theta} can be seen as an specific case of the following solutions for the $0$-th modes:
+\begin{equation}
+  \label{eq:negotiation_equation_substituting_organizing_matrix_lambda_switched}
+  \vec{\lambda}[k]\pplusone=
+  \begin{cases}
+    \mathcal{A}_{\lambda}^{0}\vec{\lambda}[k]\p,&\text{if}\ G_{\vec{\lambda}}^{0}[k]\vec{\theta}[k] \preceq \vec{b}_{\vec{\lambda}}^{0}[k] \\
+    \vdots\\
+    \mathcal{A}_{\lambda}^{N_{\vec{\lambda}}}\vec{\lambda}[k]\p,&\text{if}\ G_{\vec{\lambda}}^{N_{\vec{\lambda}}}[k]\vec{\theta}[k] \preceq \vec{b}_{\vec{\lambda}}^{N_{\vec{\lambda}}}[k] \\
+  \end{cases}
+\end{equation}
+\begin{equation}
+  \label{eq:negotiation_equation_substituting_organizing_matrix_theta_switched}
+  \vec{\theta}[k]\pplusone=
+  \begin{cases}
+    \mathcal{A}_{\theta}^{0}\vec{\theta}[k]\p+\mathcal{\vec{B}}_{\theta}^{0}[k],&\text{if}\ G_{\vec{\theta}}^{0}[k]\vec{\theta}[k] \preceq \vec{b}_{\vec{\theta}}^{0}[k] \\
+    \vdots\\
+    \mathcal{A}_{\theta}^{N_{\vec{\theta}}}\vec{\theta}[k]\p+\mathcal{\vec{B}}_{\theta}^{N_{\vec{\theta}}}[k],&\text{if}\ G_{\vec{\theta}}^{N_{\vec{\theta}}}[k]\vec{\theta}[k] \preceq \vec{b}_{\vec{\theta}}^{N_{\vec{\theta}}}[k] \\
+  \end{cases}
+\end{equation}
+where $N_{\vec{\lambda}}=N_{\vec{\theta}}=2^{c+M\nineq}-1$, the hyperspaces described by tuples
+$(G_{\vec{\lambda}}^{n},\vec{b}_{\vec{\lambda}}^{n})$ and
+$(G_{\vec{\theta}}^{n},\vec{b}_{\vec{\theta}}^{n})$ coincide, and are formed by the superposition of the halfspaces in~\eqref{eq:projection_result_zones} and~\eqref{eq:lambdafuntheta}.
+We highlight again that not necessarily all permutations are possible.
+
+Observe that in some cases, it is straightforward to define the values of the matrices in~\eqref{eq:negotiation_equation_substituting_organizing_matrix_lambda_switched} and~\eqref{eq:negotiation_equation_substituting_organizing_matrix_theta_switched}.
+The $0$-th case, as mentioned, is the same we found in the last chapter, giving
+$\mathcal{A}_{\vec{\lambda}}^{0}=\mathcal{A}_{\vec{\lambda}}$,
+$\mathcal{A}_{\vec{\theta}}^{0}=\mathcal{A}_{\vec{\theta}}$, and
+$\vec{B}_{\vec{\theta}}^{0}[k]=\vec{B}_{\vec{\theta}}[k]$.
+Similarly for the $N_{\vec{\theta}}$-th case where all the constraints of all systems are active (implying all $\lambdai=\0$), and the projection of $\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$ is itself, yielding
+$\mathcal{A}_{\vec{\lambda}}^{N_{\vec{\lambda}}}=0_{\card{\vec{\lambdai}}}$,
+$\mathcal{A}_{\vec{\theta}}^{N_{\vec{\theta}}}=I_{\card{\vec{\thetai}}}$, and
+$\vec{B}_{\vec{\theta}}^{N_{\vec{\theta}}}[k]=\0$.
+The $N_{\vec{\theta}}$-th case is trivial since it means the optimal value was already found, $\vec{\theta}[k]\pplusone=\vec{\theta}[k]\p$.
+
+Applying the attack ~\eqref{eq:linear_attack}, using cheating matrices $T_{i}$ we can have simular results
+
+\begin{equation}
+  \label{eq:negotiation_equation_substituting_organizing_matrix_lambda_switched_cheating}
+  \tilde{\vec{\lambda}}[k]\pplusone=
+  \begin{cases}
+    \tilde{\mathcal{A}}_{\lambda}^{0}\tilde{\vec{\lambda}}[k]\p,&\text{if}\ G_{\vec{\lambda}}^{0}[k]\vec{\theta}[k] \preceq \vec{b}_{\vec{\lambda}}^{0}[k] \\
+    \vdots\\
+    \tilde{\mathcal{A}}_{\lambda}^{N_{\vec{\lambda}}}\tilde{\vec{\lambda}}[k]\p,&\text{if}\ G_{\vec{\lambda}}^{N_{\vec{\lambda}}}[k]\vec{\theta}[k] \preceq \vec{b}_{\vec{\lambda}}^{N_{\vec{\lambda}}}[k] \\
+  \end{cases}
+\end{equation}
+\begin{equation}
+  \label{eq:negotiation_equation_substituting_organizing_matrix_theta_switched_cheating}
+  \vec{\theta}[k]\pplusone=
+  \begin{cases}
+    \tilde{\mathcal{A}}_{\theta}^{0}\vec{\theta}[k]\p+\mathcal{\tilde{\vec{B}}}_{\theta}^{0}[k],&\text{if}\ G_{\vec{\theta}}^{0}[k]\vec{\theta}[k] \preceq \vec{b}_{\vec{\theta}}^{0}[k] \\
+    \vdots\\
+    \tilde{\mathcal{A}}_{\theta}^{N_{\vec{\theta}}}\vec{\theta}[k]\p+\mathcal{\tilde{\vec{B}}}_{\theta}^{N_{\vec{\theta}}}[k],&\text{if}\ G_{\vec{\theta}}^{N_{\vec{\theta}}}[k]\vec{\theta}[k] \preceq \vec{b}_{\vec{\theta}}^{N_{\vec{\theta}}}[k] \\
+  \end{cases}
+\end{equation}
+One can observe that since we multiply $\lambdai$ by $T_{i}[k]$, we do not change the partition of the spaces.
+We can similarly see that
+$\tilde{\mathcal{A}}_{\vec{\lambda}}^{0}=\tilde{\mathcal{A}}_{\vec{\lambda}}$,
+$\tilde{\mathcal{A}}_{\vec{\theta}}^{0}=\tilde{\mathcal{A}}_{\vec{\theta}}$,
+$\tilde{\vec{B}}_{\vec{\theta}}^{0}[k]=\tilde{\vec{B}}_{\vec{\theta}}[k]$, and all analysis made in the last chapter also holds for this mode.
+
+\begin{remark}
+  One interesting fact we can observe is, for cases where the corresponding $\lambdai$ is already $\0$, the multiplication of $T_{i}$ will not affect its value.
+  A satisfied agent, i.e., an agent whose local problem has same solution than its unconstrained version, has no motive to get more resources, since the allocated resources will satisfy its needs.
+  So, in the most extreme case, specifically the $N_{\vec{\theta}}$-th mode, we see that
+  even if all agents cheat at the same time
+  $\tilde{\mathcal{A}}_{\vec{\lambda}}^{N_{\vec{\lambda}}}=\mathcal{A}_{\vec{\lambda}}^{N_{\vec{\lambda}}}$,
+  $\tilde{\mathcal{A}}_{\vec{\theta}}^{N_{\vec{\theta}}}=\mathcal{A}_{\vec{\theta}}^{N_{\vec{\theta}}}$, and
+  $\tilde{\vec{B}}_{\vec{\theta}}^{N_{\vec{\theta}}}[k]=\vec{B}_{\vec{\theta}}^{N_{\vec{\theta}}}[k]$.
+\end{remark}
+
+We could analyze stability in a case-by-case fashion, seeing what constraints are active/inactive for which agent and how the cheating matrices influence the stability.
+But due to the extension of the analysis (exponential number of cases) we skip it for brevity's sake, and will use an example to illustrate.
+
+If we retake our $2$-constraints example in Fig.~\ref{fig:constraints_partition_theta},
+the resulting values of $\lambdaicheat$ are
+\begin{equation}
+  \lambdaicheat=
+  \begin{cases}
+    -\widetilde{\Plinineq      }\thetaik-\widetilde{\sikineq      },&\text{if in zone 0}\\
+    -\widetilde{\Plinineq[i][1]}\thetaik-\widetilde{\sikineq[i][1]},&\text{if in zone 1}\\
+    -\widetilde{\Plinineq[i][2]}\thetaik-\widetilde{\sikineq[i][2]},&\text{if in zone 2}\\
+    -\widetilde{\Plinineq[i][3]}\thetaik-\widetilde{\sikineq[i][3]},&\text{if in zone 3}\\
+  \end{cases}\label{eq:1}
+\end{equation}
+where
+\begin{align}
+  \widetilde{\Plinineq      }&=&&T_{i}{{(\linearcoefiineqnonzero)}^{-1}}&&=&&T_{i}{(\linearcoefi)}^{-1}\\
+  \widetilde{\Plinineq[i][1]}&=&&T_{i} \left[
+                               \begin{matrix}
+                                 {{(\linearcoefiineqnonzero[1,*])}^{-1}}&0\\
+                                 0&0
+                               \end{matrix}
+                                    \right]&&=&& \left[
+                                             \begin{matrix}
+                                               \elem[1,1]{T_{i}}{{(\linearcoefiineqnonzero[1,*])}^{-1}}&0\\
+                                               0&0
+                                             \end{matrix}
+                                                  \right]\\
+  \widetilde{\Plinineq[i][2]}&=&&T_{i} \left[
+                               \begin{matrix}
+                                 0&0\\
+                                 0&{{(\linearcoefiineqnonzero[2,*])}^{-1}}\\
+                               \end{matrix}
+  \right]&&=&& \left[
+           \begin{matrix}
+             0&0\\
+             0&\elem[2,2]{T_{i}}{{(\linearcoefiineqnonzero[2,*])}^{-1}}\\
+           \end{matrix}
+  \right]
+  \\
+  \widetilde{\Plinineq[i][3]}&=&&T_{i}
+                               \left[
+                               \begin{matrix}
+                                 0&0\\
+                                 0&0
+                               \end{matrix}
+                                    \right]&&=&&\left[
+                                             \begin{matrix}
+                                               0&0\\
+                                               0&0
+                                             \end{matrix}
+                                                  \right]
+\end{align}
 \end{document}
