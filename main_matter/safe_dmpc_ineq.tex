@@ -524,8 +524,8 @@ the resulting values of $\lambdaicheat$ are
 \end{equation}
 where
 \begin{align}
-  \widetilde{\Plinineq      }&=&&T_{i}{{(\linearcoefiineqnonzero)}^{-1}}&&=&&T_{i}{(\linearcoefi)}^{-1}\\
-  \widetilde{\Plinineq[i][1]}&=&&T_{i} \left[
+  \widetilde{\Plinineq      }&=T_{i}{{(\linearcoefiineqnonzero)}^{-1}}&&=&&T_{i}{(\linearcoefi)}^{-1}\\
+  \widetilde{\Plinineq[i][1]}&=T_{i} \left[
                                \begin{matrix}
                                  {{(\linearcoefiineqnonzero[1,*])}^{-1}}&0\\
                                  0&0
@@ -533,22 +533,22 @@ where
                                     \right]&&=&& \left[
                                              \begin{matrix}
                                                \elem[1,1]{T_{i}}{{(\linearcoefiineqnonzero[1,*])}^{-1}}&0\\
-                                               0&0
+                                               \elem[2,1]{T_{i}}{{(\linearcoefiineqnonzero[1,*])}^{-1}}&0\\
                                              \end{matrix}
                                                   \right]\\
-  \widetilde{\Plinineq[i][2]}&=&&T_{i} \left[
+  \widetilde{\Plinineq[i][2]}&=T_{i} \left[
                                \begin{matrix}
                                  0&0\\
                                  0&{{(\linearcoefiineqnonzero[2,*])}^{-1}}\\
                                \end{matrix}
   \right]&&=&& \left[
            \begin{matrix}
-             0&0\\
+             0&\elem[1,2]{T_{i}}{{(\linearcoefiineqnonzero[2,*])}^{-1}}\\
              0&\elem[2,2]{T_{i}}{{(\linearcoefiineqnonzero[2,*])}^{-1}}\\
            \end{matrix}
   \right]
   \\
-  \widetilde{\Plinineq[i][3]}&=&&T_{i}
+  \widetilde{\Plinineq[i][3]}&=T_{i}
                                \left[
                                \begin{matrix}
                                  0&0\\
