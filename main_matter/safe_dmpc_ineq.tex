@@ -683,8 +683,38 @@ In the next section we will discuss ways to adapt the detection and mitigation s
 
 \section{Adapting detection and mitigation methods}\label{sec:detection-mitigation}
 
-\subsection{Mitigation}\label{sec:mitigation_ineq}
+We propose to use a similar strategy to the one used in the last chapter.
+However, some difficulties arise.
+We do not have one tuple $(\Plin,\sik)$ for each subsystem, but we have $2^{\predhorz c}$ different tuples.
 
+Here follow proposals on how to counter the difficulties.
+
+\subsection{Mitigation}\label{sec:mitigation_ineq}
+We begin by the end, with the proposal for the mitigation because it is the more straightforward one.
+
+We want to continue to mitigate the effects of the attack by reconstructing the $\lambdai$.
+So, if we assume we can somehow estimate the inverse of the cheating matrix $T_{i}$, which we still assume is invertible (See~\eqref{eq:T_is_invertible}), we can easily try to reconstruct $\lambdai$ by applying
+\begin{equation}
+  \label{eq:lambda_reconstruction}
+  \lambdaireconstructed=\Tikinvestimate \lambdaicheat.
+\end{equation}
+
+However, estimating $\Tikinvestimate$ is a bit more difficult then before.
+We cannot use~\eqref{eq:estimate_T_inverse} anymore (reprised for clarity), since we do not have $\Plin$.
+\begin{equation}
+  \label{eq:estimate_T_inverse_reprise}
+  \tag{\ref*{eq:estimate_T_inverse}}
+  {\Tikinvestimate=\Plinnominal{\Plintildeestimate}^{-1}}.
+\end{equation}
+
+If we estimate any $\Plinineq[i][n]$, not necessarily we can invert it.
+As seen in \S\ref{sec:impact-local-problem}, almost all $\Plinineq[i][n]$ are sparse with rows and columns equal to zero, thus singular.
+The only one that is invertible is $\Plinineq$.
+So if we can estimate $\Plinineqtilde$ and we have a nominal $\Plinineqnominal$ (probably estimated the same way during an attack-free trial), we can estimate $\Tikinvestimate$ similarly:
+\begin{equation}
+  \label{eq:estimate_T_inverse_ineq}
+  {\Tikinvestimate=\Plinineqnominal{\Plinineqtildeestimate}^{-1}}.
+\end{equation}
 \subsection{Detection}\label{sec:detection_ineq}
 
 \newcommand{\thetairestricted}{\accentset{\rotatebox{90}{r}\note{choose a notation, please}}{\thetai}}
