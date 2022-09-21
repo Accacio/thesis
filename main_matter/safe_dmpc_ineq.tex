@@ -516,16 +516,16 @@ Since there are $2$ constraints, we set for example $c=1$ and $\predhorz=2$, the
 \begin{equation}
   \lambdaicheat[k]=
   \begin{cases}
-    -\widetilde{\Plinineq      }\thetaik-\widetilde{\sikineq      },&\text{if }\thetaik\in\set{R}^{0}\\
-    -\widetilde{\Plinineq[i][1]}\thetaik-\widetilde{\sikineq[i][1]},&\text{if }\thetaik\in\set{R}^{1}\\
-    -\widetilde{\Plinineq[i][2]}\thetaik-\widetilde{\sikineq[i][2]},&\text{if }\thetaik\in\set{R}^{2}\\
-    -\widetilde{\Plinineq[i][3]}\thetaik-\widetilde{\sikineq[i][3]},&\text{if }\thetaik\in\set{R}^{3}\\
+    -\Plinineqtilde      \thetaik-\sikineqtilde      ,&\text{if }\thetaik\in\set{R}^{0}\\
+    -\Plinineqtilde[i][1]\thetaik-\sikineqtilde[i][1],&\text{if }\thetaik\in\set{R}^{1}\\
+    -\Plinineqtilde[i][2]\thetaik-\sikineqtilde[i][2],&\text{if }\thetaik\in\set{R}^{2}\\
+    -\Plinineqtilde[i][3]\thetaik-\sikineqtilde[i][3],&\text{if }\thetaik\in\set{R}^{3}\\
   \end{cases}\label{eq:1}
 \end{equation}
 where
 \begin{align}
-  \widetilde{\Plinineq      }&=T_{i}{{(\linearcoefiineqnonzero)}^{-1}}&&=&&T_{i}{(\linearcoefi)}^{-1}\\
-  \widetilde{\Plinineq[i][1]}&=T_{i} \left[
+  \Plinineqtilde&=T_{i}{{(\linearcoefiineqnonzero)}^{-1}}&&=&&T_{i}{(\linearcoefi)}^{-1}\\
+  \Plinineqtilde[i][1]&=T_{i} \left[
                                \begin{matrix}
                                  {{(\linearcoefiineqnonzero[1,*])}^{-1}}&0\\
                                  0&0
@@ -536,7 +536,7 @@ where
                                                \elem[2,1]{T_{i}}{{(\linearcoefiineqnonzero[1,*])}^{-1}}&0\\
                                              \end{matrix}
                                                   \right]\\
-  \widetilde{\Plinineq[i][2]}&=T_{i} \left[
+  \Plinineqtilde[i][2]&=T_{i} \left[
                                \begin{matrix}
                                  0&0\\
                                  0&{{(\linearcoefiineqnonzero[2,*])}^{-1}}\\
@@ -548,7 +548,7 @@ where
            \end{matrix}
   \right]
   \\
-  \widetilde{\Plinineq[i][3]}&=T_{i}
+  \Plinineqtilde[i][3]&=T_{i}
                                \left[
                                \begin{matrix}
                                  0&0\\
@@ -562,21 +562,21 @@ where
                                                   \right]
 \end{align}
 \begin{align}
-  \widetilde{\sikineq[i][0]}&=&&T_{i}\sikineq[i][0]&&=&&T_{i}{(\linearcoefi)}^{-1}\bar{\Gamma}_{i}H_{i}^{-1}\vec{f}_{i}[k]\\
-  \widetilde{\sikineq[i][1]}&=&&T_{i} \sikineq[i][1]&&=&& \left[
+  \sikineqtilde[i][0]&=&&T_{i}\sikineq[i][0]&&=&&T_{i}{(\linearcoefi)}^{-1}\bar{\Gamma}_{i}H_{i}^{-1}\vec{f}_{i}[k]\\
+  \sikineqtilde[i][1]&=&&T_{i} \sikineq[i][1]&&=&& \left[
                                                   \begin{matrix}
                                                     \elem[1,1]{T_{i}}{{(\linearcoefiineqnonzero[1,*])}^{-1}}\elem[1,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
                                                     \elem[2,1]{T_{i}}{{(\linearcoefiineqnonzero[1,*])}^{-1}}\elem[1,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
                                                   \end{matrix}
                                                        \right]\\
-  \widetilde{\sikineq[i][2]}&=&&T_{i} \sikineq[i][2]&&=&& \left[
+  \sikineqtilde[i][2]&=&&T_{i} \sikineq[i][2]&&=&& \left[
                \begin{matrix}
                  \elem[1,2]{T_{i}}{{(\linearcoefiineqnonzero[2,*])}^{-1}}\elem[2,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
                  \elem[2,2]{T_{i}}{{(\linearcoefiineqnonzero[2,*])}^{-1}}\elem[2,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
                \end{matrix}
   \right]
   \\
-  \widetilde{\sikineq[i][3]}&=&&T_{i}\sikineq[i][3] &&=&&\left[
+  \sikineqtilde[i][3]&=&&T_{i}\sikineq[i][3] &&=&&\left[
                                                   \begin{matrix}
                                                     0\\ 0
                                                   \end{matrix}
@@ -634,17 +634,17 @@ and substituting the $\lambdai$ by $\lambdaicheat$:
   \vec{\theta}_{i}\p+
   \frac{1}{M}\left(\sum_{j\in\set{M}}\vec{\theta}_{j}\p-\vec{U}_{\max}\right)&
                                                                      + \rho\p\left(
-                                                                     -\widetilde{\Plinineq[i][n(i)]}\thetai\p-\widetilde{\sikineq[i][n(i)]}
+                                                                     -\Plinineqtilde[i][n(i)]\thetai\p-\sikineqtilde[i][n(i)]
                                                                      \right) \notag\\
                                                                    &-\frac{\rho\p}{M}\sum_{j\in\set{M}}\left(
-                                                                     -\widetilde{\Plinineq[j][n(j)]}\vec{\theta}_{j}\p-\widetilde{\sikineq[j][n(j)]}
+                                                                     -\Plinineqtilde[j][n(j)]\vec{\theta}_{j}\p-\sikineqtilde[j][n(j)]
                                                                      \right)
 \end{align}
 where $n(i)$ indicates the coding of the zone of agent $i$.
 
 Grouping the terms we have
 \begin{align}
-  \thetai\pplusone=\thetai\p+\rho\p\left(-\widetilde{\Plinineq[i][n(i)]}\thetai\p+\frac{1}{M}\sum_{j\in\set{M}}\widetilde{\Plinineq[j][n(j)]}\vec{\theta}_{j}\p\right)+\frac{1}{M}\left(\sum_{j\in\set{M}}\vec{\theta}_{j}\p\right)\\+\rho\p\left(-\sik+\frac{1}{M}\sum_{j\in\set{M}}\vec{s}_{j}[k]\right) -\frac{\vec{U}_{\max}}{M}
+  \thetai\pplusone=\thetai\p+\rho\p\left(-\Plinineqtilde[i][n(i)]\thetai\p+\frac{1}{M}\sum_{j\in\set{M}}\Plinineqtilde[j][n(j)]\vec{\theta}_{j}\p\right)+\frac{1}{M}\left(\sum_{j\in\set{M}}\vec{\theta}_{j}\p\right)\\+\rho\p\left(-\sik+\frac{1}{M}\sum_{j\in\set{M}}\vec{s}_{j}[k]\right) -\frac{\vec{U}_{\max}}{M}
 \end{align}
 resulting in
 \begin{equation}
@@ -654,16 +654,16 @@ where
 \begin{equation}
 \tilde{\mathcal{A}}_{\theta}^{(6)}=\left[
 \begin{matrix}
-2I-\frac{1}{2}\rho\p \widetilde{\Plinineq[I][1]} & I+\frac{1}{2}\rho\p \widetilde{\Plinineq[II][2]}\\
-I+\frac{1}{2}\rho\p \widetilde{\Plinineq[I][1]} & 2I-\frac{1}{2}\rho\p \widetilde{\Plinineq[II][2]}\
+2I-\frac{1}{2}\rho\p \Plinineqtilde[I][1] & I+\frac{1}{2}\rho\p \Plinineqtilde[II][2]\\
+I+\frac{1}{2}\rho\p \Plinineqtilde[I][1] & 2I-\frac{1}{2}\rho\p \Plinineqtilde[II][2]\
 \end{matrix}
 \right]
 \end{equation}
 \begin{equation}
 \tilde{\mathcal{\vec{B}}}_{\theta}^{(6)}[k]=\left[
 \begin{matrix}
--\frac{1}{2}\rho\p \widetilde{\sikineq[I][1]}+\frac{1}{2}\rho\p \widetilde{\sikineq[II][2]}-\frac{\vec{U}_{\max}}{2}\\
-\frac{1}{2}\rho\p \widetilde{\sikineq[I][1]}-\frac{1}{2}\rho\p \widetilde{\sikineq[II][2]}-\frac{\vec{U}_{\max}}{2}
+-\frac{1}{2}\rho\p \sikineqtilde[I][1]+\frac{1}{2}\rho\p \sikineqtilde[II][2]-\frac{\vec{U}_{\max}}{2}\\
+\frac{1}{2}\rho\p \sikineqtilde[I][1]-\frac{1}{2}\rho\p \sikineqtilde[II][2]-\frac{\vec{U}_{\max}}{2}
 \end{matrix}
 \right]
 \end{equation}
