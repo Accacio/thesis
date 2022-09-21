@@ -679,9 +679,9 @@ We do not have one tuple $(\Plin,\sik)$ for each subsystem, but we have $2^{\pre
 Here follow proposals on how to counter the difficulties.
 
 \subsection{Mitigation}\label{sec:mitigation_ineq}
-We begin by the end, with the proposal for the mitigation because it is the more straightforward one.
+We begin by the end, with the proposal for the mitigation because the proposal follows a straightforward logic and impacts the proposal for the detection, simplifying the solution.
 
-We want to continue to mitigate the effects of the attack by reconstructing the $\lambdai$.
+We still want to mitigate the effects of the attack by reconstructing $\lambdai$.
 So, if we assume we can somehow estimate the inverse of the cheating matrix $T_{i}$, which we still assume is invertible (See~\eqref{eq:T_is_invertible}), we can easily try to reconstruct $\lambdai$ by applying
 \begin{equation}
   \label{eq:lambda_reconstruction}
@@ -784,15 +784,22 @@ Then, we take only the parameters which interest us, that is $\Plinineq$.
 In \S\ref{sec:cons-about-mult}, we will discuss estimation methods and we describe the proposed method to solve this problem.
 
 \subsection{Detection}\label{sec:detection_ineq}
+For the detection we can use the same logic presented in the last chapter.
 
-Since the coordinator controls $\thetai$ it can choose where to generate the points
+As we can observe in~\eqref{eq:lambdafuntheta}, the affine parts $\Plinineq[i][n]$ are time-invariant.
+So, if we estimate the affine parts $\Plinineqtildeestimate[i][n]$, we can detect an attack when there is any difference between the estimated and nominal values $\Plinineqnominal[i][n]$.
+We can compare the estimates with nominals from any non-zero mode\footnote{$2^{Nc}$-zones have empty elements, which do not change when the cheating matrices are applied (\S\ref{sec:impact-local-problem}).}.
+However, since we are going to use $\Plinineqtildeestimate$ for the mitigation part, we also use it for the detection.
 
-with $\thetai=\thetairestricted$ is active.
-$\optuncUik\in\set{U}_{i}$
-We call this point the \emph{artificial scarcity point}.
-
-if $\thetai=0$, constraint will be active.
-\emph{artificial scarcity}
+Analogously, we can set an arbitrary bound $\epsilon_{\Plinineq}$, and define the error
+\begin{equation}
+  E_{i}^{(0)}[k] =\norm{\Plinineqtildeestimate-\Plinineqnominal}_{F},
+\end{equation}
+which associated with an detection function $d_{i}^{(0)}$:
+\begin{equation}
+  d_{i}^{(0)}=\indicator{E_{i}^{(0)}[k]\geq\epsilon_{\Plinineq}},
+\end{equation}
+detects an attack when the corresponding bound is disrespected, i.e., $d_{i}^{(0)}=1$.
 
 \section{Considerations about Multiple Parameter Estimation}\label{sec:cons-about-mult}
 
