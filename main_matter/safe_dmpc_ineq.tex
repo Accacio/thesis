@@ -61,13 +61,6 @@ $\optuncU=-H^{-1}\vec{f}[k]$ and $\optuncUik=-H_{i}^{-1}\vec{f}_{i}[k]$ may or m
 
 As we will see in next section, despite the relaxation of this assumption, making the problem more generic, it causes the solution of the local problems exponentially more complex.
 
-\todo{Nonetheless, to assure some properties we make another assumption, we assume the unconstrained solutions respect the constraint sets,\note{where to put this?? Maybe when discussing artificial scarcity}
-\begin{align}
-  \optuncU\in\set{U}\\
-  \optuncUik\in\set{U}_{i}.
-\end{align}
-}
-
 \section{Impact on local problems' solution}\label{sec:impact-local-problem}
 We can repeat the analysis made in the last chapter to see how the change on assumption influences the solutions of the problem.
 
@@ -155,9 +148,6 @@ Depending on the form of the constraints, if we have $\nineq$ constraints, we ma
 
 To solve~\eqref{eq:ineq_lambda_equation}, we can use the fact that the status of the constraints depends on the value of $\thetaik$.
 This way, we can notice that the set of constraints divides the space of $\thetaik$ into multiple regions, depending if the constraints are active or not for $\optuncUik$.
-
-$\optuncUik$
-$\optuncU$
 
 Imagine an example where we have $2$ constraints with associated $\elem[1]{\lambdai}$ and $\elem[2]{\lambdai}$, the $\thetai$ solution space is partitioned like in Fig.~\ref{fig:constraints_partition_theta} (indices $[k]$ suppressed for brevity).
 \begin{figure}[h]
@@ -677,7 +667,6 @@ For the overall system dynamics we may use any tools for analysis of hybrid/ swi
   Observe that since the matrices $\mathcal{A}_{\vec{\theta}}^{n}$ and $\mathcal{A}_{\vec{\lambda}}^{n}$ may be sparse, the eigenvalue analysis to indicate stability of the mode must be accomplished by removing the non-zero corresponding blocks.
 \end{remark}
 
-  % =\Proj^{\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p),
 As we see, the relaxation of the assumption makes the problem exponentially more complicated.
 In the next section we will discuss ways to adapt the detection and mitigation strategies to overcome the complexity presented.
 
@@ -715,21 +704,94 @@ So if we can estimate $\Plinineqtilde$ and we have a nominal $\Plinineqnominal$ 
   \label{eq:estimate_T_inverse_ineq}
   {\Tikinvestimate=\Plinineqnominal{\Plinineqtildeestimate}^{-1}}.
 \end{equation}
+
+So, we assume that $\Plinineq$ exists and that is possible to estimate it.
+
+The necessary condition for existence of the region is that we can choose $\thetai$ such the constraints $\inequalityfunction$ are inactive for the unconstrained solution $\optuncUik$.
+Since we can only choose $\thetai$ that respects $\dom J_{i}$, to assure feasibility, we assume the unconstrained solution $\optuncU$ and $\optuncUik$ lie inside
+the respective constraint sets
+\begin{align}
+  \optuncU\in\set{U}\\
+  \optuncUik\in\set{U}_{i}.
+\end{align}
+
+\newcommand{\thetairestricted}{\overset{\rotatebox{90}{r}}{\thetai}}
+
+We call \emph{artificial scarcity} the method of forcing the constraints to be inactive.
+And supposing there is a value $\thetairestricted$ that deactivates all constraints, we call it the \emph{artificial scarcity point}.
+
+So, if we can generate points in a ball around $\thetairestricted$\note{choose a better notation, please} (See Fig.~\ref{fig:ball_around_theta_restricted}), we can use the same method of supervision of communication of the coordinator and agents used in the last chapter to estimate $\Plinineq$.
+
+However, the complication is while choosing the size of the ball around $\thetairestricted$, we may traverse one of the frontiers of the polytope and generate points corresponding to other modes (See Fig.~\ref{fig:ball_around_theta_restricted_traversing}).
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.4\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \def\height{3}
+      \def\length{5}
+      \node at (0,0) {} coordinate (p0)  ++(0:\length*2.4/5) coordinate (p1) ;
+      \node at (0,0) {} ++(90:\height*2.7/5) coordinate (p2) ;
+
+      \draw[black] (p2) ++(-1:5) coordinate (p3);
+      \draw[black] (p1) ++(80:3) coordinate (p4);
+      \coordinate (p6) at (p3|-p4);
+
+      \coordinate (p5) at (intersection cs:first line={(p2)--(p3)}, second line={(p1)--(p4)});
+      \path[fill=gray!20] (p6) -- (p4) -- (p5) -- (p3);
+      \draw[black] (p2) -- (p3);
+      \draw[black] (p1) -- (p4);
+
+      \draw[-latex] (0,-.1) - - (0,\height) node[left]{$\elem[2]{\thetai}$};
+      \draw[-latex] (-.1,0) - - (\length,0) node[below]{$\elem[1]{\thetai}$};
+
+      \node[draw,circle,minimum width=1cm] at (\length*.375,\height*0.3) {$\thetairestricted$};
+    \end{tikzpicture}
+    \caption{Ball around $\thetairestricted$.}\label{fig:ball_around_theta_restricted}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.4\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \def\height{3}
+      \def\length{5}
+      \node at (0,0) {} coordinate (p0)  ++(0:\length*2.4/5) coordinate (p1) ;
+      \node at (0,0) {} ++(90:\height*2.7/5) coordinate (p2) ;
+
+      \draw[black] (p2) ++(-1:5) coordinate (p3);
+      \draw[black] (p1) ++(80:3) coordinate (p4);
+      \coordinate (p6) at (p3|-p4);
+
+      \coordinate (p5) at (intersection cs:first line={(p2)--(p3)}, second line={(p1)--(p4)});
+      \path[fill=gray!20] (p6) -- (p4) -- (p5) -- (p3);
+      \draw[black] (p2) -- (p3);
+      \draw[black] (p1) -- (p4);
+
+      \draw[-latex] (0,-.1) - - (0,\height) node[left]{$\elem[2]{\thetai}$};
+      \draw[-latex] (-.1,0) - - (\length,0) node[below]{$\elem[1]{\thetai}$};
+
+      \node[draw,circle,minimum width=2.5cm] at (\length*.375,\height*0.3) {$\thetairestricted$};
+    \end{tikzpicture}
+    \caption{Ball around $\thetairestricted$ traversing zones.}\label{fig:ball_around_theta_restricted_traversing}
+  \end{subfigure}
+  \caption{Generating points close to $\thetairestricted$.}
+\end{figure}
+
+Therefore, we need an estimation method which can classify simultaneously the points, indicating to which zone they correspond and we take only the parameters corresponding to the $0$-zones, that is $\Plinineq$.
+
+In \S\ref{sec:cons-about-mult}, we will discuss estimation methods and we describe the proposed method to solve this problem.
+
 \subsection{Detection}\label{sec:detection_ineq}
 
-\newcommand{\thetairestricted}{\accentset{\rotatebox{90}{r}\note{choose a notation, please}}{\thetai}}
-We assume that there is a value $\thetairestricted$ for each the local problem
+Since the coordinator controls $\thetai$ it can choose where to generate the points
+
 with $\thetai=\thetairestricted$ is active.
 $\optuncUik\in\set{U}_{i}$
 We call this point the \emph{artificial scarcity point}.
 
 if $\thetai=0$, constraint will be active.
 \emph{artificial scarcity}
-
-\begin{equation}
-  \label{eq:lambda_reconstruction}
-  {\vec{\lambda}_{i}}_{\mathrm{rec}}=\widehat{{T_{i}[k]}^{-1}} \tilde{\vec{\lambda}_{i}}
-\end{equation}
 
 \section{Considerations about Multiple Parameter Estimation}\label{sec:cons-about-mult}
 
