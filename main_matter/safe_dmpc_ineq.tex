@@ -242,7 +242,7 @@ If we take the same example, Eq.~\eqref{eq:lambda_function_theta_some_active} wo
 \end{equation}
 
 
-To facilitate the notation, let's use a binary representation such if we have $\nineq$, we use $\nineq$ binary digits to represent the active constraints.
+To facilitate the notation, let us use a binary representation such if we have $\nineq$, we use $\nineq$ binary digits to represent the active constraints.
 And we will mark the digtis $1$ if the constraint is active and $0$ if inactive, indicating which constraints were removed or kept.
 
 If we retake the $2$-constraints example in Fig.~\ref{fig:constraints_partition_theta}, ${00}_{(2)}$ would represent both constraints inactive (bottom left quadrant), ${01}_{(2)}$ and ${10}_{(2)}$ represents one of the constraints are active (bottom right and top left quadrants, respectively) and ${11}_{(2)}$ where both constraints are active (grey area in top right quadrant).
@@ -442,18 +442,18 @@ And thus, the solutions in ~\eqref{eq:negotiation_equation_substituting_organizi
   \label{eq:negotiation_equation_substituting_organizing_matrix_lambda_switched}
   \vec{\lambda}[k]\pplusone=
   \begin{cases}
-    \mathcal{A}_{\lambda}^{0}\vec{\lambda}[k]\p,&\text{if}\ G_{\vec{\lambda}}^{0}[k]\vec{\theta}[k] \preceq \vec{b}_{\vec{\lambda}}^{0}[k] \\
+    \mathcal{A}_{\lambda}^{0}\vec{\lambda}[k]\p,&\text{if}\ G_{\vec{\lambda}}^{0}[k]\vec{\theta}[k]\p \preceq \vec{b}_{\vec{\lambda}}^{0}[k] \\
     \vdots\\
-    \mathcal{A}_{\lambda}^{N_{\vec{\lambda}}}\vec{\lambda}[k]\p,&\text{if}\ G_{\vec{\lambda}}^{N_{\vec{\lambda}}}[k]\vec{\theta}[k] \preceq \vec{b}_{\vec{\lambda}}^{N_{\vec{\lambda}}}[k] \\
+    \mathcal{A}_{\lambda}^{N_{\vec{\lambda}}}\vec{\lambda}[k]\p,&\text{if}\ G_{\vec{\lambda}}^{N_{\vec{\lambda}}}[k]\vec{\theta}[k]\p \preceq \vec{b}_{\vec{\lambda}}^{N_{\vec{\lambda}}}[k] \\
   \end{cases}
 \end{equation}
 \begin{equation}
   \label{eq:negotiation_equation_substituting_organizing_matrix_theta_switched}
   \vec{\theta}[k]\pplusone=
   \begin{cases}
-    \mathcal{A}_{\theta}^{0}\vec{\theta}[k]\p+\mathcal{\vec{B}}_{\theta}^{0}[k],&\text{if}\ G_{\vec{\theta}}^{0}[k]\vec{\theta}[k] \preceq \vec{b}_{\vec{\theta}}^{0}[k] \\
+    \mathcal{A}_{\theta}^{0}\vec{\theta}[k]\p+\mathcal{\vec{B}}_{\theta}^{0}[k],&\text{if}\ G_{\vec{\theta}}^{0}[k]\vec{\theta}[k]\p \preceq \vec{b}_{\vec{\theta}}^{0}[k] \\
     \vdots\\
-    \mathcal{A}_{\theta}^{N_{\vec{\theta}}}\vec{\theta}[k]\p+\mathcal{\vec{B}}_{\theta}^{N_{\vec{\theta}}}[k],&\text{if}\ G_{\vec{\theta}}^{N_{\vec{\theta}}}[k]\vec{\theta}[k] \preceq \vec{b}_{\vec{\theta}}^{N_{\vec{\theta}}}[k] \\
+    \mathcal{A}_{\theta}^{N_{\vec{\theta}}}\vec{\theta}[k]\p+\mathcal{\vec{B}}_{\theta}^{N_{\vec{\theta}}}[k],&\text{if}\ G_{\vec{\theta}}^{N_{\vec{\theta}}}[k]\vec{\theta}[k]\p \preceq \vec{b}_{\vec{\theta}}^{N_{\vec{\theta}}}[k] \\
   \end{cases}
 \end{equation}
 where $N_{\vec{\lambda}}=N_{\vec{\theta}}=2^{c+M\nineq}-1$, the hyperspaces described by tuples
@@ -498,28 +498,28 @@ $\tilde{\mathcal{A}}_{\vec{\lambda}}^{0}=\tilde{\mathcal{A}}_{\vec{\lambda}}$,
 $\tilde{\mathcal{A}}_{\vec{\theta}}^{0}=\tilde{\mathcal{A}}_{\vec{\theta}}$,
 $\tilde{\vec{B}}_{\vec{\theta}}^{0}[k]=\tilde{\vec{B}}_{\vec{\theta}}[k]$, and all analysis made in the last chapter also holds for this mode.
 
-\begin{remark}
+\begin{remark}\label{rem:cheat_satisfied_problem}
   One interesting fact we can observe is, for cases where the corresponding $\lambdai$ is already $\0$, the multiplication of $T_{i}$ will not affect its value.
   A satisfied agent, i.e., an agent whose local problem has same solution than its unconstrained version, has no motive to get more resources, since the allocated resources will satisfy its needs.
   So, in the most extreme case, specifically the $N_{\vec{\theta}}$-th mode, we see that
-  even if all agents cheat at the same time
+  even if all agents cheat at the same time, there is no impact of the cheat, since they are all satisfied, $\lambdai=\0\ \forall i \in \set{M}$, resulting in
   $\tilde{\mathcal{A}}_{\vec{\lambda}}^{N_{\vec{\lambda}}}=\mathcal{A}_{\vec{\lambda}}^{N_{\vec{\lambda}}}$,
   $\tilde{\mathcal{A}}_{\vec{\theta}}^{N_{\vec{\theta}}}=\mathcal{A}_{\vec{\theta}}^{N_{\vec{\theta}}}$, and
   $\tilde{\vec{B}}_{\vec{\theta}}^{N_{\vec{\theta}}}[k]=\vec{B}_{\vec{\theta}}^{N_{\vec{\theta}}}[k]$.
 \end{remark}
 
 We could analyze stability in a case-by-case fashion, seeing what constraints are active/inactive for which agent and how the cheating matrices influence the stability.
-But due to the extension of the analysis (exponential number of cases) we skip it for brevity's sake, and will use an example of a case different from the trivial solution to illustrate.
+But due to the extension of the analysis (exponential number of cases) we skip it for brevity's sake, and will use a single example, different from the trivial solution, to illustrate how it could be done.
 
-If we retake our $2$-constraints example in Fig.~\ref{fig:constraints_partition_theta},
-the resulting values of $\lambdaicheat$ are
+Denoting as the zone (or region) $n$, or the $n$-zone, the polytope defined by the intersection of halfspaces ${\set{R}^{n}=\setbuild{x}{G_{\vec{\theta}}^{n}[k]\vec{\theta}[k] \preceq \vec{b}_{\vec{\theta}}^{n}[k]}}$, we retake our $2$-constraints example in Fig.~\ref{fig:constraints_partition_theta}.
+Since there are $2$ constraints, we set for example $c=1$ and $\predhorz=2$, then we have at most $4$ different modes on the solution for $\lambdaicheat$:
 \begin{equation}
-  \lambdaicheat=
+  \lambdaicheat[k]=
   \begin{cases}
-    -\widetilde{\Plinineq      }\thetaik-\widetilde{\sikineq      },&\text{if in zone 0}\\
-    -\widetilde{\Plinineq[i][1]}\thetaik-\widetilde{\sikineq[i][1]},&\text{if in zone 1}\\
-    -\widetilde{\Plinineq[i][2]}\thetaik-\widetilde{\sikineq[i][2]},&\text{if in zone 2}\\
-    -\widetilde{\Plinineq[i][3]}\thetaik-\widetilde{\sikineq[i][3]},&\text{if in zone 3}\\
+    -\widetilde{\Plinineq      }\thetaik-\widetilde{\sikineq      },&\text{if }\thetaik\in\set{R}^{0}\\
+    -\widetilde{\Plinineq[i][1]}\thetaik-\widetilde{\sikineq[i][1]},&\text{if }\thetaik\in\set{R}^{1}\\
+    -\widetilde{\Plinineq[i][2]}\thetaik-\widetilde{\sikineq[i][2]},&\text{if }\thetaik\in\set{R}^{2}\\
+    -\widetilde{\Plinineq[i][3]}\thetaik-\widetilde{\sikineq[i][3]},&\text{if }\thetaik\in\set{R}^{3}\\
   \end{cases}\label{eq:1}
 \end{equation}
 where
@@ -604,4 +604,112 @@ with
                                 \end{matrix}
                                      \right]
 \end{align}
+
+One can observe that for zones $1$ and $2$, when the agent attacks, the non-zero elements of $\Plinineq[i][n]$ and $\sikineq[i][n]$, influences the other elements using the columns of $T_{i}$ equivalent to the inactive constraints.
+For example in zone $1$, $\elem[1,1]{T_{i}}$ and $\elem[2,1]{T_{i}}$ are used, and for zone $2$, $\elem[1,2]{T_{i}}$ and $\elem[2,2]{T_{i}}$.
+\begin{remark}
+  Observe that if $T_{i}$ is diagonal, there is no injection of ``inactive elements'' into an ``active elements''.
+\end{remark}
+
+So, instead of always propagating to the negotiation all the matrix $T_{i}$, as in the case of the last chapter, only the columns related to the inactive constraints are propagated.
+
+If we have $M=2$ subsystems, one in the $1$-zone and other in the $2$-zone (let us called them agents I and II) and we suppose during the projection ${G_{\vec{\mu}}^{0}[k](\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p) \preceq \vec{U}_{\max}^{0}[k]}$, we code the permutation as
+\begin{equation}
+\underbrace{00}_{\text{projection's zone}}\overbrace{01}^{\text{agent I`s zone}}\underbrace{10}_{\text{agent II's zone}} = 000110_{(2)}=6_{(10)}.
+\end{equation}
+
+Applying the projection, we will have the same solution~\eqref{eq:euclidean_projection_equality_solution}, reprised here
+\begin{equation}
+  \label{eq:euclidean_projection_equality_solution_reprise}
+  \tag{\ref*{eq:euclidean_projection_equality_solution}}
+    \vec{\theta}\pplusone=\vec{\theta}\p+\rho\p\vec{\lambda}\p+{I_{c}^M}\T/({I_{c}^M} {I_{c}^M}\T)\left({I_{c}^M}(\vec{\theta}\p-\rho\p\vec{\lambda}\p) -\vec{U}_{\max}\right),
+\end{equation}
+which can be rewritten for each $\thetai$ as
+\begin{equation}
+  \thetai\pplusone= \thetai\p + \frac{1}{M}\left(\sum_{j\in\set{M}}\vec{\theta}_{j}\p-\vec{U}_{\max}\right) + \rho\p\left(\vec{\lambda}\p-\frac{1}{M}\sum_{j\in\set{M}}\vec{\lambda}_j\p\right)
+\end{equation}
+and substituting the $\lambdai$ by $\lambdaicheat$:
+\begin{align}
+  \vec{\theta}_{i}\pplusone=
+  \vec{\theta}_{i}\p+
+  \frac{1}{M}\left(\sum_{j\in\set{M}}\vec{\theta}_{j}\p-\vec{U}_{\max}\right)&
+                                                                     + \rho\p\left(
+                                                                     -\widetilde{\Plinineq[i][n(i)]}\thetai\p-\widetilde{\sikineq[i][n(i)]}
+                                                                     \right) \notag\\
+                                                                   &-\frac{\rho\p}{M}\sum_{j\in\set{M}}\left(
+                                                                     -\widetilde{\Plinineq[j][n(j)]}\vec{\theta}_{j}\p-\widetilde{\sikineq[j][n(j)]}
+                                                                     \right)
+\end{align}
+where $n(i)$ indicates the coding of the zone of agent $i$.
+
+Grouping the terms we have
+\begin{align}
+  \thetai\pplusone=\thetai\p+\rho\p\left(-\widetilde{\Plinineq[i][n(i)]}\thetai\p+\frac{1}{M}\sum_{j\in\set{M}}\widetilde{\Plinineq[j][n(j)]}\vec{\theta}_{j}\p\right)+\frac{1}{M}\left(\sum_{j\in\set{M}}\vec{\theta}_{j}\p\right)\\+\rho\p\left(-\sik+\frac{1}{M}\sum_{j\in\set{M}}\vec{s}_{j}[k]\right) -\frac{\vec{U}_{\max}}{M}
+\end{align}
+resulting in
+\begin{equation}
+  \vec{\theta}\pplusone=\tilde{\mathcal{A}}_{\theta}^{(6)}\vec{\theta}\p+\tilde{\mathcal{\vec{B}}}_{\theta}^{(6)}[k]
+\end{equation}
+where
+\begin{equation}
+\tilde{\mathcal{A}}_{\theta}^{(6)}=\left[
+\begin{matrix}
+2I-\frac{1}{2}\rho\p \widetilde{\Plinineq[I][1]} & I+\frac{1}{2}\rho\p \widetilde{\Plinineq[II][2]}\\
+I+\frac{1}{2}\rho\p \widetilde{\Plinineq[I][1]} & 2I-\frac{1}{2}\rho\p \widetilde{\Plinineq[II][2]}\
+\end{matrix}
+\right]
+\end{equation}
+\begin{equation}
+\tilde{\mathcal{\vec{B}}}_{\theta}^{(6)}[k]=\left[
+\begin{matrix}
+-\frac{1}{2}\rho\p \widetilde{\sikineq[I][1]}+\frac{1}{2}\rho\p \widetilde{\sikineq[II][2]}-\frac{\vec{U}_{\max}}{2}\\
+\frac{1}{2}\rho\p \widetilde{\sikineq[I][1]}-\frac{1}{2}\rho\p \widetilde{\sikineq[II][2]}-\frac{\vec{U}_{\max}}{2}
+\end{matrix}
+\right]
+\end{equation}
+
+And we can see that, as expected, the columns of $T_{i}$ are propagated to $\mathcal{A}_{\vec{\theta}}$, and may change its dynamics.
+We could do the same for the dynamics of $\lambdai$, but we let this for the author.
+
+For the overall system dynamics we may use any tools for analysis of hybrid/ switched systems~\cite{BorrelliEtAl2017}.
+
+\begin{remark}
+  Observe that since the matrices $\mathcal{A}_{\vec{\theta}}^{n}$ and $\mathcal{A}_{\vec{\lambda}}^{n}$ may be sparse, the eigenvalue analysis to indicate stability of the mode, must be accomplished by removing the non-zero corresponding blocks.
+\end{remark}
+
+  % =\Proj^{\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p),
+\section{Adapting detection and mitigation methods}\label{sec:detection-mitigation}
+
+\subsection{Mitigation}\label{sec:mitigation_ineq}
+
+\subsection{Detection}\label{sec:detection_ineq}
+
+\newcommand{\thetairestricted}{\accentset{\rotatebox{90}{r}\note{choose a notation, please}}{\thetai}}
+We assume that there is a value $\thetairestricted$ for each the local problem
+with $\thetai=\thetairestricted$ is active.
+$\optuncUik\in\set{U}_{i}$
+We call this point the \emph{artificial scarcity point}.
+
+if $\thetai=0$, constraint will be active.
+\emph{artificial scarcity}
+
+\begin{equation}
+  \label{eq:lambda_reconstruction}
+  {\vec{\lambda}_{i}}_{\mathrm{rec}}=\widehat{{T_{i}[k]}^{-1}} \tilde{\vec{\lambda}_{i}}
+\end{equation}
+
+\section{Considerations about Multiple Parameter Estimation}\label{sec:cons-about-mult}
+
+
+We can use a method similar to the one seen in~\cite{NakadaEtAl2005}, where we can identify parameters of a switching system.
+
+the submatrix generated from removing corresponding constraints
+
+By definition we have
+
+
+\section{Conclusion}\label{sec:conclusion}
+
+
+
 \end{document}
