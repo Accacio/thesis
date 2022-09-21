@@ -509,7 +509,7 @@ $\tilde{\vec{B}}_{\vec{\theta}}^{0}[k]=\tilde{\vec{B}}_{\vec{\theta}}[k]$, and a
 \end{remark}
 
 We could analyze stability in a case-by-case fashion, seeing what constraints are active/inactive for which agent and how the cheating matrices influence the stability.
-But due to the extension of the analysis (exponential number of cases) we skip it for brevity's sake, and will use an example to illustrate.
+But due to the extension of the analysis (exponential number of cases) we skip it for brevity's sake, and will use an example of a case different from the trivial solution to illustrate.
 
 If we retake our $2$-constraints example in Fig.~\ref{fig:constraints_partition_theta},
 the resulting values of $\lambdaicheat$ are
@@ -560,5 +560,48 @@ where
                                                0&0
                                              \end{matrix}
                                                   \right]
+\end{align}
+\begin{align}
+  \widetilde{\sikineq[i][0]}&=&&T_{i}\sikineq[i][0]&&=&&T_{i}{(\linearcoefi)}^{-1}\bar{\Gamma}_{i}H_{i}^{-1}\vec{f}_{i}[k]\\
+  \widetilde{\sikineq[i][1]}&=&&T_{i} \sikineq[i][1]&&=&& \left[
+                                                  \begin{matrix}
+                                                    \elem[1,1]{T_{i}}{{(\linearcoefiineqnonzero[1,*])}^{-1}}\elem[1,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
+                                                    \elem[2,1]{T_{i}}{{(\linearcoefiineqnonzero[1,*])}^{-1}}\elem[1,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
+                                                  \end{matrix}
+                                                       \right]\\
+  \widetilde{\sikineq[i][2]}&=&&T_{i} \sikineq[i][2]&&=&& \left[
+               \begin{matrix}
+                 \elem[1,2]{T_{i}}{{(\linearcoefiineqnonzero[2,*])}^{-1}}\elem[2,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
+                 \elem[2,2]{T_{i}}{{(\linearcoefiineqnonzero[2,*])}^{-1}}\elem[2,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
+               \end{matrix}
+  \right]
+  \\
+  \widetilde{\sikineq[i][3]}&=&&T_{i}\sikineq[i][3] &&=&&\left[
+                                                  \begin{matrix}
+                                                    0\\ 0
+                                                  \end{matrix}
+                                                       \right]
+\end{align}
+with
+\begin{align}
+  \sikineq[i][0]&={{(\linearcoefiineqnonzero)}^{-1}}\elem[*,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
+  \sikineq[i][1]&= \left[
+                                \begin{matrix}
+                                  {{(\linearcoefiineqnonzero[1,*])}^{-1}}\elem[1,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
+                                  0
+                                \end{matrix}
+  \right]\\
+  \sikineq[i][2]&=\left[
+                                \begin{matrix}
+                                  0\\
+                                  {{(\linearcoefiineqnonzero[2,*])}^{-1}}\elem[2,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
+                                \end{matrix}
+  \right]\\
+  \sikineq[i][3]&= \left[
+                                \begin{matrix}
+                                  0\\
+                                  0
+                                \end{matrix}
+                                     \right]
 \end{align}
 \end{document}
