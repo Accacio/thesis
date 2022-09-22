@@ -809,8 +809,37 @@ which associated with an detection function $d_{i}^{(0)}$:
 \end{equation}
 detects an attack when the corresponding bound is disrespected, i.e., $d_{i}^{(0)}=1$.
 
-\section{Considerations about Multiple Parameter Estimation}\label{sec:cons-about-mult}
+\section{About Multiple Parameter Estimation}\label{sec:cons-about-mult}
+The problem of estimating affine parameters on a system with a known number of different modes is called in~\cite{LauerBloch2019} as a \emph{\pwa{} regression with fixed modes}.
+The problem is formalized in a optimization problem which we adapt for our case.
+To find the $\pwaestnumparam$ different parameters $\pwaestparam_{i}$ of the \pwa{} function with non-overlapping regions $\set{R}^{i}$ such $\bigcup_{i=1}^{\pwaestnumparam}\set{R}^{i}=\set{R}$, we take a set of $\pwaestinputsize$ inputs/output tuples $(\pwaestsysinput_{k},\pwaestsysoutput_{k})|_{k\in\{1:\pwaestinputsize\}}\subset\R^{\card{\pwaestsysinput}}\times\R^{\card{\pwaestsysoutput}}$ and solve
 
+\begin{equation}
+    \minimize_{\pwaestparam \in \R^{\pwaestnumparam \card{\elem[1,*]{\pwaestsysinput}}}} \frac{1}{\pwaestinputsize} \sum_{k=1}^{\pwaestinputsize} \sum_{j=1}^{\pwaestnumparam} \mathbb{1}_{g\left(\pwaestsysinput_{k}\right)=j} \norm{\norm{\pwaestsysoutput_{k}- \pwaestsysinput_{k}\pwaestparam_{j}}_{1}}.
+\end{equation}
+where $g:\R^{\card{\pwaestsysinput}}\to\{1:\pwaestnumparam\}$ is a linear classification function, which classifies the membership of its argument, returning the corresponding index of the region it is member of.
+The definition of such function can be seen in~\cite{LauerBloch2019}.
+Observe that since the output of $g$ is an integer ($\{1:\pwaestnumparam\}\subset\Z$), the problem is a \miqp{} program.
+In this work we are not interested in determining the classification functions,  but just the parameters.
+
+As commented in~\cite{LauerBloch2019}, since the program is a \miqp{} if we try to solve the problem by brute force (trying all the combinations), the complexity increases exponentially depending on the number of modes $\pwaestnumparam$ and inputs $\pwaestinputsize$.
+So, some clever methods were created to exploit the problem structure, by successively solving different optimization problems for example. Some strategies are listed in~\cite{RollEtAl2004}.
+
+The most known examples of these strategies are the methods in the \emph{partitional family}.
+The methods in this family solve partition and regression problems successively.
+Notable members of the family are the widely used k-means~\cite{Ferrari-TrecateEtAl2001} and k-medoids~\cite{Bishop2006} methods.
+
+In these methods, estimates of the parameters are used to classify membership of all points, assigning a region to each input, and then, the points are used to solve different regression problems, updating the parameter estimates of their corresponding region.
+
+Another similar method~\cite{Bishop2006}, which can also be categorized in the same family, is the \EM{} method~\cite{DempsterEtAl1977}.
+The \EM{} is the method of choice in this chapter to estimate the parameters needed for the detection and mitigation phases.
+
+We could have used any of the other methods cited, but we chose \EM{} for it not making a hard assignment of the points, but instead a soft choice based on probabilities, what we will see gives us favorable properties on convergence.
+
+This method is not commonly used by the control community, being more frequently used in the machine learning/data mining areas.
+However, an inspiring example was proposed for the estimation of switched systems in~\cite{NakadaEtAl2005}.
+
+In the next subsection we describe the method more precisely.
 
 We can use a method similar to the one seen in~\cite{NakadaEtAl2005}, where we can identify parameters of a switching system.
 

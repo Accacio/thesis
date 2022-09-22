@@ -30,6 +30,8 @@
 \newcommand{\expectation}[2][]{\mathbb{E}_{#1}\left[#2\right]}
 \newcommand{\indicator}[1]{\mathbb{1}_{\{#1\}}}
 \newcommand{\vecangle}[2]{\langle_{#1}^{#2}}
+\newcommand{\until}{\mathbin{:}}
+\newcommand{\pseudoinv}[1]{{#1}^{\dagger}}
 
 
 \newcommand{\setbuild}[2]{\{#1\mid#2\}}
@@ -48,6 +50,7 @@
 \newcommand{\minimize}{\mathop{\textrm{minimize}}}
 
 \DeclareMathOperator{\elemend}{end}
+\DeclareMathOperator{\diag}{diag}
 \DeclareMathOperator{\fix}{fix}
 \DeclareMathOperator{\Proj}{Proj}
 \DeclareMathOperator{\dom}{dom}
@@ -211,6 +214,16 @@
 \newcommand{\rlsgain}{{\Phi}}
 \newcommand{\rlsforget}{{\phi}}
 \newcommand{\rlsresidual}{{\epsilon}}
+
+\newcommand{\pwaestparam}{{\vec{\nu}}}
+\newcommand{\pwaestnumparam}{{n}}
+\newcommand{\pwaestsysinput}{{B}}
+\newcommand{\pwaestsysoutput}{{\vec{\gamma}}}
+\newcommand{\pwaestgain}{{\Phi}}
+\newcommand{\pwaestforget}{{\phi}}
+\newcommand{\pwaestresidual}{{\epsilon}}
+\newcommand{\pwaestinputsize}{{N}}
+
 
 \SetKwProg{Fn}{}{}{}
 \SetKwFunction{structDataSym}{structDataSym}%
