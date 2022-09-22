@@ -147,35 +147,43 @@ Depending on the form of the constraints, if we have $\nineq$ constraints, we ma
 \end{remark}
 
 To solve~\eqref{eq:ineq_lambda_equation}, we can use the fact that the status of the constraints depends on the value of $\thetaik$.
-This way, we can notice that the set of constraints divides the space of $\thetaik$ into multiple regions, depending if the constraints are active or not for $\optuncUik$.
+This way, we can notice that the set of constraints divides the space of $\thetaik$ into multiple regions denoted $\set{R}_{\lambdai}^{n}$, depending if the constraints are active or not for $\optuncUik$.
+
+The regions $\set{R}_{\lambdai}^{n}$ are polytopes defined as ${\set{R}_{\lambdai}^{n}=\setbuild{\vec{x}}{G^{n}[k]\vec{x} \preceq b^{n}[k]}}$ where the hyperplanes may vary with time $k$.
+As remarked in~\cite{BemporadEtAl2002}, the polytopes are non-overlapping, i.e., ${\set{R}_{\lambdai}^{i}\cap\set{R}_{\lambdai}^{j}=\emptyset, \forall i\neq j}$.
+This way, the regions form a partition of the $\thetai$ space, i.e., given $\thetaik\in\set{Y}\subseteq\R^{\card{\thetaik}}$, ${\bigcup_{i\in\{0:\nineq-1\}}\set{R}^{i}=\set{Y}}$.
+\begin{remark}
+  Determining the exact polytopes/halfspaces is not in the scope of this work.
+  But can be carried out by the methods in~\cite[\S4.1.3.2]{LauerBloch2019}.
+\end{remark}
 
 Imagine an example where we have $2$ constraints with associated $\elem[1]{\lambdai}$ and $\elem[2]{\lambdai}$, the $\thetai$ solution space is partitioned like in Fig.~\ref{fig:constraints_partition_theta} (indices $[k]$ suppressed for brevity).
 \begin{figure}[h]
-\centering
-\begin{tikzpicture}[every node/.style={align=center}]
-\def\height{3}
-\def\length{5}
-\node at (0,0) {} coordinate (p0)  ++(0:\length*2.4/5) coordinate (p1) ;
-\node at (0,0) {} ++(90:\height*2.7/5) coordinate (p2) ;
+  \centering
+  \begin{tikzpicture}[every node/.style={align=center}]
+    \def\height{3}
+    \def\length{5}
+    \node at (0,0) {} coordinate (p0)  ++(0:\length*2.4/5) coordinate (p1) ;
+    \node at (0,0) {} ++(90:\height*2.7/5) coordinate (p2) ;
 
-\draw[black] (p2) ++(-1:5) coordinate (p3);
-\draw[black] (p1) ++(80:3) coordinate (p4);
-\coordinate (p6) at (p3|-p4);
+    \draw[black] (p2) ++(-1:5) coordinate (p3);
+    \draw[black] (p1) ++(80:3) coordinate (p4);
+    \coordinate (p6) at (p3|-p4);
 
-\coordinate (p5) at (intersection cs:first line={(p2)--(p3)}, second line={(p1)--(p4)});
-\path[fill=gray!20] (p6) -- (p4) -- (p5) -- (p3);
-\draw[black] (p2) -- (p3);
-\draw[black] (p1) -- (p4);
+    \coordinate (p5) at (intersection cs:first line={(p2)--(p3)}, second line={(p1)--(p4)});
+    \path[fill=gray!20] (p6) -- (p4) -- (p5) -- (p3);
+    \draw[black] (p2) -- (p3);
+    \draw[black] (p1) -- (p4);
 
-\draw[-latex] (0,-.1) - - (0,\height) node[left]{$\elem[2]{\thetai}$};
-\draw[-latex] (-.1,0) - - (\length,0) node[below]{$\elem[1]{\thetai}$};
+    \draw[-latex] (0,-.1) - - (0,\height) node[left]{$\elem[2]{\thetai}$};
+    \draw[-latex] (-.1,0) - - (\length,0) node[below]{$\elem[1]{\thetai}$};
 
-\node at (\length*1.2/5,\height*1.25/5) {$\elem[1]{\lambdai}\neq0$\\$\elem[2]{\lambdai}\neq0$};
-\node at (\length*1.2/5,\height*3.8/5) {$\elem[1]{\lambdai}=0$\\$\elem[2]{\lambdai}\neq0$};
-\node at (\length*4/5,\height*1.25/5) {$\elem[1]{\lambdai}\neq0$\\$\elem[2]{\lambdai}=0$};
-\node at (\length*4/5,\height*3.8/5) {$\elem[1]{\lambdai}=0$\\$\elem[2]{\lambdai}=0$};
-\end{tikzpicture}
-\caption{Two constraints partitioning $\thetai$ solution space.}\label{fig:constraints_partition_theta}
+    \node at (\length*1.2/5,\height*1.25/5) {$\elem[1]{\lambdai}\neq0$\\$\elem[2]{\lambdai}\neq0$};
+    \node at (\length*1.2/5,\height*3.8/5) {$\elem[1]{\lambdai}=0$\\$\elem[2]{\lambdai}\neq0$};
+    \node at (\length*4/5,\height*1.25/5) {$\elem[1]{\lambdai}\neq0$\\$\elem[2]{\lambdai}=0$};
+    \node at (\length*4/5,\height*3.8/5) {$\elem[1]{\lambdai}=0$\\$\elem[2]{\lambdai}=0$};
+  \end{tikzpicture}
+  \caption{Two constraints partitioning $\thetai$ solution space.}\label{fig:constraints_partition_theta}
 \end{figure}
 For any $\thetai$ inside the grey area, the solution to~\eqref{eq:local_problem_equality_standard_notation} will be unconstrained, i.e., the constraint will be active.
 Thus, for this case, by definition the value of $\lambdai=\0$.
@@ -251,21 +259,17 @@ a \pwa{} function
   \begin{aligned}
     \lambdaik=
     \begin{cases}
-      -\Plinineq\thetaik-\sikineq,&\text{if}\ G^{0}[k]\thetaik \preceq b^{0}[k] \\
+      -\Plinineq\thetaik-\sikineq,&\text{if}\ \thetaik \in\set{R}_{\lambdai}^{n}\\
       \qquad\quad \vdots&\qquad\quad \vdots\\
-      -\Plinineq[i][2^{\nineq}-1]\thetaik-\sikineq[i][2^{\nineq}-1],&\text{if}\ G^{2^{\nineq}-1}[k]\thetaik \preceq b^{2^{\nineq}-1}[k] \\
+      -\Plinineq[i][2^{\nineq}-1]\thetaik-\sikineq[i][2^{\nineq}-1],&\text{if}\ \thetaik \in\set{R}_{\lambdai}^{2^{\nineq}-1}\\
     \end{cases}
-  \end{aligned}
+  \end{aligned}.
 \end{equation}
-with halfspaces defined by the pairs $(G^{n}[k],\vec{b}^{n}[k])$ representing the partitions of the solution space which may vary with time $k$.
-\begin{remark}
-  Determining the exact halfspaces is not in the scope of this work.
-\end{remark}
 
 Here we can begin to regard the change caused by the relaxation, whereas we had only one equation relating $\lambdai$ to $\thetai$, when the system was scarce, now we have potentially $2^{\nineq}$ different equations.
 
 \begin{remark}\label{rem:sparse_solutions}
-  As one may expect, by definition, the $\Plinineq[i][n]$ and $\sikineq[i][n]$ are increasingly sparse, as $n$ increases more constraints are active and more blocks are equal to zero, culminating in $\Plinineq[i][2^{\nineq}-1]=0_{\card{\lambdai}}$ and $\sikineq[i][2^{\nineq}-1]=\0_{\card{\lambdai}}$.
+  As one may expect, by definition, the $\Plinineq[i][n]$ and $\sikineq[i][n]$ are increasingly sparse, that means, as $n$ increases more constraints are active and more blocks are equal to zero, culminating in $\Plinineq[i][2^{\nineq}-1]=0_{\card{\lambdai}}$ and $\sikineq[i][2^{\nineq}-1]=\0_{\card{\lambdai}}$.
 \end{remark}
 \subsection{Considerations about status of constraints}\label{sec:cons-about-stat}
 It is important to observe that some there are some sets of constraints in which the permutation is not necessarily $2^{\nineq}$.
@@ -348,11 +352,11 @@ $\set{S}$ being intersection of halfplanes, does not have a straightforward solu
   \Proj^{\set{X}}(\vec{x}_{0})=
   \argmin\limits_{\vec{x}}
   \left\{
-  \begin{matrix}
-    \minimize\limits_{\vec{x}} &
-                                    \norm{\vec{x}-\vec{x}_{0}}^{2}\\
-    \mathrm{subject~ to} & \vec{x}\in\set{X}\\
-  \end{matrix}
+    \begin{matrix}
+      \minimize\limits_{\vec{x}} &
+                                   \norm{\vec{x}-\vec{x}_{0}}^{2}\\
+      \mathrm{subject~ to} & \vec{x}\in\set{X}\\
+    \end{matrix}
   \right\},
 \end{equation}
 which translates to the problem
@@ -361,11 +365,11 @@ which translates to the problem
   \Proj^{\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p)=
   \argmin\limits_{\vec{x}}
   \left\{
-  \begin{matrix}
-    \minimize\limits_{\vec{U}[k]} &
-                                    \norm{\vec{x}-\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p}\\
-    \mathrm{subject~ to} & I_{c}^{M}\vec{x}\preceq \vec{U}_{\max}:\vec{\mu}\\
-  \end{matrix}
+    \begin{matrix}
+      \minimize\limits_{\vec{U}[k]} &
+                                      \norm{\vec{x}-\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p}\\
+      \mathrm{subject~ to} & I_{c}^{M}\vec{x}\preceq \vec{U}_{\max}:\vec{\mu}\\
+    \end{matrix}
   \right\},
 \end{equation}
 with corresponding dual variable $\vec{\mu}$.
@@ -383,13 +387,14 @@ Substituting the solution of the dual variables into the lagrangian, and making 
     \vec{\theta}[k]\pplusone=
     \begin{cases}
       \vec{x}_{0}+
-      {I_{c}^{M}}^{(0)}\left[-P_{\vec{\mu}}^{(0)}\vec{U}_{max}+\vec{s}_{\vec{\mu}}^{(0)}[k]\right],&\text{if}\ G_{\vec{\mu}}^{0}[k]\vec{x}_{0} \preceq \vec{U}_{\max}^{0}[k] \\
+      {I_{c}^{M}}^{(0)}\left[-P_{\vec{\mu}}^{(0)}\vec{U}_{max}+\vec{s}_{\vec{\mu}}^{(0)}[k]\right],&\text{if}\ \vec{x}_{0}\in\set{R}_{\vec{\mu}}^{0}\\
       \qquad\quad \vdots&\qquad\quad \vdots\\
-      \vec{x}_{0},&\text{if}\ G_{\vec{\mu}}^{2^{c}-1}[k]\vec{x}_{0} \preceq \vec{U}_{\max}^{2^{c}-1}[k] \\
+      \vec{x}_{0},&\text{if}\ \vec{x}_{0}\in\set{R}_{\vec{\mu}}^{2^{c}-1}\\
     \end{cases}
   \end{aligned},
 \end{equation}
-where the non-zero elements (coded by $0$ digits in the binary representation of $(n)$) of $P_{\vec{\mu}}^{(n)}$ are ${({I_{c}^{M}}^{(n)}{{I_{c}^{M}}^{(n)}}\T)}^{-1}$, and those of $\vec{s}_{\vec{\mu}}^{(n)}[k]$ are $P_{\vec{\mu}}^{(n)}{I_{c}^{M}}^{(n)}\vec{x}_{0}$, ${I_{c}^{M}}^{(n)}$ is constructed by keeping/removing the constraints as coded by index $(n)$, and the halfspaces described by tuples $(G_{\vec{\mu}}^{n},U_{\max}^{n})$ represent the different regions of the partitions of the solution space of $\vec{x}_{0}$.
+similarly with non-overlapping regions ${\set{R}_{\vec{\mu}}^{n}=\setbuild{\vec{x}}{G_{\vec{\mu}}^{n}[k]\vec{x} \preceq \vec{U}_{\max}^{n}[k]}}$\footnote{Also not defined in this work} which partition the space of $\vec{x}_{0}$.
+The non-zero elements (coded by $0$ digits in the binary representation of $(n)$) of $P_{\vec{\mu}}^{(n)}$ are ${({I_{c}^{M}}^{(n)}{{I_{c}^{M}}^{(n)}}\T)}^{-1}$, and those of $\vec{s}_{\vec{\mu}}^{(n)}[k]$ are ${{({I_{c}^{M}}^{(n)}{{I_{c}^{M}}^{(n)}}\T)}^{-1}{I_{c}^{M}}^{(n)}\vec{x}_{0}}$, ${I_{c}^{M}}^{(n)}$ is constructed by keeping/removing the constraints as coded by index $(n)$.
 
 Observe that when all constraints are inactive ($n=0$), the solution is the same as in the equality case~\eqref{eq:euclidean_projection_equality_solution} ($\card{I_{c}^{M}}=c\times Mc$).
 And when all constraints are active ($n=2^{c}-1$), the solution is the same as the unconstrained solution, since $\vec{\mu}=\0$ (see Remark~\ref{rem:sparse_solutions}).
@@ -403,7 +408,7 @@ One with constant (in the same mode) input for $\thetaik$, and conversely a swit
 If we develop the calculations we can estimate an upper bound on the number of total different permutations $\bar{\epsilon}$, which totals to
 \begin{equation}
   \label{eq:1}
-  \bar{\epsilon}=\overbrace{2^{c}}^{\text{modes on projection}}\times \underbrace{2^{\nineq}\times \dots \times 2^{{\nineq}}}_{M\times \text{modes in each }\lambdai }=2^{c+M\nineq}.
+  \bar{\epsilon}=\overbrace{2^{c}}^{\text{regions in projection}}\times \underbrace{2^{\nineq}\times \dots \times 2^{{\nineq}}}_{M\times \text{regions in each }\lambdai }=2^{c+M\nineq}.
 \end{equation}
 
 \begin{remark}
@@ -432,24 +437,27 @@ And thus, the solutions in ~\eqref{eq:negotiation_equation_substituting_organizi
   \label{eq:negotiation_equation_substituting_organizing_matrix_lambda_switched}
   \vec{\lambda}[k]\pplusone=
   \begin{cases}
-    \mathcal{A}_{\lambda}^{0}\vec{\lambda}[k]\p,&\text{if}\ G_{\vec{\lambda}}^{0}[k]\vec{\theta}[k]\p \preceq \vec{b}_{\vec{\lambda}}^{0}[k] \\
-    \vdots\\
-    \mathcal{A}_{\lambda}^{N_{\vec{\lambda}}}\vec{\lambda}[k]\p,&\text{if}\ G_{\vec{\lambda}}^{N_{\vec{\lambda}}}[k]\vec{\theta}[k]\p \preceq \vec{b}_{\vec{\lambda}}^{N_{\vec{\lambda}}}[k] \\
+    \mathcal{A}_{\lambda}^{0}\vec{\lambda}[k]\p,&\text{if}\ \vec{\theta} \in \set{R}_{\vec{\lambda}}^{0}\\
+    \quad\vdots&\quad\vdots\\
+    \mathcal{A}_{\lambda}^{N_{\vec{\lambda}}}\vec{\lambda}[k]\p,&\text{if}\ \vec{\theta}\in\set{R}_{\vec{\lambda}}^{0}\\
   \end{cases}
 \end{equation}
 \begin{equation}
   \label{eq:negotiation_equation_substituting_organizing_matrix_theta_switched}
   \vec{\theta}[k]\pplusone=
   \begin{cases}
-    \mathcal{A}_{\theta}^{0}\vec{\theta}[k]\p+\mathcal{\vec{B}}_{\theta}^{0}[k],&\text{if}\ G_{\vec{\theta}}^{0}[k]\vec{\theta}[k]\p \preceq \vec{b}_{\vec{\theta}}^{0}[k] \\
-    \vdots\\
-    \mathcal{A}_{\theta}^{N_{\vec{\theta}}}\vec{\theta}[k]\p+\mathcal{\vec{B}}_{\theta}^{N_{\vec{\theta}}}[k],&\text{if}\ G_{\vec{\theta}}^{N_{\vec{\theta}}}[k]\vec{\theta}[k]\p \preceq \vec{b}_{\vec{\theta}}^{N_{\vec{\theta}}}[k] \\
+    \mathcal{A}_{\theta}^{0}\vec{\theta}[k]\p+\mathcal{\vec{B}}_{\theta}^{0}[k],&\text{if}\ \vec{\theta}\in\set{R}_{\vec{\theta}}^{0}\\
+    \qquad\quad \vdots&\quad \vdots\\
+    \mathcal{A}_{\theta}^{N_{\vec{\theta}}}\vec{\theta}[k]\p+\mathcal{\vec{B}}_{\theta}^{N_{\vec{\theta}}}[k],&\text{if}\ \vec{\theta}\in\set{R}_{\vec{\theta}}^{N_{\vec{\theta}}}\\
   \end{cases}
 \end{equation}
-where $N_{\vec{\lambda}}=N_{\vec{\theta}}=2^{c+M\nineq}-1$, the hyperspaces described by tuples
-$(G_{\vec{\lambda}}^{n},\vec{b}_{\vec{\lambda}}^{n})$ and
-$(G_{\vec{\theta}}^{n},\vec{b}_{\vec{\theta}}^{n})$ coincide, and are formed by the superposition of the halfspaces in~\eqref{eq:projection_result_zones} and~\eqref{eq:lambdafuntheta}.
-We highlight again that not necessarily all permutations are possible.
+
+where $N_{\vec{\lambda}}=N_{\vec{\theta}}=2^{c+M\nineq}-1$.
+The non-overlapping regions described by tuples
+ ${\set{R}_{\vec{\lambda}}^{n}=\setbuild{\vec{x}}{G_{\vec{\lambda}}^{n}[k]\vec{\theta}[k]\p \preceq \vec{b}_{\vec{\lambda}}^{n}[k]}}$, and
+ ${\set{R}_{\vec{\theta}}^{n}=\setbuild{\vec{x}}{G_{\vec{\theta}}^{n}[k]\vec{\theta}[k]\p \preceq \vec{b}_{\vec{\theta}}^{n}[k]}}$
+coincide, and are formed by the superposition of the regions $\set{R}_{\lambdai}^{n}$ in~\eqref{eq:projection_result_zones} and $\set{R}_{\vec{\mu}}^{n}$ in~\eqref{eq:lambdafuntheta}.
+We highlight again that not necessarily all permutations are possible (some regions are empty).
 
 Observe that in some cases, it is straightforward to define the values of the matrices in~\eqref{eq:negotiation_equation_substituting_organizing_matrix_lambda_switched} and~\eqref{eq:negotiation_equation_substituting_organizing_matrix_theta_switched}.
 The $0$-th case, as mentioned, is the same we found in the last chapter, giving
@@ -468,18 +476,18 @@ Applying the attack ~\eqref{eq:linear_attack}, using cheating matrices $T_{i}$ w
   \label{eq:negotiation_equation_substituting_organizing_matrix_lambda_switched_cheating}
   \tilde{\vec{\lambda}}[k]\pplusone=
   \begin{cases}
-    \tilde{\mathcal{A}}_{\lambda}^{0}\tilde{\vec{\lambda}}[k]\p,&\text{if}\ G_{\vec{\lambda}}^{0}[k]\vec{\theta}[k] \preceq \vec{b}_{\vec{\lambda}}^{0}[k] \\
-    \vdots\\
-    \tilde{\mathcal{A}}_{\lambda}^{N_{\vec{\lambda}}}\tilde{\vec{\lambda}}[k]\p,&\text{if}\ G_{\vec{\lambda}}^{N_{\vec{\lambda}}}[k]\vec{\theta}[k] \preceq \vec{b}_{\vec{\lambda}}^{N_{\vec{\lambda}}}[k] \\
+    \tilde{\mathcal{A}}_{\lambda}^{0}\tilde{\vec{\lambda}}[k]\p,&\text{if}\ \vec{x}_{0}\in\set{R}_{\vec{\lambda}}^{0}\\
+    \quad\vdots&\quad\vdots\\
+    \tilde{\mathcal{A}}_{\lambda}^{N_{\vec{\lambda}}}\tilde{\vec{\lambda}}[k]\p,&\text{if}\ \vec{x}_{0}\in\set{R}_{\vec{\lambda}}^{N_{\vec{\lambda}}}\\
   \end{cases}
 \end{equation}
 \begin{equation}
   \label{eq:negotiation_equation_substituting_organizing_matrix_theta_switched_cheating}
   \vec{\theta}[k]\pplusone=
   \begin{cases}
-    \tilde{\mathcal{A}}_{\theta}^{0}\vec{\theta}[k]\p+\mathcal{\tilde{\vec{B}}}_{\theta}^{0}[k],&\text{if}\ G_{\vec{\theta}}^{0}[k]\vec{\theta}[k] \preceq \vec{b}_{\vec{\theta}}^{0}[k] \\
-    \vdots\\
-    \tilde{\mathcal{A}}_{\theta}^{N_{\vec{\theta}}}\vec{\theta}[k]\p+\mathcal{\tilde{\vec{B}}}_{\theta}^{N_{\vec{\theta}}}[k],&\text{if}\ G_{\vec{\theta}}^{N_{\vec{\theta}}}[k]\vec{\theta}[k] \preceq \vec{b}_{\vec{\theta}}^{N_{\vec{\theta}}}[k] \\
+    \tilde{\mathcal{A}}_{\theta}^{0}\vec{\theta}[k]\p+\mathcal{\tilde{\vec{B}}}_{\theta}^{0}[k],&\text{if}\ \vec{\theta}\in\set{R}_{\vec{\theta}}^{0}\\
+    \qquad\quad \vdots&\quad \vdots\\
+    \tilde{\mathcal{A}}_{\theta}^{N_{\vec{\theta}}}\vec{\theta}[k]\p+\mathcal{\tilde{\vec{B}}}_{\theta}^{N_{\vec{\theta}}}[k],&\text{if}\ \vec{\theta}\in\set{R}_{\vec{\theta}}^{N_{\vec{\theta}}}\\
   \end{cases}
 \end{equation}
 One can observe that since we multiply $\lambdai$ by $T_{i}[k]$, we do not change the partition of the spaces.
@@ -501,7 +509,7 @@ $\tilde{\vec{B}}_{\vec{\theta}}^{0}[k]=\tilde{\vec{B}}_{\vec{\theta}}[k]$, and a
 We could analyze stability in a case-by-case fashion, seeing what constraints are active/inactive for which agent and how the cheating matrices influence the stability.
 But due to the extension of the analysis (exponential number of cases) we skip it for brevity's sake, and will use a single example, different from the trivial solution, to illustrate how it could be done.
 
-Denoting as the zone (or region) $n$, or the $n$-zone, the polytope defined by the intersection of halfspaces ${\set{R}^{n}=\setbuild{x}{G_{\vec{\theta}}^{n}[k]\vec{\theta}[k] \preceq \vec{b}_{\vec{\theta}}^{n}[k]}}$, we retake our $2$-constraints example in Fig.~\ref{fig:constraints_partition_theta}.
+Denoting as the zone (or region) $n$, or the $n$-zone, the non-overlapping polytopes defined by ${\set{R}^{n}=\setbuild{\vec{x}}{G_{\vec{\theta}}^{n}[k]\vec{x} \preceq \vec{b}_{\vec{\theta}}^{n}[k]}}$, we retake our $2$-constraints example in Fig.~\ref{fig:constraints_partition_theta}.
 Since there are $2$ constraints, we set for example $c=1$ and $\predhorz=2$, then we have at most $4$ different modes on the solution for $\lambdaicheat$:
 \begin{equation}
   \lambdaicheat[k]=
@@ -516,83 +524,83 @@ where
 \begin{align}
   \Plinineqtilde&=T_{i}{{(\linearcoefiineqnonzero)}^{-1}}&&=&&T_{i}{(\linearcoefi)}^{-1}\\
   \Plinineqtilde[i][1]&=T_{i} \left[
-                               \begin{matrix}
-                                 {{(\linearcoefiineqnonzero[1,*])}^{-1}}&0\\
-                                 0&0
-                               \end{matrix}
-                                    \right]&&=&& \left[
-                                             \begin{matrix}
-                                               \elem[1,1]{T_{i}}{{(\linearcoefiineqnonzero[1,*])}^{-1}}&0\\
-                                               \elem[2,1]{T_{i}}{{(\linearcoefiineqnonzero[1,*])}^{-1}}&0\\
-                                             \end{matrix}
-                                                  \right]\\
+                        \begin{matrix}
+                          {{(\linearcoefiineqnonzero[1,*])}^{-1}}&0\\
+                          0&0
+                        \end{matrix}
+                             \right]&&=&& \left[
+                                          \begin{matrix}
+                                            \elem[1,1]{T_{i}}{{(\linearcoefiineqnonzero[1,*])}^{-1}}&0\\
+                                            \elem[2,1]{T_{i}}{{(\linearcoefiineqnonzero[1,*])}^{-1}}&0\\
+                                          \end{matrix}
+  \right]\\
   \Plinineqtilde[i][2]&=T_{i} \left[
-                               \begin{matrix}
-                                 0&0\\
-                                 0&{{(\linearcoefiineqnonzero[2,*])}^{-1}}\\
-                               \end{matrix}
+                        \begin{matrix}
+                          0&0\\
+                          0&{{(\linearcoefiineqnonzero[2,*])}^{-1}}\\
+                        \end{matrix}
   \right]&&=&& \left[
-           \begin{matrix}
-             0&\elem[1,2]{T_{i}}{{(\linearcoefiineqnonzero[2,*])}^{-1}}\\
-             0&\elem[2,2]{T_{i}}{{(\linearcoefiineqnonzero[2,*])}^{-1}}\\
-           \end{matrix}
+               \begin{matrix}
+                 0&\elem[1,2]{T_{i}}{{(\linearcoefiineqnonzero[2,*])}^{-1}}\\
+                 0&\elem[2,2]{T_{i}}{{(\linearcoefiineqnonzero[2,*])}^{-1}}\\
+               \end{matrix}
   \right]
   \\
   \Plinineqtilde[i][3]&=T_{i}
-                               \left[
-                               \begin{matrix}
-                                 0&0\\
-                                 0&0
-                               \end{matrix}
-                                    \right]&&=&&\left[
-                                             \begin{matrix}
-                                               0&0\\
-                                               0&0
-                                             \end{matrix}
-                                                  \right]
+                        \left[
+                        \begin{matrix}
+                          0&0\\
+                          0&0
+                        \end{matrix}
+                             \right]&&=&&\left[
+                                          \begin{matrix}
+                                            0&0\\
+                                            0&0
+                                          \end{matrix}
+                                               \right]
 \end{align}
 \begin{align}
   \sikineqtilde[i][0]&=&&T_{i}\sikineq[i][0]&&=&&T_{i}{(\linearcoefi)}^{-1}\bar{\Gamma}_{i}H_{i}^{-1}\vec{f}_{i}[k]\\
   \sikineqtilde[i][1]&=&&T_{i} \sikineq[i][1]&&=&& \left[
-                                                  \begin{matrix}
-                                                    \elem[1,1]{T_{i}}{{(\linearcoefiineqnonzero[1,*])}^{-1}}\elem[1,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
-                                                    \elem[2,1]{T_{i}}{{(\linearcoefiineqnonzero[1,*])}^{-1}}\elem[1,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
-                                                  \end{matrix}
-                                                       \right]\\
+                                                   \begin{matrix}
+                                                     \elem[1,1]{T_{i}}{{(\linearcoefiineqnonzero[1,*])}^{-1}}\elem[1,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
+                                                     \elem[2,1]{T_{i}}{{(\linearcoefiineqnonzero[1,*])}^{-1}}\elem[1,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
+                                                   \end{matrix}
+  \right]\\
   \sikineqtilde[i][2]&=&&T_{i} \sikineq[i][2]&&=&& \left[
-               \begin{matrix}
-                 \elem[1,2]{T_{i}}{{(\linearcoefiineqnonzero[2,*])}^{-1}}\elem[2,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
-                 \elem[2,2]{T_{i}}{{(\linearcoefiineqnonzero[2,*])}^{-1}}\elem[2,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
-               \end{matrix}
+                                                   \begin{matrix}
+                                                     \elem[1,2]{T_{i}}{{(\linearcoefiineqnonzero[2,*])}^{-1}}\elem[2,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
+                                                     \elem[2,2]{T_{i}}{{(\linearcoefiineqnonzero[2,*])}^{-1}}\elem[2,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
+                                                   \end{matrix}
   \right]
   \\
   \sikineqtilde[i][3]&=&&T_{i}\sikineq[i][3] &&=&&\left[
-                                                  \begin{matrix}
-                                                    0\\ 0
-                                                  \end{matrix}
-                                                       \right]
+                                                   \begin{matrix}
+                                                     0\\ 0
+                                                   \end{matrix}
+  \right]
 \end{align}
 with
 \begin{align}
   \sikineq[i][0]&={{(\linearcoefiineqnonzero)}^{-1}}\elem[*,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
   \sikineq[i][1]&= \left[
-                                \begin{matrix}
-                                  {{(\linearcoefiineqnonzero[1,*])}^{-1}}\elem[1,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
-                                  0
-                                \end{matrix}
+                  \begin{matrix}
+                    {{(\linearcoefiineqnonzero[1,*])}^{-1}}\elem[1,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
+                    0
+                  \end{matrix}
   \right]\\
   \sikineq[i][2]&=\left[
-                                \begin{matrix}
-                                  0\\
-                                  {{(\linearcoefiineqnonzero[2,*])}^{-1}}\elem[2,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
-                                \end{matrix}
+                  \begin{matrix}
+                    0\\
+                    {{(\linearcoefiineqnonzero[2,*])}^{-1}}\elem[2,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
+                  \end{matrix}
   \right]\\
   \sikineq[i][3]&= \left[
-                                \begin{matrix}
-                                  0\\
-                                  0
-                                \end{matrix}
-                                     \right]
+                  \begin{matrix}
+                    0\\
+                    0
+                  \end{matrix}
+  \right]
 \end{align}
 
 One can observe that for zones $1$ and $2$, when the agent attacks, the non-zero elements of $\Plinineq[i][n]$ and $\sikineq[i][n]$, influences the other elements using the columns of $T_{i}$ equivalent to the inactive constraints.
@@ -603,16 +611,16 @@ For example in zone $1$, $\elem[1,1]{T_{i}}$ and $\elem[2,1]{T_{i}}$ are used, a
 
 So, instead of always propagating to the negotiation all the matrix $T_{i}$, as in the case of the last chapter, only the columns related to the inactive constraints are propagated.
 
-If we have $M=2$ subsystems, one in the $1$-zone and other in the $2$-zone (let us called them agents I and II) and we suppose during the projection ${G_{\vec{\mu}}^{0}[k](\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p) \preceq \vec{U}_{\max}^{0}[k]}$, we code the permutation as
+If we have $M=2$ subsystems, one in the $1$-zone and other in the $2$-zone (let us called them agents I and II) and we suppose the solution of the projection is in its $0$-zone, i.e., ${G_{\vec{\mu}}^{0}[k](\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p) \preceq \vec{U}_{\max}^{0}[k]}$, we code the permutation as
 \begin{equation}
-\underbrace{00}_{\text{projection's zone}}\overbrace{01}^{\text{agent I`s zone}}\underbrace{10}_{\text{agent II's zone}} = 000110_{(2)}=6_{(10)}.
+  \underbrace{00}_{\text{projection's zone}}\overbrace{01}^{\text{agent I`s zone}}\underbrace{10}_{\text{agent II's zone}} = 000110_{(2)}=6_{(10)}.
 \end{equation}
 
 Applying the projection, we will have the same solution~\eqref{eq:euclidean_projection_equality_solution}, reprised here
 \begin{equation}
   \label{eq:euclidean_projection_equality_solution_reprise}
   \tag{\ref*{eq:euclidean_projection_equality_solution}}
-    \vec{\theta}\pplusone=\vec{\theta}\p+\rho\p\vec{\lambda}\p+{I_{c}^M}\T/({I_{c}^M} {I_{c}^M}\T)\left({I_{c}^M}(\vec{\theta}\p-\rho\p\vec{\lambda}\p) -\vec{U}_{\max}\right),
+  \vec{\theta}\pplusone=\vec{\theta}\p+\rho\p\vec{\lambda}\p+{I_{c}^M}\T/({I_{c}^M} {I_{c}^M}\T)\left({I_{c}^M}(\vec{\theta}\p-\rho\p\vec{\lambda}\p) -\vec{U}_{\max}\right),
 \end{equation}
 which can be rewritten for each $\thetai$ as
 \begin{equation}
@@ -642,20 +650,20 @@ resulting in
 \end{equation}
 where
 \begin{equation}
-\tilde{\mathcal{A}}_{\theta}^{(6)}=\left[
-\begin{matrix}
-2I-\frac{1}{2}\rho\p \Plinineqtilde[I][1] & I+\frac{1}{2}\rho\p \Plinineqtilde[II][2]\\
-I+\frac{1}{2}\rho\p \Plinineqtilde[I][1] & 2I-\frac{1}{2}\rho\p \Plinineqtilde[II][2]\
-\end{matrix}
-\right]
+  \tilde{\mathcal{A}}_{\theta}^{(6)}=\left[
+    \begin{matrix}
+      2I-\frac{1}{2}\rho\p \Plinineqtilde[I][1] & I+\frac{1}{2}\rho\p \Plinineqtilde[II][2]\\
+      I+\frac{1}{2}\rho\p \Plinineqtilde[I][1] & 2I-\frac{1}{2}\rho\p \Plinineqtilde[II][2]\
+    \end{matrix}
+  \right]
 \end{equation}
 \begin{equation}
-\tilde{\mathcal{\vec{B}}}_{\theta}^{(6)}[k]=\left[
-\begin{matrix}
--\frac{1}{2}\rho\p \sikineqtilde[I][1]+\frac{1}{2}\rho\p \sikineqtilde[II][2]-\frac{\vec{U}_{\max}}{2}\\
-\frac{1}{2}\rho\p \sikineqtilde[I][1]-\frac{1}{2}\rho\p \sikineqtilde[II][2]-\frac{\vec{U}_{\max}}{2}
-\end{matrix}
-\right]
+  \tilde{\mathcal{\vec{B}}}_{\theta}^{(6)}[k]=\left[
+    \begin{matrix}
+      -\frac{1}{2}\rho\p \sikineqtilde[I][1]+\frac{1}{2}\rho\p \sikineqtilde[II][2]-\frac{\vec{U}_{\max}}{2}\\
+      \frac{1}{2}\rho\p \sikineqtilde[I][1]-\frac{1}{2}\rho\p \sikineqtilde[II][2]-\frac{\vec{U}_{\max}}{2}
+    \end{matrix}
+  \right]
 \end{equation}
 
 And we can see that, as expected, the columns of $T_{i}$ are propagated to $\mathcal{A}_{\vec{\theta}}$, and may change its dynamics.
@@ -664,7 +672,7 @@ We could do the same for the dynamics of $\lambdai$, but we let this for the rea
 For the overall system dynamics we may use any tools for analysis of hybrid/ switched systems~\cite{BorrelliEtAl2017}.
 
 \begin{remark}
-  Observe that since the matrices $\mathcal{A}_{\vec{\theta}}^{n}$ and $\mathcal{A}_{\vec{\lambda}}^{n}$ may be sparse, the eigenvalue analysis to indicate stability of the mode must be accomplished by removing the non-zero corresponding blocks.
+  Observe that since the matrices $\mathcal{A}_{\vec{\theta}}^{n}$ and $\mathcal{A}_{\vec{\lambda}}^{n}$ may be sparse, the eigenvalue analysis to indicate stability of the mode is accomplished by keeping only the non-zero corresponding blocks.
 \end{remark}
 
 As we see, the relaxation of the assumption makes the problem exponentially more complicated.
@@ -679,7 +687,7 @@ We do not have one tuple $(\Plin,\sik)$ for each subsystem, but we have $2^{\pre
 Here follow proposals on how to counter the difficulties.
 
 \subsection{Mitigation}\label{sec:mitigation_ineq}
-We begin by the end, with the proposal for the mitigation because the proposal follows a straightforward logic and impacts the proposal for the detection, simplifying the solution.
+We begin by the end, with the proposal for the mitigation because the proposal follows a straightforward logic and impacts the proposal for the detection, simplifying its solution.
 
 We still want to mitigate the effects of the attack by reconstructing $\lambdai$.
 So, if we assume we can somehow estimate the inverse of the cheating matrix $T_{i}$, which we still assume is invertible (See~\eqref{eq:T_is_invertible}), we can easily try to reconstruct $\lambdai$ by applying
@@ -707,7 +715,7 @@ So if we can estimate $\Plinineqtilde$ and we have a nominal $\Plinineqnominal$ 
 
 So, we assume that $\Plinineq$ exists and that is possible to estimate it.
 
-The necessary condition for existence of the region is that we can choose $\thetai$ such the constraints $\inequalityfunction$ are inactive for the unconstrained solution $\optuncUik$.
+The necessary condition for existence of the $0$-th region ($0$-zone) is that we can choose $\thetai$ such the constraints $\inequalityfunction$ are inactive for the unconstrained solution $\optuncUik$.
 Since we can only choose $\thetai$ that respects $\dom J_{i}$, to assure feasibility, we assume the unconstrained solution $\optuncU$ and $\optuncUik$ lie inside
 the respective constraint sets
 \begin{align}
@@ -778,8 +786,8 @@ However, one complication arises when choosing the size of the ball around $\the
   \caption{Effects of different radii $r$ when generating points close to $\thetairestricted$.}
 \end{figure}
 
-Therefore, we need an estimation method which can also classify simultaneously the points, indicating to which zone they correspond.
-Then, we take only the parameters which interest us, that is $\Plinineq$.
+Therefore, we need an estimation method that can also classify simultaneously the points, indicating to which zone they correspond.
+Then, we take only the parameters that interest us, that is $\Plinineq$.
 
 In \S\ref{sec:cons-about-mult}, we will discuss estimation methods and we describe the proposed method to solve this problem.
 
@@ -789,7 +797,7 @@ For the detection we can use the same logic presented in the last chapter.
 As we can observe in~\eqref{eq:lambdafuntheta}, the affine parts $\Plinineq[i][n]$ are time-invariant.
 So, if we estimate the affine parts $\Plinineqtildeestimate[i][n]$, we can detect an attack when there is any difference between the estimated and nominal values $\Plinineqnominal[i][n]$.
 We can compare the estimates with nominals from any non-zero mode\footnote{$2^{Nc}$-zones have empty elements, which do not change when the cheating matrices are applied (\S\ref{sec:impact-local-problem}).}.
-However, since we are going to use $\Plinineqtildeestimate$ for the mitigation part, we also use it for the detection.
+However, since we are going to use $\Plinineqtildeestimate$ for the mitigation part, we can also use it for the detection.
 
 Analogously, we can set an arbitrary bound $\epsilon_{\Plinineq}$, and define the error
 \begin{equation}
