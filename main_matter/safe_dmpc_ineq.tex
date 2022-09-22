@@ -1005,7 +1005,8 @@ Other methods as \sEM{} and \CEM{} make a hard choice based on the responsibilit
 When estimates $\vec{\phi}_{z}^{\mathrm{new}}$ converge, we can retrieve the estimates $\tilde{P}^{z}$ and $\tilde{\vec{s}}^{z}$, and use them in our detection and mitigation scheme.
 
 \begin{remark}
-  Observe that the parameters indices $z$ do not necessarily converge to the parameters with the same number in~\eqref{eq:lambdafuntheta}, it depends on the initialization of $\set{P}$.
+  Observe that the parameters indices $z$ do not necessarily converge to the parameters with the same number in~\eqref{eq:lambdafuntheta}, it depends on the initialization of $\set{P}$ and the observation set.
+  For example, if we generate points inside one single region $j$, all $Z$ regions would have the estimated parameter of such region $j$.
 \end{remark}
 
 Since the $z$ indices do not necessarily correspond to the in~\eqref{eq:lambdafuntheta}, we need to recover the $z$ that corresponds to the $0$-zone.
@@ -1022,9 +1023,11 @@ There are two main possible difficulties with methods of the partional family.
 
 The first is the known slow convergence for some cases~\cite{CeleuxGovaert1992,Bishop2006,BaudryCeleux2015}, depending on the size of the problem. In~\cite{FariaSoromenho2010}, the authors compare the convergence of \EM{} with other variants such \sEM{} and \CEM{}.
 
-The other is the dependability of the initial conditions, commented in Remark~\ref{rem:em_depends_on_initialization}.
+The other is the dependability of the solution to the initial estimate conditions, which was already commented in Remark~\ref{rem:em_depends_on_initialization}.
 
-Some other problems may be encountered, for example for the inversion of some variables (notably the covariance $\Sigma$), when working with high orders (depending on the number of observations $O$ and number of zones $Z$).
+One other problem that we can encountered is the inversion of some variables , when working with high orders (notably the covariance $\Sigma$).
+The order depends on the number of observations $O$ and number of zones $Z$, and some variables can come close to be singular.
+
 One way to counteract this effect is to include it on the estimated parameters.
 Another way is to consider the covariance as a diagonal matrix with same values for all entries~\cite{KarlisXekalaki2003}.
 Yet another way is to use the technique called \emph{Simulated annealing}~\cite{CeleuxGovaert1992,OzerovFevotte2010}, where the covariances are initialized with arbitrarily significant values indicating the uncertainty of the parameters and it is reduced at each iteration.
