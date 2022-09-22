@@ -805,6 +805,7 @@ Analogously, we can set an arbitrary bound $\epsilon_{\Plinineq}$, and define th
 \end{equation}
 which associated with an detection function $d_{i}^{(0)}$:
 \begin{equation}
+  \label{eq:detection_ineq}
   d_{i}^{(0)}=\indicator{E_{i}^{(0)}[k]\geq\epsilon_{\Plinineq}},
 \end{equation}
 detects an attack when the corresponding bound is disrespected, i.e., $d_{i}^{(0)}=1$.
@@ -1025,7 +1026,7 @@ The first is the known slow convergence for some cases~\cite{CeleuxGovaert1992,B
 
 The other is the dependability of the solution to the initial estimate conditions, which was already commented in Remark~\ref{rem:em_depends_on_initialization}.
 
-One other problem that we can encountered is the inversion of some variables , when working with high orders (notably the covariance $\Sigma$).
+Another issue that we can encounter is the inversion of some variables when working with high orders (notably the covariance $\Sigma$).
 The order depends on the number of observations $O$ and number of zones $Z$, and some variables can come close to be singular.
 
 One way to counteract this effect is to include it on the estimated parameters.
