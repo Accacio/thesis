@@ -1033,6 +1033,25 @@ One way to counteract this effect is to include it on the estimated parameters.
 Another way is to consider the covariance as a diagonal matrix with same values for all entries~\cite{KarlisXekalaki2003}.
 Yet another way is to use the technique called \emph{Simulated annealing}~\cite{CeleuxGovaert1992,OzerovFevotte2010}, where the covariances are initialized with arbitrarily significant values indicating the uncertainty of the parameters and it is reduced at each iteration.
 In this work we used the latter two techniques combined.
+
+\section{Complete safe dMPC}\label{sec:complete-safe-dmpc-ineq}
+Putting together all parts defined in the last sections, we can come up with Algorithm~\ref{alg:safeDMPC}, which resumes the \rpdmpc{} when the unconstraint solution is on the decomposable constraint set.
+
+\begin{algorithm2e}[h]
+  \DontPrintSemicolon
+  Initialize size of ball $r$\;
+  \detectPhase{
+    Coordinator sends sequence of $\vec{\theta}_{i}^{o}\in\set{B}(\thetairestricted,r)$, $o\in\set{O}$ \;
+    Subsystems solve~\eqref{eq:DOP_local}, and send $\tilde{\vec{\lambda}}^{o}_{i}$, $o\in\set{O}$\;
+    Coordinator estimates $\widehat{\tilde{P}_{i}^{1}}[k]$ and $\widehat{\tilde{\vec{s}}_{i}^{1}}[k]$ with \EM{}\;
+    Coordinator computes $\mathfrak{d}_{i}$ using~\eqref{eq:detection_ineq}\;
+  }
+  \negotPhase{
+  Apply Algorithm~\ref{alg:quantityAlg} with adequate versions of $\vec{\lambda}_{i}\p$:\;
+  \quad$\tilde{\vec{\lambda}}_{i}\p$, if $\mathfrak{d}_{i}=0$ and ${\vec{\lambda}_{i}}_{\mathrm{rec}}$, if ${\mathfrak{d}_{i}=1}$~\eqref{eq:lambda_reconstruction}\;
+ }
+ \caption{Resilient Primal Decomposition-based dMPC. \todo{rework algo}}\label{alg:safeDMPC}
+\end{algorithm2e}
 \section{Conclusion}\label{sec:conclusion}
 
 
