@@ -841,13 +841,50 @@ However, an inspiring example was proposed for the estimation of switched system
 
 In the next subsection we describe the method more precisely.
 
-We can use a method similar to the one seen in~\cite{NakadaEtAl2005}, where we can identify parameters of a switching system.
+\subsection{Expectation Maximization}
+The main objective of the \EM{} algorithm is to find, from a set of observable data $\set{B}$, estimators of a set of parameters $\set{P}$ that maximize the log marginal likelihood of the observed data ${\ln\probability{\set{B};\set{P}}}$. The models generally have latent variables (unobservable) in a set $\set{U}$.
 
-the submatrix generated from removing corresponding constraints
+The problem is that maximizing ${\ln\probability{\set{B};\set{P}}}$ does not have an analytical solution.
+So, the algorithm solves the optimization problem in a iterative manner.
 
-By definition we have
+Instead of estimating the $\set{P}$ that maximizes ${\ln\probability{\set{B};\set{P}}}$, we find estimates that maximizes the expectation of the complete-data log-likelihood $\ln\probability{\set{B},\set{U};\set{P}}$ w.r.t.
+the posterior probabilities ${\probability{\set{U}|\set{B};\set{P}}}$.
 
+Though, as we need to have $\set{P}$ to calculate the posterior probabilities, we
+calculate it using a current estimates of $\set{P}$ denoted $\set{P}_{\mathrm{cur}}$.
+And repeating the same strategy with the new found estimate, we can approach the estimates which maximizes the log marginal likelihood.
 
+The successive steps of calculating the posterior probabilities (expectation) and maximizing the complete-data log-likelihood, gives it the name Expectation Maximization.
+These steps provide a monotonic increase of the log-marginal likelihood at each iteration, yielding guaranteed convergence for a local maximum.
+
+The iterative algorithm can be resumed in Algorithm~\ref{alg:em}.
+
+\SetKwBlock{Estep}{ E step:}{}
+\SetKwBlock{Mstep}{ M step:}{}
+\begin{algorithm2e}[h]
+  \DontPrintSemicolon%
+  Initialize parameters $\set{P}_{\mathrm{new}}$\;
+  \Repeat{$\set{P}_{\mathrm{cur}}$ converges}{
+    $\set{P}_{\mathrm{cur}}\gets\set{P}_{\mathrm{new}}$\;
+    \Estep{
+      Evaluate ${\probability{\set{U}|\set{B};\set{P}_{\mathrm{cur}}}}$\;
+    }
+    \Mstep{
+      Estimate $\set{P}_{\text{new}}$: \begin{equation}
+        \label{eq:m_step}
+        \set{P}_{\mathrm{new}}=\argmax_{\set{P}}\ \expectation[{\probability{\set{U}|\set{B};\set{P}_{\mathrm{cur}}}}]{\ln\probability{\set{B},\set{U};\set{P}}}
+      \end{equation}
+    }
+}
+ \caption{Expectation Maximization}\label{alg:em}
+\end{algorithm2e}
+
+\begin{remark}
+  Although the problem has guaranteed convergence, as in other methods, it is not for a global maximum.
+  The possible local maxima found depend on the initialization of the estimates in $\set{P}$~\cite{Bishop2006,BaudryCeleux2015,GepperthPfuelb2021}.
+  Some studies comparing the \EM{} with other variants such \sEM{} and \CEM{} exist~\cite{FariaSoromenho2010}.
+  The choice of initial steps is not in the scope of this work.
+\end{remark}
 \section{Conclusion}\label{sec:conclusion}
 
 
