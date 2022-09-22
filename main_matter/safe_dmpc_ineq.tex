@@ -888,25 +888,17 @@ The iterative algorithm can be resumed in Algorithm~\ref{alg:em}.
 Since the \EM{} is a probabilistic method, we need to have a probabilistic regression model, which is not our case.
 The idea is to incorporate probabilistic behavior to our model~\eqref{eq:lambdafuntheta}.
 
-So, we exchange the affine functions of each zone in~\eqref{eq:lambdafuntheta} for multi-dimensional normal functions.
-The mean of the normal functions are the values of our affine functions, but instead of using our original deterministic variables $\thetai$ and $\lambdai$, we use their stochastic counterparts denote $\random{\thetai}$ and $\random{\lambdai}$.
-The covariance matrices $\Sigma^{z}$ tend to $0_{\card{\thetai}}$, approaching the original values of the functions.
-The representation of such function for a $1$ dimension \pwa{} function can be seen in Fig.~\ref{fig:affine_gaussian_mixture}.
-\begin{figure}[h]
-  \centering
-  \todo[create figure]{\rule{.6\textwidth}{.4\textwidth}}
-  \caption{Gaussian Mixture for 1D \pwa{} function.}\label{fig:affine_gaussian_mixture}
-\end{figure}
-
-In~\cite{FariaSoromenho2010}, a somehow similar model is called \emph{mixture of linear regressions}, but since we are using \pwa{} functions, which have linear and constant terms, we will called the model \emph{mixture of affine regressions}.
-
 As the method will be used for all agents at every negotiation, we drop the subscript $i$ and the time dependency $[k]$, simplifying the notation.
 
-If we watch $O$ exchanges between an agent and the coordinator, we can observe the input and response variables, identified as  ${\random{\vec{\theta}}_{o}}$ and ${\random{\vec{\lambda}}_{o}}$, ${o\in\set{O}=\{1\until O\}}$.
+So, we exchange our original deterministic variables $\thetai$ and $\lambdai$, for their stochastic counterparts denoted $\random{\thetai}$ and $\random{\lambdai}$.
+
+If we watch $O$ exchanges between an agent and the coordinator, we can observe the input and response variables, identified as ${\random{\vec{\theta}}_{o}}$ and ${\random{\vec{\lambda}}_{o}}$, ${o\in\set{O}=\{1\until O\}}$.
 The input and response can be organized in ${\random{\Theta},\random{\Lambda}\in\R^{c\times O}}$.
 The tuple ${(\random{\Theta},\random{\Lambda})}$ is the observable data $\set{B}$.
+
 Since each $\randomvec{\theta}_{o}$ belongs to a given region, we associate a variable $z\in\set{Z}=\{0\until Z-1\}$ which indicates the number of a zone.
-This way we can define our mixture of affine regressions as
+We can construct then our regression model as
+
 \begin{equation}\label{eq:linear_cheating_random}
   \randomvec{\lambda}_{o}=
   \begin{cases}
@@ -916,11 +908,67 @@ This way we can define our mixture of affine regressions as
   \end{cases}.
 \end{equation}
 
+In~\cite{FariaSoromenho2010}, a somehow similar model is called \emph{mixture of linear regressions}, but since we are using \pwa{} functions, which have linear and constant terms, we will called the model \emph{mixture of affine regressions}.
+
+Since we don't known the partitions or the belonging of each observed point, we associate the index $z$ of each observation ${(\randomvec{\lambda}_{o}, \randomvec{\theta}_{o})}$ to a latent random variable ${\random{z}_{o}}$.
+We can organize the $\random{z}_{o}$ variables into ${\random{Z}\in\R^{1\times O}}$, which is our set of latent variables $\set{U}$.
+
+We suppose the latent variables $\random{z}_{o}$ follow a categorical prior distribution, with associated probabilities ${\Pi=\{\pi^{z}|z\in\set{Z}\}}$ such
+\[\probability{\random{z}_{o}=z}=\pi^{z} \in [0,1], \qquad \sum_{z\in\set{Z}} \pi^{z} = 1.
+\]
+
+We can also create a parameter set ${\set{P}=\setbuild{\set{P}^{z}}{z\in\set{Z}}}$, with ${\set{P}^{z}=(\tilde{P}^{z},\tilde{\vec{s}}^{z},\pi^{z})}$.
+
+As the coordinator controls the input $\vec{\theta}$, we consider a non-informative improper probability density function~\cite{ChristensenEtAl2010}
+\[
+  \probability{\randomvec{\theta}_{o}} \,\propto \,1,
+\]
+which means that we known almost surely the value of $\randomvec{\theta}_{o}$.
+
+Once defined the input and latent variables, we model the response $\random{\lambda}_{o}$ as a multivariate normal random variable with probability density function
+\begin{equation}
+  \label{eq:multivariate_gaussian}
+\probability{\randomvec{\lambda}_{o}|\randomvec{\theta}_{o},\random{z}_{o}=z; \set{P}^{z}} = \mathcal{N}(\randomvec{\lambda}_{o};f(\randomvec{\theta}_{o};\set{P}^{z}),{\Sigma^{z}}),
+\end{equation}
+where, following~\eqref{eq:linear_cheating_random}, the mean vector is defined as
+\begin{equation}
+  f(\randomvec{\theta}_{o};(P,\vec{s},\pi))=-{P}\randomvec{\theta}_{o}-{\vec{s}},
+\end{equation}
+
+The covariance matrices $\Sigma^{z}$ tend to $0_{\card{\thetai}}$, approaching the original values of the original functions in~\eqref{eq:lambdafuntheta}.
+The representation of such function for a $1$ dimension \pwa{} function can be seen in Fig.~\ref{fig:affine_gaussian_mixture}.
+\begin{figure}[h]
+  \centering
+  \todo[create figure]{\rule{.6\textwidth}{.4\textwidth}}
+  \caption{Gaussian Mixture for 1D \pwa{} function.}\label{fig:affine_gaussian_mixture}
+\end{figure}
+
+The posterior probabilities $\zeta_{zo}(\set{P})=\probability{\random{z}_{o}=z|\randomvec{\lambda}_{o},\randomvec{\theta}_{o};\set{P}}$, also called \emph{responsibilities}, are calculated as:
+\begin{align}
+  \label{eq:responsibilities}
+\zeta_{zo}(\set{P})&=\frac{\pi_{z}{\mathcal{N}(\randomvec{\lambda}_{o};f(\randomvec{\theta}_{o};\set{P}^{z}),{\Sigma^{z}})}}{\sum\limits_{j=1}^{Z}\pi_{j}\mathcal{N}(\randomvec{\lambda}_{o};f(\randomvec{\theta}_{o};\set{P}^{j}),{\Sigma^{j}})}.
+\end{align}
+We call them responsibilities because we calculate the probability of the zone $z$ being responsible for generating observation $o$.
+
+We can calculate the expectation of ${\ln\probability{\random{\Theta},\random{\Lambda},\random{Z};\set{P}}}$ w.r..t ${\zeta_{zo}(\set{P}_{\mathrm{cur}})}$~\cite[Chapter 9]{Bishop2006} using
+\begin{align}
+  \label{eq:completedataLogLikelihood_expectation}
+\expectation[{\zeta_{zo}(\set{P}_{\mathrm{cur}})}]{\ln\probability{\random{\Theta},\random{\Lambda},\random{Z};\set{P}}}&= \sum_{o\in\set{O}}\sum_{z\in\set{Z}}  \zeta_{zo}(\set{P}_{\mathrm{cur}})\alpha_{zo},
+\end{align}
+where ${\alpha_{zo}=\ln{\pi_{z}}+\ln{\mathcal{N}(\randomvec{\lambda}_{o};f(\randomvec{\theta}_{o};\set{P}^{z}),{\Sigma^{z}})}}$.
+
 \begin{remark}
   Observe that the indices $z$, not necessarily coincide with the ones in~\eqref{eq:lambdafuntheta}.
 \end{remark}
 
-Since we don't known the partitions or the belonging of each observed point, we associate the index $z$ of each observation ${(\randomvec{\lambda}_{o}, \randomvec{\theta}_{o})}$ to a latent random variable ${\random{z}_{o}}$.
+To facilitate the math, we introduce a variable $\vec{\phi}^{z}$ to embedded the parameters, similar to what we made for the \RLS{} case (\S\ref{sec:about-estimation})
+\begin{equation}
+  \vec{\phi}^{z}=\left[
+      \begin{matrix}
+      \vectorize{\tilde{P}^{z}}^{T}\\\tilde{\vec{s}}^{z}
+      \end{matrix}
+    \right].
+\end{equation}
 
 We can organize the $\random{z}_{o}$ variables into ${\random{Z}\in\R^{1\times O}}$, which is our set of latent variables $\set{U}$.
 \section{Conclusion}\label{sec:conclusion}
