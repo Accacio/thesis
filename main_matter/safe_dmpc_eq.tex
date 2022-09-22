@@ -121,6 +121,7 @@ These are the equations we will use for our analysis.
 
   So, to find the equivalent $\bar{\Gamma}_{\text{eq}}$ (or $\bar{\Gamma}_{i_{\text{eq}}}$) for the equality constraint problem, only the inactive halfspaces are kept and transformed into intersection of hyperplanes (equality constraint).
   This computation of active/inactive sets may be costly depending on the number of halfspaces used and the dimensions of the variables.
+  Some binary-search-tree and other techniques may be used to increase performance~\cite{SchulzeEtAl2022,AlessioBemporad2009}.
 
   If we assume the feasible regions of $\bar{\Gamma}$ (and $\bar{\Gamma}_{i}$) to form a cone, if the systems is scarce, $\bar{\Gamma}_{\text{eq}}=\bar{\Gamma}$ (and $\bar{\Gamma}_{i_\text{eq}}=\bar{\Gamma}_i$)\footnote{This can be easily proven geometrically, when a point do not respect any of the inequality constraints the projection onto the cone will be its apex (which coincides with the intersection of the equivalent hyperplanes).}.
 
