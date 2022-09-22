@@ -584,7 +584,7 @@ Algorithm~\ref{alg:update_rls} shows how to calculate a new parameter estimate $
   $\rlssysinput\gets\left[\text{\structDataSym}(\thetai\h),I_{\card{\thetai\h}}\right]$\;
   Calculate residual $\rlsresidual$: $\rlsresidual\gets \rlssysoutput-\rlssysinput\rlsparam$\;
   Update gain $\rlsgain$: $\rlsgain\hplusone\gets \rlsforget^{-1}\rlsgain\h-\rlsforget^{-2}\rlsgain\h\rlssysinput\T{(I_{\card{\thetai\h}}+\rlsforget^{-1}\rlssysinput\rlsgain\h\rlssysinput\T)}^{-1}\rlssysinput\rlsgain\h$\;
-  Calculate new estimate $\rlsparam$ $\rlsparam\hplusone\gets\rlsparam\h+\rlsgain\hplusone\rlssysinput\T\rlsresidual$\;
+  Calculate new estimate $\rlsparam$: $\rlsparam\hplusone\gets\rlsparam\h+\rlsgain\hplusone\rlssysinput\T\rlsresidual$\;
   \caption{Update of \RLS{} to estimate $\Plintildeestimate$ and $\siktildeestimate$ simultaneously.}\label{alg:update_rls}
 \end{algorithm2e}
 
