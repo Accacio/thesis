@@ -23,7 +23,7 @@ We reproduce yet another time the problem, but with a twist, now the problem als
   \begin{aligned}
     \begin{matrix}
       \minimize\limits_{\vec{U}[k]} &
-                                                 \frac{1}{2}\norm{\vec{U}[k]}^{2}_{H} + {\vec{f}[k]}^{T}\vec{U}[k] &\\
+                                      \frac{1}{2}\norm{\vec{U}[k]}^{2}_{H} + {\vec{f}[k]}^{T}\vec{U}[k] &\\
       \mathrm{subject~ to} & \bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}} \\
                                     & \vec{U}[k]\in \set{U}
     \end{matrix}
@@ -36,7 +36,7 @@ We decompose the system using the primal decomposition, and the local problems a
   \begin{matrix}
     \minimize\limits_{\vec{U}_{i}[k]}&\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
     \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \preceq \thetaik:\lambdaik\\
-    & \vec{U}_{i}[k]\in \set{U}_{i}
+                                     & \vec{U}_{i}[k]\in \set{U}_{i}
   \end{matrix},
 \end{equation}
 and we use the projected subgradient method~\eqref{eq:projectedSubgradient_lambda} (reproduced for convenience) to solve the main problem:
@@ -74,7 +74,7 @@ We similarly define a function $\inequalityfunctionname:\R^{\card\vec{U}_{i}[k]}
 and use it to put the problem in standard form for inequality constraint \qp{} programs:
 \begin{equation}
   \begin{matrix}
-  \label{eq:local_problem_equality_standard_notation}
+    \label{eq:local_problem_equality_standard_notation}
     \minimize\limits_{\vec{U}_{i}[k]}&\obji(\vec{U}_{i}[k],\thetaik)\\
     \mathrm{subject~ to} & \inequalityfunction\preceq 0:\lambdaik
   \end{matrix},
@@ -107,21 +107,21 @@ but now where $\set{F}=\dom \inequalityfunctionname=\bigcap\limits_{i=1}^{\card\
 ${\set{H}_i=\setbuild{\vec{x}}{\elem[i,\star]{{\bar{\Gamma}}}\vec{x}\leq\elem[i,\star]{\vec{U}_{\max}}}}$.
 Using the first order \KKT{} optimality condition we have
 \begin{equation}
-\nabla_{\vec{U}_{i}[k]}\lagrangian=0
+  \nabla_{\vec{U}_{i}[k]}\lagrangian=0
 \end{equation}
 yielding as well
 \begin{equation}
-\vec{U}_{i}[k]=-H_{i}^{-1}\vec{f}_{i}[k]+H_{i}^{-1}\bar{\Gamma}_{i}^{T}\lambdaik,
+  \vec{U}_{i}[k]=-H_{i}^{-1}\vec{f}_{i}[k]+H_{i}^{-1}\bar{\Gamma}_{i}^{T}\lambdaik,
 \end{equation}
 which we know is
 \begin{equation}
-\vec{U}_{i}[k]=\optuncUik-H_{i}^{-1}\bar{\Gamma}_{i}^{T}\lambdaik.
+  \vec{U}_{i}[k]=\optuncUik-H_{i}^{-1}\bar{\Gamma}_{i}^{T}\lambdaik.
 \end{equation}
 
 Substituting it in $\lagrangian$ results
 \begin{equation}
   \label{eq:dual_function_solution_lambda_theta_ineq}
-\dualfunction=-\frac{1}{2}\lambdaik^{T}\linearcoefi\lambdaik-\lambdaik^{T}\bar{\Gamma}_{i}H_{i}^{-1}\vec{f}[k]-\lambdaik^{T}\thetaik,
+  \dualfunction=-\frac{1}{2}\lambdaik^{T}\linearcoefi\lambdaik-\lambdaik^{T}\bar{\Gamma}_{i}H_{i}^{-1}\vec{f}[k]-\lambdaik^{T}\thetaik,
 \end{equation}
 which is also concave.
 
@@ -132,7 +132,7 @@ However, since we are using inequalities, we can only have $\lambdaik$ positive~
   \begin{matrix}
     \lambdaikstar=\argmax\limits_{\lambdaik}\left\{
     \begin{matrix}
-    \maximize\limits_{\lambdaik}&\dualfunction\\
+      \maximize\limits_{\lambdaik}&\dualfunction\\
       \mathrm{subject~ to}& \lambdaik\preceq\0
     \end{matrix}\right\}.
   \end{matrix}
