@@ -880,11 +880,49 @@ The iterative algorithm can be resumed in Algorithm~\ref{alg:em}.
 \end{algorithm2e}
 
 \begin{remark}
-  Although the problem has guaranteed convergence, as in other methods, it is not for a global maximum.
-  The possible local maxima found depend on the initialization of the estimates in $\set{P}$~\cite{Bishop2006,BaudryCeleux2015,GepperthPfuelb2021}.
-  Some studies comparing the \EM{} with other variants such \sEM{} and \CEM{} exist~\cite{FariaSoromenho2010}.
-  The choice of initial steps is not in the scope of this work.
+  The method has guaranteed convergence for local maxima, which depend on the initialization of the estimates of $\set{P}$~\cite{BaudryCeleux2015,GepperthPfuelb2021}.
+  The choice of initial estimates is not in the scope of this work, the reader is referred to~\cite{KarlisXekalaki2003,BaudryCeleux2015}, where the authors analyze the choice for initialization.
 \end{remark}
+
+\subsection{Adapting the problem to use the method}
+Since the \EM{} is a probabilistic method, we need to have a probabilistic regression model, which is not our case.
+The idea is to incorporate probabilistic behavior to our model~\eqref{eq:lambdafuntheta}.
+
+So, we exchange the affine functions of each zone in~\eqref{eq:lambdafuntheta} for multi-dimensional normal functions.
+The mean of the normal functions are the values of our affine functions, but instead of using our original deterministic variables $\thetai$ and $\lambdai$, we use their stochastic counterparts denote $\random{\thetai}$ and $\random{\lambdai}$.
+The covariance matrices $\Sigma^{z}$ tend to $0_{\card{\thetai}}$, approaching the original values of the functions.
+The representation of such function for a $1$ dimension \pwa{} function can be seen in Fig.~\ref{fig:affine_gaussian_mixture}.
+\begin{figure}[h]
+  \centering
+  \todo[create figure]{\rule{.6\textwidth}{.4\textwidth}}
+  \caption{Gaussian Mixture for 1D \pwa{} function.}\label{fig:affine_gaussian_mixture}
+\end{figure}
+
+In~\cite{FariaSoromenho2010}, a somehow similar model is called \emph{mixture of linear regressions}, but since we are using \pwa{} functions, which have linear and constant terms, we will called the model \emph{mixture of affine regressions}.
+
+As the method will be used for all agents at every negotiation, we drop the subscript $i$ and the time dependency $[k]$, simplifying the notation.
+
+If we watch $O$ exchanges between an agent and the coordinator, we can observe the input and response variables, identified as  ${\random{\vec{\theta}}_{o}}$ and ${\random{\vec{\lambda}}_{o}}$, ${o\in\set{O}=\{1\until O\}}$.
+The input and response can be organized in ${\random{\Theta},\random{\Lambda}\in\R^{c\times O}}$.
+The tuple ${(\random{\Theta},\random{\Lambda})}$ is the observable data $\set{B}$.
+Since each $\randomvec{\theta}_{o}$ belongs to a given region, we associate a variable $z\in\set{Z}=\{0\until Z-1\}$ which indicates the number of a zone.
+This way we can define our mixture of affine regressions as
+\begin{equation}\label{eq:linear_cheating_random}
+  \randomvec{\lambda}_{o}=
+  \begin{cases}
+    -\tilde{P}^{0}\randomvec{\theta}_{o}-\tilde{\vec{s}}^{0},&\text{if in zone } 0\\
+    \qquad\quad \vdots&\qquad\quad \vdots\\
+    -\tilde{P}^{Z-1}\randomvec{\theta}_{o}-\tilde{\vec{s}}^{Z},&\text{if in zone } Z-1\\
+  \end{cases}.
+\end{equation}
+
+\begin{remark}
+  Observe that the indices $z$, not necessarily coincide with the ones in~\eqref{eq:lambdafuntheta}.
+\end{remark}
+
+Since we don't known the partitions or the belonging of each observed point, we associate the index $z$ of each observation ${(\randomvec{\lambda}_{o}, \randomvec{\theta}_{o})}$ to a latent random variable ${\random{z}_{o}}$.
+
+We can organize the $\random{z}_{o}$ variables into ${\random{Z}\in\R^{1\times O}}$, which is our set of latent variables $\set{U}$.
 \section{Conclusion}\label{sec:conclusion}
 
 
