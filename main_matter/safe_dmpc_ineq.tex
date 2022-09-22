@@ -879,7 +879,7 @@ The iterative algorithm can be resumed in Algorithm~\ref{alg:em}.
  \caption{Expectation Maximization}\label{alg:em}
 \end{algorithm2e}
 
-\begin{remark}
+\begin{remark}\label{rem:em_depends_on_initialization}
   The method has guaranteed convergence for local maxima, which depend on the initialization of the estimates of $\set{P}$~\cite{BaudryCeleux2015,GepperthPfuelb2021}.
   The choice of initial estimates is not in the scope of this work, the reader is referred to~\cite{KarlisXekalaki2003,BaudryCeleux2015}, where the authors analyze the choice for initialization.
 \end{remark}
@@ -919,6 +919,10 @@ We suppose the latent variables $\random{z}_{o}$ follow a categorical prior dist
 
 We can also create a parameter set ${\set{P}=\setbuild{\set{P}^{z}}{z\in\set{Z}}}$, with ${\set{P}^{z}=(\tilde{P}^{z},\tilde{\vec{s}}^{z},\pi^{z})}$.
 
+\begin{remark}
+  We estimate $\tilde{\vec{s}}^{z}$ purely for constraining the identification of $\tilde{P}^{z}$, since it is not used neither for the detection nor for the mitigation phases.
+\end{remark}
+
 As the coordinator controls the input $\vec{\theta}$, we consider a non-informative improper probability density function~\cite{ChristensenEtAl2010}
 \[
   \probability{\randomvec{\theta}_{o}} \,\propto \,1,
@@ -957,10 +961,6 @@ We can calculate the expectation of ${\ln\probability{\random{\Theta},\random{\L
 \end{align}
 where ${\alpha_{zo}=\ln{\pi_{z}}+\ln{\mathcal{N}(\randomvec{\lambda}_{o};f(\randomvec{\theta}_{o};\set{P}^{z}),{\Sigma^{z}})}}$.
 
-\begin{remark}
-  Observe that the indices $z$, not necessarily coincide with the ones in~\eqref{eq:lambdafuntheta}.
-\end{remark}
-
 To facilitate the math, we introduce a variable $\vec{\phi}^{z}$ to embedded the parameters, similar to what we made for the \RLS{} case (\S\ref{sec:about-estimation})
 \begin{equation}
   \vec{\phi}^{z}=\left[
@@ -970,7 +970,65 @@ To facilitate the math, we introduce a variable $\vec{\phi}^{z}$ to embedded the
     \right].
 \end{equation}
 
-We can organize the $\random{z}_{o}$ variables into ${\random{Z}\in\R^{1\times O}}$, which is our set of latent variables $\set{U}$.
+To find the optimal $\vec{\phi}^{z}$ for the problem in~\eqref{eq:m_step}, we
+take the gradients of~\eqref{eq:completedataLogLikelihood_expectation} with respect to vectors $\vec{\phi}^{z}$ and make them vanish.
+
+Since the problem is multidimensional, some matrix operations are needed.
+After those operations, we can find a matricial solution yielding the optimal estimates $\vec{\phi}^{z}_{\mathrm{new}}$:
+\begin{equation}
+  \label{eq:mstepestimation}
+  \vec{\phi}^{z}_{\mathrm{new}}=\pseudoinv{(\Xi^{z}\random{\Omega})}\Xi^{z}\vectorize{\random{\Lambda}},
+\end{equation}
+where
+${\random{\Omega}=[\hadamard{(\Upsilon \random{\Theta}\Delta)}{Y};G]}$,
+with matrices
+${\Upsilon=\kron{\1_{c}^{T}}{I_{c}}}$,
+${\Delta=\kron{I_{O}}{\1_{c}^{T}}}$,
+${Y=\kron{G}{\1_{c}}}$,
+${G=\kron{\1_{O}^{T}}{I_{c}}}$,
+and
+\[{\Xi^{z}={\diag(\sqrt{{\zeta(z_{z1};\set{P}_{\mathrm{cur}})}}I_{c},\cdots,\sqrt{{\zeta(z_{zO};\set{P}_{\mathrm{cur}})}}I_{c})}}.\]
+Doing the same for $\pi^{z}$ we get
+\begin{equation*}
+  \label{eq:3}
+  \pi^{z}=\sum\limits_{o\in\set{O}}\tfrac{\zeta_{zo}(\set{P}_{\mathrm{cur}})}{O}.
+\end{equation*}
+
+One can observe that~\eqref{eq:mstepestimation} is the solution of a weighted \LS{}, with the responsibilities as weights, adjusting the contribution of all observations to the regression models.
+
+There are some similarities to the K-planes (k-means) algorithm (see~\cite{BradleyMangasarian2000}), but \EM{} is more compromising.
+Instead of affecting the observed data to a zone with 100\% of certainty (\emph{hard assignment}), \EM{} uses each zone's responsibilities (\emph{soft assignment}).
+
+Other methods as \sEM{} and \CEM{} make a hard choice based on the responsibilities.
+\sEM{} chooses at random one of the regions depending on the responsibilities, while \CEM{} chooses the region with greater responsibility.
+
+When estimates $\vec{\phi}_{z}^{\mathrm{new}}$ converge, we can retrieve the estimates $\tilde{P}^{z}$ and $\tilde{\vec{s}}^{z}$, and use them in our detection and mitigation scheme.
+
+\begin{remark}
+  Observe that the parameters indices $z$ do not necessarily converge to the parameters with the same number in~\eqref{eq:lambdafuntheta}, it depends on the initialization of $\set{P}$.
+\end{remark}
+
+Since the $z$ indices do not necessarily correspond to the in~\eqref{eq:lambdafuntheta}, we need to recover the $z$ that corresponds to the $0$-zone.
+We take the observation $o$ corresponding to the $\thetairestricted$, which we know belongs to the $0$-zone, and we find its most probable region $z$ with
+\begin{equation*}\label{eq:argmaxz}
+  \arg\underset{z}{\max\!.}\ {\zeta_{zo}(\set{P})}.
+\end{equation*}
+
+The parameter with the given index corresponds to our $\Plinineqtildeestimate$.
+
+\subsection{Possible issues}
+
+There are two main possible difficulties with methods of the partional family.
+
+The first is the known slow convergence for some cases~\cite{CeleuxGovaert1992,Bishop2006,BaudryCeleux2015}, depending on the size of the problem. In~\cite{FariaSoromenho2010}, the authors compare the convergence of \EM{} with other variants such \sEM{} and \CEM{}.
+
+The other is the dependability of the initial conditions, commented in Remark~\ref{rem:em_depends_on_initialization}.
+
+Some other problems may be encountered, for example for the inversion of some variables (notably the covariance $\Sigma$), when working with high orders (depending on the number of observations $O$ and number of zones $Z$).
+One way to counteract this effect is to include it on the estimated parameters.
+Another way is to consider the covariance as a diagonal matrix with same values for all entries~\cite{KarlisXekalaki2003}.
+Yet another way is to use the technique called \emph{Simulated annealing}~\cite{CeleuxGovaert1992,OzerovFevotte2010}, where the covariances are initialized with arbitrarily significant values indicating the uncertainty of the parameters and it is reduced at each iteration.
+In this work we used the latter two techniques combined.
 \section{Conclusion}\label{sec:conclusion}
 
 
