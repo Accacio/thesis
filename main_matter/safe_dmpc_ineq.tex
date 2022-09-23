@@ -66,7 +66,7 @@ We can repeat the analysis made in the last chapter to see how the change on ass
 
 Although now we have \qp{} problems with inequality constraints, we still can use the same method to find a analytical solution.
 
-We similarly define a function $\inequalityfunctionname:\R^{\card\vec{U}_{i}[k]}\times \R^{\card\thetaik}$:
+We similarly define a function $\inequalityfunctionname:\R^{\card\vec{U}_{i}[k]}\times \R^{c}$:
 \begin{equation}
   \label{eq:lagrangian_inequality}
   \inequalityfunction=\bar{\Gamma}_{i}\vec{U}_i[k]-\thetaik,
@@ -85,7 +85,7 @@ with variables $\lambdaik$ associated to the constraints.
   However, as in the problems we have only one kind, we use the same symbol and by context the reader can distinguish to which kind the symbol corresponds.
 \end{remark}
 
-We can again define the \emph{Lagrangian} function $\lagrangianname : \R^{\card\vec{U}_{i}[k]}\times \R^{\card\lambdaik} \times \R^{\card\thetaik} \to \R$ as
+We can again define the \emph{Lagrangian} function $\lagrangianname : \R^{\card\vec{U}_{i}[k]}\times \R^{c} \times \R^{c} \to \R$ as
 \begin{equation}
   \label{eq:lagrangian_equality}
   \lagrangian=\obji(\vec{U}_{i}[k],\thetaik)+\lambdaik^T\inequalityfunction,
@@ -98,12 +98,12 @@ Again, since there is only one type of lagrangian multiplier, we will call it si
   If any element of $\inequalityfunctionname(\vec{U}_{i}^{\star}[k],\thetaik)$ is smaller than zero, the corresponding element on the dual variable $\lambdaikstar$ will be zero, indicating the constraint is active.
 \end{remark}
 
-We can define the dual function $\dualfunctionname:\R^{\card\lambdaik} \times \R^{\card\thetaik} \to \R$ also calculated by solving
+We can define the dual function $\dualfunctionname:\R^{c} \times \R^{c} \to \R$ also calculated by solving
 \begin{equation}
   \label{eq:dual_function_equality}
   \dualfunction=\inf_{\vec{U}_{i}[k]\in\set{F}} \lagrangian,
 \end{equation}
-but now where $\set{F}=\dom \inequalityfunctionname=\bigcap\limits_{i=1}^{\card\vec{U}_{\max}}\set{H}_{i}$, with $\set{H}_{i}$ being the halfspaces
+but now where $\set{F}=\dom \inequalityfunctionname=\bigcap\limits_{i=1}^{c}\set{H}_{i}$, with $\set{H}_{i}$ being the halfspaces
 ${\set{H}_i=\setbuild{\vec{x}}{\elem[i,\star]{{\bar{\Gamma}}}\vec{x}\leq\elem[i,\star]{\vec{U}_{\max}}}}$.
 Using the first order \KKT{} optimality condition we have
 \begin{equation}
@@ -151,7 +151,7 @@ This way, we can notice that the set of constraints divides the space of $\theta
 
 The regions $\set{R}_{\lambdai}^{n}$ are polytopes defined as ${\set{R}_{\lambdai}^{n}=\setbuild{\vec{x}}{G^{n}[k]\vec{x} \preceq b^{n}[k]}}$ where the hyperplanes may vary with time $k$.
 As remarked in~\cite{BemporadEtAl2002}, the polytopes are non-overlapping, i.e., ${\set{R}_{\lambdai}^{i}\cap\set{R}_{\lambdai}^{j}=\emptyset, \forall i\neq j}$.
-This way, the regions form a partition of the $\thetai$ space, i.e., given $\thetaik\in\set{Y}\subseteq\R^{\card{\thetaik}}$, ${\bigcup_{i\in\{0:\nineq-1\}}\set{R}^{i}=\set{Y}}$.
+This way, the regions form a partition of the $\thetai$ space, i.e., given $\thetaik\in\set{Y}\subseteq\R^{c}$, ${\bigcup_{i\in\{0:\nineq-1\}}\set{R}^{i}=\set{Y}}$.
 \begin{remark}
   Determining the exact polytopes/halfspaces is not in the scope of this work.
   But can be carried out by the methods in~\cite[\S4.1.3.2]{LauerBloch2019}.
@@ -202,9 +202,9 @@ For example, let us suppose the first constraint in~\eqref{eq:local_problem_equa
 We make $\elem[1]{\lambdai}=0$ and set it aside, we remove the corresponding lines of $\bar{\Gamma}_{i}$ and $\thetai$, and then we solve for all other elements of $\lambdai$, removing the remaining constraints in~\eqref{eq:ineq_lambda_equation}. This results in
 \begin{equation}
   \label{eq:lambda_function_theta_some_active}
-  \elem[2:\elemend]{\lambdai}[k]=-\Plinineqnonzero[2:\card{\lambdai}] \elem[2:\elemend]{\thetai}[k]-\sikineqnonzero[2:\card{\lambdai}],
+  \elem[2:\elemend]{\lambdai}[k]=-\Plinineqnonzero[2:c] \elem[2:\elemend]{\thetai}[k]-\sikineqnonzero[2:c],
 \end{equation}
-where $\Plinineqnonzero[2:\card{\lambdai}]={(\linearcoefiineqnonzero[2:\elemend,\star])}^{-1}$ and $\sikineqnonzero[2:\card{\lambdai}]=\Plinineqnonzero[2:\card{\lambdai}]\elem[2:\elemend,\star]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]$.
+where $\Plinineqnonzero[2:c]={(\linearcoefiineqnonzero[2:\elemend,\star])}^{-1}$ and $\sikineqnonzero[2:c]=\Plinineqnonzero[2:c]\elem[2:\elemend,\star]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]$.
 
 If we do this for all partitions, i.e., all possible permutations of active and inactive constraints, we will have as many equations similar to~\eqref{eq:lambda_function_theta_some_active} as permutations.
 This result is the base for calculating the solution of the original problem~\eqref{eq:local_problem_equality_standard_notation} as shown in~\cite{BemporadEtAl2002,AlessioBemporad2009}, which is the base for explicit \mpc{}.
@@ -226,7 +226,7 @@ If we take the same example, Eq.~\eqref{eq:lambda_function_theta_some_active} wo
   \left[
     \begin{matrix}
       0&0\\
-      0&\Plinineqnonzero[2:\card{\lambdai}]
+      0&\Plinineqnonzero[2:c]
     \end{matrix}
   \right]
   \thetaik
@@ -234,7 +234,7 @@ If we take the same example, Eq.~\eqref{eq:lambda_function_theta_some_active} wo
   \left[
     \begin{matrix}
       0\\
-      \sikineqnonzero[2:\card{\lambdai}]
+      \sikineqnonzero[2:c]
     \end{matrix}
   \right]
 \end{equation}
@@ -269,7 +269,8 @@ a \pwa{} function
 Here we can begin to regard the change caused by the relaxation, whereas we had only one equation relating $\lambdai$ to $\thetai$, when the system was scarce, now we have potentially $2^{\nineq}$ different equations.
 
 \begin{remark}\label{rem:sparse_solutions}
-  As one may expect, by definition, the $\Plinineq[i][n]$ and $\sikineq[i][n]$ are increasingly sparse, that means, as $n$ increases more constraints are active and more blocks are equal to zero, culminating in $\Plinineq[i][2^{\nineq}-1]=0_{\card{\lambdai}}$ and $\sikineq[i][2^{\nineq}-1]=\0_{\card{\lambdai}}$.
+  As one may expect, by definition, the $\Plinineq[i][n]$ and $\sikineq[i][n]$ are increasingly sparse.
+  When $n$ increases more constraints are active and more blocks are equal to zero, culminating in $\Plinineq[i][2^{\nineq}-1]=0_{c}$ and $\sikineq[i][2^{\nineq}-1]=\0_{c}$.
 \end{remark}
 \subsection{Considerations about status of constraints}\label{sec:cons-about-stat}
 It is important to observe that some there are some sets of constraints in which the permutation is not necessarily $2^{\nineq}$.
@@ -465,8 +466,8 @@ $\mathcal{A}_{\vec{\lambda}}^{0}=\mathcal{A}_{\vec{\lambda}}$,
 $\mathcal{A}_{\vec{\theta}}^{0}=\mathcal{A}_{\vec{\theta}}$, and
 $\vec{B}_{\vec{\theta}}^{0}[k]=\vec{B}_{\vec{\theta}}[k]$.
 Similarly for the $N_{\vec{\theta}}$-th case where all the constraints of all systems are active (implying all $\lambdai=\0$), and the projection of $\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$ is itself, yielding
-$\mathcal{A}_{\vec{\lambda}}^{N_{\vec{\lambda}}}=0_{\card{\vec{\lambdai}}}$,
-$\mathcal{A}_{\vec{\theta}}^{N_{\vec{\theta}}}=I_{\card{\vec{\thetai}}}$, and
+$\mathcal{A}_{\vec{\lambda}}^{N_{\vec{\lambda}}}=0_{c}$,
+$\mathcal{A}_{\vec{\theta}}^{N_{\vec{\theta}}}=I_{c}$, and
 $\vec{B}_{\vec{\theta}}^{N_{\vec{\theta}}}[k]=\0$.
 The $N_{\vec{\theta}}$-th case is trivial since it means the optimal value was already found, $\vec{\theta}[k]\pplusone=\vec{\theta}[k]\p$.
 
@@ -940,7 +941,7 @@ where, following~\eqref{eq:linear_cheating_random}, the mean vector is defined a
   f(\randomvec{\theta}_{o};(P,\vec{s},\pi))=-{P}\randomvec{\theta}_{o}-{\vec{s}},
 \end{equation}
 
-The covariance matrices $\Sigma^{z}$ tend to $0_{\card{\thetai}}$, approaching the original values of the original functions in~\eqref{eq:lambdafuntheta}.
+The covariance matrices $\Sigma^{z}$ tend to $0_{c}$, approaching the original values of the original functions in~\eqref{eq:lambdafuntheta}.
 The representation of such function for a $1$ dimension \pwa{} function can be seen in Fig.~\ref{fig:affine_gaussian_mixture}.
 \begin{figure}[h]
   \centering

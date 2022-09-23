@@ -117,7 +117,10 @@ These are the equations we will use for our analysis.
 \begin{remark}
   Observe that not necessarily $\bar{\Gamma}_{\text{eq}}$ (or $\bar{\Gamma}_{\text{eq}}$) is the same as $\bar{\Gamma}$ (or $\bar{\Gamma}_{i}$).
   The constraints in~\eqref{eq:qp_standard_form_again} and~\eqref{eq:DOP_local_reprise}, can be interpreted as the intersection of the halfspaces described by the rows of $\bar{\Gamma}$ (or $\bar{\Gamma}_{i}$) and $\vec{U}_{\max}$ (or $\thetaik$), i.e., the halfspaces
-  ${\set{S}_i=\setbuild{\vec{x}}{\elem[i,\star]{{\bar{\Gamma}}}\vec{x}\leq\elem[i,\star]{\vec{U}_{\max}}}}$, and the intersection ${\set{S}=\setbuild{\vec{x}}{\bar{\Gamma}\vec{x}\preceq\vec{U}_{\max}}=\bigcap\limits_{i=1}^{\card\vec{U}_{\max}}}\set{S}_{i}$ (and conversely for $\bar{\Gamma}_{i}$ and $\thetaik$).
+  ${\set{S}_i=\setbuild{\vec{x}}{\elem[i,\star]{{\bar{\Gamma}}}\vec{x}\leq\elem[i,\star]{\vec{U}_{\max}}}}$,
+  and the intersection
+  ${\set{S}=\setbuild{\vec{x}}{\bar{\Gamma}\vec{x}\preceq\vec{U}_{\max}}=\bigcap\limits_{i=1}^{c}}\set{S}_{i}$
+  (and conversely for $\bar{\Gamma}_{i}$ and $\thetaik$).
 
   So, to find the equivalent $\bar{\Gamma}_{\text{eq}}$ (or $\bar{\Gamma}_{i_{\text{eq}}}$) for the equality constraint problem, only the inactive halfspaces are kept and transformed into intersection of hyperplanes (equality constraint).
   This computation of active/inactive sets may be costly depending on the number of halfspaces used and the dimensions of the variables.
@@ -154,7 +157,7 @@ When the system suffer from scarcity the agents are forced to compete and compro
 \subsection{Analysis of local problems}\label{sec:analysis-local-problems}
 Since the optimization problems~\eqref{eq:example_local_problem_reprise} are \qp{} problems with equality constraints, it is known that they have analytical solution~\cite{BoydVandenberghe2004}.
 To find this solution we usually use the lagrange duality, so $\lambdaik$ will also have analytical solution in this case.
-First, to simplify the notation we define a function $\equalityfunctionname:\R^{\card\vec{U}_{i}[k]}\times \R^{\card\thetaik}$, defined as
+First, to simplify the notation we define a function $\equalityfunctionname:\R^{\card\vec{U}_{i}[k]}\times \R^{c}$, defined as
 \begin{equation}
   \label{eq:lagrangian_equality}
   \equalityfunction=\bar{\Gamma}_{i}\vec{U}_i[k]-\thetaik,
@@ -168,7 +171,7 @@ to put the problem in standard form for equality constraint \qp{} programs:
   \end{matrix}
 \end{equation}
 
-With this form, we define the \emph{Lagrangian} function $\lagrangianname : \R^{\card\vec{U}_{i}[k]}\times \R^{\card\lambdaik} \times \R^{\card\thetaik} \to \R$ as
+With this form, we define the \emph{Lagrangian} function $\lagrangianname : \R^{\card\vec{U}_{i}[k]}\times \R^{c} \times \R^{c} \to \R$ as
 \begin{equation}
   \label{eq:lagrangian_equality}
   \lagrangian=\obji(\vec{U}_{i}[k],\thetaik)+\lambdaik^T\equalityfunction,
@@ -180,12 +183,12 @@ In this chapter, since there is only one type of lagrangian multiplier, we will 
  If any element of $\equalityfunctionname(\vec{U}_{i}^{\star}[k],\thetaik)$ is different from zero, the corresponding element on the dual variable $\lambdaikstar$ will be zero, indicating the constraint is inactive.
 \end{remark}
 
-Then we define the dual function $\dualfunctionname:\R^{\card\lambdaik} \times \R^{\card\thetaik} \to \R$ which is calculated by solving
+Then we define the dual function $\dualfunctionname:\R^{c} \times \R^{c} \to \R$ which is calculated by solving
 \begin{equation}
   \label{eq:dual_function_equality}
   \dualfunction=\inf_{\vec{U}_{i}[k]\in\set{F}} \lagrangian,
 \end{equation}
-where $\set{F}=\dom \equalityfunctionname=\bigcap\limits_{i=1}^{\card\vec{U}_{\max}}\set{P}_{i}$, with $\set{P}_{i}$ being the hyperplanes
+where $\set{F}=\dom \equalityfunctionname=\bigcap\limits_{i=1}^{c}\set{P}_{i}$, with $\set{P}_{i}$ being the hyperplanes
 ${\set{P}_i=\setbuild{\vec{x}}{\elem[i,\star]{{\bar{\Gamma}}}\vec{x}=\elem[i,\star]{\vec{U}_{\max}}}}$.
 
 The solution to $\dualfunction$ is given by the first order \KKT{} optimality condition
@@ -424,8 +427,8 @@ As one can notice, we could create an anomaly detector by supervising the matrix
 Once there is a change in some of the variables (or in its eigenvalues) an anomalous behavior is detected.
 
 Unfortunately, this method gives us only a detection, but not necessarily from which agent the anomaly comes, what could useful for a mitigation algorithm.
-Besides, if we were to estimate all elements of $\mathcal{A}_{\theta}$, we would need to estimate $M^{2}{(\card\thetai)}^{2}$ elements\footnote{$M^{2}$ blocks of size ${\card\thetai}$}.
-Exploiting the known structures of the matrix and their blocks, we could reduce to at least $2M{(\frac{\card\thetai+{\card\thetai}^{2}}{2})}$ elements\footnote{($M$ diagonal + $M$ off diagonal) symmetric blocks of size ${\card\thetai}$ (only upper triangle)}.
+Besides, if we were to estimate all elements of $\mathcal{A}_{\theta}$, we would need to estimate $M^{2}{(c)}^{2}$ elements\footnote{$M^{2}$ blocks of size ${c}$}.
+Exploiting the known structures of the matrix and their blocks, we could reduce to at least $2M{(\frac{c+{c}^{2}}{2})}$ elements\footnote{($M$ diagonal + $M$ off diagonal) symmetric blocks of size ${c}$ (only upper triangle)}.
 
 In the next section, we derive a detection mechanism, also based on estimation, which can not only detect the attacks, but also isolate the perpetrators, estimating only half of the elements cited.
 
@@ -501,22 +504,22 @@ where $\rlsparam$ is the parameter vector we want to estimate ($\Plintildeestima
 \begin{equation}
   \rlssysinput=\left[
     \begin{matrix}
-      \kron{I_{\card{\thetai}}}{\thetai\T}&I_{\card{\thetai}}\\
+      \kron{I_{c}}{\thetai\T}&I_{c}\\
     \end{matrix}
   \right].
 \end{equation}
 
-Using this methods, we need to estimate all elements of $\Plintildeestimate$ and $\siktildeestimate$, which results into ${\card{\thetai}^{2}+\card{\thetai}}$ elements. But as the $\Plintildeestimate$ are symmetric, we can estimate only their upper triangle, reducing the number of total estimated elements to ${\frac{\card{\thetai}^{2}+3\card{\thetai}}{2}}$.
+Using this methods, we need to estimate all elements of $\Plintildeestimate$ and $\siktildeestimate$, which results into ${c^{2}+c}$ elements. But as the $\Plintildeestimate$ are symmetric, we can estimate only their upper triangle, reducing the number of total estimated elements to ${\frac{c^{2}+3c}{2}}$.
 
 
 Then, we restructure $\rlsparam$ accordingly:
 \begin{equation}
   \rlsparam=\left[
     \begin{matrix}
-      \elem[1,1:\card{\thetai}]{\Plintildeestimate}\T\\
-      \elem[2,2:\card{\thetai}]{\Plintildeestimate}\T\\
+      \elem[1,1:c]{\Plintildeestimate}\T\\
+      \elem[2,2:c]{\Plintildeestimate}\T\\
       \vdots\\
-      \elem[\card{\thetai},\card{\thetai}]{\Plintildeestimate}\T\\
+      \elem[c,c]{\Plintildeestimate}\T\\
       \siktildeestimate\\
     \end{matrix}
   \right].
@@ -525,7 +528,7 @@ However, for $\rlssysinput$, its form becomes more complex, needing an algorithm
 \begin{equation}
   \rlssysinput=\left[
     \begin{matrix}
-      \text{\structDataSym}(\thetai) &  I_{\card{\thetai}}
+      \text{\structDataSym}(\thetai) &  I_{c}
     \end{matrix}
   \right].
 \end{equation}
@@ -555,7 +558,7 @@ However, for $\rlssysinput$, its form becomes more complex, needing an algorithm
           \caption{Struct input for symmetric parameter.}\label{alg:struct_symmetric}
         \end{algorithm2e}
 To better grasp the structure, we give a simple example.
-If we take a $\thetai$ with ${\card{\thetai}=3}$ elements, by applying \structDataSym, it would result in
+If we take a $\thetai$ with ${c=3}$ elements, by applying \structDataSym, it would result in
 \begin{equation}
   \text{\structDataSym}(\theta_i)=
   \left[
@@ -570,7 +573,7 @@ If we take a $\thetai$ with ${\card{\thetai}=3}$ elements, by applying \structDa
 \begin{remark}
   Observe that for our detection, we do not need to estimate $\sik$.
   We could use the difference between two different values of $\lambdai$ to suppress the $\sik$ term.
-  Preventing the estimation of $\siktildeestimate$ would need some changes in $\rlsparam$ and $\rlssysinput$, thus reducing the number of elements to ${\frac{\card{\thetai}^{2}+\card{\thetai}}{2}}$.
+  Preventing the estimation of $\siktildeestimate$ would need some changes in $\rlsparam$ and $\rlssysinput$, thus reducing the number of elements to ${\frac{c^{2}+c}{2}}$.
   However, we foreshadow that $\siktildeestimate$ may be used for the mitigation phase, so we estimate it anyway.
 \end{remark}
 
@@ -581,9 +584,9 @@ Algorithm~\ref{alg:update_rls} shows how to calculate a new parameter estimate $
   \DontPrintSemicolon%
   \KwIn{Current estimation step $h$, Forgetting rate $\rlsforget$, Current parameter estimate $\rlsparam\h$, Current gain $\rlsgain\h$, Current input $\thetai\h$, Current output $\rlssysoutput\h$}
   \KwOut{New estimate $\rlsparam\h$}
-  $\rlssysinput\gets\left[\text{\structDataSym}(\thetai\h),I_{\card{\thetai\h}}\right]$\;
+  $\rlssysinput\gets\left[\text{\structDataSym}(\thetai\h),I_{c}\right]$\;
   Calculate residual $\rlsresidual$: $\rlsresidual\gets \rlssysoutput-\rlssysinput\rlsparam$\;
-  Update gain $\rlsgain$: $\rlsgain\hplusone\gets \rlsforget^{-1}\rlsgain\h-\rlsforget^{-2}\rlsgain\h\rlssysinput\T{(I_{\card{\thetai\h}}+\rlsforget^{-1}\rlssysinput\rlsgain\h\rlssysinput\T)}^{-1}\rlssysinput\rlsgain\h$\;
+  Update gain $\rlsgain$: $\rlsgain\hplusone\gets \rlsforget^{-1}\rlsgain\h-\rlsforget^{-2}\rlsgain\h\rlssysinput\T{(I_{c}+\rlsforget^{-1}\rlssysinput\rlsgain\h\rlssysinput\T)}^{-1}\rlssysinput\rlsgain\h$\;
   Calculate new estimate $\rlsparam$: $\rlsparam\hplusone\gets\rlsparam\h+\rlsgain\hplusone\rlssysinput\T\rlsresidual$\;
   \caption{Update of \RLS{} to estimate $\Plintildeestimate$ and $\siktildeestimate$ simultaneously.}\label{alg:update_rls}
 \end{algorithm2e}
@@ -997,12 +1000,12 @@ The attack\todo{s} chosen for scenarios~\ref{it:case_selfish} \todo{and~\ref{it:
 are}
 \begin{align}
   T_{I}=\begin{cases}
-          \todo{4I_{\card{\lambdai}}\text{, if }k< 4}\\
-          I_{\card{\lambdai}}\text{, otherwise}
+          \todo{4I_{c}\text{, if }k< 4}\\
+          I_{c}\text{, otherwise}
         \end{cases}\\
   T_{IV}=\begin{cases}
-          \todo{4I_{\card{\lambdai}}\text{, if }k< 6}\\
-          I_{\card{\lambdai}}\text{, otherwise}
+          \todo{4I_{c}\text{, if }k< 6}\\
+          I_{c}\text{, otherwise}
         \end{cases}
 \end{align}
 .

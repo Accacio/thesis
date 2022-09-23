@@ -270,7 +270,7 @@ with
     \input{../data/example_system_params.tex}
   \end{array}
 \end{equation}
-The coordinator update function is the same as~\eqref{eq:projectedSubgradient_lambda} but with ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k] = \vec{U}_{\max}}}$, where $c=n_{u}\predhorz=2$.
+The coordinator update function is the same as~\eqref{eq:projectedSubgradient_lambda} but with ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k] = \vec{U}_{\max}}}$, where $c=2$.
 
 From now on, we remove the $[k]$ indices for convenience, since all calculation is for the same step $k$ unless expressly stated otherwise.
 
@@ -401,7 +401,7 @@ where a positive constant multiplies the local objective function of the attacke
 This attack can be translated into a matrix
 \begin{equation}
   \label{eq:selfish_attack}
-  \Tik=\tau_{i}[k] I_{\card{\lambdai}}.
+  \Tik=\tau_{i}[k] I_{c}.
 \end{equation}
 As we will see, even being a simple attack, this attack can have some catastrophic consequences when associated with the negotiation dynamics.
 
