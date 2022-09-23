@@ -212,7 +212,7 @@ By dividing the objective function by $2$ and ignoring the constant term $c[k]$,
   Observe that even though the problems~\eqref{eq:qp_standard_form} and~\eqref{eq:quadratic_objective_compact_batch} are equivalent (same solution), they are not the same problem, so we still need to recalculate the function in~\eqref{eq:quadratic_objective_compact_batch} using the optimal $\vec{U}^{\star}[k]$ found to obtain the correct objective function value.
 \end{remark}
 
-Although the solution to such problems can be straightforward (solvers are widely known), and the problems are well structured, in this \textbf{monolithic} form, these problems can be computationally intensive depending on the sizes of $n_{x}$, $n_{u}$ and $\predhorz$.
+Although the solution to such problems can be straightforward (solvers are widely known), and the problems are well structured, in this \textbf{monolithic} form, these problems can be computationally intensive depending on $n_{x}$, $n_{u}$, $n_{c}$ and $\predhorz$.
 For large-scale systems such as \wdns~\cite{ZhangEtAl2021}, and \dhns~\cite{TaylorEtAl2021}\todo[correct plural]{}, the computation time and memory needed to solve their associated problems may increase drastically.
 We can use some decomposition methods to make the solution to such problems more tractable.
 For instance, we can decompose the parts of different time-scales~\cite{ChenEtAl2011}, use game theory~\cite{MaestreEtAl2011} or even genetic algorithms paired with state observers~\cite{XieEtAl2016}.
