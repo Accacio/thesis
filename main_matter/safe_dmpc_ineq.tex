@@ -687,7 +687,7 @@ We do not have one tuple $(\Plin,\sik)$ for each subsystem, but we have $2^{\pre
 
 Here follow proposals on how to counter the difficulties.
 
-\subsection{Mitigation}\label{sec:mitigation_ineq}
+\subsection{Mitigation and artificial scarcity}\label{sec:mitigation_ineq}
 We begin by the end, with the proposal for the mitigation because the proposal follows a straightforward logic and impacts the proposal for the detection, simplifying its solution.
 
 We still want to mitigate the effects of the attack by reconstructing $\lambdai$.
@@ -942,11 +942,11 @@ where, following the mixture of affine regressions model~\eqref{eq:linear_cheati
 \end{equation}
 
 The covariance matrices $\Sigma^{z}$ tend to $0_{c}$, approaching the original values of the original functions in~\eqref{eq:lambdafuntheta}.
-The representation of such function for a $1$ dimension \pwa{} function can be seen in Fig.~\ref{fig:affine_gaussian_mixture}.
+The representation of such function for a $1$ dimension \pwa{} function can be seen in Fig.~\ref{fig:affine_gaussian_mixture}, where \todo{lighter} points present more probability then \todo{darker}.
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.7\textwidth]{../img/pwa.pdf}
-  \caption{Gaussian Mixture for 1D \pwa{} function.\todo{remake figure}}\label{fig:affine_gaussian_mixture}
+  \caption{Gaussian Mixture for 1D \pwa{} function with 2 modes.\todo{remake figure}}\label{fig:affine_gaussian_mixture}
 \end{figure}
 
 The posterior probabilities $\zeta_{zo}(\set{P})=\probability{\random{z}_{o}=z|\randomvec{\lambda}_{o},\randomvec{\theta}_{o};\set{P}}$, also called \emph{responsibilities}, are calculated as:
