@@ -1054,7 +1054,18 @@ Putting together all parts defined in the last sections, we can come up with Alg
  \caption{Resilient Primal Decomposition-based dMPC under artificial scarcity. \todo{rework algo}}\label{alg:safeDMPC}
 \end{algorithm2e}
 \section{Conclusion}\label{sec:conclusion}
+In this chapter, we relaxed an assumption from the problem in Chapter~\ref{sec:safe_pddmpc_eq}. We analyzed the impacts of this relaxation on the local problems and on the negotiation.
+We could observe how the complexity of the problem increases exponentially with the number of constraints of the local problems, which is defined by the global constraints and the prediction horizon.
 
+We created the assumption of artificial scarcity, so we can counter some difficulties and propose detection and mitigation strategies.
 
+However, part of the complexity reappears when estimating parameters.
+Our affine regression model becomes a \pwa{} regression model, and we need to use an adequate estimation method that can estimate parameters using such regression model.
+
+We presented the \em{} algorithm,  which although may be adequate for such estimation, it uses a probabilistic model. We adapt our model to respect its needs and use it to estimate the parameters needed for our detection and mitigation phases.
+
+Finally we presented our resilient algorithm using artificial scarcity and tested it using our \dhn{} study case.
+
+\todo{in the next chapter we discuss how to relax the artificial scarcity assumption.}
 
 \end{document}
