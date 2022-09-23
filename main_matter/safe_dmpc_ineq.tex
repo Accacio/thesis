@@ -11,7 +11,7 @@ We apply the primal decomposition to the problem, and then, we compare the cases
 
 From the analysis, we notice how the relaxation of the assumption increases drastically the complexity of the problem.
 
-Employing some assumptions, we take a powerful tool of our identification utility belt, and use it to create an approach to circumvent the complexity of the system, allowing us to adapt the detection and mitigation presented in the last chapter.
+Employing some assumptions, we take a powerful tool of our identification utility belt and use it to create an approach to circumvent the complexity of the system, allowing us to adapt the detection and mitigation presented in the last chapter.
 
 \minitoc
 
@@ -61,7 +61,7 @@ $\optuncU=-H^{-1}\vec{f}[k]$ and $\optuncUik=-H_{i}^{-1}\vec{f}_{i}[k]$ may or m
 
 As we will see in next section, despite the relaxation of this assumption, making the problem more generic, it causes the solution of the local problems exponentially more complex.
 
-\section{Impact on local problems' solution}\label{sec:impact-local-problem}
+\subsection{Impact on local problems' solution}\label{sec:impact-local-problem}
 We can repeat the analysis made in the last chapter to see how the change on assumption influences the solutions of the problem.
 
 Although now we have \qp{} problems with inequality constraints, we still can use the same method to find a analytical solution.
@@ -272,7 +272,7 @@ Here we can begin to regard the change caused by the relaxation, whereas we had 
   As one may expect, by definition, the $\Plinineq[i][n]$ and $\sikineq[i][n]$ are increasingly sparse.
   When $n$ increases more constraints are active and more blocks are equal to zero, culminating in $\Plinineq[i][2^{\nineq}-1]=0_{c}$ and $\sikineq[i][2^{\nineq}-1]=\0_{c}$.
 \end{remark}
-\subsection{Considerations about status of constraints}\label{sec:cons-about-stat}
+\subsubsection{Considerations about status of constraints}\label{sec:cons-about-stat}
 It is important to observe that some there are some sets of constraints in which the permutation is not necessarily $2^{\nineq}$.
 
 For example, in some cases there is no partition where all constraints are active, i.e., the intersection of halfspaces is empty (see Fig.~\ref{fig:non_feasible}).
@@ -342,7 +342,7 @@ In this case, there will always be at least $2$ active constraints.
 
 Since we suppose there are at most the number of constraints as dimensions, it is not possible to create polyhedrons.
 
-\section{Impact on negotiation equations}\label{sec:impact-local-problem}
+\subsection{Impact on negotiation equations}\label{sec:impact-local-problem}
 We can try to apply the same logic used in \S\ref{sec:analysis-negotiation}, by substituting~\eqref{eq:lambdafuntheta} into~\eqref{eq:projectedSubgradient_lambda_reprise} and vice-versa, and compare with the results in \S\ref{sec:analysis-negotiation}.
 In this attempt, we can fully contemplate how the relaxation of the assumptions increases the problem's complexity.
 
@@ -811,7 +811,7 @@ which associated with an detection function $d_{i}^{(0)}$:
 \end{equation}
 detects an attack when the corresponding bound is disrespected, i.e., $d_{i}^{(0)}=1$.
 
-\section{Multiple Parameter Estimation}\label{sec:cons-about-mult}
+\subsection{Multiple Parameter Estimation}\label{sec:cons-about-mult}
 The problem of estimating affine parameters on a system with a known number of different modes is called in~\cite{LauerBloch2019} as a \emph{\pwa{} regression with fixed modes}.
 The problem is formalized in a optimization problem which we adapt for our case.
 To find the $\pwaestnumparam$ different parameters $\pwaestparam_{i}$ of the \pwa{} function with non-overlapping regions $\set{R}^{i}$ such $\bigcup_{i=1}^{\pwaestnumparam}\set{R}^{i}=\set{R}$, we take a set of $\pwaestinputsize$ inputs/output tuples $(\pwaestsysinput_{k},\pwaestsysoutput_{k})|_{k\in\{1:\pwaestinputsize\}}\subset\R^{\card{\pwaestsysinput}}\times\R^{\card{\pwaestsysoutput}}$ and solve
@@ -843,7 +843,7 @@ However, an inspiring example was proposed for the estimation of switched system
 
 In the next subsection we describe the method more precisely.
 
-\subsection{Expectation Maximization}
+\subsubsection{Expectation Maximization}
 The main objective of the \EM{} algorithm is to find, from a set of observable data $\set{B}$, estimators of a set of parameters $\set{P}$ that maximize the log marginal likelihood of the observed data ${\ln\probability{\set{B};\set{P}}}$. The models generally have latent variables (unobservable) in a set $\set{U}$.
 
 The problem is that maximizing ${\ln\probability{\set{B};\set{P}}}$ does not have an analytical solution.
@@ -886,7 +886,7 @@ The iterative algorithm can be resumed in Algorithm~\ref{alg:em}.
   The choice of initial estimates is not in the scope of this work, the reader is referred to~\cite{KarlisXekalaki2003,BaudryCeleux2015}, where the authors analyze the choice for initialization.
 \end{remark}
 
-\subsection{Adapting the problem to use the method}
+\subsubsection{Adapting the problem to use the method}
 Since the \EM{} is a probabilistic method, we need to have a probabilistic regression model, which is not our case.
 The idea is to incorporate probabilistic behavior to our model~\eqref{eq:lambdafuntheta}.
 
@@ -1019,7 +1019,7 @@ We take the observation $o$ corresponding to the $\thetairestricted$, which we k
 
 The parameter with the given index corresponds to our $\Plinineqtildeestimate$.
 
-\subsection{Possible issues}
+\subsubsection{Possible issues}
 
 There are two main possible difficulties with methods of the partional family.
 
@@ -1035,7 +1035,7 @@ Another way is to consider the covariance as a diagonal matrix with same values 
 Yet another way is to use the technique called \emph{Simulated annealing}~\cite{CeleuxGovaert1992,OzerovFevotte2010}, where the covariances are initialized with arbitrarily significant values indicating the uncertainty of the parameters and it is reduced at each iteration.
 In this work we used the latter two techniques combined.
 
-\section{Complete safe dMPC under artificial scarcity}\label{sec:complete-safe-dmpc-ineq}
+\subsection{Complete safe dMPC under artificial scarcity}\label{sec:complete-safe-dmpc-ineq}
 Putting together all parts defined in the last sections, we can come up with Algorithm~\ref{alg:safeDMPC}, which resumes the \rpdmpcas{}.
 
 \begin{algorithm2e}[h]
