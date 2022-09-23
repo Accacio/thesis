@@ -38,31 +38,6 @@
 
 \end{description}
 \newpage
-\section*{General Operators, functions, and relations}
-\begin{description}
-  \item[$A\implies B$] A implies B, i.e., if A is true than B must also be true
-  \item[$A\iff B$] A implies B and B implies A, i.e., A is true if and only if (iff) B is true
-  \item[$A\lor B$] Logical inclusive or operation, i.e., true if $A$ or $B$ are true.
-  \item[$A\land B$] Logical and operation, i.e., true if $A$ and $B$ are true.
-  \item[$\lnot A$] Logical not, i.e., true if $A$ is false.
-  \item[$f:\set{A}\to\set{B}$] A $\set{B}$-valued function on some subset of $\set{A}$, its domain
-  \item[$\dom f$] Domain of $f$
-  \item[$f(x)$] The value of function $f$ at $x$, $x\in\dom f$
-  \item[$f:x\mapsto f(x)$] The mapping of element $x\in\dom f$ in function $f$
-  \item[$\indicator{x}$] Indicator function returning $1$ if $x$ is true and $0$ otherwise.
-  \item[$\nabla_{x}f(x)$] Gradient of $f(x)$ with respect to x.
-  \item[$\lceil x\rceil$ $\lfloor x\rfloor$] Ceiling and floor functions
-  \item[$\fix:\R\to\Z$] $\fix:x\mapsto
-        \begin{cases}
-          \lfloor x\rfloor&\text{if $x\geq0$}\\
-          \lceil x\rceil&\text{if $x<0$}\\
-        \end{cases}
-        $
-  \item[$n:i:j$] Row vector builder with elements ${\{n,n+i,\dots,n+mi\}}$
-        \\where $m=\fix(\frac{j-n}{i})$
-  \item[$n\mathbin{:}j$] Similar to ${n\mathbin{:}1\mathbin{:}j}$
-\end{description}
-
 \section*{Linear Algebra}
 \begin{description}
 
@@ -120,6 +95,33 @@
 
 
 \end{description}
+
+
+\section*{General Operators, functions, and relations}
+\begin{description}
+  \item[$A\implies B$] A implies B, i.e., if A is true than B must also be true
+  \item[$A\iff B$] A implies B and B implies A, i.e., A is true if and only if (iff) B is true
+  \item[$A\lor B$] Logical inclusive or operation, i.e., true if $A$ or $B$ are true.
+  \item[$A\land B$] Logical and operation, i.e., true if $A$ and $B$ are true.
+  \item[$\lnot A$] Logical not, i.e., true if $A$ is false.
+  \item[$f:\set{A}\to\set{B}$] A $\set{B}$-valued function on some subset of $\set{A}$, its domain
+  \item[$\dom f$] Domain of $f$
+  \item[$f(x)$] The value of function $f$ at $x$, $x\in\dom f$
+  \item[$f:x\mapsto f(x)$] The mapping of element $x\in\dom f$ in function $f$
+  \item[$\indicator{x}$] Indicator function returning $1$ if $x$ is true and $0$ otherwise.
+  \item[$\nabla_{x}f(x)$] Gradient of $f(x)$ with respect to x.
+  \item[$\lceil x\rceil$ $\lfloor x\rfloor$] Ceiling and floor functions
+  \item[$\fix:\R\to\Z$] $\fix:x\mapsto
+        \begin{cases}
+          \lfloor x\rfloor&\text{if $x\geq0$}\\
+          \lceil x\rceil&\text{if $x<0$}\\
+        \end{cases}
+        $
+  \item[$n:i:j$] Row vector builder with elements ${\{n,n+i,\dots,n+mi\}}$
+        \\where $m=\fix(\frac{j-n}{i})$
+  \item[$n\mathbin{:}j$] Similar to ${n\mathbin{:}1\mathbin{:}j}$
+\end{description}
+
 
 \section*{Control Systems}
 
