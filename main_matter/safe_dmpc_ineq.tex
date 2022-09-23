@@ -1108,19 +1108,75 @@ The same scenarios are used:
   \todo{\item Agents I and IV attack system controlled by \rpdmpcas{} (denoted as MC)\label{it:case_selfish_multiple_recovered_as}\note{only if a have time to simulate}}
 \end{enumerate}
 
-The same attack models were used for scenarios~\ref{it:case_selfish} \todo{and~\ref{it:case_selfish_recovered},
+The attack models used for scenarios~\ref{it:case_selfish} \todo{and~\ref{it:case_selfish_recovered},
 are}
 \begin{align}
   T_{I}=\begin{cases}
-          \todo{4I_{c}\text{, if }k< 4}\\
-          I_{c}\text{, otherwise}
+          \todo[verify]{\left[\input{../data/triche_matrix_I}\right]},&\todo{\text{if }k< 4}\\
+          I_{c},&\text{otherwise}
         \end{cases}\\
   T_{IV}=\begin{cases}
-          \todo{4I_{c}\text{, if }k< 6}\\
-          I_{c}\text{, otherwise}
-        \end{cases}
+          \todo[verify]{\left[\input{../data/triche_matrix_IV}\right]},&\todo{\text{if }k< 6}\\
+          I_{c},&\text{otherwise}
+        \end{cases}.
 \end{align}
-.
+
+Observing Fig.~\ref{fig:response3Scenarios}, we can compare the air temperature in room~I
+with its reference $w_{I}$.
+We can also see in the figure the values of the decision variable ${E_{I}^{(0)}[k]}$ with the threshold $\epsilon_{\Plinineq}$.
+Notice how the reference $w_{I}$ is not reached even in the nominal behavior (in \todo{magenta}),
+due to initial states and power constraints, indicating that the unconstrained solution $\optuncUik\succeq\0$.
+As expected, the decision variable lies under the threshold ${\epsilon_{P}=10^{-4}}$ with values of order ${E_{I}^{N}(k)\approx10^{-10}}$ (no attack detected).
+\begin{figure}[h]
+  \centering
+ \includegraphics[width=.7\textwidth,trim=0 .3cm 0 .2cm,clip]{airtemp_roomI/__ErrorWX_command_normErrH.pdf}
+  \caption{Air temperature in house I and the decision variable $E_{I}[k]$ for different scenarios.\todo{remake figure}}\label{fig:response3Scenarios}
+\end{figure}
+
+When agent~I attacks the system (in orange), its tracking error
+${w_{I}-y_{I}}$ decreases, and it almost reach the reference.
+In this case, the detection variable surpasses the bound $\epsilon_{P}$,
+${E_{I}^{S}\approx200}$, indicating a change of behavior, a possible attack.
+
+If the proposed resilient algorithm is activated (\todo{black dots}), the temperatures approach their nominal value $y_{I}^{N}$.
+We can also compare the inputs in Fig.~\ref{fig:control_3Scenarios}.
+When agent~I is selfish, its control increases while other rooms' control decrease,
+displaying a shift on the negotiation, giving more resources to the attacker.
+However, when the correction is activated, it approaches the nominal.
+\begin{figure}[h]
+  \centering
+ \includegraphics[width=.7\textwidth,trim=0 .1cm 0 .3cm,clip]{airtemp_roomI/control.pdf}
+  \caption{Control applied in all rooms for the 3 scenarios.}\label{fig:control_3Scenarios}
+\end{figure}
+
+\todo{
+  We can also show the method works similarly for cases MS and MC, where multiple agents attack the system (Fig.~\ref{fig:response_houses_N_M_as}),
+}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.7\textwidth]{AirTempAndDecisionVariable.pdf}
+\caption{Temperature in all houses, and respective references for scenarios N,MS and MC. \todo{remake figure}\note{only if i have time, probably not}}\label{fig:response_houses_N_M_as}
+\end{figure}
+
+
+Another way to represent performances of our proposition, however more palpably is to compare the accumulate objective functions during the period of simulation for each of the three scenarios (Table~\ref{tab:costsGlobalLocal}).
+We also calculate the percentual error ${\frac{J^{i}-J^{N}}{J^{N}}}$ for the cases S and C.
+When agent~I attacks the system, we see a decrease in its objective ($\approx\!-40\%$), degrading the overall performance in $\approx\!+10\%$.
+When the correction mechanism is activated, the absolute percentual error is in the order ${|\frac{J^{C}-J^{N}}{J^{N}}|\leq10^{-8}}$.
+
+\begin{table}[h]
+  \centering
+  \caption{Objective functions $J_{i}$ (\% error).\todo{\note{remove \% from nominal}}}\label{tab:costsGlobalLocal}
+  \begin{tabular}[t]{cccc}
+    \toprule
+    Agent  & Scenario N& Scenario S & Scenario C\\
+    \midrule
+    \input{../data/table_costs_all_rooms_error.tex}\\
+    % \input{table_costs_only_global.tex}\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
 \section{Conclusion}\label{sec:conclusion}
 In this chapter, we relaxed an assumption from the problem in Chapter~\ref{sec:safe_pddmpc_eq}. We analyzed the impacts of this relaxation on the local problems and on the negotiation.
 We could observe how the complexity of the problem increases exponentially with the number of constraints of the local problems, which is defined by the global constraints and the prediction horizon.
