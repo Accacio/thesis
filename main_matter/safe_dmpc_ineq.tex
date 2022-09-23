@@ -2,7 +2,7 @@
 
 \begin{document}
 
-\chapter[Resilient Primal Decomposition-based dMPC]{Resilient \\Primal Decomposition-based \\distributed \\Model Predictive Control}\label{sec:safe_pddmpc_ineq}
+\chapter[Resilient Primal Decomposition-based dMPC using Artificial Scarcity]{Resilient \\Primal Decomposition-based \\distributed \\Model Predictive Control\\using Artificial Scarcity}\label{sec:safe_pddmpc_ineq}
 \epigraph{\centering Desperate times call for desperate measures}
 {\textit{Title}\\\textsc{Author}}
 
@@ -1053,6 +1053,74 @@ Putting together all parts defined in the last sections, we can come up with Alg
  }
  \caption{Resilient Primal Decomposition-based dMPC under artificial scarcity. \todo{rework algo}}\label{alg:safeDMPC}
 \end{algorithm2e}
+
+\section{Numerical experiment}\label{sec:numerical-experiment-ineq}
+
+We exemplify the action of the \rpdmpcas{} through an academic example.
+As study case we use the same example of \dhn{} presented in \S\ref{sec:case-study}, with slight modifications to respect the assumptions made in this chapter.
+
+\subsection{Applying \rpdmpcas{}}
+The first assumption to use the \rpdmpcas{} is that the local unconstrained solutions $\optuncUik$ respect the local constraints.
+As noted in \S\ref{sec:case-study}, we do not have cooling apparatus, thus the inputs are restricted to be positive, i.e., $\vec{u}_{i}[k]\succeq\0$, so
+we need to force $\optuncUik$ to respect such constraint the $\optuncUik\succeq\0$.
+
+This is accomplished by changing the initial states $\vec{x}_{i}[k]$ and references $\vec{w}_{i}[k]$ such the output $\vec{y}_{i}[k]$ (air temperature inside the house) never surpasses the references, what would yield a solution with negative inputs.
+
+Therefore, we change the initial states to be
+\todo[use from simulation]{
+  $\vec{x}_{\text{I}}[0]=$,
+  $\vec{x}_{\text{II}}[0]=$,
+  $\vec{x}_{\text{III}}[0]=$,
+  and
+  $\vec{x}_{\text{IV}}[0]=$
+}
+, and the references as
+\todo[use from simulation]{
+  $w_{\text{I}}[0]=$,
+  $w_{\text{II}}[0]=$,
+  $w_{\text{III}}[0]=$,
+  and
+  $w_{\text{IV}}[0]=$
+}.
+All other parameters are the same, which when decomposing the \mpc{} problem we have
+\begin{equation}
+  \label{eq:houses_artificial_scarce_local_problem}
+  \begin{matrix}
+    \minimize\limits_{\vec{U}_{i}[k]}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+    \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \succeq \thetaik:\lambdaik\\
+                                     &\vec{U}_{i}[k]\succeq\0
+  \end{matrix}
+\end{equation}
+
+and update equation~\eqref{eq:projectedSubgradient_lambda_reprise}.
+
+\subsubsection{Results}\label{sec:results}
+We test the algorithm using the same similation period of
+\todo{$5$}
+hours, i.e.,
+\todo{${k\in\{0,5/T_{s}\}}$}.
+The same scenarios are used:
+\begin{enumerate}
+  \item Nominal behavior (denoted as N)
+  \item Agent I attacks system controlled by standard \dmpc{} (denoted as S)\label{it:case_selfish_as}
+  \item Agent I attacks system controlled by \rpdmpcas{} (denoted as C)\label{it:case_selfish_recovered_as}
+  \todo{\item Agents I and IV attack system controlled by standard \dmpc{} (denoted as MS)\label{it:case_selfish_multiple_as}\note{only if a have time to simulate}}
+  \todo{\item Agents I and IV attack system controlled by \rpdmpcas{} (denoted as MC)\label{it:case_selfish_multiple_recovered_as}\note{only if a have time to simulate}}
+\end{enumerate}
+
+The same attack models were used for scenarios~\ref{it:case_selfish} \todo{and~\ref{it:case_selfish_recovered},
+are}
+\begin{align}
+  T_{I}=\begin{cases}
+          \todo{4I_{c}\text{, if }k< 4}\\
+          I_{c}\text{, otherwise}
+        \end{cases}\\
+  T_{IV}=\begin{cases}
+          \todo{4I_{c}\text{, if }k< 6}\\
+          I_{c}\text{, otherwise}
+        \end{cases}
+\end{align}
+.
 \section{Conclusion}\label{sec:conclusion}
 In this chapter, we relaxed an assumption from the problem in Chapter~\ref{sec:safe_pddmpc_eq}. We analyzed the impacts of this relaxation on the local problems and on the negotiation.
 We could observe how the complexity of the problem increases exponentially with the number of constraints of the local problems, which is defined by the global constraints and the prediction horizon.
