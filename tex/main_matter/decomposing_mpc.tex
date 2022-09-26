@@ -424,7 +424,7 @@ Again, observe that the solutions of~\eqref{eq:general_complicating_constraints_
 \subsection{Generalizing}\label{sec:generalizing_decomposition}
 If we observe all the examples given, we can see a pattern emerge:
 
-A problem
+A decomposable problem
 \begin{equation}\label{eq:general_coupled_optimization_problem}
   \small
   \begin{aligned}
@@ -435,7 +435,7 @@ A problem
     \end{matrix}
   \end{aligned}
 \end{equation}
-is rewritten as
+is rewritten as an equivalent problem
 \begin{equation}\label{eq:general_coupled_optimization_problem_decomposed_main_problem}
   \small
   \begin{aligned}
@@ -445,6 +445,7 @@ is rewritten as
   \end{aligned}
 \end{equation}
 where $\text{objective}^{*}_{1}(\text{auxiliary variables})+\text{objective}^{*}_{2}(\text{auxiliary variables})$ are calculated by solving
+sub-problems
 \begin{subequations}\label{eq:general_coupled_optimization_problem_decomposed}
 \begin{equation}\label{eq:general_coupled_optimization_problem_decomposed_1}
     \begin{matrix}
@@ -463,13 +464,7 @@ where $\text{objective}^{*}_{1}(\text{auxiliary variables})+\text{objective}^{*}
     \end{matrix}
 \end{equation}
 \end{subequations}
-and coordination is needed to find optimal auxiliary variables.
-We can list the common properties:
-\begin{enumerate}
-  \item A problem equivalent to the original~\eqref{eq:general_coupled_optimization_problem_decomposed_main_problem} (which is solved by)
-  \item sub-problems~\eqref{eq:general_coupled_optimization_problem_decomposed} (whose solutions depend on auxiliary variables and need some)
-  \item Coordination (to find the optimal value of such variables)
-\end{enumerate}
+whose solution depend on auxiliary variables and need some coordination needed to find optimal values for those auxiliary variables.
 
 The equivalent problem we call \emph{main problem}, while the sub-problems we call \emph{local problems}, which have some \emph{local constraints}, and part of the \emph{global (coupling) constraints} which depend on auxiliary variables that we call \emph{interface variables}.
 
