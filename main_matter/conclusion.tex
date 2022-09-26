@@ -4,6 +4,28 @@
 
 \chapter{Conclusion}\label{sec:conclusion}
 
+\section{Retrospective and Contributions}
+\label{sec:retr-contr}
+In this thesis, we studied the security of \cps{} under \dmpc{} framework, in particular we studied attacks in primal decomposition, which, to the best of our knowledge, was never studied before.
+
+We began with a general introduction to \mpc{}, showing different \mpc{} problems and presenting the need to decompose them when the systems are large.
+We then presented the use of optimization decomposition frameworks, used in diverse works in different flavors.
+We generalize those methods and we show the need to divide the computation into different entities.
+
+After, we studied the distribution of the computation into those entities, discussing what the designed can choose or not, and the possible communication those entities need to carry out to solve the problems.
+We also discuss the part trust take when dividing communication between entities, some examples of the real world were given as analogies to ease comprehension.
+
+We then focus on anomalous behaviors, how they impact the communication of such entities and how the influence the solutions of the problems.
+We begin by definitions of such behaviors and of security in \cps{}.
+We try to generalize the vulnerabilities of \cps{} to aforementioned behaviors.
+After this we shift our attention to the most critical types of anomalous behaviors, attacks.
+
+We present what attacks are, the most known attacks in the literature, with some examples to illustrate, and ways to classify them.
+Then, we discuss the study of attacks on the \dmpc{} community, which is still
+in its first baby steps (less then 5 years).
+
+Then, we presented the more usual ways to secure \cps{}, from prevention of anomalous behaviors to robust and resilient strategies to mitigate the effects of these behaviors.
+
 \section{Possible Future directions}
 As any research work, many questions emerged during the study and we were cronfronted with many crossroads which obliged us to choose one direction.
 
