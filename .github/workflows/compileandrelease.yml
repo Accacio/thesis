@@ -14,13 +14,11 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       - name: Install needed software
-        with:
-            run: apt install zip
+        run: apt install zip
       - name: Set up Git repository
         uses: actions/checkout@v2
       - name: Create archives
-        with:
-          run: zip -r ${{ steps.date.outputs.date }}.zip *;tar cfz ${{ steps.date.outputs.date }}.tar.gz *;
+        run: zip -r ${{ steps.date.outputs.date }}.zip *;tar cfz ${{ steps.date.outputs.date }}.tar.gz *;
       - name: Compile LaTeX document
         uses: xu-cheng/texlive-action/full@v1
         with:
