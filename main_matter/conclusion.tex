@@ -27,6 +27,36 @@ in its first baby steps (less than 5 years).
 
 Then, we presented the more usual ways to secure \cps{}, with examples, from the prevention of anomalous behaviors to robust and resilient strategies to mitigate the effects of these behaviors.
 
+We then presented the \mpc{} decomposed using the primal decomposition, not studied under attacks before.
+We presented the decomposition, giving some interpretation to its different steps.
+Finally we presented some of its vulnerabilities and illustrated by an example the effects attacks can produce under this decomposition method.
+
+Inspired on reducing the effects of the attacks, we took an attack model and study some strategies on how to recover a nominal behavior.
+
+We created some assumptions to ease the analysis of the system under the given attack model.
+We analyzed the main effects of the attacks and how they are connected with the attack model, by changing slightly its values.
+From these analyses some insights emerged on how to detect the attacks under those assumptions and mitigate their possible effects by reconstructing some variables that were corrupted by the attack.
+
+We relaxed then one of those assumptions.
+We studied how the relaxation impacts the complexity of the solutions of the problem.
+We concluded the relaxation increased exponentially the complexity of the problem.
+We again analyzed the attacks under this exponentially more complex problem and we proposed to add some less restraining assumptions to aid to circumvent the complexity of the system.
+With these assumptions we could adapt the detection and mitigation strategies already proposed.
+
+\todo{Observing the problem by a different angle, we perceived other way to construct the proposed mitigation strategies even if we relax the just added assumptions.
+  In this strategy the reconstruction of the variables is made partially, reconstructing only known corrupted elements.}
+
+\subsection{Contributions}
+Apart from the systematization of the regard needed to the design of decomposed \cps{}, we can list the contributions of this work as follow:
+\begin{itemize}
+  \item Study of vulnerabilities of Primal decomposition-based \dmpc{}
+  \item Resilient strategies for \todo{three} complexity increasing different kind of systems
+        \begin{itemize}
+          \item Scarce systems (where demand is greater than total resources)
+          \item Systems with possible artificial scarcity (sensible optimal demand)
+          \item \todo{General systems (no scarcity information)}
+        \end{itemize}
+\end{itemize}
 
 \section{Possible Future directions}
 As any research work, many questions emerged during the study and we were cronfronted with many crossroads which obliged us to choose one direction.
@@ -42,6 +72,7 @@ As inspiration for future works, we list some of those questions and paths not c
   \item Study of our resilient strategy under other decomposition methods
   \item Study of other attack models (initially with affine cheating function)
 \end{itemize}
+
 
 
 \end{document}
