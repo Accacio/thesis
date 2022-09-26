@@ -47,7 +47,7 @@
 \RequirePackage{abstract}
 \RequirePackage{graphicx} % Pour ins\'{e}rer des images. Utiliser le format jpg pour plus de simplicit\'{e}.
 
-\graphicspath{{./fig/}{./img}{../img}}
+\graphicspath{{./fig/}{./img}{../img}{../../img}}
 
 \RequirePackage{sectsty} % obligatoire, pour jouer avec l'apparence des titres
 \RequirePackage{shorttoc} % pour le sommaire, au debut.

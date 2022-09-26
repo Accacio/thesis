@@ -19,6 +19,7 @@ jobs:
         uses: xu-cheng/texlive-action/full@v1
         with:
           run: make main.pdf
+          run: cd tex; make main.pdf
         
       - name: Create Release
         id: create_release
