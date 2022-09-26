@@ -18,7 +18,6 @@ jobs:
       - name: Compile LaTeX document
         uses: xu-cheng/texlive-action/full@v1
         with:
-          run: make main.pdf
           run: cd tex; make main.pdf
         
       - name: Create Release
@@ -32,7 +31,7 @@ jobs:
           draft: false
           prerelease: false
           files: |
-                 main.pdf
+                 tex/main.pdf
                  ${{ steps.date.outputs.date }}.zip
                  ${{ steps.date.outputs.date }}.tar.gz
       # - name: Upload Normal PDF
