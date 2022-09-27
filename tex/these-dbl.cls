@@ -491,8 +491,10 @@ backrefstyle=three,
 \let\orig@quote\quote
 \let\endorig@quote\endquote
 \renewenvironment*{quote}
-	{\begin{orig@quote}\begin{singlespace}}
-	{\end{singlespace}\end{orig@quote}}
+{\begin{orig@quote}\begin{singlespace}
+      \centering
+    }
+    {\end{singlespace}\end{orig@quote}}
 
 \let\old@quotation\quotation
 \let\endold@quotation\endquotation
