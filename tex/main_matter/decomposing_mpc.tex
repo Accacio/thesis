@@ -11,14 +11,14 @@ This chapter presents the Model Predictive Control strategy and some considerati
 \minitoc
 
 \section{Model Predictive Control}
-Model Predictive Control, or even \mpc, is a closed-loop control strategy based
+\mpclong{} is a closed-loop control strategy based
 on the solution of optimization problems.
 Once given a system model and an objective function, this strategy uses the system model to predict future states and compute a control sequence that optimizes the given objective function.
 Since the solution is found through optimization problems, it is natural to add some restrictions on the system, usually defined as (in)equality constraints.
 
 The fact that we may effortlessly add constraints to the specifications gave it a special place in the industry, where it is used in a plethora of applications (energy management~\cite{AnandutaEtAl2018}, water distribution~\cite{ZhangEtAl2021}, control of quadrotors~\cite{BanguraMahony2014} and others).
 
-\subsection{General discrete \mpc\ }
+\subsection{General discrete \mpc{}}
 As it is generally implemented through a digital computer and the transmission of continuous signals can potentially demand infinite bandwidth~\cite{HeEtAl2022}, it is natural to assume the system to be modeled with \dt{} dynamics
 \begin{equation}
 \vec{x}[k+1]=f(\vec{x}[k],\vec{u}[k]),
@@ -61,6 +61,7 @@ However, depending on the problem's convexity, it can be hard to solve, especial
 Convex problems are the most widely studied, and strategies to solve them are extensively diffused.
 Some of those problems even have explicit solutions~\cite{BoydVandenberghe2004}.
 
+\newpage
 \subsection{Convex \mpc\ (quadratic case) }\label{sec:qp_mpc}
 The \mpc\ community favors the use of convex problems when possible. Two families of convex problems broadly used are \qp\ and \lp.
 In this work, we concentrate on \qp{} problems, which have quadratic objective functions and affine or linear constraints.
@@ -299,6 +300,7 @@ where ${J_{1}(\vec{x}_{1}^{\star})}$ and ${J_{2}(\vec{x}_{2}^{\star})}$ can be f
 \end{subequations}
 Each problem in~\eqref{eq:general_uncoupled_optimization_problem_decomposed} can be solved in parallel and when solutions $\vec{x}_{i}^{*}$ are found for each sub-problem, the problem in~\eqref{eq:general_uncoupled_optimization_problem_main_problem} is automatically solved ($J_{i}(\vec{x}_{i}^{\star})$ are constants).
 
+\newpage
 \subsection{Coupled problems}\label{sec:coupled_problems}
 On the other hand, coupled problems are more frequent in the real world.
 In this category, we cannot solve the sub-problems

@@ -143,6 +143,7 @@ In Fig.~\ref{fig:directed_undirected_graphs} we can see examples of directed and
     \caption{Directed and undirected graphs with 7 vertices.}\label{fig:directed_undirected_graphs}
 \end{figure}
 
+\pagebreak
 In an undirected graph two vertices are called adjacent or neighbours if there is an edge linking them.
 The neighbourhood $\set{N}$ of a vertex is the set of all the vertices to which it is linked.
 We can define a neighbor subgraph $\graph{N}(v)$ of $\graph{G}$ with the neighbors of $v$ and the edges connecting them. For example, taking the graph in Fig.~\ref{fig:undirected_graph}, we can overlay the neighbor subgraph of vertex $6$ in red (Fig.~\ref{fig:neighbor_subgraph}).
@@ -166,7 +167,6 @@ We can define a neighbor subgraph $\graph{N}(v)$ of $\graph{G}$ with the neighbo
   \caption[Neighbor subgraph of vertex $6$ (in red).]{Graph in Fig.~\ref{fig:undirected_graph} overlayed by neighbor subgraph of vertex $6$ (in red).}\label{fig:neighbor_subgraph}
 \end{figure}
 
-\pagebreak
 For directed graphs the notion of neighborhood can be split into in and out-neighborhoods of a vertex ($\set{N}_{\text{in}}$ and $\set{N}_{\text{out}}$), which are the sets of vertices whose arcs are inbound and outbound, respectively.
 A graph that all vertices are neighbors is called a \emph{complete graph} (as in Fig.~\ref{fig:complete_graph}).
 
@@ -216,9 +216,7 @@ A graph that for all pairs of vertices there is a path is called \emph{connected
   \caption{A disjoint graph.}\label{fig:disjoint}
 \end{figure}
 
-
-
-
+\newpage
 \section{Do computing units communicate?}
 
 As shown in Section~\ref{sec:decomposable_problems}, the only case where communication is not needed to solve the optimization problem is in the uncoupled case (\S\ref{sec:uncoupled_problems}).
@@ -306,7 +304,6 @@ Sometimes the hierarchical structure may be implied by the decomposition.
 These schemes are called \emph{sequential}.
 We can see a hierarchy among the agents, since although a convergence is reached, one group of agents solve their problems disregard the others, giving them an initial position of power, even if temporary.
 
-\pagebreak
 In other decompositions, all agents solve their problems independently of others and then share results until convergence is reached, iteratively or not (Fig.~\ref{fig:parallel_topology})~\cite{LiuEtAl2010}.
 These structures are called \emph{parallel}.
 In such structures there is no hierarchy.
@@ -408,7 +405,7 @@ Some other political/societal parallel views are stablished in~\cite{McNamaraEtA
   \caption{A polytree.}\label{fig:polytree_topology}
 \end{figure}
 
-In \textbf{this work}, we choose to use a \textbf{hierarchical} structure, described later (\S \todo[put section]{??}).
+In \textbf{this work}, we choose to use a \textbf{hierarchical} structure, described later (\S\ref{sec:decomposition_PD}).
 
 \section{How units communicate?}
 Depending on the problem and the structure, the connection of the nodes can be unidirectional or bidirectional. As said, these connections are represented by arcs and edges as shown in Fig.~\ref{fig:arc_edges}.
@@ -422,6 +419,7 @@ On the other hand, in a symmetric case (bidirectional), after updating its varia
 
 In \textbf{this work} we suppose nodes communicate \textbf{bidirectionally} and \textbf{synchronously}.
 
+\pagebreak
 \section{Some drawbacks and compromises}\label{sec:drawbacks}
 
 \paragraph{Failure/Robustness}
