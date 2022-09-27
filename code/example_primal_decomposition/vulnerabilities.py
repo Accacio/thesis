@@ -7,7 +7,7 @@ import os
 import getopt
 import math
 import matplotlib.pyplot as plt
-from matplotlib.patches import Circle, Wedge, Polygon
+from matplotlib.patches import Circle, Wedge, Polygon, Rectangle
 import matplotlib.font_manager as font_manager
 # import matplotlib
 from matplotlib import rc
@@ -217,51 +217,37 @@ var_tau = sio.loadmat("../../data/example_primal_decomposition/example_dmpc_vary
 taus=var_tau['tau'][0]
 var_tau_Ji=2*var_tau['J']+var_tau['cHist']
 Ji_accum=np.sum(var_tau_Ji,axis=0)
-print(np.shape(Ji_accum))
-print(np.shape(var_tau['cHist']))
-print(taus)
 
 fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
+plt.plot(taus,np.sum(Ji_accum,axis=0),'b')
 plt.plot(taus,Ji_accum[0,:],color_map[0])
 plt.plot(taus,Ji_accum[1,:],color_map[2])
 plt.plot(taus,Ji_accum[2,:],color_map[4])
-plt.plot(taus,np.sum(Ji_accum,axis=0),'b')
+
+rect = Rectangle((25, 0), 20, 1000, color='red',hatch='/',lw=0,fill=False)
+axs.add_patch(rect)
+
+plt.xlim([0,40])
+plt.ylim([0,900])
+plt.legend(('$J^\star$', '$J^\star_1$', '$J^\star_2$','$J^\star_3$'),ncol=2,fontsize=15)
+plt.savefig(outputFolder + "example_vary_tau_J" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig(outputFolder + "example_vary_tau_J" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
+
+plt.xlim([0,2])
+plt.ylim([50,400])
+plt.legend(('$J^\star$', '$J^\star_1$', '$J^\star_2$','$J^\star_3$'),ncol=2,fontsize=15)
+plt.savefig(outputFolder + "example_vary_tau_J_detail" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig(outputFolder + "example_vary_tau_J_detail" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
+sys.exit()
 
 
-fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
-plt.plot(taus,Ji_accum[0,:],color_map[0])
-plt.plot(taus,Ji_accum[1,:],color_map[2])
-plt.plot(taus,Ji_accum[2,:],color_map[4])
-plt.plot(taus,np.sum(Ji_accum,axis=0),'b')
-plt.xlim(0,20)
-plt.ylim(0,500)
-# plt.show()
-
-exit()
-
-
-
-simK=nominal['simK'][0][0]
-
-nominal_Wt=nominal['Wt']
-nominal_xt=nominal['xt']
-nominal_err=nominal['norm_err']
-nominal_u=nominal['uHist'][0]
-
-
-selfish_Wt=selfish['Wt']
-selfish_xt=selfish['xt']
-selfish_err=selfish['norm_err']
-selfish_u=selfish['uHist'][0]
-
-
-corrected_Wt=corrected['Wt']
-corrected_xt=corrected['xt']
-corrected_err=corrected['norm_err']
-corrected_u=corrected['uHist'][0]
-
-# with open('../article/triche_matrix.tex', 'w') as f:
-#     print(smallmatrix(corrected['T'][:,:,0]),file=f)
+# fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
+# plt.plot(taus,Ji_accum[0,:],color_map[0])
+# plt.plot(taus,Ji_accum[1,:],color_map[2])
+# plt.plot(taus,Ji_accum[2,:],color_map[4])
+# plt.plot(taus,np.sum(Ji_accum,axis=0),'b')
+# plt.xlim(0,20)
+# plt.ylim(0,500)
 
 # ktotal=mat['ktotal'][0][0].astype(int)
 nominal_J=2*nominal['J']+nominal['cHist']
