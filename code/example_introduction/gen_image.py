@@ -57,7 +57,7 @@ start = mdates.date2num(pd.to_datetime('2022-12-23'))
 end = mdates.date2num(pd.to_datetime('2022-12-30'))
 width = end - start
 
-plt.xlim([mdates.date2num(pd.to_datetime('2022-10-20')), mdates.date2num(pd.to_datetime('2022-12-26'))])
+plt.xlim([mdates.date2num(pd.to_datetime('2022-10-17')), mdates.date2num(pd.to_datetime('2022-12-25'))])
 
 rect = Rectangle((start, 0), width, 20, color='red',hatch='/',lw=0,fill=False)
 ax.add_patch(rect)
