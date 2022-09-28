@@ -410,23 +410,27 @@ In this case the attacker deteriorates its own performance, what would not justi
 Other fact we can see in Fig.~\ref{fig:example_vary_tau_objective} is in its right side (hatched in red). The objectives seem to find an equilibrium but after a given value of $\tau_{3}$ it increases more and more.
 This is caused by a collapse in the negotiation.
 The agents cannot find a consensus anymore.
-To illustrate, we present the negotiation of $\lambdai$ for $3$ different values of $\tau_{3}$ (Figs.~\ref{fig:example_vary_tau_lambda_tau_1} to~\ref{fig:example_vary_tau_lambda_tau_20}).
+To illustrate, we present the negotiation of $\lambdai$ for $4$ different values of $\tau_{3}$ (Figs.~\ref{fig:example_vary_tau_lambda_tau_1} to~\ref{fig:example_vary_tau_lambda_tau_40}).
 
 % TODO(accacio):maybe put in a same figure.
 \begin{figure}[h]
   \centering
   \begin{subfigure}{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../img/example_primal_decomposition/example_theta.png}
-    \caption{$\tau_{3}=1$. \todo{remake figure}}\label{fig:example_vary_tau_lambda_tau_1}
+    \includegraphics[width=\textwidth]{../img/example_primal_decomposition/example_vary_tau_lambda_tau_1.0.pdf}
+    \caption{$\tau_{3}=1$.}\label{fig:example_vary_tau_lambda_tau_1}
   \end{subfigure}
   \begin{subfigure}{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../img/example_primal_decomposition/example_theta.png}
-    \caption{$\tau_{3}=5$. \todo{remake figure}}\label{fig:example_vary_tau_lambda_tau_5}
+    \includegraphics[width=\textwidth]{../img/example_primal_decomposition/example_vary_tau_lambda_tau_5.0.pdf}
+    \caption{$\tau_{3}=5$.}\label{fig:example_vary_tau_lambda_tau_5}
   \end{subfigure}
   \\~\\
   \begin{subfigure}{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../img/example_primal_decomposition/example_theta.png}
-    \caption{$\tau_{3}=20$. \todo{remake figure}}\label{fig:example_vary_tau_lambda_tau_20}
+    \includegraphics[width=\textwidth]{../img/example_primal_decomposition/example_vary_tau_lambda_tau_20.0.pdf}
+    \caption{$\tau_{3}=20$.}\label{fig:example_vary_tau_lambda_tau_20}
+  \end{subfigure}
+  \begin{subfigure}{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../img/example_primal_decomposition/example_vary_tau_lambda_tau_40.0.pdf}
+    \caption{$\tau_{3}=40$.}\label{fig:example_vary_tau_lambda_tau_40}
   \end{subfigure}
     \caption{Evolution of $\lambdai$ during negotiation for $k=5$ with different values of $\tau_{3}$.}\label{fig:example_vary_tau_lambda}
 \end{figure}

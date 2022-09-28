@@ -16,6 +16,11 @@ import scipy.io as sio
 import numpy as np
 import numpy.matlib
 
+serif_font = {'family': 'serif', 'serif': ['Computer Modern']};
+arial_font = {'family': 'sans-serif'};
+rc('font', **serif_font)
+rc('text', usetex=True)
+
 color_map = ['#ff7f0e','#FF9C45',  '#1f77b4','#7CBCE9','#1ca02c','#65E474']
 outputFolder= "../../img/example_primal_decomposition/"
 
