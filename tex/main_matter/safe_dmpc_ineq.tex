@@ -1110,12 +1110,12 @@ The same scenarios are used:
 The attack models used for scenarios~\ref{it:case_selfish} \todo{and~\ref{it:case_selfish_recovered},
 are}
 \begin{align}
-  T_{I}=\begin{cases}
-          \todo[verify]{\left[\input{../data/triche_matrix_I}\right]},&\todo{\text{if }k< 4}\\
+  T_{I}=&\begin{cases}
+          \todo[verify]{\left[\input{../data/triche_matrix_I}\right]},&\text{if }k> \input{../data/selfish_time_I.tex}\\
           I_{c},&\text{otherwise}
         \end{cases}\\
-  T_{IV}=\begin{cases}
-          \todo[verify]{\left[\input{../data/triche_matrix_IV}\right]},&\todo{\text{if }k< 6}\\
+  T_{IV}=&\begin{cases}
+          \todo[verify]{\left[\input{../data/triche_matrix_IV}\right]},&\text{if }k> \input{../data/selfish_time_IV.tex}\\
           I_{c},&\text{otherwise}
         \end{cases}.
 \end{align}
