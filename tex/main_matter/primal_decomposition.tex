@@ -199,7 +199,7 @@ The systems are described by the following \ltidt{} dynamics
   x_{i}[k+1]=a_{i}x_{i}[k]+b_{i}u_{i}[k]
 \end{equation}
 where
-\input{../data/example_system_dynamics.tex}
+\input{../data/example_primal_decomposition/example_system_dynamics.tex}
 The system is
 constraint by an equality constraint
 \begin{equation}
@@ -210,11 +210,11 @@ with
 $\vec{u}_{\max}=4$
 .
 
-We use a \dmpc{} with horizon ${\predhorz=\input{../data/example_predhorz.tex}}$,
+We use a \dmpc{} with horizon ${\predhorz=\input{../data/example_primal_decomposition/example_predhorz.tex}}$,
 initial conditions
-\input{../data/example_states.tex}
+\input{../data/example_primal_decomposition/example_states.tex}
 and state references
-\input{../data/example_references.tex}
+\input{../data/example_primal_decomposition/example_references.tex}
 and gains
 $Q_{i}=10I_{2}$ and
 $R_{i}=   I_{2}$
@@ -231,7 +231,7 @@ with
 \begin{equation}
   \label{eq:1}
   \begin{array}{lll}
-    \input{../data/example_system_params.tex}
+    \input{../data/example_primal_decomposition/example_system_params.tex}
   \end{array}
 \end{equation}
 The coordinator update function is the same as~\eqref{eq:projectedSubgradient_lambda} but with ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k] = \vec{U}_{\max}}}$, where $c=2$.
