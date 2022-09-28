@@ -110,68 +110,29 @@ plt.yticks(fontsize = 20)
 plt.legend(('$w_1[k]$', '$x_1[k]$','$w_2[k]$', '$x_2[k]$','$w_3[k]$', '$x_3[k]$'),loc='right',fontsize=16)
 plt.savefig(outputFolder + "example_state" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
 plt.savefig(outputFolder + "example_state" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
+exit()
 
 
+# example_J=2*example['J']+example['cHist']
+# example_sumJ=np.sum(example_J,axis=0)
+
+# example_I=example_sumJ[0]
+# example_II=example_sumJ[1]
+# example_III=example_sumJ[2]
+# example_global=np.sum(example_sumJ)
+
+# selfish_I=selfish_sumJ[0]
+# selfish_II=selfish_sumJ[1]
+# selfish_III=selfish_sumJ[2]
+# selfish_IV=selfish_sumJ[3]
+# selfish_global=np.sum(selfish_sumJ)
 
 
-
-fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
-axs.plot(np.arange(0,simK),np.repeat(Wt[0],simK),lineStyle='--',color=color_map[0])
-axs.plot(np.arange(0,simK),np.transpose(xt[0:simK,0]),color_map[1])
-
-axs.plot(np.arange(0,simK),np.repeat(Wt[1],simK),lineStyle='--',color=color_map[2])
-axs.plot(np.arange(0,simK),np.transpose(xt[0:simK,1]),color_map[3])
-
-axs.plot(np.arange(0,simK),np.repeat(Wt[2],simK),lineStyle='--',color=color_map[4])
-axs.plot(np.arange(0,simK),np.transpose(xt[0:simK,2]),color_map[5])
-
-plt.xlabel('Time ($k$)',usetex=True,fontsize=16)
-plt.xticks(fontsize = 20)
-plt.yticks(fontsize = 20)
-plt.legend(('$w_1[k]$', '$x_1[k]$','$w_2[k]$', '$x_2[k]$','$w_3[k]$', '$x_3[k]$'),loc='right',fontsize=16)
-plt.savefig(outputFolder + "example_liar_state" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
-plt.savefig(outputFolder + "example_liar_state" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
-
-
-sys.exit()
-
-
-# fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
-# plt.plot(taus,Ji_accum[0,:],color_map[0])
-# plt.plot(taus,Ji_accum[1,:],color_map[2])
-# plt.plot(taus,Ji_accum[2,:],color_map[4])
-# plt.plot(taus,np.sum(Ji_accum,axis=0),'b')
-# plt.xlim(0,20)
-# plt.ylim(0,500)
-
-# ktotal=mat['ktotal'][0][0].astype(int)
-nominal_J=2*nominal['J']+nominal['cHist']
-nominal_sumJ=np.sum(nominal_J,axis=0)
-
-selfish_J=2*selfish['J']+selfish['cHist']
-selfish_sumJ=np.sum(selfish_J,axis=0)
-
-corrected_J=2*corrected['J']+corrected['cHist']
-corrected_sumJ=np.sum(corrected_J,axis=0)
-
-nominal_I=nominal_sumJ[0]
-nominal_II=nominal_sumJ[1]
-nominal_III=nominal_sumJ[2]
-nominal_IV=nominal_sumJ[3]
-nominal_global=np.sum(nominal_sumJ)
-
-selfish_I=selfish_sumJ[0]
-selfish_II=selfish_sumJ[1]
-selfish_III=selfish_sumJ[2]
-selfish_IV=selfish_sumJ[3]
-selfish_global=np.sum(selfish_sumJ)
-
-
-corrected_I=corrected_sumJ[0]
-corrected_II=corrected_sumJ[1]
-corrected_III=corrected_sumJ[2]
-corrected_IV=corrected_sumJ[3]
-corrected_global=np.sum(corrected_sumJ)
+# corrected_I=corrected_sumJ[0]
+# corrected_II=corrected_sumJ[1]
+# corrected_III=corrected_sumJ[2]
+# corrected_IV=corrected_sumJ[3]
+# corrected_global=np.sum(corrected_sumJ)
 # with open('../article/reference.tex','w') as f:
 #     print(nominal_Wt[0][0],file=f)
 # with open('../article/sampling.tex','w') as f:
@@ -195,47 +156,44 @@ corrected_global=np.sum(corrected_sumJ)
 
 
 
-print("===")
-print("I &", round(nominal_I,2),"(",nominal_I/nominal_I, ")& ",round(selfish_I,2),"(", round((selfish_I-nominal_I)/nominal_I,2),")&",round(corrected_I,2)," (",round(corrected_I/nominal_I,2) ,")\\\\")
-print("II &", round(nominal_II,2),"(",nominal_II/nominal_II, ")& ",round(selfish_II,2),"(", round((selfish_II-nominal_II)/nominal_II,2),")&",round(corrected_II,2)," (",round(corrected_II/nominal_II,2) ,")\\\\")
-print("III &", round(nominal_III,2),"(",nominal_III/nominal_III, ")& ",round(selfish_III,2),"(", round((selfish_III-nominal_III)/nominal_III,2),")&",round(corrected_III,2)," (",round(corrected_III/nominal_III,2) ,")\\\\")
-print("IV &", round(nominal_IV,2),"(",nominal_IV/nominal_IV, ")& ",round(selfish_IV,2),"(", round((selfish_IV-nominal_IV)/nominal_IV,2),")&",round(corrected_IV,2)," (",round(corrected_IV/nominal_IV,2) ,")\\\\")
-print("Global &", round(nominal_global,2),"(",nominal_global/nominal_global, ")& ",round(selfish_global,2),"(", round((selfish_global-nominal_global)/nominal_global,2),")&",round(corrected_global,2)," (",round(corrected_global/nominal_global,2) ,")\\\\")
-print("===")
-print("I &", round(nominal_I,2),"(",nominal_I/nominal_I, ")& ",round(selfish_I,2),"(", round(selfish_I/nominal_I,2),")&",(corrected_I)," (",round(corrected_I/nominal_I,2) ,")\\\\")
-print("II &", round(nominal_II,2),"(",nominal_II/nominal_II, ")& ",round(selfish_II,2),"(", round(selfish_II/nominal_II,2),")&",(corrected_II)," (",round(corrected_II/nominal_II,2) ,")\\\\")
-print("III &", round(nominal_III,2),"(",nominal_III/nominal_III, ")& ",round(selfish_III,2),"(", round(selfish_III/nominal_III,2),")&",(corrected_III)," (",round(corrected_III/nominal_III,2) ,")\\\\")
-print("IV &", round(nominal_IV,2),"(",nominal_IV/nominal_IV, ")& ",round(selfish_IV,2),"(", round(selfish_IV/nominal_IV,2),")&",(corrected_IV)," (",round(corrected_IV/nominal_IV,2) ,")\\\\")
-print("Global &", round(nominal_global,2),"(",nominal_global/nominal_global, ")& ",round(selfish_global,2),"(", round(selfish_global/nominal_global,2),")&",(corrected_global)," (",round(corrected_global/nominal_global,2) ,")\\\\")
+# print("===")
+# print("I &", round(nominal_I,2),"(",nominal_I/nominal_I, ")& ",round(selfish_I,2),"(", round((selfish_I-nominal_I)/nominal_I,2),")&",round(corrected_I,2)," (",round(corrected_I/nominal_I,2) ,")\\\\")
+# print("II &", round(nominal_II,2),"(",nominal_II/nominal_II, ")& ",round(selfish_II,2),"(", round((selfish_II-nominal_II)/nominal_II,2),")&",round(corrected_II,2)," (",round(corrected_II/nominal_II,2) ,")\\\\")
+# print("III &", round(nominal_III,2),"(",nominal_III/nominal_III, ")& ",round(selfish_III,2),"(", round((selfish_III-nominal_III)/nominal_III,2),")&",round(corrected_III,2)," (",round(corrected_III/nominal_III,2) ,")\\\\")
+# print("IV &", round(nominal_IV,2),"(",nominal_IV/nominal_IV, ")& ",round(selfish_IV,2),"(", round((selfish_IV-nominal_IV)/nominal_IV,2),")&",round(corrected_IV,2)," (",round(corrected_IV/nominal_IV,2) ,")\\\\")
+# print("Global &", round(nominal_global,2),"(",nominal_global/nominal_global, ")& ",round(selfish_global,2),"(", round((selfish_global-nominal_global)/nominal_global,2),")&",round(corrected_global,2)," (",round(corrected_global/nominal_global,2) ,")\\\\")
+# print("===")
+# print("I &", round(nominal_I,2),"(",nominal_I/nominal_I, ")& ",round(selfish_I,2),"(", round(selfish_I/nominal_I,2),")&",(corrected_I)," (",round(corrected_I/nominal_I,2) ,")\\\\")
+# print("II &", round(nominal_II,2),"(",nominal_II/nominal_II, ")& ",round(selfish_II,2),"(", round(selfish_II/nominal_II,2),")&",(corrected_II)," (",round(corrected_II/nominal_II,2) ,")\\\\")
+# print("III &", round(nominal_III,2),"(",nominal_III/nominal_III, ")& ",round(selfish_III,2),"(", round(selfish_III/nominal_III,2),")&",(corrected_III)," (",round(corrected_III/nominal_III,2) ,")\\\\")
+# print("IV &", round(nominal_IV,2),"(",nominal_IV/nominal_IV, ")& ",round(selfish_IV,2),"(", round(selfish_IV/nominal_IV,2),")&",(corrected_IV)," (",round(corrected_IV/nominal_IV,2) ,")\\\\")
+# print("Global &", round(nominal_global,2),"(",nominal_global/nominal_global, ")& ",round(selfish_global,2),"(", round(selfish_global/nominal_global,2),")&",(corrected_global)," (",round(corrected_global/nominal_global,2) ,")\\\\")
 
-fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
+# fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
 
-nominal_bar=(round(nominal_global,2),round(nominal_IV,2),round(nominal_III,2),round(nominal_II,2),round(nominal_I,2))
-selfish_bar=(round(selfish_global,2),round(selfish_IV,2),round(selfish_III,2),round(selfish_II,2),round(selfish_I,2))
-corrected_bar=(round(corrected_global,2),round(corrected_IV,2),round(corrected_III,2),round(corrected_II,2),round(corrected_I,2))
-labels=[ 'Global','IV', 'III', 'II', 'I']
+# nominal_bar=(round(nominal_global,2),round(nominal_IV,2),round(nominal_III,2),round(nominal_II,2),round(nominal_I,2))
+# selfish_bar=(round(selfish_global,2),round(selfish_IV,2),round(selfish_III,2),round(selfish_II,2),round(selfish_I,2))
+# corrected_bar=(round(corrected_global,2),round(corrected_IV,2),round(corrected_III,2),round(corrected_II,2),round(corrected_I,2))
+# labels=[ 'Global','IV', 'III', 'II', 'I']
 
-barHeight=0.25
-br_nominal = np.arange(5)
-br_selfish = [x - barHeight for x in br_nominal]
-br_corrected = [x - barHeight for x in br_selfish]
+# barHeight=0.25
+# br_nominal = np.arange(5)
+# br_selfish = [x - barHeight for x in br_nominal]
+# br_corrected = [x - barHeight for x in br_selfish]
 
-plt.barh(br_nominal, nominal_bar, height=barHeight,label='Nominal') # nominal
-plt.barh(br_selfish, selfish_bar, height=barHeight,label='Selfish') # nominal
-plt.barh(br_corrected, corrected_bar, height=barHeight,label='+ Correction') # nominal
-plt.yticks([r - barHeight for r in range(5)],
-           labels,fontsize=20)
-plt.xticks(fontsize = 20)
+# plt.barh(br_nominal, nominal_bar, height=barHeight,label='Nominal') # nominal
+# plt.barh(br_selfish, selfish_bar, height=barHeight,label='Selfish') # nominal
+# plt.barh(br_corrected, corrected_bar, height=barHeight,label='+ Correction') # nominal
+# plt.yticks([r - barHeight for r in range(5)],
+#            labels,fontsize=20)
+# plt.xticks(fontsize = 20)
 
-plt.ylabel('Agents', fontweight ='bold', fontsize = 25)
-plt.xlabel('Objective function', fontweight ='bold', fontsize = 25)
-plt.legend(fontsize=20)
+# plt.ylabel('Agents', fontweight ='bold', fontsize = 25)
+# plt.xlabel('Objective function', fontweight ='bold', fontsize = 25)
+# plt.legend(fontsize=20)
 
 # plt.savefig("../img/barplot_results_poster" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
 # plt.savefig("../img/barplot_results_poster" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
-
-print((corrected_global-nominal_global)/nominal_global)
-print((selfish_global-nominal_global)/nominal_global)
 
 # sys.exit()
 # print("Nominal")
@@ -271,142 +229,24 @@ print((selfish_global-nominal_global)/nominal_global)
 #       +np.sum((correctWt[0:simK,2]-correctxt[0:simK,2])*(correctWt[0:simK,2]-correctxt[0:simK,2])+correctuHist[0,-1,:,2]*correctuHist[0,-1,:,2]) # J3
 #       +np.sum((correctWt[0:simK,3]-correctxt[0:simK,3])*(correctWt[0:simK,3]-correctxt[0:simK,3])+correctuHist[0,-1,:,3]*correctuHist[0,-1,:,3])) # J4
 
-# NOTE(accacio): Detection
-fig, axs = plt.subplots(2, 1,facecolor=(.0, .0, .0, .0))
-
-axs[0].plot(np.arange(0,simK+1),np.matlib.repmat(nominal_Wt[0],simK+1,1),'-',drawstyle='steps-post')
-axs[0].plot(np.arange(0,simK+1),nominal_xt[0,0:simK+1,0],'-',color='magenta',drawstyle='steps-post')
-axs[0].plot(np.arange(0,simK+1),selfish_xt[0,0:simK+1,0],'-',drawstyle='steps-post')
-axs[0].scatter(np.arange(0,simK+1),corrected_xt[0,0:simK+1,0],s=15,color='black')
-
-axs[0].legend(( '$w_{\mathrm{I}}(k)$','$y_{\mathrm{I}}^N(k)$','$y_{\mathrm{I}}^S(k)$','$y_{\mathrm{I}}^C(k)$'),loc='bottom center',ncol=4,fontsize=13)
-
-axs[0].set_xticks(np.arange(0,simK+1,2))
-axs[0].set_xlim([1, simK])
-axs[0].set_ylim([15, 27])
-axs[0].set_title('Air temperature in room I ($^oC$)',fontsize=16)
-
-axs[1].plot(np.arange(1,simK+1),1e-4*np.ones([simK,1]),'-',drawstyle='steps-post',label='$\epsilon_p$') # error line
-axs[1].scatter(np.arange(1,simK+1),nominal_err[0:simK,0],color='magenta',s=10,label='$E_{\mathrm{I}}^N(k)$')
-axs[1].plot(np.arange(1,simK+1),selfish_err[0:simK,0],'-',color='darkorange',drawstyle='steps-post',label='$E_{\mathrm{I}}^S(k)$')
-axs[1].scatter(np.arange(1,simK+1),corrected_err[0:simK,0],color='black',s=10,label='$E_{\mathrm{I}}^C(k)$')
-
-handles,labels=axs[1].get_legend_handles_labels();
-handles=[handles[0],handles[2],handles[1],handles[3]];
-labels=[labels[0],labels[2],labels[1],labels[3]];
-axs[1].legend(handles,labels,loc='center',ncol=4,fontsize=13)
-
-axs[1].set_title("Norm of error $\| \widehat{\\tilde{P}^{1}_I}[k]-\\bar{P}^{1}_{I}\|_{F}$",fontsize=16)
-
-axs[1].set_xticks(np.arange(0,simK+1,2))
-axs[1].set_xlim([1, simK])
-axs[1].set_xlabel('Time (k)',usetex=True,fontsize=16)
-
-fig.tight_layout()
-rc('font', **serif_font)
-# plt.savefig("../img/airtemp_roomI" + "/__ErrorWX_command_normErrH" +  ".pdf",bbox_inches='tight',transparent=True)
-# plt.savefig("../img/airtemp_roomI" + "/__ErrorWX_command_normErrH" +  ".png",bbox_inches='tight',transparent=True)
-
-# plt.rcParams.update({'font.size': 50})
-# fig.tight_layout()
-# rc('font', **arial_font)
-
-
-fig, axs = plt.subplots(2, 1,facecolor=(.0, .0, .0, .0),figsize=(6,5))
-
-axs[0].plot(np.arange(0,simK+1),np.matlib.repmat(nominal_Wt[0],simK+1,1),'-',drawstyle='steps-post')
-axs[0].plot(np.arange(0,simK+1),nominal_xt[0,0:simK+1,0],'-',color='magenta',drawstyle='steps-post')
-axs[0].plot(np.arange(0,simK+1),selfish_xt[0,0:simK+1,0],'-',drawstyle='steps-post')
-axs[0].scatter(np.arange(0,simK+1),corrected_xt[0,0:simK+1,0],s=15,color='black')
-axs[0].set_title('Air temperature in house I ($^oC$)',fontsize=20)
-axs[0].set_ylim([15, 27])
-
-
-axs[1].plot(np.arange(0,simK+1),np.matlib.repmat(nominal_Wt[1],simK+1,1),'-',drawstyle='steps-post')
-axs[1].plot(np.arange(0,simK+1),nominal_xt[0,0:simK+1,1],'-',color='magenta',drawstyle='steps-post')
-axs[1].plot(np.arange(0,simK+1),selfish_xt[0,0:simK+1,1],'-',drawstyle='steps-post')
-axs[1].scatter(np.arange(0,simK+1),corrected_xt[0,0:simK+1,1],s=15,color='black')
-axs[1].set_title('Air temperature in house II ($^oC$)',fontsize=20)
-axs[1].set_ylim([15, 27])
-
-axs[0].set_xlim([1, simK])
-axs[1].set_xlim([1, simK])
-
-axs[1].set_xlabel('Time (k)',usetex=True,fontsize=16)
-
-# axs[0].set_xticks(np.arange(0,simK+1,4))
-axs[0].set_xticks([])
-axs[1].set_xticks(np.arange(0,simK+1,4))
-axs[0].tick_params(axis='both', which='major', labelsize=20)
-axs[1].tick_params(axis='both', which='major', labelsize=20)
-
-axs[1].legend(( 'Reference i','Nominal','Agent I is Selfish','+ Correction'),loc='bottom', bbox_to_anchor=(.835, -0.5),ncol=2,fontsize=14)
-# axs[1].legend(handles,labels,loc='center',ncol=4,fontsize=15)
-
-fig.tight_layout()
-# plt.savefig("../img/airtemp_roomI" + "/__ErrorWX_command_normErrH_poster" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
-# plt.savefig("../img/airtemp_roomI" + "/__ErrorWX_command_normErrH_poster" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
-
-# NOTE(accacio): control
-fig, axs = plt.subplots(3, 1,facecolor=(.0, .0, .0, .0))
-
-axs[0].plot(np.arange(1,simK+1),nominal_u,'-',drawstyle='steps-post') # error line
-axs[0].set_xticks(np.arange(0,simK+1,2))
-axs[0].set_xlim([1, simK])
-axs[0].set_title('Applied control $u_i$ ($kW$) ',fontsize=16)
-axs[0].text(6, 3, "Nominal", ha="center", va="center",  size=16,
-    bbox=dict(boxstyle="round,pad=0.3", alpha=0.7, fc="w", ec="gray", lw=2))
-
-axs[0].legend(( 'I', 'II','III','IV'),loc='upper right',ncol=4,fontsize=13)
-axs[1].plot(np.arange(1,simK+1),selfish_u,'-',drawstyle='steps-post') # error line
-axs[1].set_xticks(np.arange(0,simK+1,2))
-axs[1].set_xlim([1, simK])
-axs[1].set_title('',fontsize=16)
-axs[1].text(6, 3, "Selfish", ha="center", va="center",  size=16,
-    bbox=dict(boxstyle="round,pad=0.3", alpha=0.7, fc="w", ec="gray", lw=2))
-
-axs[1].legend(( 'I', 'II','III','IV'),loc='upper right',ncol=4,fontsize=13)
-axs[2].plot(np.arange(1,simK+1),corrected_u,'-',drawstyle='steps-post') # error line
-axs[2].set_xticks(np.arange(0,simK+1,2))
-axs[2].set_xlim([1, simK])
-axs[2].set_title('',fontsize=16)
-axs[2].text(8, 3, "+ Correction", ha="center", va="center",  size=16,
-    bbox=dict(boxstyle="round,pad=0.3", alpha=0.7, fc="w",ec="gray",lw=2))
-axs[2].legend(( 'I', 'II','III','IV'),loc='upper right',ncol=4,fontsize=13)
-axs[2].set_xlabel('Time (k)',usetex=True,fontsize=16)
-
-fig.tight_layout()
-rc('font', **serif_font)
 # plt.savefig("../img/airtemp_roomI" + "/control" +  ".pdf",bbox_inches='tight',transparent=True)
 # plt.savefig("../img/airtemp_roomI" + "/control" +  ".png",bbox_inches='tight',transparent=True)
-
-# rc('font', **arial_font)
-axs[0].set_xticks([])
-axs[1].set_xticks([])
-axs[2].set_xticks(np.arange(0,simK+1,4))
-axs[0].tick_params(axis='both', which='major', labelsize=20)
-axs[1].tick_params(axis='both', which='major', labelsize=20)
-axs[2].tick_params(axis='both', which='major', labelsize=20)
-
-axs[0].legend([])
-axs[1].legend([])
-axs[2].legend(( 'I', 'II','III','IV'),loc='bottom', bbox_to_anchor=(.835, -0.7),ncol=4,fontsize=14)
-axs[0].set_title('Applied control $u_i$ ($kW$) ',fontsize=20)
-fig.tight_layout()
-
-
 
 # plt.savefig("../img/airtemp_roomI" + "/control_poster" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
 # plt.savefig("../img/airtemp_roomI" + "/control_poster" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
 
 # NOTE(accacio): Costs
-# fig, axs = plt.subplots(4, 1)
-# axs[0].plot(np.arange(1,simK+1),nominal_J,'-',drawstyle='steps-post') # error line
-# axs[0].plot(np.arange(1,simK+1),np.sum(nominal_J,axis=1),'-',drawstyle='steps-post') # error line
-# axs[0].set_xticks(np.arange(0,simK+1,2))
-# axs[0].set_xlim([1, simK])
-# axs[0].set_title('',fontsize=16)
-# axs[0].legend(( 'I', 'II','III','IV','Global'),loc='bottom right',ncol=5,fontsize=13)
+# fig, axs = plt.subplots(1, 1)
+# axs.plot(np.arange(0,simK),example_J,'-',drawstyle='steps-post') # error line
+# axs.plot(np.arange(0,simK),np.sum(example_J,axis=1),'-',drawstyle='steps-post') # error line
+# axs.set_xticks(np.arange(0,simK+1,2))
+# axs.set_xlim([1, simK])
+# axs.set_title('',fontsize=16)
+# axs.legend(( 'I', 'II','III','IV','Global'),loc='bottom right',ncol=5,fontsize=13)
+# print("oi")
+# plt.show()
+
+
 # axs[1].plot(np.arange(1,simK+1),(selfish_J),'-',drawstyle='steps-post') # error line
 # axs[1].plot(np.arange(1,simK+1),np.sum(selfish_J,axis=1),'-',drawstyle='steps-post') # error line
 # axs[1].legend(( 'I', 'II','III','IV','Global'),loc='bottom right',ncol=5,fontsize=13)
@@ -419,7 +259,7 @@ fig.tight_layout()
 # axs[3].legend(( 'N', 'S','C'),loc='bottom right',ncol=3,fontsize=13)
 
 # plt.show()
-sys.exit()
+# sys.exit()
 
 # plt.savefig("../img/airtemp_roomI" + "/control" +  ".pdf",bbox_inches='tight')
 # plt.savefig("../img/airtemp_roomI" + "/control" +  ".png",bbox_inches='tight')
