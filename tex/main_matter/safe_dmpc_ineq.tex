@@ -1109,9 +1109,9 @@ and update equation~\eqref{eq:projectedSubgradient_lambda_reprise}.
 
 \subsubsection{Results}\label{sec:results}
 We test the algorithm using the same similation period of
-$\input{../data/hours.tex}$
+$\input{../data/resilient_ineq/hours.tex}$
 hours, i.e.,
-${k\in\{0,\input{../data/hours.tex}/T_{s}\}}$.
+${k\in\{0,\input{../data/resilient_ineq/hours.tex}/T_{s}\}}$.
 The same scenarios are used:
 \begin{enumerate}
   \item Nominal behavior (denoted as N)
@@ -1125,11 +1125,11 @@ The attack models used for scenarios~\ref{it:case_selfish} \todo{and~\ref{it:cas
 are}
 \begin{align}
   T_{I}=&\begin{cases}
-          \left[\input{../data/triche_matrix_I}\right],&\text{if }k> \input{../data/selfish_time_I.tex}\\
+          \left[\input{../data/resilient_ineq/triche_matrix_I}\right],&\text{if }k> \input{../data/resilient_ineq/selfish_time_I.tex}\\
           I_{c},&\text{otherwise}
         \end{cases}\\
   T_{IV}=&\begin{cases}
-          \todo[verify]{\left[\input{../data/triche_matrix_IV}\right]},&\text{if }k> \input{../data/selfish_time_IV.tex}\\
+          \todo[verify]{\left[\input{../data/resilient_ineq/triche_matrix_IV}\right]},&\text{if }k> \input{../data/resilient_ineq/selfish_time_IV.tex}\\
           I_{c},&\text{otherwise}
         \end{cases}.
 \end{align}
@@ -1184,7 +1184,7 @@ When the correction mechanism is activated, the absolute percentual error is in 
     \toprule
     Agent  & Scenario N& Scenario S & Scenario C\\
     \midrule
-    \input{../data/table_costs_all_rooms_error.tex}\\
+    \input{../data/resilient_ineq/table_costs_all_rooms_error.tex}\\
     % \input{table_costs_only_global.tex}\\
     \bottomrule
   \end{tabular}
