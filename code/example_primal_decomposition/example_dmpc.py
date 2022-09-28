@@ -242,21 +242,21 @@ exit()
 # axs.set_xticks(np.arange(0,simK+1,2))
 # axs.set_xlim([1, simK])
 # axs.set_title('',fontsize=16)
-# axs.legend(( 'I', 'II','III','IV','Global'),loc='bottom right',ncol=5,fontsize=13)
+# axs.legend(( 'I', 'II','III','IV','Global'),loc='bottom right',ncol=5,fontsize=16)
 # print("oi")
 # plt.show()
 
 
 # axs[1].plot(np.arange(1,simK+1),(selfish_J),'-',drawstyle='steps-post') # error line
 # axs[1].plot(np.arange(1,simK+1),np.sum(selfish_J,axis=1),'-',drawstyle='steps-post') # error line
-# axs[1].legend(( 'I', 'II','III','IV','Global'),loc='bottom right',ncol=5,fontsize=13)
+# axs[1].legend(( 'I', 'II','III','IV','Global'),loc='bottom right',ncol=5,fontsize=16)
 # axs[2].plot(np.arange(1,simK+1),(corrected_J),'-',drawstyle='steps-post') # error line
 # axs[2].plot(np.arange(1,simK+1),np.sum(corrected_J,axis=1),'-',drawstyle='steps-post') # error line
-# axs[2].legend(( 'I', 'II','III','IV','Global'),loc='bottom right',ncol=5,fontsize=13)
+# axs[2].legend(( 'I', 'II','III','IV','Global'),loc='bottom right',ncol=5,fontsize=16)
 # axs[3].plot(np.arange(1,simK+1),np.sum(nominal_J,axis=1),'-',drawstyle='steps-post') # error line
 # axs[3].plot(np.arange(1,simK+1),np.sum(selfish_J,axis=1),'-',drawstyle='steps-post') # error line
 # axs[3].plot(np.arange(1,simK+1),np.sum(corrected_J,axis=1),'-',drawstyle='steps-post') # error line
-# axs[3].legend(( 'N', 'S','C'),loc='bottom right',ncol=3,fontsize=13)
+# axs[3].legend(( 'N', 'S','C'),loc='bottom right',ncol=3,fontsize=16)
 
 # plt.show()
 # sys.exit()
