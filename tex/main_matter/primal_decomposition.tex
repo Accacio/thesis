@@ -117,7 +117,7 @@ If we stack the $\vec{\lambda}_{i}[k]$ in $\vec{\lambda}[k]=[\vec{\lambda}_{1}[k
   \vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p).
 \end{equation}
 
-Using~\eqref{eq:DOP_local} and~\eqref{eq:projectedSubgradient_lambda}, we can alter Algorithm~\ref{alg:decomposition_coordination} to correspond to a decomposition of the original \mpc{} problem~\eqref{eq:qp_standard_form_decomposable} using the primal decomposition:
+Using~\eqref{eq:DOP_local} and~\eqref{eq:projectedSubgradient_lambda}, we can alter Algorithm~\ref{alg:decomposition_coordination} to correspond to a decomposition of the original \mpc{} problem~\eqref{eq:qp_standard_form_decomposable} using the primal decomposition (Algorithm~\ref{alg:primal_decomposition}).
 \begin{algorithm2e}[h]
   \DontPrintSemicolon%
   \KwIn{Maximum number of iteration $p_{\max}$, Bound $\epsilon$,Constants $a$ and $b$}
@@ -303,9 +303,9 @@ Due to this interpretation we call the iterative process as a \textbf{negotiatio
 Since the negotiation~\eqref{eq:projectedSubgradient_lambda} on the primal decomposition depends on $\thetaik$ and $\lambdaik$, the main source of vulnerabilities is the communication between local agents and coordinator.
 
 For the equality case shown, it is clear to see that fluctuations in $\thetaik$ alter the results of local problems~\eqref{eq:example_local_problem}, and analogously, fluctuations in $\lambdaik$ alter the negotiation.
-The same is true for the inequality case but not as straightforwad as inspecting equation~\eqref{eq:example_projectedSubgradient_lambda}.
+% The same is true for the inequality case but not as straightforwad as inspecting equation~\eqref{eq:example_projectedSubgradient_lambda}.
 An ill-intentioned local agent can exploit those facts to drive the negotiation by means of a \fdi{} attack.
-However, the system could be implemented in such way that the final allocations agreed upon are distributed physically (valves and switches for instance).
+However, the system could be implemented in such way that the final allocations agreed upon are distributed physically.
 
 With the physical distribution of allocation, \textbf{``Liar'' agent attacks} as in~\cite{VelardeEtAl2017b} are discouraged, since the attacker can not consume more than allocated (which would be beneficial for the attacker).
 On the other hand, an attack in which an agent is forced to use less than the allocated would still be possible, but no agent would benefit, given that their allocation would not increase (allocations are fixed at the end of negotiation).
@@ -313,8 +313,8 @@ We will call this kind of attack where an agent is forced to deteriorate its own
 Moreover, during the following negotiations, the attacked agent would need more and more resources, increasing as consequence their dissatisfaction $\lambdaik$ forcing other agents to share more resources to the attacked agent.
 
 We use the same example in~\S\ref{sec:example-interpr} but we modify agent $2$, so it does not use the resource allocated (agent does not apply $u_{2}^{\star}[0|k]$).
-In Figs.~\ref{fig:example_liar_lambda1},~\ref{fig:example_liar_lambda5} and~\ref{fig:example_liar_lambda10} we can compare the values of $\vec{\lambda}_{2}$ for different time steps $k=0$, $k=4$ and $k=9$.
-As we see, the values of $\vec{\lambda}_{2}$ increase as the time step $k$, driving as consequence all other values of $\lambdai$ and $\thetai$.
+In Figs.~\ref{fig:example_liar_lambda1},~\ref{fig:example_liar_lambda5} and~\ref{fig:example_liar_lambda10} we can compare the values of $\vec{\lambda}_{2}$ for different time steps $k$.
+As we see, the values of $\vec{\lambda}_{2}$ increase as the time step $k$ increases, driving as consequence all other values of $\lambdai$ and $\thetai$.
 If we compare Fig.~\ref{fig:example_liar_state} with Fig.~\ref{fig:example_state} we see how the performance is degraded for all agents.
 \begin{figure}[h]
   \centering
@@ -334,7 +334,7 @@ If we compare Fig.~\ref{fig:example_liar_state} with Fig.~\ref{fig:example_state
   \caption{Evolution of $\lambdai$ for different $k$ when agent $2$ is hijacked.}\label{fig:example_liar_lambdas}
 \end{figure}
 
-\begin{figure}[b]
+\begin{figure}[h]
   \centering
   \includegraphics[width=.5\textwidth]{../img/example_primal_decomposition/example_liar_state.pdf}
   \caption{Evolution of state $x_{i}[k]$ and reference $w_{i}[k]$ during control when agent $2$ is hijacked.}\label{fig:example_liar_state}
