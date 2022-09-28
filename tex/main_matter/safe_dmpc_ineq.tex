@@ -1117,21 +1117,21 @@ The same scenarios are used:
   \item Nominal behavior (denoted as N)
   \item Agent I attacks system controlled by standard \dmpc{} (denoted as S)\label{it:case_selfish_as}
   \item Agent I attacks system controlled by \rpdmpcas{} (denoted as C)\label{it:case_selfish_recovered_as}
-  \todo{\item Agents I and IV attack system controlled by standard \dmpc{} (denoted as MS)\label{it:case_selfish_multiple_as}\note{only if a have time to simulate}}
-  \todo{\item Agents I and IV attack system controlled by \rpdmpcas{} (denoted as MC)\label{it:case_selfish_multiple_recovered_as}\note{only if a have time to simulate}}
+  % \todo{\item Agents I and IV attack system controlled by standard \dmpc{} (denoted as MS)\label{it:case_selfish_multiple_as}\note{only if a have time to simulate}}
+  % \todo{\item Agents I and IV attack system controlled by \rpdmpcas{} (denoted as MC)\label{it:case_selfish_multiple_recovered_as}\note{only if a have time to simulate}}
 \end{enumerate}
 
-The attack models used for scenarios~\ref{it:case_selfish} \todo{and~\ref{it:case_selfish_recovered},
-are}
+The attack model used for scenarios~\ref{it:case_selfish} and~\ref{it:case_selfish_recovered},
+are
 \begin{align}
   T_{I}=&\begin{cases}
           \left[\input{../data/resilient_ineq/triche_matrix_I}\right],&\text{if }k> \input{../data/resilient_ineq/selfish_time_I.tex}\\
           I_{c},&\text{otherwise}
         \end{cases}\\
-  T_{IV}=&\begin{cases}
-          \todo[verify]{\left[\input{../data/resilient_ineq/triche_matrix_IV}\right]},&\text{if }k> \input{../data/resilient_ineq/selfish_time_IV.tex}\\
-          I_{c},&\text{otherwise}
-        \end{cases}.
+  % T_{IV}=&\begin{cases}
+  %         \todo[verify]{\left[\input{../data/resilient_ineq/triche_matrix_IV}\right]},&\text{if }k> \input{../data/resilient_ineq/selfish_time_IV.tex}\\
+  %         I_{c},&\text{otherwise}
+  %       \end{cases}.
 \end{align}
 
 Observing Fig.~\ref{fig:response3Scenarios}, we can compare the air temperature in room~I
@@ -1162,14 +1162,14 @@ However, when the correction is activated, it approaches the nominal.
   \caption{Control applied in all rooms for the 3 scenarios.}\label{fig:control_3Scenarios}
 \end{figure}
 
-\todo{
-  We can also show the method works similarly for cases MS and MC, where multiple agents attack the system (Fig.~\ref{fig:response_houses_N_M_as}),
-}
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=.7\textwidth]{../img/resilient_ineq/__ErrorWX_command_normErrH.pdf}
-\caption{Temperature in all houses, and respective references for scenarios N,MS and MC. \todo{remake figure}\note{only if i have time, probably not}}\label{fig:response_houses_N_M_as}
-\end{figure}
+% \todo{
+%   We can also show the method works similarly for cases MS and MC, where multiple agents attack the system (Fig.~\ref{fig:response_houses_N_M_as}),
+% }
+% \begin{figure}[h]
+%   \centering
+%   \includegraphics[width=.7\textwidth]{../img/resilient_ineq/__ErrorWX_command_normErrH.pdf}
+% \caption{Temperature in all houses, and respective references for scenarios N,MS and MC. \todo{remake figure}\note{only if i have time, probably not}}\label{fig:response_houses_N_M_as}
+% \end{figure}
 
 
 Another way to represent performances of our proposition, however more palpably is to compare the accumulate objective functions during the period of simulation for each of the three scenarios (Table~\ref{tab:costsGlobalLocal}).
@@ -1203,6 +1203,6 @@ We presented the \em{} algorithm,  which although may be adequate for such estim
 
 Finally we presented our resilient algorithm using artificial scarcity and tested it using our \dhn{} study case.
 
-\todo{In the next chapter we discuss how to relax the artificial scarcity assumption.\note{if I have time, probably not}}
+% \todo{In the next chapter we discuss how to relax the artificial scarcity assumption.\note{if I have time, probably not}}
 
 \end{document}

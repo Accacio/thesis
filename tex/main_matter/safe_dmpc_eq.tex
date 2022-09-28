@@ -659,7 +659,7 @@ The projection yields the constrained solution of the problem (blue dot).
 \begin{figure}[h]
   \centering
   \includegraphics[width=7cm]{../img/resilient_eq/original-minimum.pdf}
-  \caption[Original minimum.]{Original minimum. \todo{remake figure}}\label{fig:original_minimum}
+  \caption{Original minimum.}\label{fig:original_minimum}
 \end{figure}
 
 Once one the agents attacks the system using~\eqref{eq:linear_attack_reprise}, the level curves are distorded, as seen in Fig.~\ref{fig:minimum_after_attack}.
@@ -667,7 +667,7 @@ This distortion changes the projection, resulting in a new constrained solution 
 \begin{figure}[h]
   \centering
   \includegraphics[width=7cm]{../img/resilient_eq/new-minimum-selfish.pdf}
-  \caption[Minimum after attack.]{Minimum after attack. \todo{remake figure}}\label{fig:minimum_after_attack}
+  \caption{Minimum after attack.}\label{fig:minimum_after_attack}
 \end{figure}
 
 If the attacker is detected, one of our options to mitigate this drift is to substitute the $\lambdaicheat$ received during a negotiation by $\0$.
@@ -682,7 +682,7 @@ In Fig.~\ref{fig:minimum_ignoring_attacker}, we see the new level curves and the
 \end{figure}
 
 Although the idea of punishing the attacker by ignoring it may appear reasonably, since the system is a \cps{}, it may control some amenity that needs a minimal \QoS{}.
-If we are controlling a \HVAC{} system, for instance, depending on the region of the planet, turning the heat off of the attacker could make the users extremely cold\todo{, as in the introductory example in Chapter~\ref{sec:introduction}}.
+If we are controlling a \HVAC{} system, for instance, depending on the region of the planet, turning the heat off of the attacker could make the users extremely cold, as in the introductory example in Chapter~\ref{sec:introduction}.
 
 A solution would be to, before the negotiation, allocate minimal resources for the attacker, and then ignore it throughout the negotiation using the remainder of the resources, subtracting the maximum by the allocated for the attacker.
 However, it would be needed to assess somehow what would be the fair amount to give to the attacker, which would not prejudice other agents.
@@ -1017,7 +1017,7 @@ However, we can see for the scenarios where the \rpdmpcss{} is activated the obj
 
 \begin{table}[h]
   \centering
-  \caption{Objective functions $J_{i}$ (\% error)\todo{\note{add percentual values}}}\label{tab:eq_costsGlobalLocal}
+  \caption{Objective functions $J_{i}$ (\% error)\todo{read note\note{add percentual values}}}\label{tab:eq_costsGlobalLocal}
   \begin{tabular}[t]{cccc}
     \toprule
     Agent  & Scenario N& Scenario S & Scenario C\\
