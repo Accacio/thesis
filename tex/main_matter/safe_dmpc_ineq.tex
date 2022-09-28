@@ -803,12 +803,12 @@ Analogously, we can set an arbitrary bound $\epsilon_{\Plinineq}$, and define th
 \begin{equation}
   E_{i}^{(0)}[k] =\norm{\Plinineqtildeestimate-\Plinineqnominal}_{F},
 \end{equation}
-which associated with an detection function $d_{i}^{(0)}$:
+which associated with an detection function $\mathfrak{d}_{i}^{(0)}$:
 \begin{equation}
   \label{eq:detection_ineq}
-  d_{i}^{(0)}=\indicator{E_{i}^{(0)}[k]\geq\epsilon_{\Plinineq}},
+  \mathfrak{d}_{i}^{(0)}=\indicator{E_{i}^{(0)}[k]\geq\epsilon_{\Plinineq}},
 \end{equation}
-detects an attack when the corresponding bound is disrespected, i.e., $d_{i}^{(0)}=1$.
+detects an attack when the corresponding bound is disrespected, i.e., $\mathfrak{d}_{i}^{(0)}=1$.
 
 \subsection{Multiple Parameter Estimation}\label{sec:cons-about-mult}
 The problem of estimating affine parameters on a system with a known number of different modes is called in~\cite{LauerBloch2019} as a \emph{\pwa{} regression with fixed modes}.
@@ -1039,17 +1039,31 @@ Putting together all parts defined in the last sections, we can come up with Alg
 
 \begin{algorithm2e}[h]
   \DontPrintSemicolon
-  Initialize size of ball $r$\;
+  \coordinit{
+    Initialize $k$, $p$, $a$, $b$, $p_{\max}$ and $\epsilon$\;
+  }
+  \While{$k\geq 0$}{
   \detectPhase{
-    Coordinator sends sequence of $\vec{\theta}_{i}^{o}\in\set{B}(\thetairestricted,r)$, $o\in\set{O}$ \;
-    Subsystems solve~\eqref{eq:DOP_local}, and send $\tilde{\vec{\lambda}}^{o}_{i}$, $o\in\set{O}$\;
-    Coordinator estimates $\widehat{\tilde{P}_{i}^{1}}[k]$ and $\widehat{\tilde{\vec{s}}_{i}^{1}}[k]$ with \EM{}\;
+    Initialize size of ball $r$\;
+    \For{$o\in\set{O}$}{
+    Coordinator sends $\vec{\theta}_{i}^{o}\in\set{B}(\thetairestricted,r)$\;
+    Subsystems solve~\eqref{eq:DOP_local}, and send $\tilde{\vec{\lambda}}^{o}_{i}$\;
+    }
+    Coordinator estimates $\Plinineqtildeestimate$ and $\sikineqtildeestimate$ with \EM{} (Algorithm~\ref{alg:em})\;
     Coordinator computes $\mathfrak{d}_{i}$ using~\eqref{eq:detection_ineq}\;
   }
   \negotPhase{
-  Apply Algorithm~\ref{alg:quantityAlg} with adequate versions of $\vec{\lambda}_{i}\p$:\;
-  \quad$\tilde{\vec{\lambda}}_{i}\p$, if $\mathfrak{d}_{i}=0$ and ${\vec{\lambda}_{i}}_{\mathrm{rec}}$, if ${\mathfrak{d}_{i}=1}$~\eqref{eq:lambda_reconstruction}\;
+    Coordinator initializes $\vec{\theta}^{(p)}$ and sends to subsystems\;
+    \Repeat{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\lor \left[p\geq p_{\max}\right]$}{
+      Agents solve local sub-problems~\eqref{eq:DOP_local} and send ${\vec{\lambda}_{i}[k]}^{(p)}$ to coordinator\;
+  Coordinator updates allocation~\eqref{eq:projectedSubgradient_lambda_reprise} using $\lambdaimodified$:\;
+  \quad$\vec{\lambda}_{i}^{\star}(\vec{\theta}\p)$, if $\mathfrak{d}_{i}=0$ and ${\vec{\lambda}_{i}}_{\mathrm{rec}}$, if ${\mathfrak{d}_{i}=1}$~\eqref{eq:lambda_reconstruction}\;
+  $p\gets p+1$
  }
+  Agents apply on respective sub-systems the last calculated $\vec{u}_{i}^{\star}[0|k]$\;
+  $k\gets k+1$
+}
+}
  \caption{Resilient Primal Decomposition-based dMPC under artificial scarcity. \todo{rework algo}}\label{alg:safeDMPC}
 \end{algorithm2e}
 
