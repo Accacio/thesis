@@ -739,10 +739,8 @@ So, we can modulate the negotiation algorithm, by using $\lambdaimodified$ choos
 
 \begin{remark}
   Observe that if estimate of $\Plin$ do not converge, we cannot reconstruct $\lambdaik$ so we need to use one of the other options proposed, ignore the attacker, or use minimal allocation.
-  Since it may be difficult to asses the minimal allocation, we ignore the cases when the estimation does not converge.\note{or I can just ignore}
+  Since it may be difficult to asses the minimal allocation, we ignore the cases when the estimation does not converge.
 \end{remark}
-
-\note{If time permits I can add here a discussion about the error on reconstructing lambda from estimation error}
 
 \section{Complete safe dMPC for scarce systems}\label{sec:complete-safe-dmpc}
 Compiling the detection and mitigation schemes described in the last sections, we can finally have our \rpdmpcss{}.
@@ -828,7 +826,7 @@ The meaning of each component is given in Tab.~\ref{tab:modelParamMeaning}, and 
 
     \draw (d) to[R=$R^{\text{ow/oa}}$] (e) to[battery,l=$T^{\text{out}}$] ++(0,-2) node[tlground]{};
   \end{circuitikz}
-  \caption{Thermic Model 3R-2C of a house. \todo{verify model}}\label{fig:3R2C_model}
+  \caption{Thermic Model 3R-2C of a house.}\label{fig:3R2C_model}
 \end{figure}
 
 \begin{table}[h]
@@ -877,7 +875,7 @@ The electric circuit corresponds to a \ltict{} system, which can be represented 
   \end{matrix},
 \end{equation}
 where
-\todo[verify]{
+
 \begin{equation}
   \label{eq:4}
   \begin{matrix}
@@ -887,7 +885,7 @@ where
       \frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}} &-\frac{1}{C^{\text{air}}_{i}R^{\text{ow/oa}}o_{i}}-\frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}}
     \end{matrix}\right]
                                                          &
-      B_{\mathrm{c}_{i}}=\left[\begin{matrix}  \frac{P^{\text{heat}}}{C^{\text{air}}_{i}}\\ 0\end{matrix}\right]\T
+      B_{\mathrm{c}_{i}}=\left[\begin{matrix}  \frac{1}{C^{\text{air}}_{i}}\\ 0\end{matrix}\right]\T
   \\\\
     D_{\mathrm{c}_{i}}=\left[
     \begin{matrix}
@@ -897,7 +895,7 @@ where
 
 \end{matrix}
 \end{equation}
-}
+
 where
 ${\vec{x}_{i}(t)=\left[T^{\text{in}}_{i}(t)\ T^{\text{walls}}_{i}(t)\right]\T}$,
 ${\vec{u}_{i}(t)=P^{\text{heat}}_{i}}$,
@@ -908,7 +906,7 @@ Their heating inputs $\vec{u}_{i}(t)$ are constraint by the maximum heat power a
 \sum\limits_{i\in\set{M}}\left[\vec{u}_{i}(t)\right]\preceq \vec{u}_{\max}
 \end{equation}
 with
-\todo{$\vec{u}_{\max}=4\mathrm{kW}$}
+$\vec{u}_{\max}=40\mathrm{kW}$
 .
 
 \begin{remark}
@@ -937,11 +935,11 @@ For example, we suppose they have initial states
   $w_{\text{IV}}[0]=$
 }.
 Using gains
-\todo[verify size]{$Q_{i}=10I$,}
+$Q_{i}=10I$,
 and
 $R_{i}=   I_{2}$,
 and choosing to control the system using a prediction horizon
-\todo{$\predhorz=4$,}
+$\predhorz=4$,
 we can structure the \dmpc{} problem similar to the one in~\eqref{eq:qp_standard_form_equality} and decompose the system using the usual primal decomposition, with local problems
 \begin{equation}
   \label{eq:houses_scarce_local_problem}
@@ -956,39 +954,39 @@ and update equation~\eqref{eq:example_projectedSubgradient_lambda_reprise}.
 
 \subsubsection{Results}\label{sec:results}
 We test the algorithm by simulating the system over a period of
-\todo{$5$}
+$5$
 hours, i.e.,
-\todo{${k\in\{0,5/T_{s}\}}$},
+${k\in\{0,5/T_{s}\}}$,
 in some different scenarios:
 \begin{enumerate}
   \item Nominal behavior (denoted as N)
   \item Agent I attacks system controlled by standard \dmpc{} (denoted as S)\label{it:case_selfish}
   \item Agent I attacks system controlled by \rpdmpcss{} (denoted as C)\label{it:case_selfish_recovered}
-  \todo{\item Agents I and IV attack system controlled by standard \dmpc{} (denoted as MS)\label{it:case_selfish_multiple}\note{only if a have time to simulate}}
-  \todo{\item Agents I and IV attack system controlled by \rpdmpcss{} (denoted as MC)\label{it:case_selfish_multiple_recovered}\note{only if a have time to simulate}}
+  % \todo{\item Agents I and IV attack system controlled by standard \dmpc{} (denoted as MS)\label{it:case_selfish_multiple}\note{only if a have time to simulate}}
+  % \todo{\item Agents I and IV attack system controlled by \rpdmpcss{} (denoted as MC)\label{it:case_selfish_multiple_recovered}\note{only if a have time to simulate}}
 \end{enumerate}
 
-The attack\todo{s} chosen for scenarios~\ref{it:case_selfish} \todo{and~\ref{it:case_selfish_recovered},
-are}
+The attack chosen for scenarios~\ref{it:case_selfish} and~\ref{it:case_selfish_recovered},
+are
 \begin{align}
   T_{I}=\begin{cases}
-          \todo{4I_{c}\text{, if }k< 4}\\
+          4I_{c}\text{, if }k> 5\\
           I_{c}\text{, otherwise}
         \end{cases}\\
-  T_{IV}=\begin{cases}
-          \todo{4I_{c}\text{, if }k< 6}\\
-          I_{c}\text{, otherwise}
-        \end{cases}
+  % T_{IV}=\begin{cases}
+  %         \todo{4I_{c}\text{, if }k< 6}\\
+  %         I_{c}\text{, otherwise}
+  %       \end{cases}
 \end{align}
 .
 
 In Fig.~\ref{fig:response_houseI_3Scenarios}, we compare the temperature in house I ($\vec{y}_{I}[k]$) with its reference $\vec{w}_{I}[k]$, and then the
 decision variable ${E_{I}(k)}$ with the threshold
-\todo{$\epsilon_{P}=10^{-4}$}.
+$\epsilon_{P}=10^{-4}$.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=.7\textwidth]{AirTempAndDecisionVariable.pdf}
+  \includegraphics[width=.7\textwidth]{../img/resilient_eq/__ErrorWX_command_normErrH.pdf}
 \caption{Temperature in house I and the decision variable $E_{I}(k)$ for different scenarios. \todo{remake figure}}\label{fig:response_houseI_3Scenarios}
 \end{figure}
 As expected, the decision variable lies under the threshold $\epsilon_{P}=10^{-4}$ in the nominal scenario.
@@ -1004,14 +1002,14 @@ On the other hand, the other agents receive less resources, as we can see the tr
 
 When the \rpdmpcss{} is activated in scenario C, the temperatures recover behavior close to the nominal one, as we can see in~\ref{fig:response_houseI_3Scenarios} and~\ref{fig:response_housesII_to_IV_3Scenarios}.
 
-\todo{
-  Similarly, we can show the method works for cases where multiple agents attack the system (Fig.~\ref{fig:response_houses_N_M}),
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=7cm]{AirTempAndDecisionVariable.pdf}
-\caption{Temperature of all houses, and respective references for scenarios N,MS and MC. \todo{remake figure}}\label{fig:response_houses_N_M}
-\end{figure}
-}
+% \todo{
+%   Similarly, we can show the method works for cases where multiple agents attack the system (Fig.~\ref{fig:response_houses_N_M}),
+% \begin{figure}[h]
+%   \centering
+%   \includegraphics[width=7cm]{AirTempAndDecisionVariable.pdf}
+% \caption{Temperature of all houses, and respective references for scenarios N,MS and MC. \todo{remake figure}}\label{fig:response_houses_N_M}
+% \end{figure}
+% }
 
 We can also compare the accumulate local and global objectives $\Jiacc$ and $\Jacc$ for the scenarios N, C and S in Tab.~\ref{tab:eq_costsGlobalLocal}.
 As expected, when no secure \dmpc{} is applied and the system is attacked, the objective funciton of the attackers decrease, while the others increase, together with the global objective $\Jacc$.
