@@ -247,7 +247,7 @@ for k=1:simK
     uHist(:,k,:) = u(1:ni,:);
 end
 toc
-dataPath='../data/';
+dataPath='../../data/example_primal_decomposition/';
 %= save data
 save(getFileName(dataPath,'example_dmpc','.mat'),'-mat')
 end
@@ -295,11 +295,11 @@ end
 
 %% print to tex
 % sympref('FloatingPointOutput',true);
-fileid=fopen("../data/example_predhorz.tex",'w');
+fileid=fopen("../../data/example_primal_decomposition/example_predhorz.tex",'w');
 fprintf(fileid,"%d",Np);
 fclose(fileid);
 
-fileid=fopen("../data/example_states.tex",'w');
+fileid=fopen("../../data/example_primal_decomposition/example_states.tex",'w');
 states_text=['${x_{1}[0]=' latex(sym(xt(:,1,1))) '}$, '];
 fprintf(fileid,'%s\n',states_text);
 states_text=['${x_{2}[0]=' latex(sym(xt(:,1,2))) '}$, '];
@@ -310,7 +310,7 @@ fprintf(fileid,'%s\n',states_text);
 fclose(fileid);
 
 sympref('FloatingPointOutput',true);
-fileid=fopen("../data/example_references.tex",'w');
+fileid=fopen("../../data/example_primal_decomposition/example_references.tex",'w');
 states_text=['${w_{1}[0]=' num2str(Wt(1)/xt(:,1,1),'%.2f') 'x_{1}[0]}$, '];
 fprintf(fileid,'%s\n',states_text);
 states_text=['${w_{2}[0]=' num2str(Wt(2)/xt(:,1,2),'%.2f') 'x_{2}[0]}$, '];
@@ -324,13 +324,13 @@ sympref('FloatingPointOutput',false);
 H1_text=['H_1=' latex(sym(H(:,:,1))) ', & \vec{f}_1[k]=' latex(sym(Cmat(:,:,1)'*Qbar(:,:,1)*Mmat(:,:,1))) 'x_i[k]-' latex(sym(Cmat(:,:,1)'*Qbar(:,:,1))) '\vec{W}_i[k], & \bar{\Gamma}_1=I_2,\\\\'];
 H2_text=['H_2=' latex(sym(H(:,:,2))) ', & \vec{f}_2[k]=' latex(sym(Cmat(:,:,2)'*Qbar(:,:,2)*Mmat(:,:,2))) 'x_i[k]-' latex(sym(Cmat(:,:,2)'*Qbar(:,:,2))) '\vec{W}_i[k], & \bar{\Gamma}_2=I_2,\\\\'];
 H3_text=['H_3=' latex(sym(H(:,:,3))) ', & \vec{f}_3[k]=' latex(sym(Cmat(:,:,3)'*Qbar(:,:,3)*Mmat(:,:,3))) 'x_i[k]-' latex(sym(Cmat(:,:,3)'*Qbar(:,:,3))) '\vec{W}_i[k], & \bar{\Gamma}_3=I_2.\\\\'];
-fileid=fopen("../data/example_system_params.tex",'w');
+fileid=fopen("../../data/example_primal_decomposition/example_system_params.tex",'w');
 fprintf(fileid,"%s\n",H1_text);
 fprintf(fileid,"%s\n",H2_text);
 fprintf(fileid,"%s\n",H3_text);
 fclose(fileid);
 
-fileid=fopen("../data/example_system_dynamics.tex",'w');
+fileid=fopen("../../data/example_primal_decomposition/example_system_dynamics.tex",'w');
 fprintf(fileid,"$a_1=%.1f$, ", A(1) );
 fprintf(fileid,"$a_2=%.1f$, ", A(2) );
 fprintf(fileid,"$a_3=%.1f$, ", A(3) );
