@@ -748,52 +748,26 @@ So, we can modulate the negotiation algorithm, by using $\lambdaimodified$ choos
 Compiling the detection and mitigation schemes described in the last sections, we can finally have our \rpdmpcss{}.
 Algorithm~\ref{alg:rpdbdmpcss} systematizes the method.
 
-% \begin{algorithm2e}[h]
-%   \DontPrintSemicolon%
-%   \coordinit{
-%     Initialize $k$, $p$, $a$, $b$, $p_{\max}$ and $\epsilon$\;
-%   }
-%   \While{$k\geq 0$}{
-%     Initialize ${\thetaik}^{(p)},$ $\forall i\in\set{M}$, such that ${\vec{\theta}[k]}^{(p)}\in\set{S}$\;
-%     Coordinator sends $\thetaik^{(p)}$ for all agents\;
-%     \exchange{
-%       \Repeat{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\lor \left[p\geq p_{\max}\right]$}{
-%         Agents solve local sub-problems~\eqref{eq:DOP_local} and send ${\vec{\lambda}_{i}[k]}^{(p)}$ to coordinator\;
-%         Coordinator updates $\vec{\theta}[k]$ using~\eqref{eq:projectedSubgradient_lambda} and sends to local agents\;
-%         $p\gets p+1$\;
-%       }
-%     }
-%     Agents apply on respective sub-systems the last calculated $\vec{u}_{i}^{\star}[0|k]$\;
-%     $k\gets k+1$\;
-%   }
-%   \caption{Primal decomposition-based \dmpc{}.}\label{alg:primal_decomposition_based_dmpc}
-% \end{algorithm2e}
 \begin{algorithm2e}[h]
   \DontPrintSemicolon
   \detectPhase{
-  $h:=0$\;
-    \Repeat{
-$\|\eta_{i}^{h}-\eta^{h-1}\|\leq\epsilon$
-}{
-    Coordinator sets random $\vec{\theta}_{i}^{(h+1)}$ \;
-    Subsystems solve~\eqref{eq:DOP_local}, and send $\vec{\lambda}^{\star}_{i}(\vec{\theta}^{(h)})$\;
-    Coordinator estimates $\widehat{\tilde{P}}_{i}(k)^{(h)}$ and $\widehat{\tilde{\vec{s}}}_{i}(k)^{(h)}$ \;
-    $h:=h+1$\;
-    }
-    Coordinator computes $d_{i}$ using~\eqref{eq:2}\;
+    Coordinator computes $d_{i}$ and estimate $\Plintildeestimate$ using Algorithm~\ref{alg:detection_rls}\;
   }
   \negotPhase{
-  $p:=0$\;
-  Coordinator initializes $\vec{\theta}^{(p)}$ and send to subsystems\;
-  \Repeat{$\|\vec{\theta}^{(p)} -\vec{\theta}^{(p-1)}\|\leq\epsilon$}{
-  Subsystems solve~\eqref{eq:DOP_local}, and send $\vec{\lambda}^{\star}_{i}(\vec{\theta}\p)$\;
+    $p\gets 0$\;
+    Coordinator initializes $\vec{\theta}^{(p)}$ and send to subsystems\;
+    \Repeat{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\lor \left[p\geq p_{\max}\right]$}{
+      Subsystems solve~\eqref{eq:DOP_local}, and send $\vec{\lambda}^{\star}_{i}(\vec{\theta}\p)$\;
 
-  Coordinator updates allocation~\eqref{eq:thetaNegot} using adequate versions of $\vec{\lambda}_{i}$ for each agent: $\vec{\lambda}_{i}^{\star}(\vec{\theta}\p)$, if $d_{i}=0$ and ${\vec{\lambda}_{i}}_{\mathrm{rec}}$, if ${d_{i}=1}$\;
-  $p:=p+1$
- }}
- \caption{Resilient Primal Decomposition-based dMPC for scarce systems. \todo{rework algo}}\label{alg:rpdbdmpcss}
+      Coordinator updates allocation~\eqref{eq:example_projectedSubgradient_lambda_reprise} using adequate versions of $\vec{\lambda}_{i}$:\;
+      \quad$\vec{\lambda}_{i}^{\star}(\vec{\theta}\p)$, if $d_{i}=0$ and $\lambdaireconstructed$, if ${d_{i}=1}$~\eqref{eq:lambdareconstruction}\;
+      $p\gets p+1$
+    }
+    Agents apply on respective sub-systems the last calculated $\vec{u}_{i}^{\star}[0|k]$\;
+    $k\gets k+1$\;
+  }
+  \caption{Resilient Primal Decomposition-based dMPC for scarce systems.}\label{alg:rpdbdmpcss}
 \end{algorithm2e}
-
 
 \section{Numerical experiment}\label{sec:numerical-experiment}
 
