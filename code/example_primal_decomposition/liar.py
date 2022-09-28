@@ -86,23 +86,23 @@ plt.legend((  '$\\lambda_{1_1}$', '$\\lambda_{1_2}$', '$\\lambda_{2_1}$', '$\\la
 plt.savefig(outputFolder + "example_liar_lambda_k_" + str(k)  +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
 plt.savefig(outputFolder + "example_liar_lambda_k_" + str(k)  +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
 
-k=19
-fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
-axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[0,0:lastp[k],k,0]),color_map[0])
-axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[1,0:lastp[k],k,0]),color_map[1])
-axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[0,0:lastp[k],k,1]),color_map[2])
-axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[1,0:lastp[k],k,1]),color_map[3])
-axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[0,0:lastp[k],k,2]),color_map[4])
-axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[1,0:lastp[k],k,2]),color_map[5])
+# k=19
+# fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
+# axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[0,0:lastp[k],k,0]),color_map[0])
+# axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[1,0:lastp[k],k,0]),color_map[1])
+# axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[0,0:lastp[k],k,1]),color_map[2])
+# axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[1,0:lastp[k],k,1]),color_map[3])
+# axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[0,0:lastp[k],k,2]),color_map[4])
+# axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[1,0:lastp[k],k,2]),color_map[5])
 
-axs.plot(np.arange(0,lastp[k]),np.transpose(np.mean(lambdaHist[:,0:lastp[k],k,:],axis=2)),'--k')
+# axs.plot(np.arange(0,lastp[k]),np.transpose(np.mean(lambdaHist[:,0:lastp[k],k,:],axis=2)),'--k')
 
-plt.xlabel('Negotiation step ($p$)',usetex=True,fontsize=16)
-plt.xticks(fontsize = 20)
-plt.yticks(fontsize = 20)
-plt.legend((  '$\\lambda_{1_1}$', '$\\lambda_{1_2}$', '$\\lambda_{2_1}$', '$\\lambda_{2_2}$','$\\lambda_{3_1}$', '$\\lambda_{3_2}$'),ncol=3,fontsize=16)
-plt.savefig(outputFolder + "example_liar_lambda_k_" + str(k)  +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
-plt.savefig(outputFolder + "example_liar_lambda_k_" + str(k)  +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
+# plt.xlabel('Negotiation step ($p$)',usetex=True,fontsize=16)
+# plt.xticks(fontsize = 20)
+# plt.yticks(fontsize = 20)
+# plt.legend((  '$\\lambda_{1_1}$', '$\\lambda_{1_2}$', '$\\lambda_{2_1}$', '$\\lambda_{2_2}$','$\\lambda_{3_1}$', '$\\lambda_{3_2}$'),ncol=3,fontsize=16)
+# plt.savefig(outputFolder + "example_liar_lambda_k_" + str(k)  +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+# plt.savefig(outputFolder + "example_liar_lambda_k_" + str(k)  +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
 
 
 
