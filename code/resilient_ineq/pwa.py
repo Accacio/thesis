@@ -16,7 +16,7 @@ outputFolder= "../../img/resilient_ineq/"
 
 color_map=plt.get_cmap('Greys')
 
-fig, axs = plt.subplots(facecolor=(.0, .0, .0, .0))
+fig, axs = plt.subplots(facecolor=(.0, .0, .0, .0),figsize=(7, 3))
 
 
 x1 = np.linspace(2,5,100);
