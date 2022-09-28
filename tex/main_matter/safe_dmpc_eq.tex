@@ -783,9 +783,8 @@ $\|\eta_{i}^{h}-\eta^{h-1}\|\leq\epsilon$
     Coordinator computes $d_{i}$ using~\eqref{eq:2}\;
   }
   \negotPhase{
-  Coordinator initializes $\vec{\theta}^{(0)}$ \;
   $p:=0$\;
-
+  Coordinator initializes $\vec{\theta}^{(p)}$ and send to subsystems\;
   \Repeat{$\|\vec{\theta}^{(p)} -\vec{\theta}^{(p-1)}\|\leq\epsilon$}{
   Subsystems solve~\eqref{eq:DOP_local}, and send $\vec{\lambda}^{\star}_{i}(\vec{\theta}\p)$\;
 
