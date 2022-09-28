@@ -1057,7 +1057,7 @@ Putting together all parts defined in the last sections, we can come up with Alg
     \Repeat{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\lor \left[p\geq p_{\max}\right]$}{
       Agents solve local sub-problems~\eqref{eq:DOP_local} and send ${\vec{\lambda}_{i}[k]}^{(p)}$ to coordinator\;
   Coordinator updates allocation~\eqref{eq:projectedSubgradient_lambda_reprise} using $\lambdaimodified$:\;
-  \quad$\vec{\lambda}_{i}^{\star}(\vec{\theta}\p)$, if $\mathfrak{d}_{i}=0$ and ${\vec{\lambda}_{i}}_{\mathrm{rec}}$, if ${\mathfrak{d}_{i}=1}$~\eqref{eq:lambda_reconstruction}\;
+  \quad$\vec{\lambda}_{i}^{\star}(\vec{\theta}\p)$, if $\mathfrak{d}_{i}=0$ and $\lambdaireconstructed$, if ${\mathfrak{d}_{i}=1}$~\eqref{eq:lambda_reconstruction}\;
   $p\gets p+1$
  }
   Agents apply on respective sub-systems the last calculated $\vec{u}_{i}^{\star}[0|k]$\;
