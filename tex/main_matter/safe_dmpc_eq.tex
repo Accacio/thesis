@@ -655,18 +655,18 @@ and all other conditions set in this chapter.
 To facilitate visualization we suppose the prediction horizon is $\predhorz=1$ and the agents have local constraints $\vec{u}_{i}\geq\0$.
 
 If we plot the level curves of the system (Fig.~\ref{fig:original_minimum}), we can see how the unconstrained minimum is projected (weighted projection) onto the hyperplane.
-The projection yields the constrained solution of the problem (\todo{blue} dot).
+The projection yields the constrained solution of the problem (blue dot).
 \begin{figure}[h]
   \centering
-  \includegraphics[width=7cm]{../img/original-minimum.png}
+  \includegraphics[width=7cm]{../img/resilient_eq/original-minimum.png}
   \caption[Original minimum.]{Original minimum. \todo{remake figure}}\label{fig:original_minimum}
 \end{figure}
 
 Once one the agents attacks the system using~\eqref{eq:linear_attack_reprise}, the level curves are distorded, as seen in Fig.~\ref{fig:minimum_after_attack}.
-This distortion changes the projection, resulting in a new constrained solution (in \todo{green}).
+This distortion changes the projection, resulting in a new constrained solution (in green dot).
 \begin{figure}[h]
   \centering
-  \includegraphics[width=7cm]{../img/new-minimum-selfish.png}
+  \includegraphics[width=7cm]{../img/resilient_eq/new-minimum-selfish.pdf}
   \caption[Minimum after attack.]{Minimum after attack. \todo{remake figure}}\label{fig:minimum_after_attack}
 \end{figure}
 
@@ -674,10 +674,10 @@ If the attacker is detected, one of our options to mitigate this drift is to sub
 It can be interpreted as the coordinator punishing the attacker by assuming it will always be satisfied independent of the allocation given.
 The negligence against the attacker will result in it receiving less and less resources. Asymptotically, the system will behave as the attacker was unplugged, since the negotiation will be maintained with the other agents, somehow similar to the examples in~\cite{VelardeEtAl2018,MaestreEtAl2021}.
 
-In Fig.~\ref{fig:minimum_ignoring_attacker}, we see the new level curves and the new solution found (in \todo{magenta}) when ignoring the attacker.
+In Fig.~\ref{fig:minimum_ignoring_attacker}, we see the new level curves and the new solution found (orange dot) when ignoring the attacker.
 \begin{figure}[h]
   \centering
-  \includegraphics[width=7cm]{../img/ignoreX.png}
+  \includegraphics[width=7cm]{../img/resilient_eq/ignoreX.png}
   \caption{Optimal value after ignoring attacker. \todo{remake figure}}\label{fig:minimum_ignoring_attacker}
 \end{figure}
 
@@ -692,7 +692,7 @@ Passing from the level curves of the attacked system (Fig.~\ref{fig:minimum_afte
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=7cm]{../img/correctX.png}
+  \includegraphics[width=7cm]{../img/resilient_eq/correctX.png}
   \caption{Optimal value after trying to recover original behavior.}\label{fig:minimum_recovered}
 \end{figure}
 
