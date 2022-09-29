@@ -919,21 +919,9 @@ We want to control the system using \mpc{}, so we discretize the system using a 
 First, to use the \rpdmpcss{}, we assume the heating sysmtem is scarce, in other words, given an initial state $\vec{x}_{i}[0]$, references $\vec{w}_{i}[k]$ cannot be achieved due to input constraints.
 
 For example, we suppose they have initial states
-\todo[use from simulation]{
-  $\vec{x}_{\text{I}}[0]=$,
-  $\vec{x}_{\text{II}}[0]=$,
-  $\vec{x}_{\text{III}}[0]=$,
-  and
-  $\vec{x}_{\text{IV}}[0]=$
-}
-, and references
-\todo[use from simulation]{
-  $w_{\text{I}}[0]=$,
-  $w_{\text{II}}[0]=$,
-  $w_{\text{III}}[0]=$,
-  and
-  $w_{\text{IV}}[0]=$
-}.
+\input{../data/resilient_eq/initial_states.tex},
+and references
+\input{../data/resilient_eq/references.tex}.
 Using gains
 $Q_{i}=10I$,
 and
@@ -1017,12 +1005,12 @@ However, we can see for the scenarios where the \rpdmpcss{} is activated the obj
 
 \begin{table}[h]
   \centering
-  \caption{Objective functions $J_{i}$ (\% error)\todo{read note\note{add percentual values}}}\label{tab:eq_costsGlobalLocal}
+  \caption{Objective functions $J_{i}$ (\% error)}\label{tab:eq_costsGlobalLocal}
   \begin{tabular}[t]{cccc}
     \toprule
     Agent  & Scenario N& Scenario S & Scenario C\\
     \midrule
-    \input{../data/resilient_eq/eq_table_costs_all_rooms_error.tex}\\
+    \input{../data/resilient_eq/table_costs_all_rooms_error.tex}\\
     \bottomrule
   \end{tabular}
 \end{table}

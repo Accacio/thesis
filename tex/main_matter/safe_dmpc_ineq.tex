@@ -1080,21 +1080,9 @@ we need to force $\optuncUik$ to respect such constraint the $\optuncUik\succeq\
 This is accomplished by changing the initial states $\vec{x}_{i}[k]$ and references $\vec{w}_{i}[k]$ such the output $\vec{y}_{i}[k]$ (air temperature inside the house) never surpasses the references, what would yield a solution with negative inputs.
 
 Therefore, we change the initial states to be
-\todo[use from simulation]{
-  $\vec{x}_{\text{I}}[0]=$,
-  $\vec{x}_{\text{II}}[0]=$,
-  $\vec{x}_{\text{III}}[0]=$,
-  and
-  $\vec{x}_{\text{IV}}[0]=$
-}
-, and the references as
-\todo[use from simulation]{
-  $w_{\text{I}}[0]=$,
-  $w_{\text{II}}[0]=$,
-  $w_{\text{III}}[0]=$,
-  and
-  $w_{\text{IV}}[0]=$
-}.
+\input{../data/resilient_ineq/initial_states.tex},
+and the references as
+\input{../data/resilient_ineq/references.tex}.
 All other parameters are the same, which when decomposing the \mpc{} problem we have
 \begin{equation}
   \label{eq:houses_artificial_scarce_local_problem}
