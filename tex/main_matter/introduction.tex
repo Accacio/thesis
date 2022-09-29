@@ -49,7 +49,7 @@ ERR706
 
 Something is wrong.
 This is the first time you have seen this message, and it is the last week of the project.
-You look at your house, trying to find the manual given on your first day. Nada!
+You look around, trying to find the manual given on your first day. Nada!
 
 You take your coat, put on some gloves, and look outside your window.
 You observe the centralized heat provider unit in the middle of the \emph{cul-de-sac} you live.
@@ -75,7 +75,7 @@ However, some privacy questions were raised during its design, and the designers
 \end{quote}
 
 After some discussion, they opted for a distributed method.
-Each house was given one local controller to manage its temperature, and a coordinator controller was added to iteratively propose allocations for each building.
+Each house was given one local controller to manage its temperature, and another controller with a coordinator role was added to iteratively propose allocations for each building.
 
 Just above the error code in the manual, you can take a glimpse of a diagram followed by a small text indicating the communication and the flux of information:
 \begin{figure}[H]
@@ -176,8 +176,8 @@ Some examples are the Brazilian blackouts in 2010~\cite{Conti2010}, the Stuxnet 
 
 The main motivation of this work is to study attacks in \cps{}.
 Focusing on \cps{} controlled by a \dmpc{} framework.
-And using the knowledge gathered throughout the study to reduce the effects of the attacks as much as possible.
-And to guide us on the quest to minimize them, we can raise some questions:
+And using the knowledge gathered throughout the study be able to reduce the effects of the attacks as much as possible.
+And to guide us on our quest, we raise some questions:
 
 \simplebox{
   \begin{itemize} \bfseries
@@ -210,9 +210,9 @@ From the analysis of the newly-found problem we propose a similar strategy, but 
 We can list as a minor contribution of this work the study of vulnerabilities of Primal decomposition-based \dmpc{}, which wasn't studied to the best of our knowledge,
 And as main contributions two mitigation strategies for different kind of systems with increasing complexities.
 
-The most simple strategy, for systems where the local demands (resources needed) are greater than total resources available, here called \textbf{Scarce Systems}.
+The first strategy, for systems where the total resources available are not enough to satisfy local demands, we call this systems \textbf{Scarce Systems}.
 
-And a exponentially more complex system, where local demands respect only some constraints which we can use to get scarcity information by means we call \textbf{artificial scarcity}.
+The second one, for a exponentially more complex class of systems, where we assume the local demands respect at least some constraints, which we can use to get scarcity information by means we call \textbf{artificial scarcity}.
 
 % \todo{And finally a more general and complex, when there is no scarcity information available}
 % Since those questions are still open, this work has as objective to discuss these questions by analyzing the recent literature and schematizing the security in decomposition methods for Model Predictive Control passing by the following items:
