@@ -68,11 +68,6 @@ corrected = sio.loadmat("../../data/resilient_eq/dmpc4rooms_chSetpoint__0_selfis
 # corrected = sio.loadmat("../../../../docsThese/data/matlab/dmpc4rooms_chSetpoint__0_cheating__1_secure__1_.mat")
 
 # exit()
-# print(nominal['Rf'])
-# print(nominal['Ri'])
-# print(nominal['Ro'])
-# print(nominal['Cres'])
-# print(nominal['Cs'])
 
 # print(nominal['umin'])
 # print(nominal['umax'])
