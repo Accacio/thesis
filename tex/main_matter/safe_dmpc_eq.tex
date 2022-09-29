@@ -970,7 +970,7 @@ $\epsilon_{P}=10^{-4}$.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=.7\textwidth]{../img/resilient_eq/__ErrorWX_command_normErrH.pdf}
+  \includegraphics[width=.7\textwidth]{../img/resilient_eq/ErrorWX_command_normErrH.pdf}
 \caption{Temperature in house I and the decision variable $E_{I}(k)$ for different scenarios.}\label{fig:response_houseI_3Scenarios}
 \end{figure}
 As expected, the decision variable lies under the threshold $\epsilon_{P}=10^{-4}$ in the nominal scenario.
@@ -980,8 +980,8 @@ On the other hand, the other agents receive less resources, as we can see the tr
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=.7\textwidth]{AirTempAndDecisionVariable.pdf}
-\caption{Temperature of houses II to IV, and respective references for different scenarios. \todo{remake figure}}\label{fig:response_housesII_to_IV_3Scenarios}
+ \includegraphics[width=.7\textwidth,trim=0 .3cm 0 .2cm,clip]{../img/resilient_eq/ErrorWX_command_normErrH_all_houses.pdf}
+  \caption{Air temperature in all houses for different scenarios.}\label{fig:response_housesII_to_IV_3Scenarios}
 \end{figure}
 
 When the \rpdmpcss{} is activated in scenario C, the temperatures recover behavior close to the nominal one, as we can see in~\ref{fig:response_houseI_3Scenarios} and~\ref{fig:response_housesII_to_IV_3Scenarios}.
@@ -1006,7 +1006,7 @@ However, we can see for the scenarios where the \rpdmpcss{} is activated the obj
     \toprule
     Agent  & Scenario N& Scenario S & Scenario C\\
     \midrule
-    \input{../data/resilient_eq/table_costs_all_rooms_error.tex}\\
+    \input{../data/resilient_eq/table_costs_all_houses_error.tex}\\
     \bottomrule
   \end{tabular}
 \end{table}

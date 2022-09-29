@@ -1122,32 +1122,40 @@ are
   %       \end{cases}.
 \end{align}
 
-Observing Fig.~\ref{fig:response3Scenarios}, we can compare the air temperature in room~I
+Observing Fig.~\ref{fig:response3Scenarios}, we can compare the air temperature in house~I
 with its reference $w_{I}$.
 We can also see in the figure the values of the decision variable ${E_{I}^{(0)}[k]}$ with the threshold $\epsilon_{\Plinineq}$.
 Notice how the reference $w_{I}$ is not reached even in the nominal behavior (in magenta),
 due to initial states and power constraints, indicating that the unconstrained solution $\optuncUik\succeq\0$.
 As expected, the decision variable lies under the threshold ${\epsilon_{P}=10^{-4}}$ with values of order ${E_{I}^{N}(k)\approx10^{-10}}$ (no attack detected).
+
 \begin{figure}[h]
   \centering
  \includegraphics[width=.7\textwidth,trim=0 .3cm 0 .2cm,clip]{../img/resilient_ineq/__ErrorWX_command_normErrH.pdf}
   \caption{Air temperature in house I and the decision variable $E_{I}[k]$ for different scenarios.}\label{fig:response3Scenarios}
 \end{figure}
+\begin{figure}[h]
+  \centering
+ \includegraphics[width=.7\textwidth,trim=0 .3cm 0 .2cm,clip]{../img/resilient_ineq/ErrorWX_command_normErrH_all_houses.pdf}
+  \caption{Air temperature in all houses for different scenarios.}\label{fig:response3Scenarios_all_houses}
+\end{figure}
 
 When agent~I attacks the system (in orange), its tracking error
-${w_{I}-y_{I}}$ decreases, and it almost reach the reference.
+${w_{I}-y_{I}}$ decreases, and it almost reaches the reference.
+In Fig.~\ref{fig:response3Scenarios_all_houses}, we see how the resources from house~I were transferred from all other houses, who lose performance.
+
 In this case, the detection variable surpasses the bound $\epsilon_{P}$,
 ${E_{I}^{S}\approx200}$, indicating a change of behavior, a possible attack.
 
 If the proposed resilient algorithm is activated (black dots), the temperatures approach their nominal value $y_{I}^{N}$.
 We can also compare the inputs in Fig.~\ref{fig:control_3Scenarios}.
-When agent~I is selfish, its control increases while other rooms' controls decrease,
+When agent~I is selfish, its control increases while other houses' controls decrease,
 displaying a shift on the negotiation, giving more resources to the attacker.
 However, when the correction is activated, it approaches the nominal.
 \begin{figure}[h]
   \centering
  \includegraphics[width=.7\textwidth,trim=0 .1cm 0 .3cm,clip]{../img/resilient_ineq/control.pdf}
-  \caption{Control applied in all rooms for the 3 scenarios.}\label{fig:control_3Scenarios}
+  \caption{Control applied in all houses for the 3 scenarios.}\label{fig:control_3Scenarios}
 \end{figure}
 
 % \todo{
@@ -1172,7 +1180,7 @@ When the correction mechanism is activated, the absolute percentual error is in 
     \toprule
     Agent  & Scenario N& Scenario S & Scenario C\\
     \midrule
-    \input{../data/resilient_ineq/table_costs_all_rooms_error.tex}\\
+    \input{../data/resilient_ineq/table_costs_all_houses_error.tex}\\
     % \input{table_costs_only_global.tex}\\
     \bottomrule
   \end{tabular}

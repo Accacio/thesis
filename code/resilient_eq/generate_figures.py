@@ -17,7 +17,7 @@ import os
 import scipy.io as sio
 import sys
 import tikzplotlib
-
+import warnings
 
 # shamelessly copied from https://stackoverflow.com/a/17131750/9781176 and modified
 def smallmatrix(a):
@@ -55,7 +55,6 @@ arial_font = {'family': 'sans-serif'};
 rc('font', **serif_font)
 rc('text', usetex=True)
 
-import warnings
 warnings.filterwarnings("ignore")
 # config variables
 outputFolder = "../../img/resilient_eq/"
@@ -116,23 +115,20 @@ with open(dataFolder + 'references.tex', 'w') as f:
     print("and",file=f)
     print("${w_{\\text{IV}}[0]=", nominal_Wt[3][0], "}$", file=f,end="")
 
-
-
-print(np.shape(nominal['tau']))
-print(nominal['tau'][:,:,0])
 with open('../../data/resilient_eq/triche_matrix_I.tex', 'w') as f:
     print(smallmatrix((nominal['tau'][:,:,0])),file=f)
 
-print(nominal['Cs'  ])
-print(nominal['Cres'])
-print(nominal['Rf'  ])
-print(nominal['Ri'  ])
-print(nominal['Ro'  ])
 Cs   = nominal['Cs'  ][0]
 Cres = nominal['Cres'][0]
 Rf   = nominal['Rf'  ][0]
 Ri   = nominal['Ri'  ][0]
 Ro   = nominal['Ro'][0]
+# print(Cs)
+# print(Cres)
+# print(Rf)
+# print(Ri)
+# print(Ro)
+
 with open('../../data/resilient_eq/thermic_params.tex', 'w') as f:
     print("$C^{\\text{walls}}$ & $", Cs[0]  , "$ & $",Cs[1]  ,"$ & $",Cs[2]  ,"$ & $",Cs[3]  ,"$ & $","10^{4}\mathrm{J/K}$\\\\",file=f)
     print("$C^{\\text{air}}$   & $", Cres[0], "$ & $",Cres[1],"$ & $",Cres[2],"$ & $",Cres[3],"$ & $","10^{4}\mathrm{J/K}$\\\\",file=f)
@@ -140,12 +136,12 @@ with open('../../data/resilient_eq/thermic_params.tex', 'w') as f:
     print("$R^{\\text{iw/ia}}$ & $", Ri[0]  , "$ & $",Ri[1]  ,"$ & $",Ri[2]  ,"$ & $",Ri[3]  ,"$ & $","10^{-4}\mathrm{K/W}$\\\\",file=f)
     print("$R^{\\text{ow/oa}}$ & $", Ro[0]  , "$ & $",Ro[1]  ,"$ & $",Ro[2]  ,"$ & $",Ro[3]  ,"$ & $","10^{-4}\mathrm{K/W}$",file=f)
 
-with open('/dev/stdout', 'w') as f:
-    print("$C^{\\text{walls}}$ & $", Cs[0]  , "$ & $",Cs[1]  ,"$ & $",Cs[2]  ,"$ & $",Cs[3]  ,"$ & $","10^{4}\mathrm{J/K}$\\\\",file=f)
-    print("$C^{\\text{air}}$   & $", Cres[0], "$ & $",Cres[1],"$ & $",Cres[2],"$ & $",Cres[3],"$ & $","10^{4}\mathrm{J/K}$\\\\",file=f)
-    print("$R^{\\text{oa/ia}}$ & $", Rf[0]  , "$ & $",Rf[1]  ,"$ & $",Rf[2]  ,"$ & $",Rf[3]  ,"$ & $","10^{-3}\mathrm{K/W}$\\\\",file=f)
-    print("$R^{\\text{iw/ia}}$ & $", Ri[0]  , "$ & $",Ri[1]  ,"$ & $",Ri[2]  ,"$ & $",Ri[3]  ,"$ & $","10^{-4}\mathrm{K/W}$\\\\",file=f)
-    print("$R^{\\text{ow/oa}}$ & $", Ro[0]  , "$ & $",Ro[1]  ,"$ & $",Ro[2]  ,"$ & $",Ro[3]  ,"$ & $","10^{-4}\mathrm{K/W}$",file=f)
+# with open('/dev/stdout', 'w') as f:
+#     print("$C^{\\text{walls}}$ & $", Cs[0]  , "$ & $",Cs[1]  ,"$ & $",Cs[2]  ,"$ & $",Cs[3]  ,"$ & $","10^{4}\mathrm{J/K}$\\\\",file=f)
+#     print("$C^{\\text{air}}$   & $", Cres[0], "$ & $",Cres[1],"$ & $",Cres[2],"$ & $",Cres[3],"$ & $","10^{4}\mathrm{J/K}$\\\\",file=f)
+#     print("$R^{\\text{oa/ia}}$ & $", Rf[0]  , "$ & $",Rf[1]  ,"$ & $",Rf[2]  ,"$ & $",Rf[3]  ,"$ & $","10^{-3}\mathrm{K/W}$\\\\",file=f)
+#     print("$R^{\\text{iw/ia}}$ & $", Ri[0]  , "$ & $",Ri[1]  ,"$ & $",Ri[2]  ,"$ & $",Ri[3]  ,"$ & $","10^{-4}\mathrm{K/W}$\\\\",file=f)
+#     print("$R^{\\text{ow/oa}}$ & $", Ro[0]  , "$ & $",Ro[1]  ,"$ & $",Ro[2]  ,"$ & $",Ro[3]  ,"$ & $","10^{-4}\mathrm{K/W}$",file=f)
 
 
 
@@ -158,7 +154,7 @@ nominal_sumJ=np.sum(nominal_J,axis=0)
 subsystems=selfish['subsystems']
 coordinator=selfish['coordinator']
 selfWt=subsystems['Wt'][0][0][0]
-selfxt=subsystems['xt'][0][0][0]
+selfish_xt=subsystems['xt'][0][0]
 selferr=coordinator['err'][0][0]
 selfuHist=subsystems['uHist'][0][0]
 selfish_J=2*subsystems['J'][0][0][0]+np.transpose(subsystems['const'][0][0])
@@ -166,8 +162,8 @@ selfish_sumJ=np.sum(selfish_J,axis=0)
 
 subsystems=corrected['subsystems']
 coordinator=corrected['coordinator']
-correctWt=subsystems['Wt'][0][0][0]
-correctxt=subsystems['xt'][0][0][0]
+corrected_Wt=subsystems['Wt'][0][0][0]
+corrected_xt=subsystems['xt'][0][0]
 correcterr=coordinator['err'][0][0]
 correctuHist=subsystems['uHist'][0][0]
 
@@ -221,19 +217,19 @@ corrected_global=np.sum(corrected_sumJ)
 #     print(nominal['Te'][0][0]*nominal['simK'][0][0],file=f)
 
 
-with open('../../data/resilient_eq/table_costs_all_rooms_error.tex', 'w') as f:
+with open('../../data/resilient_eq/table_costs_all_houses_error.tex', 'w') as f:
     print("I & $", round(nominal_I,1),"$ & $",round(selfish_I,1),"$ ($", round(100*(selfish_I-nominal_I)/nominal_I,1),"$)& $",round(corrected_I,1),"$ ($",100*round((corrected_I-nominal_I)/nominal_I,1) ,"$)\\\\",file=f)
     print("II & $", round(nominal_II,1),"$ & $",round(selfish_II,1),"$ ($", round(100*(selfish_II-nominal_II)/nominal_II,1),"$)& $",round(corrected_II,1),"$ ($",round(100*(corrected_II-nominal_II)/nominal_II,1) ,"$)\\\\",file=f)
     print("III & $", round(nominal_III,1),"$ & $",round(selfish_III,1),"$ ($", round(100*(selfish_III-nominal_III)/nominal_III,1),"$)& $",round(corrected_III,1),"$ ($",round(100*(corrected_III-nominal_III)/nominal_III,1) ,"$)\\\\",file=f)
     print("IV & $", round(nominal_IV,1),"$ & $",round(selfish_IV,1),"$ ($", round(100*(selfish_IV-nominal_IV)/nominal_IV,1),"$)& $",round(corrected_IV,1),"$ ($",round(100*(corrected_IV-nominal_IV)/nominal_IV,1) ,"$)\\\\",file=f)
     print("Global & $", round(nominal_global,1),"$ & $",round(selfish_global,1),"$ ($", round(100*(selfish_global-nominal_global)/nominal_global,1),"$)& $",round(corrected_global,1),"$ ($",round(100*(corrected_global-nominal_global)/nominal_global,1) ,"$)",file=f)
 
-with open('/dev/stdout', 'w') as f:
-    print("I & $", round(nominal_I,1),"$ & $",round(selfish_I,1),"$ ($", round(100*(selfish_I-nominal_I)/nominal_I,1),"$)& $",round(corrected_I,1),"$ ($",100*round((corrected_I-nominal_I)/nominal_I,1) ,"$)\\\\",file=f)
-    print("II & $", round(nominal_II,1),"$ & $",round(selfish_II,1),"$ ($", round(100*(selfish_II-nominal_II)/nominal_II,1),"$)& $",round(corrected_II,1),"$ ($",round(100*(corrected_II-nominal_II)/nominal_II,1) ,"$)\\\\",file=f)
-    print("III & $", round(nominal_III,1),"$ & $",round(selfish_III,1),"$ ($", round(100*(selfish_III-nominal_III)/nominal_III,1),"$)& $",round(corrected_III,1),"$ ($",round(100*(corrected_III-nominal_III)/nominal_III,1) ,"$)\\\\",file=f)
-    print("IV & $", round(nominal_IV,1),"$ & $",round(selfish_IV,1),"$ ($", round(100*(selfish_IV-nominal_IV)/nominal_IV,1),"$)& $",round(corrected_IV,1),"$ ($",round(100*(corrected_IV-nominal_IV)/nominal_IV,1) ,"$)\\\\",file=f)
-    print("Global & $", round(nominal_global,1),"$ & $",round(selfish_global,1),"$ ($", round(100*(selfish_global-nominal_global)/nominal_global,1),"$)& $",round(corrected_global,1),"$ ($",round(100*(corrected_global-nominal_global)/nominal_global,1) ,"$)",file=f)
+# with open('/dev/stdout', 'w') as f:
+#     print("I & $", round(nominal_I,1),"$ & $",round(selfish_I,1),"$ ($", round(100*(selfish_I-nominal_I)/nominal_I,1),"$)& $",round(corrected_I,1),"$ ($",100*round((corrected_I-nominal_I)/nominal_I,1) ,"$)\\\\",file=f)
+#     print("II & $", round(nominal_II,1),"$ & $",round(selfish_II,1),"$ ($", round(100*(selfish_II-nominal_II)/nominal_II,1),"$)& $",round(corrected_II,1),"$ ($",round(100*(corrected_II-nominal_II)/nominal_II,1) ,"$)\\\\",file=f)
+#     print("III & $", round(nominal_III,1),"$ & $",round(selfish_III,1),"$ ($", round(100*(selfish_III-nominal_III)/nominal_III,1),"$)& $",round(corrected_III,1),"$ ($",round(100*(corrected_III-nominal_III)/nominal_III,1) ,"$)\\\\",file=f)
+#     print("IV & $", round(nominal_IV,1),"$ & $",round(selfish_IV,1),"$ ($", round(100*(selfish_IV-nominal_IV)/nominal_IV,1),"$)& $",round(corrected_IV,1),"$ ($",round(100*(corrected_IV-nominal_IV)/nominal_IV,1) ,"$)\\\\",file=f)
+#     print("Global & $", round(nominal_global,1),"$ & $",round(selfish_global,1),"$ ($", round(100*(selfish_global-nominal_global)/nominal_global,1),"$)& $",round(corrected_global,1),"$ ($",round(100*(corrected_global-nominal_global)/nominal_global,1) ,"$)",file=f)
 
 # with open('../../data/resilient_eq/table_costs_only_global.tex', 'w') as f:
 #     print("Global & $", round(nominal_global,1),"$ ($",100*round((nominal_global-nominal_global)/nominal_global,1), "$)& $",round(selfish_global,1),"$ ($", 100*round((selfish_global-nominal_global)/nominal_global,1),"$)& $",round(corrected_global,1),"$ ($",100*round((corrected_global-nominal_global)/nominal_global,1) ,"$)",file=f)
@@ -306,15 +302,15 @@ with open('/dev/stdout', 'w') as f:
 # #       +np.sum((selfWt[0:simK,3]-selfxt[0:simK,3])*(selfWt[0:simK,3]-selfxt[0:simK,3])+selfuHist[0,-1,:,3]*selfuHist[0,-1,:,3])) # J4
 
 # # print("Corrected")
-# # print(np.sum((correctWt[0:simK,0]-correctxt[0:simK,0])*(correctWt[0:simK,0]-correctxt[0:simK,0])+correctuHist[0,-1,:,0]*correctuHist[0,-1,:,0])) # J1
-# # print(np.sum((correctWt[0:simK,1]-correctxt[0:simK,1])*(correctWt[0:simK,1]-correctxt[0:simK,1])+correctuHist[0,-1,:,1]*correctuHist[0,-1,:,1])) # J2
-# # print(np.sum((correctWt[0:simK,2]-correctxt[0:simK,2])*(correctWt[0:simK,2]-correctxt[0:simK,2])+correctuHist[0,-1,:,2]*correctuHist[0,-1,:,2])) # J3
-# # print(np.sum((correctWt[0:simK,3]-correctxt[0:simK,3])*(correctWt[0:simK,3]-correctxt[0:simK,3])+correctuHist[0,-1,:,3]*correctuHist[0,-1,:,3])) # J4
+# # print(np.sum((correctWt[0:simK,0]-corrected_xt[0:simK,0])*(correctWt[0:simK,0]-correctxt[0:simK,0])+correctuHist[0,-1,:,0]*correctuHist[0,-1,:,0])) # J1
+# # print(np.sum((correctWt[0:simK,1]-corrected_xt[0:simK,1])*(correctWt[0:simK,1]-correctxt[0:simK,1])+correctuHist[0,-1,:,1]*correctuHist[0,-1,:,1])) # J2
+# # print(np.sum((correctWt[0:simK,2]-corrected_xt[0:simK,2])*(correctWt[0:simK,2]-correctxt[0:simK,2])+correctuHist[0,-1,:,2]*correctuHist[0,-1,:,2])) # J3
+# # print(np.sum((correctWt[0:simK,3]-corrected_xt[0:simK,3])*(correctWt[0:simK,3]-correctxt[0:simK,3])+correctuHist[0,-1,:,3]*correctuHist[0,-1,:,3])) # J4
 
-# # print(np.sum((correctWt[0:simK,0]-correctxt[0:simK,0])*(correctWt[0:simK,0]-correctxt[0:simK,0])+correctuHist[0,-1,:,0]*correctuHist[0,-1,:,0]) # J1
-# #       +np.sum((correctWt[0:simK,1]-correctxt[0:simK,1])*(correctWt[0:simK,1]-correctxt[0:simK,1])+correctuHist[0,-1,:,1]*correctuHist[0,-1,:,1]) # J2
-# #       +np.sum((correctWt[0:simK,2]-correctxt[0:simK,2])*(correctWt[0:simK,2]-correctxt[0:simK,2])+correctuHist[0,-1,:,2]*correctuHist[0,-1,:,2]) # J3
-# #       +np.sum((correctWt[0:simK,3]-correctxt[0:simK,3])*(correctWt[0:simK,3]-correctxt[0:simK,3])+correctuHist[0,-1,:,3]*correctuHist[0,-1,:,3])) # J4
+# # print(np.sum((correctWt[0:simK,0]-corrected_xt[0:simK,0])*(correctWt[0:simK,0]-correctxt[0:simK,0])+correctuHist[0,-1,:,0]*correctuHist[0,-1,:,0]) # J1
+# #       +np.sum((correctWt[0:simK,1]-corrected_xt[0:simK,1])*(correctWt[0:simK,1]-correctxt[0:simK,1])+correctuHist[0,-1,:,1]*correctuHist[0,-1,:,1]) # J2
+# #       +np.sum((correctWt[0:simK,2]-corrected_xt[0:simK,2])*(correctWt[0:simK,2]-correctxt[0:simK,2])+correctuHist[0,-1,:,2]*correctuHist[0,-1,:,2]) # J3
+# #       +np.sum((correctWt[0:simK,3]-corrected_xt[0:simK,3])*(correctWt[0:simK,3]-correctxt[0:simK,3])+correctuHist[0,-1,:,3]*correctuHist[0,-1,:,3])) # J4
 
 # # NOTE(accacio): Detection
 # fig, axs = plt.subplots(2, 1,facecolor=(.0, .0, .0, .0))
@@ -562,7 +558,7 @@ with open('/dev/stdout', 'w') as f:
 
 k=0
 # print(np.shape(lambda_hist))
-# print(correctxt)
+# print(corrected_xt)
 tau_index=10
 
 fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
@@ -583,16 +579,13 @@ for i in np.arange(0,4,1):
 
 # W=mat['W']
 # Y=mat['Y']
-fig, axs = plt.subplots(2, 1)
+fig, axs = plt.subplots(2, 1,facecolor=(.0, .0, .0, .0))
 
-
-axs[0].plot(np.arange(0,simK),nominal_Wt[0:simK,0],'-',drawstyle='steps-post')
-axs[0].plot(np.arange(0,simK),nominal_xt[0,0:simK,0],'-',drawstyle='steps-post')
-axs[0].plot(np.arange(0,simK),selfxt[0:simK,0],'-',drawstyle='steps-post')
-axs[0].plot(np.arange(0,simK),correctxt[0:simK,0],'o',drawstyle='steps-post')
-# axs[0].plot(np.arange(1,simK+1),Wt[0:simK,1]-xt[0:simK,1],'--',drawstyle='steps-post')
-# axs[0].plot(np.arange(1,simK+1),Wt[0:simK,2]-xt[0:simK,2],'-.',drawstyle='steps-post')
-# axs[0].plot(np.arange(1,simK+1),Wt[0:simK,3]-xt[0:simK,3],':',drawstyle='steps-post')
+axs[0].plot(np.arange(0,simK+1),np.matlib.repmat(nominal_Wt[0][0],simK+1,1),'-',drawstyle='steps-post')
+# axs[0].plot(np.arange(0,simK+1),nominal_Wt[0:simK+1,0],'-',drawstyle='steps-post')
+axs[0].plot(np.arange(0,simK+1),nominal_xt[0,0:simK+1,0],'-',color='magenta',drawstyle='steps-post')
+axs[0].plot(np.arange(0,simK+1),selfish_xt[0,0:simK+1,0],'-',drawstyle='steps-post')
+axs[0].scatter(np.arange(0,simK+1),corrected_xt[0,0:simK+1,0],s=15,color='black')
 # axs[0].set_ylim([0, 7])
 
 
@@ -600,7 +593,7 @@ axs[0].plot(np.arange(0,simK),correctxt[0:simK,0],'o',drawstyle='steps-post')
 # axs[0].legend(( '$Sub_1$', '$Sub_2$','$Sub_3$','$Sub_4$'),loc='upper center',ncol=4,fontsize=13)
 # axs[0].legend(( '$I$', '$II$','$III$','$IV$'),loc='upper center',ncol=4,fontsize=13)
 # axs[0].legend(( 'I', 'II','III','IV'),loc='upper center',ncol=4,fontsize=13)
-axs[0].legend(( '$w_{\mathrm{I}}(k)$','$y_{\mathrm{I}}^N(k)$','$y_{\mathrm{I}}^S(k)$','$y_{\mathrm{I}}^C(k)$'),loc='upper center',ncol=4,fontsize=13)
+axs[0].legend(( '$w_{\mathrm{I}}[k]$','$y_{\mathrm{I}}^N[k]$','$y_{\mathrm{I}}^S[k]$','$y_{\mathrm{I}}^C[k]$'),loc='upper center',ncol=4,fontsize=13)
 
 # axs[0].legend(( '$I$', '$II$','$III$','$IV$'),loc='upper right',ncol=2,fontsize=13)
 #
@@ -623,29 +616,28 @@ axs[0].set_title('Air temperature in house I ($^oC$)',fontsize=16)
 # axs[2].legend(( '$\\Sigma u_{i}$', '$u_1$', '$u_2$','$u_3$','$u_4$'),loc='upper center',ncol=5,fontsize=13)
 # axs[2].set_xlabel('Time (k)',usetex=True,fontsize=16)
 
+axs[1].plot(np.arange(1,simK+1),1e-4*np.ones([simK,1]),'-',drawstyle='steps-post',label='$\epsilon_p$') # error line
+axs[1].scatter(np.arange(1,simK+1),np.linalg.norm(err[:,-1,:,0],axis=0),color='magenta',s=10,label='$E_{\mathrm{I}}^N[k]$')
+axs[1].plot(np.arange(1,simK+1),np.linalg.norm(selferr[:,-1,:,0],axis=0),'-',color='darkorange',drawstyle='steps-post',label='$E_{\mathrm{I}}^S[k]$')
+axs[1].scatter(np.arange(1,simK+1),np.linalg.norm(correcterr[:,-1,:,0],axis=0),color='black',s=10,label='$E_{\mathrm{I}}^C[k]$')
 
-axs[1].plot(np.arange(1,simK+1),1e-4*np.ones([simK,1]),'-',drawstyle='steps-post') # error line
-axs[1].plot(np.arange(1,simK+1),np.linalg.norm(err[:,-1,:,0],axis=0),'o',drawstyle='steps-post')
-axs[1].plot(np.arange(1,simK+1),np.linalg.norm(selferr[:,-1,:,0],axis=0),'-',drawstyle='steps-post')
-axs[1].plot(np.arange(1,simK+1),np.linalg.norm(correcterr[:,-1,:,0],axis=0),'o',drawstyle='steps-post')
+# axs[1].scatter(np.arange(1,simK+1),corrected_err[0:simK,0],color='black',s=10,label='$E_{\mathrm{I}}^C[k]$')
 
-axs[1].legend(( '$\epsilon_p$','$E_{\mathrm{I}}^N(k)$','$E_{\mathrm{I}}^S(k)$','$E_{\mathrm{I}}^C(k)$'),loc='upper center',ncol=4,fontsize=13)
+handles,labels=axs[1].get_legend_handles_labels();
+handles=[handles[0],handles[2],handles[1],handles[3]];
+labels=[labels[0],labels[2],labels[1],labels[3]];
+axs[1].legend(handles,labels,loc='upper center',ncol=4,fontsize=13)
 
 axs[1].set_title("Norm of error $\| \hat{P_i}-P_{0_i}\|$",fontsize=16)
-# axs[1].set_ylim([-5, 40])
 axs[1].set_ylim([-1, 17])
 
 axs[1].set_xticks(np.arange(0,simK+1,1))
 axs[1].set_xlim([1, simK])
+
 axs[1].set_xlabel('Time (k)',usetex=True,fontsize=16)
 axs[0].tick_params(axis='both', which='major', labelsize=20)
 axs[1].tick_params(axis='both', which='major', labelsize=20)
 
-
-# axs[1].legend(( '$Sub_1$', '$Sub_2$','$Sub_3$','$Sub_4$'),loc='upper center',ncol=4,fontsize=13)
-# axs[1].legend(( '$I$', '$II$','$III$','$IV$'),loc='upper left',ncol=2,fontsize=13)
-# axs[1].legend(( 'I', 'II','III','IV'),loc='upper center',ncol=4,fontsize=13)
-# axs[1].legend(( '$I$', '$II$','$III$','$IV$'),loc='upper center',ncol=4,fontsize=13)
 
 fig.tight_layout()
 # plot(reshape(subsystems.uHist(1,end,:,i),[simK 1]),linS{i},'Color',colors{i})
@@ -669,8 +661,81 @@ fig.tight_layout()
 # # axs[2].plot(np.arange(0,ktotal+0), J[0,-1,:])
 # # axs[2].set_title('Global cost $J^{\star}$')
 # axs[1].set_xlabel('Time',usetex=True,fontsize=16)
-plt.savefig(outputFolder + "/" +  "__ErrorWX_command_normErrH" +  ".pdf",bbox_inches='tight')
-plt.savefig(outputFolder + "/" +  "__ErrorWX_command_normErrH" +  ".png",bbox_inches='tight')
+plt.savefig(outputFolder + "/" +  "ErrorWX_command_normErrH" +  ".pdf",bbox_inches='tight')
+plt.savefig(outputFolder + "/" +  "ErrorWX_command_normErrH" +  ".png",bbox_inches='tight')
+
+
+
+fig, axs = plt.subplots(4, 1,facecolor=(.0, .0, .0, .0),figsize=(8,8))
+ax0=plt.subplot(4,1,1,aspect=1/1.1)
+ax1=plt.subplot(4,1,2,aspect=1/1.1)
+ax2=plt.subplot(4,1,3,aspect=1/1.1)
+ax3=plt.subplot(4,1,4,aspect=1/1.1)
+
+ax0.plot(np.arange(0,simK+1),np.matlib.repmat(nominal_Wt[0][0],simK+1,1),'-',drawstyle='steps-post')
+ax0.plot(np.arange(0,simK+1),nominal_xt[0,0:simK+1,0],'-',color='magenta',drawstyle='steps-post')
+ax0.plot(np.arange(0,simK+1),selfish_xt[0,0:simK+1,0],'-',drawstyle='steps-post')
+ax0.scatter(np.arange(0,simK+1),corrected_xt[0,0:simK+1,0],s=15,color='black')
+
+ax1.plot(np.arange(0,simK+1),np.matlib.repmat(nominal_Wt[0][1],simK+1,1),'-',drawstyle='steps-post')
+ax1.plot(np.arange(0,simK+1),nominal_xt[0,0:simK+1,1],'-',color='magenta',drawstyle='steps-post')
+ax1.plot(np.arange(0,simK+1),selfish_xt[0,0:simK+1,1],'-',drawstyle='steps-post')
+ax1.scatter(np.arange(0,simK+1),corrected_xt[0,0:simK+1,1],s=15,color='black')
+
+ax2.plot(np.arange(0,simK+1),np.matlib.repmat(nominal_Wt[0][2],simK+1,1),'-',drawstyle='steps-post')
+ax2.plot(np.arange(0,simK+1),nominal_xt[0,0:simK+1,2],'-',color='magenta',drawstyle='steps-post')
+ax2.plot(np.arange(0,simK+1),selfish_xt[0,0:simK+1,2],'-',drawstyle='steps-post')
+ax2.scatter(np.arange(0,simK+1),corrected_xt[0,0:simK+1,2],s=15,color='black')
+
+ax3.plot(np.arange(0,simK+1),np.matlib.repmat(nominal_Wt[0][2],simK+1,1),'-',drawstyle='steps-post')
+ax3.plot(np.arange(0,simK+1),nominal_xt[0,0:simK+1,2],'-',color='magenta',drawstyle='steps-post')
+ax3.plot(np.arange(0,simK+1),selfish_xt[0,0:simK+1,2],'-',drawstyle='steps-post')
+ax3.scatter(np.arange(0,simK+1),corrected_xt[0,0:simK+1,2],s=15,color='black')
+
+ax0.set_title('Air temperature in house I ($^oC$)',fontsize=20)
+ax1.set_title('Air temperature in house II ($^oC$)',fontsize=20)
+ax2.set_title('Air temperature in house III ($^oC$)',fontsize=20)
+ax3.set_title('Air temperature in house IV ($^oC$)',fontsize=20)
+
+ax0.set_ylim([17.5, 21])
+ax1.set_ylim([17.5, 21])
+ax2.set_ylim([17.5, 21])
+ax3.set_ylim([17.5, 21])
+
+ax0.set_xlim([1, simK])
+ax1.set_xlim([1, simK])
+ax2.set_xlim([1, simK])
+ax3.set_xlim([1, simK])
+
+ax0.set_xticks([])
+ax1.set_xticks([])
+ax2.set_xticks([])
+ax3.set_xlabel('Time (k)',usetex=True,fontsize=16)
+ax0.tick_params(axis='both', which='major', labelsize=20)
+ax1.tick_params(axis='both', which='major', labelsize=20)
+ax2.tick_params(axis='both', which='major', labelsize=20)
+ax3.tick_params(axis='both', which='major', labelsize=20)
+
+ax1.legend(( '$w_{i}[k]$','$y_{i}^{N}[k]$','$y_{i}^{S}[k]$','$y_{i}^{C}[k]$'),loc='bottom', bbox_to_anchor=(1.275, 0.5),ncol=1,fontsize=16)
+
+# axs[1].legend(handles,labels,loc='center',ncol=4,fontsize=15)
+
+# fig.tight_layout()
+plt.savefig(outputFolder + "ErrorWX_command_normErrH_all_houses" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig(outputFolder + "ErrorWX_command_normErrH_all_houses" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # #
 # #

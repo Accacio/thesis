@@ -17,7 +17,7 @@ import os
 import scipy.io as sio
 import sys
 import tikzplotlib
-
+import warnings
 
 # shamelessly copied from https://stackoverflow.com/a/17131750/9781176 and modified
 def smallmatrix(a):
@@ -55,7 +55,6 @@ arial_font = {'family': 'sans-serif'};
 rc('font', **serif_font)
 rc('text', usetex=True)
 
-import warnings
 warnings.filterwarnings("ignore")
 # config variables
 outputFolder = "../../img/resilient_ineq/"
@@ -149,7 +148,7 @@ with open('../../data/resilient_ineq/hours.tex','w') as f:
     print(nominal['Te'][0][0]*nominal['simK'][0][0],file=f)
 
 
-with open('../../data/resilient_ineq/table_costs_all_rooms_error.tex', 'w') as f:
+with open('../../data/resilient_ineq/table_costs_all_houses_error.tex', 'w') as f:
     print("I & $", round(nominal_I,1),"$ & $",round(selfish_I,1),"$ ($", round(100*(selfish_I-nominal_I)/nominal_I,1),"$)& $",round(corrected_I,1),"$ ($",100*round((corrected_I-nominal_I)/nominal_I,1) ,"$)\\\\",file=f)
     print("II & $", round(nominal_II,1),"$ & $",round(selfish_II,1),"$ ($", round(100*(selfish_II-nominal_II)/nominal_II,1),"$)& $",round(corrected_II,1),"$ ($",round(100*(corrected_II-nominal_II)/nominal_II,1) ,"$)\\\\",file=f)
     print("III & $", round(nominal_III,1),"$ & $",round(selfish_III,1),"$ ($", round(100*(selfish_III-nominal_III)/nominal_III,1),"$)& $",round(corrected_III,1),"$ ($",round(100*(corrected_III-nominal_III)/nominal_III,1) ,"$)\\\\",file=f)
@@ -253,7 +252,7 @@ axs[0].plot(np.arange(0,simK+1),nominal_xt[0,0:simK+1,0],'-',color='magenta',dra
 axs[0].plot(np.arange(0,simK+1),selfish_xt[0,0:simK+1,0],'-',drawstyle='steps-post')
 axs[0].scatter(np.arange(0,simK+1),corrected_xt[0,0:simK+1,0],s=15,color='black')
 
-axs[0].legend(( '$w_{\mathrm{I}}(k)$','$y_{\mathrm{I}}^N(k)$','$y_{\mathrm{I}}^S(k)$','$y_{\mathrm{I}}^C(k)$'),loc='bottom center',ncol=4,fontsize=13)
+axs[0].legend(( '$w_{\mathrm{I}}[k]$','$y_{\mathrm{I}}^N[k]$','$y_{\mathrm{I}}^S[k]$','$y_{\mathrm{I}}^C[k]$'),loc='bottom center',ncol=4,fontsize=13)
 
 axs[0].set_xticks(np.arange(0,simK+1,2))
 axs[0].set_xlim([1, simK])
@@ -262,9 +261,9 @@ axs[0].set_title('Air temperature in house I ($^oC$)',fontsize=16)
 axs[0].tick_params(axis='both', which='major', labelsize=20)
 
 axs[1].plot(np.arange(1,simK+1),1e-4*np.ones([simK,1]),'-',drawstyle='steps-post',label='$\epsilon_p$') # error line
-axs[1].scatter(np.arange(1,simK+1),nominal_err[0:simK,0],color='magenta',s=10,label='$E_{\mathrm{I}}^N(k)$')
-axs[1].plot(np.arange(1,simK+1),selfish_err[0:simK,0],'-',color='darkorange',drawstyle='steps-post',label='$E_{\mathrm{I}}^S(k)$')
-axs[1].scatter(np.arange(1,simK+1),corrected_err[0:simK,0],color='black',s=10,label='$E_{\mathrm{I}}^C(k)$')
+axs[1].scatter(np.arange(1,simK+1),nominal_err[0:simK,0],color='magenta',s=10,label='$E_{\mathrm{I}}^N[k]$')
+axs[1].plot(np.arange(1,simK+1),selfish_err[0:simK,0],'-',color='darkorange',drawstyle='steps-post',label='$E_{\mathrm{I}}^S[k]$')
+axs[1].scatter(np.arange(1,simK+1),corrected_err[0:simK,0],color='black',s=10,label='$E_{\mathrm{I}}^C[k]$')
 
 handles,labels=axs[1].get_legend_handles_labels();
 handles=[handles[0],handles[2],handles[1],handles[3]];
@@ -280,51 +279,68 @@ axs[1].set_xlabel('Time (k)',usetex=True,fontsize=16)
 axs[1].tick_params(axis='both', which='major', labelsize=20)
 
 fig.tight_layout()
-rc('font', **serif_font)
+# rc('font', **serif_font)
 
-plt.savefig(outputFolder + "/__ErrorWX_command_normErrH" +  ".pdf",bbox_inches='tight',transparent=True)
-plt.savefig(outputFolder + "/__ErrorWX_command_normErrH" +  ".png",bbox_inches='tight',transparent=True)
+plt.savefig(outputFolder + "/ErrorWX_command_normErrH" +  ".pdf",bbox_inches='tight',transparent=True)
+plt.savefig(outputFolder + "/ErrorWX_command_normErrH" +  ".png",bbox_inches='tight',transparent=True)
 
-# plt.rcParams.update({'font.size': 50})
-# fig.tight_layout()
-# rc('font', **arial_font)
+fig, axs = plt.subplots(4, 1,facecolor=(.0, .0, .0, .0),figsize=(8,8))
+ax0=plt.subplot(4,1,1,aspect=1/5)
+ax1=plt.subplot(4,1,2,aspect=1/5)
+ax2=plt.subplot(4,1,3,aspect=1/5)
+ax3=plt.subplot(4,1,4,aspect=1/5)
 
+ax0.plot(np.arange(0,simK+1),np.matlib.repmat(nominal_Wt[0],simK+1,1),'-',drawstyle='steps-post')
+ax0.plot(np.arange(0,simK+1),nominal_xt[0,0:simK+1,0],'-',color='magenta',drawstyle='steps-post')
+ax0.plot(np.arange(0,simK+1),selfish_xt[0,0:simK+1,0],'-',drawstyle='steps-post')
+ax0.scatter(np.arange(0,simK+1),corrected_xt[0,0:simK+1,0],s=15,color='black')
 
-fig, axs = plt.subplots(2, 1,facecolor=(.0, .0, .0, .0),figsize=(6,5))
+ax1.plot(np.arange(0,simK+1),np.matlib.repmat(nominal_Wt[1],simK+1,1),'-',drawstyle='steps-post')
+ax1.plot(np.arange(0,simK+1),nominal_xt[0,0:simK+1,1],'-',color='magenta',drawstyle='steps-post')
+ax1.plot(np.arange(0,simK+1),selfish_xt[0,0:simK+1,1],'-',drawstyle='steps-post')
+ax1.scatter(np.arange(0,simK+1),corrected_xt[0,0:simK+1,1],s=15,color='black')
 
-axs[0].plot(np.arange(0,simK+1),np.matlib.repmat(nominal_Wt[0],simK+1,1),'-',drawstyle='steps-post')
-axs[0].plot(np.arange(0,simK+1),nominal_xt[0,0:simK+1,0],'-',color='magenta',drawstyle='steps-post')
-axs[0].plot(np.arange(0,simK+1),selfish_xt[0,0:simK+1,0],'-',drawstyle='steps-post')
-axs[0].scatter(np.arange(0,simK+1),corrected_xt[0,0:simK+1,0],s=15,color='black')
-axs[0].set_title('Air temperature in house I ($^oC$)',fontsize=20)
-axs[0].set_ylim([15, 27])
+ax2.plot(np.arange(0,simK+1),np.matlib.repmat(nominal_Wt[2],simK+1,1),'-',drawstyle='steps-post')
+ax2.plot(np.arange(0,simK+1),nominal_xt[0,0:simK+1,2],'-',color='magenta',drawstyle='steps-post')
+ax2.plot(np.arange(0,simK+1),selfish_xt[0,0:simK+1,2],'-',drawstyle='steps-post')
+ax2.scatter(np.arange(0,simK+1),corrected_xt[0,0:simK+1,2],s=15,color='black')
 
+ax3.plot(np.arange(0,simK+1),np.matlib.repmat(nominal_Wt[2],simK+1,1),'-',drawstyle='steps-post')
+ax3.plot(np.arange(0,simK+1),nominal_xt[0,0:simK+1,2],'-',color='magenta',drawstyle='steps-post')
+ax3.plot(np.arange(0,simK+1),selfish_xt[0,0:simK+1,2],'-',drawstyle='steps-post')
+ax3.scatter(np.arange(0,simK+1),corrected_xt[0,0:simK+1,2],s=15,color='black')
 
-axs[1].plot(np.arange(0,simK+1),np.matlib.repmat(nominal_Wt[1],simK+1,1),'-',drawstyle='steps-post')
-axs[1].plot(np.arange(0,simK+1),nominal_xt[0,0:simK+1,1],'-',color='magenta',drawstyle='steps-post')
-axs[1].plot(np.arange(0,simK+1),selfish_xt[0,0:simK+1,1],'-',drawstyle='steps-post')
-axs[1].scatter(np.arange(0,simK+1),corrected_xt[0,0:simK+1,1],s=15,color='black')
-axs[1].set_title('Air temperature in house II ($^oC$)',fontsize=20)
-axs[1].set_ylim([15, 27])
+ax0.set_title('Air temperature in house I ($^oC$)',fontsize=20)
+ax1.set_title('Air temperature in house II ($^oC$)',fontsize=20)
+ax2.set_title('Air temperature in house III ($^oC$)',fontsize=20)
+ax3.set_title('Air temperature in house IV ($^oC$)',fontsize=20)
 
-axs[0].set_xlim([1, simK])
-axs[1].set_xlim([1, simK])
+ax0.set_ylim([10, 27])
+ax1.set_ylim([10, 27])
+ax2.set_ylim([10, 27])
+ax3.set_ylim([10, 27])
 
-axs[1].set_xlabel('Time (k)',usetex=True,fontsize=16)
+ax0.set_xlim([1, simK])
+ax1.set_xlim([1, simK])
+ax2.set_xlim([1, simK])
+ax3.set_xlim([1, simK])
 
-# axs[0].set_xticks(np.arange(0,simK+1,4))
-axs[0].set_xticks([])
-axs[1].set_xticks(np.arange(0,simK+1,4))
-axs[0].tick_params(axis='both', which='major', labelsize=20)
-axs[1].tick_params(axis='both', which='major', labelsize=20)
+ax0.set_xticks([])
+ax1.set_xticks([])
+ax2.set_xticks([])
+ax3.set_xlabel('Time (k)',usetex=True,fontsize=16)
+ax0.tick_params(axis='both', which='major', labelsize=20)
+ax1.tick_params(axis='both', which='major', labelsize=20)
+ax2.tick_params(axis='both', which='major', labelsize=20)
+ax3.tick_params(axis='both', which='major', labelsize=20)
 
-axs[1].legend(( 'Reference i','Nominal','Agent I is Selfish','+ Correction'),loc='bottom', bbox_to_anchor=(.835, -0.5),ncol=2,fontsize=14)
+ax1.legend(( '$w_{i}[k]$','$y_{i}^{N}[k]$','$y_{i}^{S}[k]$','$y_{i}^{C}[k]$'),loc='bottom', bbox_to_anchor=(1.275, 0.5),ncol=1,fontsize=16)
+
 # axs[1].legend(handles,labels,loc='center',ncol=4,fontsize=15)
 
-fig.tight_layout()
-
-plt.savefig(outputFolder + "ErrorWX_command_normErrH_poster" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
-plt.savefig(outputFolder + "ErrorWX_command_normErrH_poster" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
+# fig.tight_layout()
+plt.savefig(outputFolder + "ErrorWX_command_normErrH_all_houses" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig(outputFolder + "ErrorWX_command_normErrH_all_houses" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
 
 # NOTE(accacio): control
 fig, axs = plt.subplots(3, 1,facecolor=(.0, .0, .0, .0))
@@ -358,7 +374,7 @@ axs[2].set_xlabel('Time (k)',usetex=True,fontsize=16)
 axs[2].tick_params(axis='both', which='major', labelsize=20)
 
 fig.tight_layout()
-rc('font', **serif_font)
+# rc('font', **serif_font)
 
 plt.savefig(outputFolder + "control" +  ".pdf",bbox_inches='tight',transparent=True)
 plt.savefig(outputFolder + "control" +  ".png",bbox_inches='tight',transparent=True)
