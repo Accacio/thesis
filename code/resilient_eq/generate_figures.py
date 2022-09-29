@@ -146,7 +146,9 @@ with open('/dev/stdout', 'w') as f:
     print("$R^{\\text{oa/ia}}$ & $", Rf[0]  , "$ & $",Rf[1]  ,"$ & $",Rf[2]  ,"$ & $",Rf[3]  ,"$ & $","10^{-3}\mathrm{K/W}$\\\\",file=f)
     print("$R^{\\text{iw/ia}}$ & $", Ri[0]  , "$ & $",Ri[1]  ,"$ & $",Ri[2]  ,"$ & $",Ri[3]  ,"$ & $","10^{-4}\mathrm{K/W}$\\\\",file=f)
     print("$R^{\\text{ow/oa}}$ & $", Ro[0]  , "$ & $",Ro[1]  ,"$ & $",Ro[2]  ,"$ & $",Ro[3]  ,"$ & $","10^{-4}\mathrm{K/W}$",file=f)
-exit()
+
+
+
 # with open('../../data/resilient_eq/triche_matrix_IV.tex', 'w') as f:
 #     print(smallmatrix(nominal['tau'][:,:,0]),file=f)
 
