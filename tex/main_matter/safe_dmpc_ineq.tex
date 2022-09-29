@@ -162,11 +162,11 @@ Imagine an example where we have $2$ constraints with associated $\elem[1]{\lamb
   \begin{tikzpicture}[every node/.style={align=center}]
     \def\height{3}
     \def\length{5}
-    \node at (0,0) {} coordinate (p0)  ++(0:\length*2.4/5) coordinate (p1) ;
-    \node at (0,0) {} ++(90:\height*2.7/5) coordinate (p2) ;
+    \node at (0,0) {} coordinate (p0)  ++(0:\length*2.2/5) coordinate (p1) ;
+    \node at (0,0) {} ++(90:\height*2.8/5) coordinate (p2) ;
 
-    \draw[black] (p2) ++(-1:5) coordinate (p3);
-    \draw[black] (p1) ++(80:3) coordinate (p4);
+    \draw[black] (p2) ++(-4:5) coordinate (p3);
+    \draw[black] (p1) ++(75:3) coordinate (p4);
     \coordinate (p6) at (p3|-p4);
 
     \coordinate (p5) at (intersection cs:first line={(p2)--(p3)}, second line={(p1)--(p4)});
@@ -182,7 +182,7 @@ Imagine an example where we have $2$ constraints with associated $\elem[1]{\lamb
     \node at (\length*4/5,\height*1.25/5) {$\elem[1]{\lambdai}\neq0$\\$\elem[2]{\lambdai}=0$};
     \node at (\length*4/5,\height*3.8/5) {$\elem[1]{\lambdai}=0$\\$\elem[2]{\lambdai}=0$};
   \end{tikzpicture}
-  \caption{Two constraints partitioning $\thetai$ solution space.\todo[mudar inclinação]{}}\label{fig:constraints_partition_theta}
+  \caption{Two constraints partitioning $\thetai$ solution space.}\label{fig:constraints_partition_theta}
 \end{figure}
 For any $\thetai$ inside the grey area, the solution to~\eqref{eq:local_problem_equality_standard_notation} will be unconstrained, i.e., the constraint will be active.
 Thus, for this case, by definition the value of $\lambdai=\0$.
