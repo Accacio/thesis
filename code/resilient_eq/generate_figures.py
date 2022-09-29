@@ -638,6 +638,10 @@ axs[1].set_ylim([-1, 17])
 axs[1].set_xticks(np.arange(0,simK+1,1))
 axs[1].set_xlim([1, simK])
 axs[1].set_xlabel('Time (k)',usetex=True,fontsize=16)
+axs[0].tick_params(axis='both', which='major', labelsize=20)
+axs[1].tick_params(axis='both', which='major', labelsize=20)
+
+
 # axs[1].legend(( '$Sub_1$', '$Sub_2$','$Sub_3$','$Sub_4$'),loc='upper center',ncol=4,fontsize=13)
 # axs[1].legend(( '$I$', '$II$','$III$','$IV$'),loc='upper left',ncol=2,fontsize=13)
 # axs[1].legend(( 'I', 'II','III','IV'),loc='upper center',ncol=4,fontsize=13)
