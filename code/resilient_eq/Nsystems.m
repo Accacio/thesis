@@ -54,11 +54,11 @@ end
 % Cres=[5 4 4.5];
 % Cs=[8 7 9];
 
-Rf=[5 6 4 5];
-Ri=[2.5 2.3 2 2.2];
-Ro=[0.5 1 0.8 0.9];
-Cres=[5 4 4.5 4.7];
-Cs=[8 7 9 6];
+Cs=[8 7 9 6];       % c walls
+Cres=[5 4 4.5 4.7]; % c inside air
+Rf=[5 6 4 5];       % r inside air and outside air (windows)
+Ri=[2.5 2.3 2 2.2]; % r inside air inside walls
+Ro=[0.5 1 0.8 0.9]; % r outside air outside walls
 % Define the systems and coordinator:6 ends here
 
 % [[file:../../../docs/org/decomposition_methods/secureDMPC.org::*Define the systems and coordinator][Define the systems and coordinator:7]]
