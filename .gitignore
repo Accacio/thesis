@@ -36,7 +36,10 @@
 *.synctex*
 
 [f,m,b]*/*.pdf
+tex/main_matter/*pdf
+*main*.pdf
 
+*.log
 *.upa
 *.upb
 *.el
