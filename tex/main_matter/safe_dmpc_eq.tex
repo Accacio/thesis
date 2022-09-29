@@ -744,6 +744,31 @@ So, we can modulate the negotiation algorithm, by using $\lambdaimodified$ choos
 
 \section{Complete safe dMPC for scarce systems}\label{sec:complete-safe-dmpc}
 Compiling the detection and mitigation schemes described in the last sections, we can finally have our \rpdmpcss{}.
+The detection mechanism and conditional reconstruction of $\lambdai$ can be seen as a supervisor for each agent added inside the coordinator (Fig.~\ref{fig:dmpc_communication_safe_eq})
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[font=\small,thick,node distance=3*0.6180cm and 0.6180cm,every node/.style=rectangle,
+    mpcSmall/.style={fill=mpc_agent, minimum height=0.6180*2cm, minimum width=2cm},
+    coordinator/.style={fill=mpc_coordinator, minimum height=0.6180*3.5cm, minimum width=6.5cm},
+    supervisor/.style={fill=mpc_green, minimum height=0.6180*3*0.3cm, minimum width=2cm},
+    ]
+
+    \node[draw, mpcSmall,] (block1) {\small Agent 1};
+    \node[fill=none, draw=none, right=of block1,] (mult) {\bf $\dots$};
+    \node[draw, mpcSmall, fill=mpc_agent, right=of mult,] (blockM) {\small Agent M};
+    \node[draw, coordinator, below=of mult,] (coordinator) {Coordinator};
+
+    \node[draw, supervisor,anchor=north west] at (coordinator.north west) {\small Supervisor 1};
+    \node[draw, supervisor,anchor=north east] at (coordinator.north east) {\small Supervisor M};
+
+    \draw[-latex,line width=1pt] (block1.south)+(0.4,.0) -- ( coordinator.north -| {$(block1.south)+(0.4,.0)$}) node [right,midway] {$\lambda_{1}$};
+    \draw[latex-,line width=1pt] (block1.south)+(-0.4,0) -- (  coordinator.north -| {$(block1.south)+(-0.4,0)$}) node [left,midway] {$\theta_{1}$};
+    \draw[-latex,line width=1pt] (blockM.south)+(0.4,.0) -- ( coordinator.north -| {$(blockM.south)+(0.4,.0)$}) node [right,midway] {$\lambda_{M}$};
+    \draw[latex-,line width=1pt] (blockM.south)+(-0.4,0) -- (  coordinator.north -| {$(blockM.south)+(-0.4,0)$}) node [left,midway] {$\theta_{M}$};
+  \end{tikzpicture}
+  \caption{Exchange between agents and coordinator in \rpdmpcss{}.}\label{fig:dmpc_communication_safe_eq}
+\end{figure}
+
 Algorithm~\ref{alg:rpdbdmpcss} systematizes the method.
 
 \begin{algorithm2e}[h]
