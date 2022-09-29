@@ -1,0 +1,9 @@
+#+TITLE: Script
+
+* =decompositionNagents.m=
+Main script
+- chSetpoint :: choose if setpoint will change
+- cheating :: choose if agent I will be selfish
+- secure :: choose if secure algorithm is used
+** Agents
+ systems are defined in =Nagents.m=
