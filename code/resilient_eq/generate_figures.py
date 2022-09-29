@@ -123,10 +123,13 @@ with open(dataFolder + 'references.tex', 'w') as f:
 
 
 
-# with open('../../data/resilient_eq/triche_matrix_I.tex', 'w') as f:
-#     print(smallmatrix(corrected['T'][:,:,0]),file=f)
+print(np.shape(nominal['tau']))
+print(nominal['tau'][:,:,0])
+with open('../../data/resilient_eq/triche_matrix_I.tex', 'w') as f:
+    print(smallmatrix((nominal['tau'][:,:,0])),file=f)
+exit()
 # with open('../../data/resilient_eq/triche_matrix_IV.tex', 'w') as f:
-#     print(smallmatrix(corrected['T'][:,:,3]),file=f)
+#     print(smallmatrix(nominal['tau'][:,:,0]),file=f)
 
 nominal_J=2*subsystems['J'][0][0][0]+np.transpose(subsystems['const'][0][0])
 nominal_sumJ=np.sum(nominal_J,axis=0)
@@ -582,7 +585,7 @@ axs[0].legend(( '$w_{\mathrm{I}}(k)$','$y_{\mathrm{I}}^N(k)$','$y_{\mathrm{I}}^S
 #
 axs[0].set_xticks(np.arange(0,simK+1,1))
 axs[0].set_xlim([1, simK])
-axs[0].set_title('Air temperature in house I',fontsize=16)
+axs[0].set_title('Air temperature in house I ($^oC$)',fontsize=16)
 # axs[0].set_xlabel('Time (k)',usetex=True,fontsize=16)
 
 # axs[2].plot(np.arange(1,simK+1),np.sum(uHist[0,-1,:,:],axis=1),'-r',drawstyle='steps-post')
