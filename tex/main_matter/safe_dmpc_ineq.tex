@@ -14,7 +14,7 @@ Employing some assumptions, we take a powerful tool of our identification utilit
 
 \minitoc
 
-\section{Relaxing the problem}\label{sec:not-so-scarce}
+\section{Relaxing the problem}\label{sec:not-so-deprived}
 We begin again with the monolithic \mpc{} equivalent problem~\eqref{eq:qp_standard_form}.
 We reproduce yet another time the problem, but with a twist, now the problem also has a decomposable constraint set $\set{U}$:
 \begin{equation}
@@ -54,8 +54,8 @@ but with ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k]\preceq 
 \end{remark}
 
 In this chapter, we still assume the original constraint~\eqref{eq:linear_constraint} to have at most as many rows as columns, i.e., $\card{\vec{u}_{\max}}\leq n_{u}$.
-However, we relax the assumption made in \S\ref{sec:scarce-systems}.
-The systems are not necessarily scarce anymore, i.e., the unconstrained solutions
+However, we relax the assumption made in \S\ref{sec:deprived-systems}.
+The systems are not necessarily deprived anymore, i.e., the unconstrained solutions
 $\optuncU=-H^{-1}\vec{f}[k]$ and $\optuncUik=-H_{i}^{-1}\vec{f}_{i}[k]$ may or may not respect the constraints.
 
 As we will see in next section, despite the relaxation of this assumption, making the problem more generic, it causes the solution of the local problems exponentially more complex.
@@ -265,7 +265,7 @@ a \pwa{} function
   \end{aligned}.
 \end{equation}
 
-Here we can begin to regard the change caused by the relaxation, whereas we had only one equation relating $\lambdai$ to $\thetai$, when the system was scarce, now we have potentially $2^{\nineq}$ different equations.
+Here we can begin to regard the change caused by the relaxation, whereas we had only one equation relating $\lambdai$ to $\thetai$, when the system was deprived, now we have potentially $2^{\nineq}$ different equations.
 
 \begin{remark}\label{rem:sparse_solutions}
   As one may expect, by definition, the $\Plinineq[i][n]$ and $\sikineq[i][n]$ are increasingly sparse.
@@ -416,7 +416,7 @@ If we develop the calculations we can estimate an upper bound on the number of t
   The exact calculation for the regions is not the scope of this work.
 \end{remark}
 
-The case for scarce systems seen in the last chapter, settles the solution of the projection to the case $(0)$, where $\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$ is projected onto the intersection of all halfspaces.
+The case for deprived systems seen in the last chapter, settles the solution of the projection to the case $(0)$, where $\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$ is projected onto the intersection of all halfspaces.
 And due to another assumption (that $\bar{\Gamma}_{i}\optuncUik\succ \thetaik, \forall i\in\set{M}, \forall k$), we fix all $\lambdai$ to the first solution in~\eqref{eq:lambdafuntheta}.
 This consecutive choices of assumptions reduces the total number of switching modes to exactly one, presented by equations~\eqref{eq:negotiation_equation_substituting_organizing_matrix_lambda} and~\eqref{eq:negotiation_equation_substituting_organizing_matrix_theta}, reproduced here.
 
@@ -1086,7 +1086,7 @@ and the references as
 \input{../data/resilient_ineq/references.tex}.
 All other parameters are the same, which when decomposing the \mpc{} problem we have
 \begin{equation}
-  \label{eq:houses_artificial_scarce_local_problem}
+  \label{eq:houses_artificial_deprived_local_problem}
   \begin{matrix}
     \minimize\limits_{\vec{U}_{i}[k]}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
     \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \succeq \thetaik:\lambdaik\\

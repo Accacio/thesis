@@ -2,23 +2,23 @@
 
 \begin{document}
 
-\chapter[Resilient Primal Decomposition-based dMPC for scarce systems]{Resilient \\Primal Decomposition-based \\distributed \\Model Predictive Control\\ for scarce systems}\label{sec:safe_pddmpc_eq}
+\chapter[Resilient Primal Decomposition-based dMPC for deprived systems]{Resilient \\Primal Decomposition-based \\distributed \\Model Predictive Control\\ for deprived systems}\label{sec:safe_pddmpc_eq}
 \epigraph{\centering So you tell me 'trust me' \\I can trust you\\ Just let me show you \\But I gotta work it out in a shadow of doubt \\'Cause I don't know if I know you}
 {\textit{Lie}\\\textsc{Dream Theater}}
 
-In this chapter, we focus on the analysis of the primal decomposition-based \dmpc{} problem for scarce systems when in the presence of the attack chosen in~\S\ref{sec:anomalous}.
+In this chapter, we focus on the analysis of the primal decomposition-based \dmpc{} problem for deprived systems when in the presence of the attack chosen in~\S\ref{sec:anomalous}.
 
 With the knowledge acquired after the analysis, we propose a method to detect the attacks and mitigate its effects.
 
 \minitoc
 
 
-\section{Scarce systems under attack}\label{sec:analys-scarce-syst}
+\section{Deprived systems under attack}\label{sec:analys-deprived-syst}
 
 Different from~\cite{VelardeEtAl2018,MaestreEtAl2021} which propose robust solutions, we propose a resilient \dmpc{} based on a hybrid of analytical/learning active detection method.
 For this end, we begin with an analysis of the system under attack.
 
-\subsection{Scarce Systems}\label{sec:scarce-systems}
+\subsection{Deprived Systems}\label{sec:deprived-systems}
 First we recall the monolithic \mpc{} equivalent problem~\eqref{eq:qp_standard_form}, once more reproduced for the reader's convenience,
 \begin{equation}
   \label{eq:qp_standard_form_again}
@@ -68,7 +68,7 @@ and have analytical solutions~\cite{BoydVandenberghe2004}
   \optuncUik=-H_{i}^{-1}\vec{f}_{i}[k].
 \end{align}
 
-We call a system scarce when its unconstrained solution $\optuncU$ lies outside the bounds of the polytope formed by the constraints for all $k$, i.e.,
+We call a system deprived when its unconstrained solution $\optuncU$ lies outside the bounds of the polytope formed by the constraints for all $k$, i.e.,
 \begin{equation}
 \bar{\Gamma}\optuncU\succ {\vec{U}}_{\text{max}}, \forall k.
 \end{equation}
@@ -126,7 +126,7 @@ These are the equations we will use for our analysis.
   This computation of active/inactive sets may be costly depending on the number of halfspaces used and the dimensions of the variables.
   Some binary-search-tree and other techniques may be used to increase performance~\cite{SchulzeEtAl2022,AlessioBemporad2009}.
 
-  If we assume the feasible regions of $\bar{\Gamma}$ (and $\bar{\Gamma}_{i}$) to form a cone, if the systems is scarce, $\bar{\Gamma}_{\text{eq}}=\bar{\Gamma}$ (and $\bar{\Gamma}_{i_\text{eq}}=\bar{\Gamma}_i$)\footnote{This can be easily proven geometrically, when a point do not respect any of the inequality constraints the projection onto the cone will be its apex (which coincides with the intersection of the equivalent hyperplanes).}.
+  If we assume the feasible regions of $\bar{\Gamma}$ (and $\bar{\Gamma}_{i}$) to form a cone, if the systems are deprived, $\bar{\Gamma}_{\text{eq}}=\bar{\Gamma}$ (and $\bar{\Gamma}_{i_\text{eq}}=\bar{\Gamma}_i$)\footnote{This can be easily proven geometrically, when a point do not respect any of the inequality constraints the projection onto the cone will be its apex (which coincides with the intersection of the equivalent hyperplanes).}.
 
 One way to ensure this, is to make the original constraint~\eqref{eq:linear_constraint} to have at most as many rows as columns, i.e., $\card{\vec{u}_{\max}}\leq n_{u}$, although it may be a little restrictive.
 
@@ -135,7 +135,7 @@ So, from now on, we make this assumption and use $\bar{\Gamma}$ and $\bar{\Gamma
   % For our study cases where $\Gamma$ has all its elements positive (such as postive weighted sum of all inputs), and block diagonal structure with repeating pattern (from the \mpc{} definition~\eqref{eq:construction_Gamma}), we assume we can find the corresponding problem and change $\bar{\Gamma}$ (and $\bar{\Gamma}_i$) accordingly, by removing the proper rows.
 \end{remark}
 
-\subsection{Why scarce systems?}\label{sec:why-scarce-systems}
+\subsection{Why deprived systems?}\label{sec:why-deprived-systems}
 
 When a system does not suffer from scarcity, the solution of the unconstrained problem~\eqref{eq:qp_standard_form_unconstrained_solution} respects the inequalities, i.e.,
 \begin{equation}
@@ -742,7 +742,7 @@ So, we can modulate the negotiation algorithm, by using $\lambdaimodified$ choos
   Since it may be difficult to asses the minimal allocation, we ignore the cases when the estimation does not converge.
 \end{remark}
 
-\section{Complete safe dMPC for scarce systems}\label{sec:complete-safe-dmpc}
+\section{Complete safe dMPC for deprived systems}\label{sec:complete-safe-dmpc}
 Compiling the detection and mitigation schemes described in the last sections, we can finally have our \rpdmpcss{}.
 The detection mechanism and conditional reconstruction of $\lambdai$ can be seen as a supervisor for each agent added inside the coordinator (Fig.~\ref{fig:dmpc_communication_safe_eq})
 \begin{figure}[H]
@@ -789,7 +789,7 @@ Algorithm~\ref{alg:rpdbdmpcss} systematizes the method.
     Agents apply on respective sub-systems the last calculated $\vec{u}_{i}^{\star}[0|k]$\;
     $k\gets k+1$\;
   }
-  \caption{Resilient Primal Decomposition-based dMPC for scarce systems.}\label{alg:rpdbdmpcss}
+  \caption{Resilient Primal Decomposition-based dMPC for deprived systems.}\label{alg:rpdbdmpcss}
 \end{algorithm2e}
 
 \section{Numerical experiment}\label{sec:numerical-experiment}
@@ -937,7 +937,7 @@ $\vec{u}_{\max}=40\mathrm{kW}$
 We want to control the system using \mpc{}, so we discretize the system using a zero-order holder and sampling time of $T_{s}=0.25\mathrm{h}$, resulting in the $3$-tuples $(A_{i},B_{i},C_{i})$.
 
 \subsection{Applying \rpdmpcss{}}
-First, to use the \rpdmpcss{}, we assume the heating sysmtem is scarce, in other words, given an initial state $\vec{x}_{i}[0]$, references $\vec{w}_{i}[k]$ cannot be achieved due to input constraints.
+First, to use the \rpdmpcss{}, we assume the heating system is deprived, in other words, given an initial state $\vec{x}_{i}[0]$, references $\vec{w}_{i}[k]$ cannot be achieved due to input constraints.
 
 For example, we suppose they have initial states
 \input{../data/resilient_eq/initial_states.tex},
@@ -951,7 +951,7 @@ and choosing to control the system using a prediction horizon
 $\predhorz=4$,
 we can structure the \dmpc{} problem similar to the one in~\eqref{eq:qp_standard_form_equality} and decompose the system using the usual primal decomposition, with local problems
 \begin{equation}
-  \label{eq:houses_scarce_local_problem}
+  \label{eq:houses_deprived_local_problem}
   \begin{matrix}
     \minimize\limits_{\vec{U}_{i}[k]}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
     \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] = \thetaik:\lambdaik\\
