@@ -53,8 +53,48 @@
 
 \section{Contexte et Motivation}\label{sec:cont-et-motiv}
 
-Pour illustrer on donne un example, ou
+L'évolution de la computation dans les dernières deux décades est indéniable.
+Dispositifs avec la même puissance des ordinateurs qui ont possibilité l'humanité à toucher le sol lunaire dans la décade de $1970$ sont aujourd'hui à la distance d'une main.
+
+Cette évolution a proportionné l'utilisation de la commande prédictive~\cite{GarciaEtAl1989}, en anglais
+connue comme \mpclong{} ou \mpcshort, en problèmes avec échelles de temps réduites, quelquefois en temps-réel~\cite{BesselmannEtAl2008}, et en utilisant dispositifs plus petits qu'une pièce~\cite{BanguraMahony2014}.
+
+Aussi comme conséquence la \mpc{} est envisagée pour contrôler systèmes dans une myriade d'applications avec l'échelle de villes, comme les réseaux de distribution d'eau~\cite{ZhangEtAl2021}, en anglais
+\wdns, et de chaleur~\cite{TaylorEtAl2021}, en anglais \dhns.
+Ça présente l'insertion de la \mpc{} dans les systèmes cyber-physiques, en anglais \cps{}, où ordinateurs et machines sont étroitement couplées.
+
+Cependant, pour quelques systèmes de grande échelles, le calcul peut encore être coûteuse, nécessitant de stratégies, comme diviser le calcul en plusieurs dispositfs, à fin de faciliter la computation.
+Comme on verra cette stratégie est appelée commande prédictive distribuée, ou \dmpc{}, et cela vient en differents moutures.
+
+Néanmoins, pas trop d'études ont été faites pour la sécurité des stratégies \dmpc{}, quand les agents ne communiquent honnêtement.
+Ce travail étudie ce que se passe quand les unités ne travaillent pas ensemble.
+
+Pour illustrer on donne un example d'un réseau \dhn{} avec 4 maisons (Fig.~\ref{fig:houses_resume}) qui n'a pas assez de puissance pour répondre aux nécessités de ses résidents, nécessitant d'un compromis.
 \begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[node distance=.5cm and .75cm,scale=1]
+    \node[color=mpc_agent] (house1) at (0,0) {\scalebox{2.5}{\faHome}};
+    \node[minimum height=1cm,below=of house1] (medium) {};
+    \node[color=mpc_agent,right=of medium] (house2)  {\scalebox{3.5}{\faHome}};
+    \node[color=mpc_agent,below=of medium] (house3)  {\scalebox{3}{\faHome}};
+    \node[color=mpc_agent,left= of medium] (house4)  {\scalebox{4}{\faHome}};
+
+    \draw[latex-,line width=1pt] (house1) -- (medium.center);
+    \draw[latex-,line width=1pt] (house2) -- (medium.center);
+    \draw[latex-,line width=1pt] (house3) -- (medium.center);
+    \draw[latex-,line width=1pt] (house4) -- (medium.center);
+    % \draw[latex-,line width=1pt] (house4) -- (medium.center) node[above,midway] {\large $\vec{u}_{i}(t)$};
+    \draw[color=black,fill=mpc_coordinator,] (medium) circle [radius=.2cm];
+
+    % \node[latex-,line width=7pt] at ($(house4) +(-1,1)$) {\large $w_{i}(t)$};
+    % \node[latex-,line width=7pt] at ($(house4)$) {$\vec{x}_{i}(t)$};
+
+  \end{tikzpicture}
+  \caption{\dhn{} avec $4$ maisons.}\label{fig:houses_resume}
+\end{figure}
+
+La commande est faite utilisant \mpc{} décomposée avec un coordinateur e un agent local pour chaque maison. On voit le schéma de communication entre les entités dans la Fig.~\ref{fig:echange_controleurs_coordinateur}.
+\begin{figure}[h]
   \centering
   \begin{tikzpicture}[font=\small,thick,node distance=3*0.6180cm and 0.6180cm,every node/.style=rectangle,
     mpcSmall/.style={fill=mpc_agent, minimum height=0.6180*2cm, minimum width=2cm},
@@ -66,25 +106,38 @@ Pour illustrer on donne un example, ou
     \node[draw, mpcSmall, fill=mpc_agent, right=of mult,] (blockM) {\small Maison M};
     \node[draw, coordinator, below=of mult,] (coordinator) {Coordinateur};
 
-    \draw[-latex,line width=1pt] (block1.south)+(0.4,.0) -- ( coordinator.north -| {$(block1.south)+(0.4,.0)$}) node [right,midway] {$\lambda_{1}$};
-    \draw[latex-,line width=1pt] (block1.south)+(-0.4,0) -- (  coordinator.north -| {$(block1.south)+(-0.4,0)$}) node [left,midway] {$\theta_{1}$};
-    \draw[-latex,line width=1pt] (blockM.south)+(0.4,.0) -- ( coordinator.north -| {$(blockM.south)+(0.4,.0)$}) node [right,midway] {$\lambda_{M}$};
-    \draw[latex-,line width=1pt] (blockM.south)+(-0.4,0) -- (  coordinator.north -| {$(blockM.south)+(-0.4,0)$}) node [left,midway] {$\theta_{M}$};
+    \draw[-latex,line width=1pt] (block1.south)+(0.4,.0) -- ( coordinator.north -| {$(block1.south)+(0.4,.0)$}) node [right,midway] {$\lambdai[1]$};
+    \draw[latex-,line width=1pt] (block1.south)+(-0.4,0) -- (  coordinator.north -| {$(block1.south)+(-0.4,0)$}) node [left,midway] {$\thetai[1]$};
+    \draw[-latex,line width=1pt] (blockM.south)+(0.4,.0) -- ( coordinator.north -| {$(blockM.south)+(0.4,.0)$}) node [right,midway] {$\lambdai[M]$};
+    \draw[latex-,line width=1pt] (blockM.south)+(-0.4,0) -- (  coordinator.north -| {$(blockM.south)+(-0.4,0)$}) node [left,midway] {$\thetai[M]$};
   \end{tikzpicture}
   \caption{Échange entre contrôleurs locaux et coordinateur.}\label{fig:echange_controleurs_coordinateur}
 \end{figure}
-\begin{quote}
-  \raggedright
-  Les allocations $\theta_{i}$ sont proposées pour chaque maison par le coordinateur.
-  Le contrôleurs locaux respondent avec des indices $\lambda_{i}$ qui indiquent leur satisfaction.
-  Les allocations sont mises à jour basées sur ces indices jusq'un consensus soit établi.
-\end{quote}
+Les allocations de resources $\thetai$ sont proposées pour chaque maison par le coordinateur.
+Le contrôleurs locaux respondent avec des indices $\lambdai$ qui indiquent leur satisfaction.
+Les allocations sont mises à jour basées sur ces indices jusq'un consensus soit établi.
 
-\begin{figure}[H]
+Dans un certain moment, un des agents, plus spécifiquement celui correspondant à la maison I, commence a modifier la valeur de $\lambdai$ envoyée.
+Il l'augmente a chaque jour jusqu'à un jour la commande est arretée due à une manque de consensus entre les agents.
+
+En utilisant des métriques comme les fonctions objectives, dans laquelle valeures plus petites signifiquent une meilleure perfomance, on peut voir que la performance de l'agent I a amélioré à partir d'une certaine date à la fin d'octobre (Fig.~\ref{fig:change_in_j_resume}).
+Par contre, la performance de toutes les autres agents a empiré.
+On peut voir aussi dans l'aire hachuré quand le consensus n'est plut trouvé.
+\begin{figure}[h]
   \centering
   \includegraphics[width=.8\textwidth]{../img/example_introduction/example_J_fr.pdf}
-  \caption{Graphique des fonctions objectives dans une période de 10 semaines.}\label{fig:change_in_j}
+  \caption{Graphique des fonctions objectives dans une période de 10 semaines.}\label{fig:change_in_j_resume}
 \end{figure}
+
+Cet example simple nous donne les effets d'un attaque: perte de performance et cassure du fonctionnement du système.
+Le même peut arriver causé par des fautes.
+Motivé par examples réels comme les black-out de 2010 au Brési~\cite{Conti2010}, l'attaque Stuxnet au Iran en 2011~\cite{Langner2011}, et les attaques à une central électrique en Ukraine in 2016~\cite{Bindra2017} et mal-heusement beaucoup d'autres~\cite{DingEtAl2018,DibajiEtAl2019}, on veut étudier la sécurité des \cps{}.
+
+Dans ce travail on va focaliser sur la securité des \cps{} command par \dmpc{}.
+
+Utilisant la connaisance acquise on propose des méthodes pour sécurises ses systèmes.
+
+On utilise comme guide les questions suivantes:
 \simplebox{
   \begin{itemize} \bfseries
     \item Peut-on detecter l'attaque?
@@ -109,15 +162,46 @@ On formalise l'example en donnant une approche plus quantitative.
 Une fois les vulnérabilités et les possibles effets des attaques découverts, on divise la mitigation en parties plus gérable.
 \\ Premièrement en Section~\ref{sec:comm-pred-resil}, on analyse un problème simple, pour qu'on puisse apprécier les possibles difficultés qui peuvent être rencontrées pendant le problème de mitigation.
 À partir de cette analyse, on propose des mécanismes de detection et mitigation, suivis par un example académique pour illustrer leur fonctionnement.
-
 \\Après, en Section~\ref{sec:comm-pred-resil-1}, on analyse un problème similaire mais avec un coup de théâtre. Comme on verra, une petite modification du problème inital cause une augmentation exponentiel de sa complexité.
 L'analyse de ce nouvel problème résulte une stratégie similaire, mais avec modifications adéquates pour renfermer la nature exponentiel du problème.
 
 Finallement, on conclue le travail avec Section~\ref{sec:conclusion_resume}, où on discute les résultats de l'étude, ses bénéfices et inconvénients.
 La discussion ouvre des questions qui peuvent inciter des nouveau travaux.
+\subsection{Contributions}
+Comme un contribution mineure, on démontre l'étude de la vulnérabilité des \dmpc{} basées sur la décomposition primal, qu'au meilleur de nos connaissance n'a pas jamais été étudié.
+
+Comme contributions majeures, deux stratégies de mitigation pour types différents de système de complexité croissante.
+
+La première pour des systèmes lesquels les resources ne sont pas suffisants pour répondre aux nécessités des agents locaux, on les appelle \textbf{Systèmes Dépourvus}.
+
+La seconde, pour une classe des systèmes exponentielment plus complexes, où on assume que les demandes locales respect au moins quelques contraintes. On utilise tel hypothèse pour acquérir des informations en utilisant une méthode qu'on appelle \textbf{pénurie artificielle}.
+
+\subsection{Publications}
+Les discussion dans cette thèse a donné comme résultats les publications suivantes:
+\begin{itemize}
+  \item Publiés
+        \begin{description}
+          \item[\cite{NogueiraEtAl2021}] Conference article for the SysTol'21
+          \item[\cite{NogueiraEtAl2022}] Conference article for the NecSys'22
+        \end{description}
+\end{itemize}
 
 \newpage
 \section{Commande Prédictive et sa décomposition}\label{sec:comm-pred-et}
+
+
+La commande prédictive basée en modèle, ou commande prédictive, ou encore \mpclong{} en anglais, est une stratégie de commande en boucle fermée basée dans la solution des problèmes d'optimisation.
+Ayant un modèle du système à commander et une fonction objective, la stratégie utilise le modèle pour prévoir l'évolution de ses états et computer une séquence optimale de command qui optimise la fonction donnée.
+Comme on utilise des problèmes d'optimisation, il est naturel d'ajouter des restriction en forme de contraintes d'égalité et d'inégalité.
+
+Cette stratégie a une place spéciale dans l'industrie et est présente dans une plethora d'applications (gestion d'énérgie~\cite{AnandutaEtAl2018}, commande des quadrotors~\cite{BanguraMahony2014} et autres).
+
+On focalise sur la \mpc{} pour des systèmes linéaires.
+\subsection{\mpc{} for linear systems}
+The \mpc\ community favors the use of convex problems when possible. Two families of convex problems broadly used are \qp\ and \lp.
+In this work, we concentrate on \qp{} problems, which have quadratic objective functions and affine or linear constraints.
+Numerous mathematical solvers are apt to solve this kind of problem directly or through equivalent problems.
+We can cite non-extensively some solvers such as MATLAB internal QP solvers\footnote{\url{https://fr.mathworks.com/help/optim/ug/quadprog.html}}, OSQP\footnote{\url{https://osqp.org}}, MOSEK\footnote{\url{https://www.mosek.com}} and ECOS\footnote{\url{https://github.com/embotech/ecos}}.
 
 \newpage
 \section{Differents topologies}\label{sec:differents-topologies}
