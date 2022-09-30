@@ -163,14 +163,14 @@
 \newcommand{\optthetaiseq}{\mpcvec*{\theta}[i][k:k+\predhorz-1][k]}
 \newcommand{\thetaseq}{\mpcvec{\theta}[][k:k+\predhorz-1][k]}
 \newcommand{\optthetaseq}{\mpcvec*{\theta}[][k:k+\predhorz-1][k]}
-\newcommand{\thetai}{\vec{\theta}_i}
+\newcommand{\thetai}[1][i]{\vec{\theta}_{#1}}
 \newcommand{\optthetai}{\vec{\theta}_i^{\star}}
 
 \newcommand{\dik}{\mpcvec{d}}
 \newcommand{\diseq}{\mpcvec{d}[i][k:k+\predhorz-1][k]}
 \newcommand{\lambdaik}{\mpcvec{\lambda}}
 \newcommand{\lambdaikstar}{\mpcvec*{\lambda}}
-\newcommand{\lambdai}{\vec{\lambda}_i}
+\newcommand{\lambdai}[1][i]{\vec{\lambda}_{#1}}
 % \newcommand{\modified}[1]{\underaccent{\sim}{#1}}
 \newcommand{\modified}[1]{\accentset{\todo{\text{mod}}}{#1}}
 \newcommand{\reconstructed}[1]{\accentset{\todo{\text{rec}}}{#1}}
