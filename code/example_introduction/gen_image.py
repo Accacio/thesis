@@ -64,3 +64,8 @@ ax.add_patch(rect)
 plt.legend(('$J^\star$', '$J^\star_1$', '$J^\star_2$','$J^\star_3$','$J^\star_4$'),ncol=2,fontsize=15)
 plt.savefig(outputFolder + "/example_J" +  ".pdf",facecolor=fig.get_facecolor())
 plt.savefig(outputFolder + "/example_J" +  ".png",facecolor=fig.get_facecolor())
+
+
+ax.set_title('Fonctions objectives global and locales $J^\star$ and  $J_i^\star$', fontsize=16,usetex=True)
+plt.savefig(outputFolder + "/example_J_fr" +  ".pdf",facecolor=fig.get_facecolor())
+plt.savefig(outputFolder + "/example_J_fr" +  ".png",facecolor=fig.get_facecolor())
