@@ -620,7 +620,7 @@ backrefstyle=three,
 {\normalTwelve \textbf{Rapporteurs avant soutenance :}}\\[.2cm]
 \footnotesizeTwelve
 \quad
-\begin{tabular}{@{}y{75pt}y{90pt}l}
+\begin{tabular}{@{}y{75pt}y{110pt}l}
   \setcounter{it}{0}
   \@whilenum\theit<\@reporter\do{%
   \tand \protect\csname Reporter:\theit \endcsname
@@ -636,7 +636,7 @@ backrefstyle=three,
 \footnotesizeTwelve
 \quad
 
-\begin{tabular}{@{}y{75pt}y{90pt}l}
+\begin{tabular}{@{}y{75pt}y{110pt}l}
   Pr\'{e}sident : & \@president\\
   \ifnum0=\the\@examiner
   \errmessage{NO EXAMINERS, at least one examiner is needed}
@@ -674,7 +674,7 @@ backrefstyle=three,
 {\normalTwelve \textbf{Invit\'{e}(s) :}}\\[.2cm]
 \footnotesizeTwelve
 \quad
-\begin{tabular}{@{}y{75pt}y{90pt}l}
+\begin{tabular}{@{}y{75pt}y{110pt}l}
   \setcounter{it}{0}%
   \setcounter{it}{0}%
   \@whilenum\theit<\@invited\do{%
