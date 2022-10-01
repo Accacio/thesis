@@ -1,3 +1,3 @@
 * Thesis (WIP)
 
-#+html: <table style="text-align: center;"> <tr> <th>A4</th> </tr> <tr> <td><a href="https://github.com/Accacio/thesis/releases/latest/download/main.pdf"><img width="200em" src="main_preview.png" /></a><br/><a href="https://github.com/Accacio/thesis/releases/latest/download/main.pdf"><img src="https://img.shields.io/badge/Download-pdf-blue" /></a></td> </tr> </table>
+#+html: <table style="text-align: center;"> <tr> <th>A4</th> </tr> <tr> <td><a href="https://github.com/Accacio/thesis/releases/latest/download/main.pdf"><img width="200em" src="img/main_preview.png" /></a><br/><a href="https://github.com/Accacio/thesis/releases/latest/download/main.pdf"><img src="https://img.shields.io/badge/Download-pdf-blue" /></a></td> </tr> </table>
