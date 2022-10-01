@@ -1576,3 +1576,5 @@ backrefstyle=three,
     #1}\fi}
 \newcommand\note[1]{\ifdebug%
   {\pdfcomment[color=orange,opacity=0.4,subject=note]{#1}} \fi}
+
+\pagecolor{white}
