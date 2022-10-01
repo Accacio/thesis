@@ -32,3 +32,6 @@ clean:
 	@git clean -dfX
 clean-pdf:
 	@rm -f $(TARGET).pdf
+
+preview: $(TARGET).pdf
+	convert -density 300 'main.pdf[0]' ../main_preview.png
