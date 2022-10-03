@@ -446,7 +446,7 @@ is rewritten as an equivalent problem
     \end{matrix}
   \end{aligned}
 \end{equation}
-where $\text{objective}^{*}_{1}(\text{auxiliary variables})+\text{objective}^{*}_{2}(\text{auxiliary variables})$ are calculated by solving
+where $\text{objective}^{*}_{1}(\text{auxiliary variables})$ et $\text{objective}^{*}_{2}(\text{auxiliary variables})$ are calculated by solving
 sub-problems
 \begin{subequations}\label{eq:general_coupled_optimization_problem_decomposed}
 \begin{equation}\label{eq:general_coupled_optimization_problem_decomposed_1}
@@ -454,7 +454,7 @@ sub-problems
       \minimize\limits_{\text{decision variables}_{1}}  &\text{objective}_{1}&\\
 
       \mathrm{subject~ to} & \text{constraints}_{1}\\
-      &\text{coupling constraints}_{12_{1}}(\text{auxiliary variables})
+      &\text{coupling constraints}_{12_{1}}(\text{auxiliary variables}_{1})
     \end{matrix}
 \end{equation}
 \begin{equation}\label{eq:general_coupled_optimization_problem_decomposed_2}
@@ -462,7 +462,7 @@ sub-problems
       \minimize\limits_{\text{decision variables}_{2}}  &\text{objective}_{2}&\\
 
       \mathrm{subject~ to} & \text{constraints}_{2}\\
-      &\text{coupling constraints}_{12_{2}}(\text{auxiliary variables})
+      &\text{coupling constraints}_{12_{2}}(\text{auxiliary variables}_{2})
     \end{matrix}
 \end{equation}
 \end{subequations}
