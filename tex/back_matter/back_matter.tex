@@ -196,12 +196,199 @@ Comme on utilise des problèmes d'optimisation, il est naturel d'ajouter des res
 
 Cette stratégie a une place spéciale dans l'industrie et est présente dans une plethora d'applications (gestion d'énérgie~\cite{AnandutaEtAl2018}, commande des quadrotors~\cite{BanguraMahony2014} et autres).
 
-On focalise sur la \mpc{} pour des systèmes linéaires.
-\subsection{\mpc{} for linear systems}
-The \mpc\ community favors the use of convex problems when possible. Two families of convex problems broadly used are \qp\ and \lp.
-In this work, we concentrate on \qp{} problems, which have quadratic objective functions and affine or linear constraints.
-Numerous mathematical solvers are apt to solve this kind of problem directly or through equivalent problems.
-We can cite non-extensively some solvers such as MATLAB internal QP solvers\footnote{\url{https://fr.mathworks.com/help/optim/ug/quadprog.html}}, OSQP\footnote{\url{https://osqp.org}}, MOSEK\footnote{\url{https://www.mosek.com}} and ECOS\footnote{\url{https://github.com/embotech/ecos}}.
+Dans ce travail, on focalise sur la \mpc{} pour des systèmes linéaires avec entrées contraintes.
+
+\subsection{\mpc{} pour des systèmes linéaires}
+Comme la \mpc{} est normalement développée en utilisant un ordinateur digital et la transmission des signaux continus peuvent demander une bande passante infinite~\cite{HeEtAl2022}, naturellement on utilise un modèle de temps discret pour le système a commander:
+\begin{equation}\label{eq:large_scale_system_model_resume}
+  \begin{array}{rclll}
+    \vec{x}[k+1]&=&f(\vec{x}[k],\vec{u}[k])&=&A\vec{x}[k]+B\vec{u}[k]\\
+    \vec{y}[k]&=&C\vec{x}[k]&&
+  \end{array}
+\end{equation}
+où $\vec{x}[k]\in\R^{n_{x}}$ est l'état du système et $\vec{u}[k]\in\R^{n_{u}}$ est l'entrée.
+
+On suppose que les entrèes du système sont contraintes par des contraintes affines comme
+\begin{equation}
+  \label{eq:linear_constraint_resume}
+  \Gamma\vec{u}[k]\preceq\vec{u}_{\max},
+\end{equation}
+avec $\Gamma$ de taille adéquate $\R^{\card{\vec{u}_{\max}}\times n_{u} }=\R^{n_{c}\times n_{u} }$.
+
+On suppose qu'on a un objectif de commande $\vec{v}$,
+qui peut être \emph{rejeter perturbations}, où ${ \vec{v}[k]=\vec{x}[k] }$, ou \emph{suivi de trajectoire}, où ${ \vec{v}[k]=\vec{w}[k]-\vec{x}[k] }$, soit $\vec{w}[k]$ la trajectoire à suivre.
+On utilise comme example le suivi de trajectoire de sortie (utilisant les relations entre $\vec{x}[k]$ et $\vec{y}[k]$), mais tout les résultats de ce travail sont aussi valable pour l'autre objectif.
+
+La \mpc{} trouve une séquence d'entrées ${\vec{U}^{\star}[k]=[\vec{u}^{\star}[0|k];\dots; \vec{u}^{\star}[\predhorz-1|k]]}$ prédite dans un horizon $\predictionSet=\{1\mathbin{:}\predhorz\}$ qui minimize la fonction ${J:\R^{n_{x}}\times\R^{\predhorz\cdot n_{u}}\to \R}$, définie comme
+\begin{equation}
+  \label{eq:quadratic_objective_with_sum_resume}
+  J(\vec{x}[0|k],\vec{U}[k])=\sum_{i\in\predictionSet}\left[\norm{\mpcvec{v}[ ][i][k]}^{2}_{Q} +\norm{\mpcvec{u}[ ][i-1][k]}^{2}_{R}\right].
+\end{equation}
+Cette fonction, quand minimisée, doit assurer l'objectif $\vec{v}[k]$ choisi en minisant l'énérgie de l'entrée.
+Les matrices ${ Q\in\semidefpos }$ et ${ R\in\defpos }$ sont des poids qui représentent les coûts respectives de chaque terme de l'équation.
+
+En mettant en form matriciel, le problème résolu par la \mpc{} est le suivant
+\begin{equation}
+  \small
+  \begin{aligned}
+    \begin{matrix}
+      \minimize\limits_{\vec{U}[k]} &\norm{\vec{V}[k]}^{2}_{\bar{Q}} + \norm{\vec{U}[k] }^{2}_{\bar{R}}&\\
+      \mathrm{subject~ to} &
+      \vec{x}[i|k]=A\vec{x}[i-1|k]+B\vec{u}[i-1|k]
+      &
+       \forall i\in\predictionSet \\
+      &\bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}}&
+
+    \end{matrix}
+  \end{aligned}
+  \label{eq:general_qp}
+  \quad,
+\end{equation}
+où
+\begin{align}
+  \label{eq:construction_Gamma_resume}
+  \bar{\Gamma}&=\kron{I_{\predhorz}}{\Gamma}\\
+  \label{eq:construction_Umax_resume}
+  \vec{U}_{\max}&=\kron{\1_{\predhorz}}{\vec{u_{max}}}\\
+  \bar{Q}&=\kron{I_{\predhorz}}{Q}\\
+  \bar{R}&=\kron{I_{\predhorz}}{R}.
+\end{align}
+
+En choisissant l'approche \emph{batch}~\cite[Chapter 8.2]{BorrelliEtAl2017}, on peut récrire le problème comme
+\begin{equation}
+  \label{eq:quadratic_objective_compact_batch_resume}
+  \begin{aligned}
+    \begin{matrix}
+      \minimize\limits_{\vec{U}[k]} &
+      \norm{\vec{U}[k]}^{2}_{H} + 2{\vec{f}[k]}^{T}\vec{U}[k] + c[k] &\\
+      \mathrm{subject~ to} &
+\bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}}
+    \end{matrix}
+  \end{aligned}
+\end{equation}
+où, pour le suivi de trajectoire,
+\begin{align}
+  \label{eq:construction_H}
+H&=\norm{\mathcal{Y}^{u}}^{2}_{\bar{Q}}+\bar{R}\\
+\vec{f}[k]&={\mathcal{Y}^{u}}^{T}\bar{Q}(\mathcal{Y}^{x}\vec{x}[0|k]-\vec{W}[k])\\
+c[k]&=\norm{\mathcal{Y}^{x}\vec{x}[0|k]}^{2}_{\bar{Q}}-2{\vec{W}[k]}^{T}\bar{Q}{\mathcal{Y}^{x}}\vec{x}[0|k]+\norm{\vec{W}[k]}^{2}_{\bar{Q}}.
+\end{align}
+avec les prédictions
+\begin{equation}
+    \begin{matrix}
+      \underbrace{
+        \left[
+          \begin{matrix}
+            \vec{y}[1|k] \\
+            \vec{y}[2|k] \\
+            \vdots \\
+            \vec{y}[\predhorz|k]
+          \end{matrix}
+        \right]
+      }_{\textstyle \vec{Y}[k]} &=&
+      \underbrace{
+        \left[
+          \begin{matrix}
+            CA^{1} \\
+            CA^{2} \\
+            \vdots \\
+            CA^{\predhorz}
+          \end{matrix}
+        \right]
+      }_{\textstyle \mathcal{Y}^{x}}
+      \vec{x}[0|k]+
+      \underbrace{
+        \left[
+          \begin{matrix}
+            CA^{0}B & 0 & \dots & 0 \\
+            CA^{1}B& \ddots & \ddots & \vdots      \\
+            \vdots     & \ddots   & \ddots & \vdots    \\
+            CA^{\predhorz-1}B & \dots & \dots & CA^{0}B
+          \end{matrix}
+        \right]
+      }_{\textstyle \mathcal{Y}^{u}}
+      \vec{U}[k]
+    \end{matrix}
+    \quad.
+\end{equation}
+
+Si on divise la fonction objectiv par $2$ et on ignore le terme constant $c[k]$, on a la structure standard d'une forme de programmation quadratique, connue comme \qp{}:
+\begin{equation}
+  \label{eq:qp_standard_form_resume}
+  \begin{aligned}
+    \begin{matrix}
+      \minimize\limits_{\vec{U}[k]} &
+      \frac{1}{2}\norm{\vec{U}[k]}^{2}_{H} + {\vec{f}[k]}^{T}\vec{U}[k] &\\
+      \mathrm{subject~ to} &
+\bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}}
+    \end{matrix}
+  \end{aligned}.
+\end{equation}
+\begin{remark}\label{rem:equivalence_problems_not_same_objective_resume}
+  Observe que les problèmes~\eqref{eq:qp_standard_form_resume} et~\eqref{eq:quadratic_objective_compact_batch_resume} sont equivalents (même solution), mais ils ne sont pas le même problème, alors si on doit calculer la fonction objective~\eqref{eq:quadratic_objective_compact_batch_resume} on doit utiliser la bonne version.
+\end{remark}
+
+La communauté de la \mpc\ utilise beaucoup les \qp{}, une fois qu'existe
+une grande quantité de solveurs mathematiques pour les résoudre, on peut citer comme examples le solveur interne de MATLAB\footnote{\url{https://fr.mathworks.com/help/optim/ug/quadprog.html}}, OSQP\footnote{\url{https://osqp.org}}, MOSEK\footnote{\url{https://www.mosek.com}} et aussi ECOS\footnote{\url{https://github.com/embotech/ecos}}.
+
+Par contre, la solution dans cette forme \textbf{monolithique} peut être intensive au niveau de calcul, dépendant des valeurs de $n_{x}$, $n_{u}$, $n_{c}$ and $\predhorz$.
+Pour améliorer la solution on utilise des méthodes de décomposition.
+On peut décomposer en différents échelles de temps~\cite{ChenEtAl2011}, utilisant théorie des jeux~\cite{MaestreEtAl2011} ou algorithmes génétiques associés avec des observateur d'états~\cite{XieEtAl2016}.
+Mais dans ce travail on utilise des techniques de décomposition basées dans la décompostion de problèmes d'optimisation~\cite{GiselssonEtAl2013}.
+
+\subsection{Décomposition de problèmes d'optimisation}\label{sec:decomp-de-probl}
+Comme montré en~\cite{ConejoEtAl2006} et~\cite{BoydEtAl2015}, un problème d'optimisation est décomposable s'il y a plus qu'une variable de decision et on peut le diviser en au moins deux sub-problèmes.
+
+Si les sub-problèmes ne sont pas couplés, on peut les résoudre en parallel et la solution est trouvée.
+Cependant, s'ils sont couplés, on doit utiliser une méthodologie pour trouver la bonne solution.
+
+Les problèmes peuvent être couplés par variables ou par contraintes, ces variables et contraintes sont appelées compliquants.
+Comme vue en~\cite{BoydEtAl2015}, une contrainte compliquant le problème peut être transformée une variable qui complique le problème et vice versa.
+Dans ce travail on utilise juste les contraintes compliquantes.
+
+L'idée générale est de prenre un problem décomposable comme
+\begin{equation}\label{eq:general_coupled_optimization_problem_resume}
+  \small
+  \begin{aligned}
+    \begin{matrix}
+      \minimize\limits_{\text{variables de decision}}  &\text{objective}_{1}&+&\text{objective}_{2}&\\
+      \mathrm{sous} & \text{constraintes}_{1},&&  \text{constraintes}_{2}\\
+      &&\text{contraintes compliquantes}_{12}&
+    \end{matrix}
+  \end{aligned}
+\end{equation}
+et le récrire comme un problème équivalent avec des variables auxiliaires comme
+\begin{equation}\label{eq:general_coupled_optimization_problem_decomposed_main_problem_resume}
+  \small
+  \begin{aligned}
+    \begin{matrix}
+      \minimize\limits_{\mathop{\operatorname{+}}\limits^{\text{variables de decision}}_{\text{variables auxiliaires}}}  &\text{objective}^{*}_{1}(\text{variables auxiliaires })+\text{objective}^{*}_{2}(\text{variables auxiliaires})&\\
+    \end{matrix}
+  \end{aligned}
+\end{equation}
+où $\text{objective}^{*}_{1}(\text{variables auxiliaires})$ et $\text{objective}^{*}_{2}(\text{variables auxiliaires})$ sont calculés en résolvant les sub-problèmes
+\begin{subequations}\label{eq:general_coupled_optimization_problem_decomposed}
+\begin{equation}\label{eq:general_coupled_optimization_problem_decomposed_1}
+    \begin{matrix}
+      \minimize\limits_{\text{variables de decision}_{1}}  &\text{objective}_{1}&\\
+
+      \mathrm{sous} & \text{constraints}_{1}\\
+      &\text{contraintes compliquants}_{12_{1}}(\text{variables auxiliaires}_{1})
+    \end{matrix}
+\end{equation}
+\begin{equation}\label{eq:general_coupled_optimization_problem_decomposed_2}
+    \begin{matrix}
+      \minimize\limits_{\text{variables de decision}_{2}}  &\text{objective}_{2}&\\
+
+      \mathrm{sous} & \text{constraints}_{2}\\
+      &\text{contraintes compliquants}_{12_{2}}(\text{variables auxiliaires}_{2})
+    \end{matrix}
+\end{equation}
+\end{subequations}
+dont les solutions dépendent de ces variables auxiliaires ajoutées.
+Pour trouver la valeure optimale des variables auxiliaires, il est nécessaire la coordination des sub-problèmes.
+
+
 
 \newpage
 \section{Differents topologies}\label{sec:differents-topologies}
