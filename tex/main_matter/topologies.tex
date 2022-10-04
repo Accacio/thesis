@@ -220,12 +220,12 @@ A graph that for all pairs of vertices there is a path is called \emph{connected
 \section{Do computing units communicate?}
 
 As shown in Section~\ref{sec:decomposable_problems}, the only case where communication is not needed to solve the optimization problem is in the uncoupled case (\S\ref{sec:uncoupled_problems}).
-However, there are some decomposition methods for the \dmpc{} that even with coupled problems, they exploit the robustness properties of the MPC to compute the solution without communication~\cite{VahidNaghaviEtAl2014}.
+However, there are some decomposition methods for the \dmpc{} that even with coupled problems, they exploit the robustness properties of the \mpc{} to compute the solution without communication~\cite{VahidNaghaviEtAl2014}.
 For the decomposition of some optimization problems, it is shown that in certain circumstances the communication is not necessary~\cite{VoulgarisElia2022}.
 \begin{remark}
-  Usually in \dmpc{} literature the term «decentralized» refers to frameworks where the agents do not communicate~\cite[\S 4]{ChristofidesEtAl2013},\cite{NegenbornMaestre2014}.
+  Usually in \dmpc{} literature the term ``decentralized'' refers to frameworks where the agents do not communicate~\cite[\S 4]{ChristofidesEtAl2013},\cite{NegenbornMaestre2014}.
   But the term can be confusing and even in this works it is sometimes ``misused''.
-  So, in this work we opt for a different nomenclature, calling those kinds of frameworks as «uncoordinated control», since there is no coordination between agents nor a coordinator agent to referee. We use the term decentralized as opposed to centralized (monolithic), i.e.\ to describe structure instead of communication.
+  So, in this work we opt for a different nomenclature, calling those kinds of frameworks as ``uncoordinated control'', since there is no coordination between agents nor a coordinator agent to referee. We use the term decentralized as opposed to centralized (monolithic), i.e.\ to describe structure instead of communication.
 \end{remark}
 
 The most part of the literature uses \emph{\coordinated}~\cite{NegenbornMaestre2014, ArauzEtAl2021}, in \textbf{this work}, analogously, we suppose the agents communicate and the communication \textbf{graph} is \textbf{connected}.
@@ -297,7 +297,6 @@ When looking at the trust/power axis, we can divide these schemes into two big g
 \end{subfigure}
 \caption[Hierarchic and anarchic topologies.]{Hierarchic and anarchic topologies. \\Bigger nodes represent more power/influence over others.}\label{fig:hierarchic_anarchic}
 \end{figure}
-
 
 Sometimes the hierarchical structure may be implied by the decomposition.
 \\For instance, some decompositions need the agents to solve their problems one after the other until the values converge (Fig.~\ref{fig:sequential_topology})~\cite{LiuEtAl2009a}.
