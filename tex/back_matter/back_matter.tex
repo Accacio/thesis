@@ -343,10 +343,10 @@ Si les sub-problèmes ne sont pas couplés, on peut les résoudre en parallel et
 Cependant, s'ils sont couplés, on doit utiliser une méthodologie pour trouver la bonne solution.
 
 Les problèmes peuvent être couplés par variables ou par contraintes, ces variables et contraintes sont appelées compliquants.
-Comme vue en~\cite{BoydEtAl2015}, une contrainte compliquant le problème peut être transformée une variable qui complique le problème et vice versa.
+Comme vue en~\cite{BoydEtAl2015}, une contrainte compliquant le problème peut être transformée en une variable qui complique le problème et vice versa.
 Dans ce travail on utilise juste les contraintes compliquantes.
 
-L'idée générale est de prenre un problem décomposable comme
+L'idée générale est de prendre un problème décomposable comme
 \begin{equation}\label{eq:general_coupled_optimization_problem_resume}
   \small
   \begin{aligned}
@@ -357,7 +357,7 @@ L'idée générale est de prenre un problem décomposable comme
     \end{matrix}
   \end{aligned}
 \end{equation}
-et le récrire comme un problème équivalent avec des variables auxiliaires comme
+et le récrire comme un problème équivalent avec des variables auxiliaires, comme
 \begin{equation}\label{eq:general_coupled_optimization_problem_decomposed_main_problem_resume}
   \small
   \begin{aligned}
@@ -389,6 +389,24 @@ dont les solutions dépendent de ces variables auxiliaires ajoutées.
 Pour trouver la valeure optimale des variables auxiliaires, il est nécessaire la coordination des sub-problèmes.
 
 
+Le problème equivalent est appelé \emph{problème principal}, il est résolu par la coordination entre les sub-problèmes en utilisant la mise à jour des variables auxiliaires, appelées \emph{variables d'interface}.
+Les méthodes de mis à jour sont basés sur un algorithme d'optimisation, comme
+la bisection, plans sécants, ou d'autres méthodes qui utilisent le (sub)gradient ou des approximations.
+La dernière classe est la plus utilisée, et quelques examples sont l'iteration de Arrow-Hurwicz-Uzawa~\cite{BourdaisEtAl2012}, sub-gradient projeté~\cite{BiegelEtAl2012}, et la plus forte descente~\cite{BoydEtAl2011}.
+La forme exacte depend de la topologie utilisée (discuté dans la prochaine section).
+
+Les sub-problemès, on les appele \emph{problèmes locaux}.
+Ils sont obtenus en utilisant des méthodes d'equivalence entre problèmes d'optimisation~\cite{BoydVandenberghe2004}, comme le problème original (primal)~\cite{PaulenEtAl2016, CamisaEtAl2022}, le dual ~\cite{MorosanEtAl2011, BourdaisEtAl2012,VelardeEtAl2018}, utilisant des opérateur comme l'opérateur proximal~\cite{Iiduka2019,OconnorVandenberghe2014}, ou d'autres stratégies.
+
+Les \emph{problèmes locaux} ont un ensemble de contraintes formé par les contraintes derivées des contraintes décomposables du problème original, appelées \emph{contraintes locales}, et quelques autres contraintes derivées de la partie compliquante, \emph{contraintes globales d'accouplement}.
+La solution de cette partie des contraintes d'accouplement dépendent des variables d'interface.
+
+Les variables d'interface dépendent des problèmes locaux choisis.
+Par example, pour des problèmes primaux, normalement les variables duales sont utilisées~\cite{Cohen1978}; pour les problèmes duals, le résidu des contraintes~\cite{BoydEtAl2015}; et pour la méthode d'alternance de direction des multiplicateurs, en anglais \ADMM, variables primales et autres multiplicateurs sont utilisés (la mise à jour de ses multiplicateurs donnent le nom de la méthode)~\cite{BoydEtAl2011}.
+
+Ce travail se concentre à la décomposition primal et utilise le sub-gradient projeté.
+Cette décomposition sera expliquée dans une section future (\S\ref{sec:vulnerabilites-de-la}).
+Pour d'autres examples on réfère~\cite{MaestreEtAl2014} ou~\cite{ConejoEtAl2006}.
 
 \newpage
 \section{Differents topologies}\label{sec:differents-topologies}
