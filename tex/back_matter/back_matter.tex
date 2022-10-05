@@ -981,6 +981,24 @@ Encore une autre méthode est d'utiliser le contrôle des coalitions~\cite{Chanf
 \begin{remark}
 Comme indiqué en~\cite{ArauzEtAl2021} il est important d'observer que le choix du borne de détection influencie les faux positifs associés.
 \end{remark}
+
+\subsection{Mitigation/Récupération}
+La phase de récupération consiste en contrôle de dégâts, modifiant le systme de façon à rétablir le comportement normal.
+
+L'option principale de récupération est la substitution immédiate des composants en mauvais fonctionnement (ou attaqués) par leur redondance (s'il y a une) à fin de prévenir répercussions plus profondes.
+Après on peut réparer le composant pour le réutiliser (si possible).
+
+Quand une substition immédiate n'est pas possible, la loi de commande est changée.
+Le composant est déconnecté et on utilise des stratégies robustes, qui peuvent mitiger les effets du comportement anormal.
+Ces stratégies font le système se comporterr pas forcement de la manière originale, mais d'une manière sub-optimale satisfaisante, jusque la normalité soit restaureée.
+
+Des exemples peuvent être~\cite{MaestreEtAl2018} dans le quel une \mpc{} robuste  utilisant la robustesse \emph{tube-based} est utilisé contre les perturbations dans une zone de sûreté.
+Similairement à~\cite{VelardeEtAl2018}, en~\cite{AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} les auteurs basent leur solution dans la robustesse f-local des graphes, où les agents suspects sont ignorés pendant la négotiation de la \dmpc{}.
+
+Une autre option est d'utiliser les stratégies adaptatives qui essayaient d'estimer variables, ou ensembles et les utiliser pour compenser les perturbations causées par les comportement anormaux~\cite{YangEtAl2022,LuEtAl2020}.
+
+Cette dernière stratégie est la stratégie choisie dans ce travail, qui sera détailé dans les prochâines sections.
+
 \newpage
 \section{Vulnerabilités de la decomposition primal}\label{sec:vulnerabilites-de-la}
 
