@@ -178,6 +178,8 @@
 
 \usetikzlibrary {chains}
 \usetikzlibrary{arrows.meta}
+\usetikzlibrary{3d}
+\usetikzlibrary{perspective}
 \usetikzlibrary{calc,shapes,positioning,intersections}
 \usetikzlibrary{overlay-beamer-styles}
  \usetikzlibrary{plotmarks}

@@ -113,7 +113,7 @@ La commande est faite utilisant \mpc{} décomposée avec un coordinateur e un ag
   \end{tikzpicture}
   \caption{Échange entre contrôleurs locaux et coordinateur.}\label{fig:echange_controleurs_coordinateur}
 \end{figure}
-Les allocations de resources $\thetai$ sont proposées pour chaque maison par le coordinateur.
+Les allocations de ressources $\thetai$ sont proposées pour chaque maison par le coordinateur.
 Le contrôleurs locaux respondent avec des indices $\lambdai$ qui indiquent leur satisfaction.
 Les allocations sont mises à jour basées sur ces indices jusq'un consensus soit établi.
 
@@ -172,7 +172,7 @@ Comme un contribution mineure, on démontre l'étude de la vulnérabilité des \
 
 Comme contributions majeures, deux stratégies de mitigation pour types différents de système de complexité croissante.
 
-La première pour des systèmes lesquels les resources ne sont pas suffisants pour répondre aux nécessités des agents locaux, on les appelle \textbf{Systèmes Dépourvus}.
+La première pour des systèmes lesquels les ressources ne sont pas suffisants pour répondre aux nécessités des agents locaux, on les appelle \textbf{Systèmes Dépourvus}.
 
 La seconde, pour une classe des systèmes exponentielment plus complexes, où on assume que les demandes locales respect au moins quelques contraintes. On utilise tel hypothèse pour acquérir des informations en utilisant une méthode qu'on appelle \textbf{pénurie artificielle}.
 
@@ -602,6 +602,287 @@ Dans ce travail on suppose que les agents se communiquent bi-directionnellement 
 
 \newpage
 \section{Comportements anormaux}\label{sec:comp-anorm}
+Comportements anormaux sont n'import quel comportement ou changement de comportement inattendu d'un système.
+
+Les deux causes principales sont \emph{défauts} et \emph{attaques}.
+La différence principale entre les deux est \emph{l'intention}.
+Alors que défauts se passent involontairement, non coordonés et sans objectif, attaques sont intentionnel, généralement coordonés avec un objectif malicieuse.
+
+Comme les deux peuvent changer le comportement du système nous sommes intéressés en maintenir l'opération normale des \cps{}.
+
+
+\subsection{Security}\label{sec:security_resume}
+La sécurité évoque l'opération sûre d'un système.
+Pour ça, on utilise comme base la définition pour la cyber-sécurité et on l'étend pour les \cps{}.
+
+La \emph{cyber-security} a trois pilliers: confidentialité, intégrité, et disponibilité, en anglais \CIA{}~\cite{Bishop2005}.
+
+\paragraph{Confidentialité} des données et ressources.
+Parfois on a besoin de mettre en secret quelques parties du système et on veut qu'il soit acessible pour un groupe privilégié.
+Ça peut être pour raisons de privacité, pour eviter la diffusion des données personnels ou pour éviter l'exposition des vulnérabilités du système (un exemple dans la culture pop sont les plans de l'étoile noire de la saga Star Wars).
+
+\paragraph{Intégrité} des données et ressources.
+Un équipement nouveau est plus digne de confiance qu'un ancient qui a probablement souffert plus des intempéries.
+Dans la transmission de données l'intégrité peut être divisé dans l'intégrité de l'information (l'information reçue est la même qu'a été envoyée) et l'intégrité de l'identité du expéditeur/destinataire (authentification).
+
+\paragraph{Disponibilité} des données et ressources quand demandés par un utilisateur.
+Comme mentionné en~\cite{Bishop2005}, ``un système indisponible est au moins aussi mauvais qu'aucun système du tout''.
+\\~\\
+Les vulnérabilités d'un système peut compromettre n'importe lequel de ces pilliers, parfois multiples au même temps.
+\subsection{Vulnérabilités des \cps{}}
+
+Les \cps{} ont des composant des domaines physiques et cyber.
+On peut les diviser en partie matériel et immatériel.
+Chacune de ces parties sont des points de vulnerabilité d'un \cps{}.
+
+Dispositifs physiques comme des transducteurs (capteur/actionneur) peuvent être cibles de sabotage. Par example un attaqueur peut utiliser un objet frais pour changer la lecture des capteurs de témperature d'une salle. Mais ils peuvent aussi se détériorer avec le temps ou d'autres accidents naturelles (chute d'arbres ,glissement de terres, attaques d'animaux, ouragans etc) et causer des défauts.
+
+Le software peut aussi être une source de vulnérabilité à cause des \emph{bogues}, qui peut interrompre le fonctionnement du système ou même permettre un \emph{hacker} de s'infiltrer et gagner accès au système.
+L'ordinateur utilisé pour la commande peut être mal dimensionné (puissance de calcul insuffisante), et recevoir plus de requêtes qu'attendu, arrivant à un état de surcharge cessant de répondre.
+
+
+\subsection{Attaques in \cps{}}\label{sec:attacks_resume}
+
+Il existe plusiers modèles de catégorisation de attaques en \cps{}.
+Ici on montre les deux plus connus.
+Le premier modèle est basé dans la cyber-security appélé 3D ou \DDDshort par l'acronyme anglais \DDD.
+\textbf{Disclosure} est tout accès non autorisé à l'information (rupture de confidentialité).
+\textbf{Deception} est l'idée d'utiliser de l'information fausse pour tromper quelqu'un (rupture d'intégrité).
+\textbf{Disruption} est l'interruption du fonctionnement du système (rupture de la disponibilité). Aussi on peut ajouter l'\textbf{usurpation} d'identité (rupture de la authenticité).
+
+On définit comme un attaque n'importe laquelle action mal-intentionné qui utilise les vulnérabilités d'un \cps{} à fin de violer sa sécurité.
+L'agent est appellé attaqueur.
+
+Utilisant comme base~\cite{Bishop2005},~\cite{CardenasEtAl2008},~\cite{AminEtAl2009}, et autres, on peu créer une abstraction des \cps{} dans un réseau (Fig.~\ref{fig:networked_cps_abstraction_resume}).
+
+\begin{figure}[h]
+  \centering
+\begin{tikzpicture}[node distance=1cm and 2cm,
+    box/.style={draw,align=center,minimum height=1.5cm,minimum width=3cm,rectangle,black},
+		]
+
+    \node[box] (plant) at (0,0) {Système\\Physique};
+
+    \node[box,below=of plant] (controller)  {Contrôleur};
+
+    \node[draw,cloud,aspect=2,cloud puffs=20,below=1.5cm of controller] (network)  {Réseau};
+
+    \draw[thick] (controller.west) -- ++(-1,0) node (a) {} node [midway,below] {${u}$};
+    \draw[thick] (a.center) -- (a.center |- plant.west) node (b) {};
+    \draw[-latex,thick] (b.center) -- (plant.west);
+
+    \draw[thick] (plant.east) -- ++(1,0) node (aa) {} node [midway,above] {${y}$};
+    \draw[thick] (aa.center) -- (aa.center |- controller.east) node (bb) {} ;
+    \draw[-latex,thick] (bb.center) -- (controller.east);
+
+    \draw[latex-,thick,dotted] (controller.south -| network.puff 20) -- +(0,-.25) node (nin) {} ;
+    \draw[thick,dotted] (nin.center) -- ($(nin.center) + (0,-1)$) node (nin2) {};
+    \draw[thick,dotted] (nin2.center) -- (network.puff 20) {};
+    \node at ($(nin2)+(.45,.40)$) {$\mathcal{I}_{\text{ent}}$};
+
+    \draw[latex-,thick,dotted] (network.puff 2) -- +(0,.25) node (nout) {} ;
+    \draw[thick,dotted] (nout.center) -- ($(nout.center) + (0,1)$) node (nout2) {};
+    \draw[thick,dotted] (nout2.center) -- ( controller.south -| network.puff 2) {};
+    \node at ($(nout)+(-.45,.5)$) {$\mathcal{I}_{\text{sort}}$};
+  \end{tikzpicture}
+  \caption{Abstraction Générale d'un \cps{} dans un réseau.}\label{fig:networked_cps_abstraction_resume}
+\end{figure}
+
+Dans le diagramme, $u$ correspond à la commande calculé par le contrôleur et appliquée au système physique à travers des actionneurs. $y$ correspond aux sorties des capteurs du système.
+Les signaux $I_{\text{ent}}$ et $I_{\text{sort}}$ sont les informations reçu et envoyées utilisant le réseau (envoyées ou venues d'autres sous-systèmes).
+
+Avec le modèle \DDD{}, on peut catégoriser les attaques par où dans le système ils surviennent.
+Dans la Fig.~\ref{fig:attacks_networked_cps_resume} on voit différents types d'attaques énumérés de A1 à A13.
+Les attaques de A1 à A4 sont des attaques du type \emph{disclosure}, qui se passent au niveau de l'information.
+L'attaqueur observe le trafic d'information pour une utilisation postérieure.
+Ce genre d'attaque est aussi appellé \textbf{snooping} ou \textbf{eavesdropping} (furetage et écoute illicite).
+A5 à A8 representent attaques du type \emph{deception}.
+Aussi au niveau informationnel, mais dans ce cas le signaux sont modifiés (representés par un \~{} dans le symbole de la variable).
+Les attaques A10 à A12 sont du type \emph{disruption}, quand l'attaqueur attaque le canal de c communication, empêchant la communication entre deux entités.
+Et finallement, A13 sont des attaques physiques, ou le système physique est attaqué directement.
+Cet attaque change physiquement le comportement du système.
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[node distance=1cm and 2cm,
+    box/.style={draw,align=center,minimum height=1.5cm,minimum width=3cm,rectangle,black},
+		]
+
+    \node[thick,box] (plant) at (0,0) {Système\\Physique};
+
+    \node[thick,box,below=of plant] (controller)  {Contrôleur};
+
+    \node[thick,draw,cloud,aspect=2,cloud puffs=20,below=2.0cm of controller] (network)  {Réseau};
+
+    \draw[thick] (controller.west) -- ++(-1,0) node (a) {} node [midway,below] (input) {$\tilde{u}$};
+    \draw[thick] (a.center) -- (a.center |- plant.west) node (b) {};
+    \draw[-latex,thick] (b.center) -- (plant.west);
+    \node (switch_input) at ($(a)!0.5!(b)$) {};
+
+    \draw[thick] (plant.east) -- ++(1,0) node (aa) {} node [midway,above] (output) {$\tilde{y}$};
+    \draw[thick] (aa.center) -- (aa.center |- controller.east) node (bb) {} ;
+    \draw[-latex,thick] (bb.center) -- (controller.east);
+    \node (switch_output) at ($(aa)!0.5!(bb)$) {};
+
+
+    \draw[latex-,thick,dotted] (controller.south -| network.puff 20) -- +(0,-.5) node (nin) {} ;
+    \draw[thick,dotted] (nin.center) -- ($(nin.center) + (0,-1)$) node (nin2) {};
+    \draw[thick,dotted] (nin2.center) -- (network.puff 20) {};
+    \node (info_in) at ($(nin)+(.45,-.10)$) {$\widetilde{\mathcal{I}_{\text{ent}}}$};
+
+    \draw[latex-,thick,dotted] (network.puff 2) -- +(0,.5) node (nout) {} ;
+    \draw[thick,dotted] (nout.center) -- ($(nout.center) + (0,1)$) node (nout2) {};
+    \draw[thick,dotted] (nout2.center) -- ( controller.south -| network.puff 2) {};
+    \node (info_out) at ($(nout)+(-.45,-.3)$) {$\widetilde{\mathcal{I}_{\text{sort}}}$};
+
+    \node[red,above right=1cm of aa,inner sep=1pt,align=center] (a1) {\scalebox{1.5}{\faUserSecret}};
+    \draw[-latex,thick] (a1) -- (output) node [midway,above,sloped] {{\faEye} A1} node [midway,below,sloped] {{\faPencil} A5};
+    % \draw[-latex,thick] ($(a1)+(0,.1)$) -- ($(output)+(0,.1)$)  node [midway,above,sloped] {A1\faEye};
+    % \draw[-latex,thick] ($(a1)+(0,-.1)$) -- ($(output)+(0,-.1)$)  node [midway,below,sloped] {A1\faPencil};
+
+
+    \node[red,right=1.2cm of info_in,inner sep=1pt,align=center] (a2) {\scalebox{1.5}{\faUserSecret}};
+    \draw[-latex,thick] (a2) -- (info_in) node [midway,below,sloped] {{\faEye} A2} node [midway,above,sloped] {{\faPencil} A6};
+
+    \node[red,left=1.3cm of info_out,inner sep=1pt,align=center] (a3) {\scalebox{1.5}{\faUserSecret}};
+    \draw[-latex,thick] (a3) -- (info_out) node [midway,above,sloped] {A3 {\faEye}} node [midway,below,sloped] {A7 \reflectbox{\faPencil}};
+
+
+    \node[red,below left=1cm of a,inner sep=1pt,align=center] (a4) {\scalebox{1.5}{\faUserSecret}};
+    \draw[-latex,thick] (a4) -- (input) node [midway,above,sloped] {A4 {\faEye}} node [midway,below,sloped] {A8 \reflectbox{\faPencil}};
+
+
+    \node[red,right=.4cm of switch_output,inner sep=1pt,align=center] (a5) {\scalebox{1.5}{\faUserSecret}};
+    \node[inner sep=1pt,align=center] at ($(switch_output) + (.3,0)$) {\rotatebox[origin=c]{180}{\faCut}};
+    \node [above,sloped] at ($(a5) + (-.05,-.8)$) {A9};
+
+    \node[red,right=.4cm of nin2,inner sep=1pt,align=center] (a6) {\scalebox{1.5}{\faUserSecret}};
+    \node[inner sep=1pt,align=center] at ($(nin2) + (.3,0)$) {\rotatebox[origin=c]{180}{\faCut}};
+    \node [above,sloped] at ($(a6) + (-.05,-.8)$) {A10};
+
+
+    \node[red,left=.4cm of nout2,inner sep=1pt,align=center] (a7) {\scalebox{1.5}{\faUserSecret}};
+    \node[inner sep=1pt,align=center] at ($(nout2) + (-.3,0)$) {\rotatebox[origin=c]{0}{\faCut}};
+    \node [above,sloped] at ($(a7) + (-.05,-.8)$) {A11};
+
+    \node[red,left=.4cm of switch_input,inner sep=1pt,align=center] (a8) {\scalebox{1.5}{\faUserSecret}};
+    \node[inner sep=1pt,align=center] at ($(switch_input) + (-.3,0)$) {\rotatebox[origin=c]{0}{\faCut}};
+    \node [above,sloped] at ($(a8) + (-.05,-.8)$) {A12};
+
+
+    \node[above=.5cm of plant,inner sep=1pt,align=center] (a9) {\hspace{1.5pt}\scalebox{1.5}{\reflectbox{\scalebox{.8}{\faWrench}}{\color{red}\faUserSecret}}};
+    \draw[-latex,thick] (a9) -- (plant) node [midway,left] {A13};
+
+\end{tikzpicture}
+\caption{Attaques à un \cps{} dans un réseau.}\label{fig:attacks_networked_cps_resume}
+\end{figure}
+
+Un autre modèle utilisé est celui présenté par~\cite{TeixeiraEtAl2015}, où les auteurs font valeurs que les attaques ne sont pas pures, ils peuvent être mélangés.
+Un attaquer peut, par exemple, enregistrers les informations (attaque \emph{disclosure}) pour utiliser les données acquises pour les renvoyées dans le futur avec intention de tromper le contrôleur (attaque \emph{deception}).
+On appelle cet attaque un attaque du type \textbf{Replay}~\cite{ZhuMartinez2014}.
+Pour ça les auteurs utilises troix axes pour répérer les types d'attaques, Connaissance du modèle, Perturbation de ressources et divulgation (disclosure) (Fig.~\ref{fig:3_dimensions_attack_resume}).
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[3d view={105}{15},
+    grid/.style={very thin,gray},
+    axis/.style={-latex,thick},
+    cube/.style={very thick,fill=red},
+    cube hidden/.style={very thick,dashed,lightgray!70}]
+
+    % draw the axes
+    \draw[axis] (0,0,0) -- (2,0,0) node[below left]{Perturbation des ressources};
+    \draw[axis] (0,0,0) -- (0,2,0) node (disclosure) {};
+    \node[above right=5pt and -10pt] at (disclosure) {Divulgation};
+    \draw[axis] (0,0,0) -- (0,0,2) node (model_knowledge) {};
+    \node[above] at (model_knowledge) {Connaisance du modèle};
+
+  \end{tikzpicture}
+  \caption{Espace d'attaques avec 3 axes.}\label{fig:3_dimensions_attack_resume}
+\end{figure}
+
+Pour illustrer on peut peupler le space d'attaque avec des différents types d'attaque
+(Fig.~\ref{fig:3_dimensions_attack_with_attacks_resume}).
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[3d view={105}{15},
+    grid/.style={very thin,gray},
+    axis/.style={-latex,thick},
+    cube/.style={very thick,fill=red},
+    cube hidden/.style={very thick,dashed,lightgray!70}]
+
+    % draw the axes
+    \draw[axis] (0,0,0) -- (5,0,0) node[below left]{Perturbation des ressources};
+    \draw[axis] (0,0,0) -- (0,5,0) node (disclosure) {};
+    \node[above right=5pt and -10pt] at (disclosure) {Divulgation};
+    \draw[axis] (0,0,0) -- (0,0,5) node (model_knowledge) {};
+    \node[above] at (model_knowledge) {Connaisance du modèle};
+
+    \draw[cube hidden] (2,0,0) -- (2,2,0);
+    \draw[cube hidden] (0,2,0) -- (2,2,0);
+
+
+    \draw[cube hidden] (0,4,4) -- (0,0,4); %% top face
+    \draw[cube hidden] (0,4,4) -- (4,4,4); %% top face
+    \draw[cube hidden] (4,0,4) -- (4,4,4); %% top face
+    \draw[cube hidden] (4,0,4) -- (0,0,4); %% top face
+
+    \draw[cube hidden] (4,4,0) -- (4,4,4); %%
+    \draw[cube hidden] (4,4,0) -- (4,0,0);
+    \draw[cube hidden] (4,4,0) -- (0,4,0);
+    \draw[cube hidden] (0,4,4) -- (0,4,0);
+    \draw[cube hidden] (4,0,4) -- (4,0,0);
+
+
+    \draw[cube hidden] (3,0,4) -- (3,0,0);
+
+    \draw[cube hidden] (0,4,3) -- (0,0,3); %% top face
+    \draw[cube hidden] (0,4,3) -- (4,4,3); %% top face
+    \draw[cube hidden] (4,0,3) -- (4,4,3); %% top face
+    \draw[cube hidden] (4,0,3) -- (0,0,3); %% top face
+
+    \draw[cube hidden] (2,0,1.5) -- (0,0,1.5); %% top face
+    \draw[cube hidden] (2,0,1.5) -- (2,0,0); %% top face
+
+    \node[fill,circle,inner sep=1.5pt] (eavesdropping) at (0,.5,0) {};
+    \node[fill,circle,inner sep=1.5pt] (zero_dynamics) at (3,0,4) {};
+    \node[fill,circle,inner sep=1.5pt] (false_data_injection) at (3,0,3) {};
+
+    \node[fill,circle,inner sep=1.5pt] (dos) at (3,0,0) {};
+    \node[fill,circle,inner sep=1.5pt] (covert) at (4,4,4) {};
+    \node[fill,circle,inner sep=1.5pt] (soft_modif) at (4,4,3) {};
+    \node[fill,circle,inner sep=1.5pt] (topology) at (2,0,1.5) {};
+
+    \node[left=10pt] at (dos) {DoS};
+    \node[left=10pt] at (topology) {Topology};
+    \node[above right=5pt and -10pt] at (eavesdropping) {Eavesdropping};
+    \node[above right=5pt and -30pt] at (covert) {Covert};
+    \node[fill,circle,inner sep=1.5pt,label=below:Replay] at (2,2,0) {};
+    \node[align=center,right=.2cm] at (soft_modif) {Software\\ Modification};
+    \node[above left=5pt and -10pt] at (zero_dynamics) {Zero Dynamics};
+
+    \node[align=center,left=10pt] at (false_data_injection) {False Data\\ Injection};
+
+  \end{tikzpicture}
+  \caption{Espace d'attaques peuplé.)}\label{fig:3_dimensions_attack_with_attacks_resume}
+\end{figure}
+
+Les types peuvent être rétrouvés dans les travails suivants
+\begin{description}
+\item[\DoS{}]~\cite{SunYang2019,ZhaoEtAl2020,YangEtAl2019}
+\item[Topology]~\cite{KimTong2013,WuEtAl2016,ZhangEtAl2021b}.
+\item[Software Modification]~\cite{Langner2011}.
+\item[\fdi{}]~\cite{PasqualettiEtAl2013}.
+\item[Covert],\cite{Smith2015,HoehnZhang2016,BarboniEtAl2020}.
+\item[Zero Dynamics]~\cite{TeixeiraEtAl2012,TeixeiraEtAl2015,HoehnZhang2016}
+\end{description}
+
+La liste des attaques cités n'est pas extensive mais répresente le attaques plus étudié dans la littérature.
+Autres attaques peuvent être trouvé en~\cite{TeixeiraEtAl2015,ZhangEtAl2021b} et dans autres textes cités dasn cette section.
+
+Dans ce travail, nous nos intéressons aux attaques \fdi{}, où avec un peu de connaissance sur le système, l'attaqueur modifie le trafique d'informations pour altérer son comportement pour son propre bénéfice.
+
 
 \newpage
 \section{Vulnerabilités de la decomposition primal}\label{sec:vulnerabilites-de-la}
