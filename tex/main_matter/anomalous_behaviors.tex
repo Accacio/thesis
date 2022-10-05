@@ -472,7 +472,7 @@ When there is no attack it behave in some way, and when an attack happens it cha
 
 In order to identify an anomalous behavior, first we need some prior information about the normal behavior of the system, for example the dynamics of certain variables, bounds or any other useful information.
 With this knowledge we can supervise the threatened components and create monitors.
-This part is called the \textbf{Detection} phase, where the attack can be detected through the monitors/detectors and sometimes there is an isolation step, in which the mishaving component/agent is identified.
+This part is called the \textbf{Detection} phase, where the attack can be detected through the monitors/detectors and sometimes there is an isolation step, in which the misbehaving component/agent is identified.
 In some specific cases the isolation can occur during the detection phase.
 
 Once an attack is detected, the control law changes in order to mitigate the effects of the anomalous behavior.
@@ -490,21 +490,21 @@ We give the works in~\cite{SunYang2019,HuEtAl2021,SunEtAl2022} as examples of ev
 
 Other categorization is if the monitoring devices use analytical knowledge of the system or use learning methods.
 
-For active detection we can mention the \emph{watermarking} where a random authentication signal is superimposed to the monitored signal we want to secure~\cite{MoSinopoli2009,MoEtAl2015,SatchidanandanKumar2017,KshetriVoas2017,LuciaEtAl2021}, it can protect against replay attacks since with the knowledge of the random seed it is possible to have a unique timestamp.
+For active detection we can mention the \emph{watermarking} where a (pseudo) random authentication signal is superimposed to the monitored signal we want to secure~\cite{MoSinopoli2009,MoEtAl2015,SatchidanandanKumar2017,KshetriVoas2017,LuciaEtAl2021}, it can protect against replay attacks since with the knowledge of the random seed it is possible to have a unique timestamp.
 
-Some passive and analytical examples can be the observators used in~\cite{HoehnZhang2016} or residues of state dynamics~\cite{TeixeiraEtAl2015,BoemEtAl2020}, which can are associated with hypothesis testing~\cite{MoSinopoli2009} ($\chi^{2}$ detectors), or other
+Some passive and analytical examples can be the observators used in~\cite{HoehnZhang2016} or residues of state dynamics~\cite{TeixeiraEtAl2015,BoemEtAl2020}, which can be associated with hypothesis testing~\cite{MoSinopoli2009} ($\chi^{2}$ detectors), or other
 set membership detection as in~\cite{FortiEtAl2016} or~\cite{MaestreEtAl2018} for instance.
 Some more examples are seen in~\cite{PasqualettiEtAl2012,PasqualettiEtAl2013,ZhangEtAl2021a,ArauzEtAl2021}.
 
 For learning methods we can reference~\cite{AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} which uses
 a bayesian approach to learn bounds and detect suspect agents.
-Other example is training neural networks/deep learning to create detectors. In~\cite{HussainEtAl2021} the authors create a convolutional neural network to train the data and detect 91\% of \dDoS{} attacks.
+Other example is training neural networks/deep learning to create detectors. In~\cite{HussainEtAl2021} the authors train a convolutional neural network to detect 91\% of \dDoS{} attacks of a certain kind.
 
 In~\cite{BraunEtAl2020,BraunEtAl2020a}, the authors use an optimization problem in order to identify which part of the system has been attacked.
 
 Another method could be using coalitional control~\cite{ChanfreutEtAl2021} which can potentially cluster healthy agents and detect changes in topologies.
 
-\begin{remark}
+\begin{remark}\label{rem:bounds_and_error}
 As stated in~\cite{ArauzEtAl2021} is important to observe that when choosing a bound to detect anomalous behaviors there are false positives associated.
 \end{remark}
 
