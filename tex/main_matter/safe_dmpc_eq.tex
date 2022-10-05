@@ -459,6 +459,11 @@ and an detection function $d_{i}$:
   d_{i}=\indicator{E_{i}[k]\geq\epsilon_{\Plin}},
 \end{equation}
 detecting an attack when the bound is disrespected, i.e., $d_{i}=1$.
+\begin{remark}
+  Observe that as shown in Remark~\ref{rem:bounds_and_error}, the choice of $\epsilon_{\Plin}$ can influence the false-positives.
+  For instance, it needs to be bigger than the estimation error on the attack free scenario.
+  The calculation of the errors and their propagation is not in the scope of this work.
+\end{remark}
 
 \begin{remark}
   Observe that if the estimation does not converge, it means the linear relation ceased to exist and there is an anomalous behavior, we can also set the indicator to $1$.
@@ -470,7 +475,6 @@ So, a brief discussion about the estimation follows.
 \begin{remark}
   The nominal values $\Plinnominal$ may be given or estimated using the same method shown next, but using reliable attack-free historical data, for instance, as a cold start of the system.
 \end{remark}
-
 
 \subsection{Considerations about parameter estimation}\label{sec:about-estimation}
 As commented, we can supervise the exchanges and gather multiple values of $\thetai$ and $\lambdai$ to serve as an input dataset to the chosen estimation method.
