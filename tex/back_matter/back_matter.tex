@@ -952,6 +952,35 @@ Dans quelques cas la phase est associé d'un pas d'isolation, ou l'agent qui se 
 Quand l'attaque est détecté, la loi de commande change pour qu'on puisse mitiger les effets du comportement anormal.
 Cette phase est appelée \textbf{Mitigation} ou \textbf{Récupération}.
 
+\subsection{Détection}
+
+La détection peut être catégorisée dans différentes façons.
+Si un signal additionnel doit être ajouté, on l'appéle \textbf{détection active} sinon \textbf{détection passive}.
+
+Une autre division est s'elle est basée en événements (\textbf{event-triggered}) ou pas.
+
+On donne~\cite{SunYang2019,HuEtAl2021,SunEtAl2022} comme exemples basés en méthodes du type  \emph{event-triggered}.
+
+Autre catégorisation c'est par l'utilisation de connaisance analytique du système ou par l'utilisation de méthodes d'apprentissage.
+
+Exemples de méthodes actives est le \emph{watermarking} (filigrane) où on surimpose un signal (pseudo) aléatoire d'authentification au signal monitoré~\cite{MoSinopoli2009,MoEtAl2015,SatchidanandanKumar2017,KshetriVoas2017,LuciaEtAl2021}.
+Ce méthode est connu pour protèger contre les attaques du type replay, une fois que la semence du signal aléatoire sert comme un générateur unique d'horodatage.
+
+Un exemple passive et analytique sont les the observateurs utilisées en~\cite{HoehnZhang2016} ou les résidus de la dynamique des états~\cite{TeixeiraEtAl2015,BoemEtAl2020}, qui peuvent être associés à un test d'hypothèse~\cite{MoSinopoli2009} (détecteurs $\chi^{2}$), ou encore la détection à partir de la détection d'appartenance à quelques ensembles~\cite{FortiEtAl2016,MaestreEtAl2018}.
+D'autres exemples de décteurs sont trouvés en~\cite{PasqualettiEtAl2012,PasqualettiEtAl2013,ZhangEtAl2021a,ArauzEtAl2021}.
+
+Pour les méthodes d'apprentissage, on peut citer~\cite{AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} qui utilises une approche bayésiènne pour apprender quelques bornes et détecter agents suspects.
+Un autre exemple et l'utilisation des réseaux neuronaux/apprentissage profonde
+pour créer des détecteurs.
+En~\cite{HussainEtAl2021}, les auteurs entraînent un réseau neuronal convolutionnel pour détecter 91\% des attaques \dDoS{} d'un certain genre.
+
+En~\cite{BraunEtAl2020,BraunEtAl2020a}, les auteurs utilisent un problème d'optimisation pour identifier quel partie du système été attaquée.
+
+Encore une autre méthode est d'utiliser le contrôle des coalitions~\cite{ChanfreutEtAl2021} qui peut potentiellement regrouper les agents sains et détecter changements de topologie.
+
+\begin{remark}
+Comme indiqué en~\cite{ArauzEtAl2021} il est important d'observer que le choix du borne de détection influencie les faux positifs associés.
+\end{remark}
 \newpage
 \section{Vulnerabilités de la decomposition primal}\label{sec:vulnerabilites-de-la}
 
