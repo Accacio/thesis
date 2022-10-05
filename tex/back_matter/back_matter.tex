@@ -928,6 +928,18 @@ On interprète les méthodes robustes comme des stratégies plus passives, penda
 
 Alors, on divise les méthodes en deux catégories: méthodes actives et passives.
 
+\subsection{Stratégies Passives}\label{sec:protecting_against_attacks_resume}
+Les méthodes passifs sont normalement basés sur le contrôle robuste, où la loi de commande implémenté ne change pas quand en présence des fautes ni d'attaques.
+
+La plupart des méthodes robustes sont utilisé pour la commande tolérante aux défauts, en anglais \ftc{}, par contre, à cause de quelques similarités, ces méthodes sont aussi utilisés contre des attaques~\cite{TeixeiraEtAl2015,DingEtAl2018,ArauzEtAl2021}.
+
+Un exemple c'est pour attaques \fdi{} qui changes une variable et alors utilisant une méthode robuste~\cite{VahidNaghaviEtAl2014} on peut contrôller le système malgré la déviation.
+
+Un autre exemple est pour le réseau de distribution, on utilise un index de sécurité appelé N-1 statique, qui indique quant stable le réseau se comporte quand un des composants présent un défaut (ou est disconnecté)~\cite{QianEtAl2022}.
+\citeauthor{VelardeEtAl2018} en~\cite{VelardeEtAl2018} utilisent une solution similaire basée sur la robustesse f des graphes\footnote{Le Graphe maintient la connectivité même si un nombre $f$ d'agents est déconnecté}~\cite{DibajiIshii2015,WangIshii2019} pour créer une \dmpc{} robuste basée sur la décomposition duale.
+Pendant la négotiation, les valeurs extrêmes (les f plus petites et plus grandes) sont ignorées.
+
+Encore une autre stratégie est presentée en~\cite{VelardeEtAl2017a,MaestreEtAl2021}, où des scénarios historiques (des trajectoires de la \mpc{}) sont connus avec des probabilités d'occurrence associées sont enregistrées et utilisées pour résoudre le problème avec le calcul des agents, qui peuvent être peu fiable à cause des attaques.
 \newpage
 \section{Vulnerabilités de la decomposition primal}\label{sec:vulnerabilites-de-la}
 
