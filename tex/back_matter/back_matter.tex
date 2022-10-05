@@ -120,13 +120,13 @@ Les allocations sont mises à jour basées sur ces indices jusq'un consensus soi
 Dans un certain moment, un des agents, plus spécifiquement celui correspondant à la maison I, commence a modifier la valeur de $\lambdai$ envoyée.
 Il l'augmente a chaque jour jusqu'à un jour la commande est arretée due à une manque de consensus entre les agents.
 
-En utilisant des métriques comme les fonctions objectives, dans laquelle valeures plus petites signifiquent une meilleure perfomance, on peut voir que la performance de l'agent I a amélioré à partir d'une certaine date à la fin d'octobre (Fig.~\ref{fig:change_in_j_resume}).
+En utilisant des métriques comme les fonctions objectifs, dans laquelle valeures plus petites signifiquent une meilleure perfomance, on peut voir que la performance de l'agent I a amélioré à partir d'une certaine date à la fin d'octobre (Fig.~\ref{fig:change_in_j_resume}).
 Par contre, la performance de toutes les autres agents a empiré.
 On peut voir aussi dans l'aire hachuré quand le consensus n'est plut trouvé.
 \begin{figure}[h]
   \centering
   \includegraphics[width=.8\textwidth]{../img/example_introduction/example_J_fr.pdf}
-  \caption{Graphique des fonctions objectives dans une période de 10 semaines.}\label{fig:change_in_j_resume}
+  \caption{Graphique des fonctions objectifs dans une période de 10 semaines.}\label{fig:change_in_j_resume}
 \end{figure}
 
 Cet example simple nous donne les effets d'un attaque: perte de performance et cassure du fonctionnement du système.
@@ -191,7 +191,7 @@ Les discussion dans cette thèse a donné comme résultats les publications suiv
 
 
 La commande prédictive basée en modèle, ou commande prédictive, ou encore \mpclong{} en anglais, est une stratégie de commande en boucle fermée basée dans la solution des problèmes d'optimisation.
-Ayant un modèle du système à commander et une fonction objective, la stratégie utilise le modèle pour prévoir l'évolution de ses états et computer une séquence optimale de command qui optimise la fonction donnée.
+Ayant un modèle du système à commander et une fonction objectif, la stratégie utilise le modèle pour prévoir l'évolution de ses états et computer une séquence optimale de command qui optimise la fonction donnée.
 Comme on utilise des problèmes d'optimisation, il est naturel d'ajouter des restriction en forme de contraintes d'égalité et d'inégalité.
 
 Cette stratégie a une place spéciale dans l'industrie et est présente dans une plethora d'applications (gestion d'énérgie~\cite{AnandutaEtAl2018}, commande des quadrotors~\cite{BanguraMahony2014} et autres).
@@ -325,7 +325,7 @@ Si on divise la fonction objectiv par $2$ et on ignore le terme constant $c[k]$,
   \end{aligned}.
 \end{equation}
 \begin{remark}\label{rem:equivalence_problems_not_same_objective_resume}
-  Observe que les problèmes~\eqref{eq:qp_standard_form_resume} et~\eqref{eq:quadratic_objective_compact_batch_resume} sont equivalents (même solution), mais ils ne sont pas le même problème, alors si on doit calculer la fonction objective~\eqref{eq:quadratic_objective_compact_batch_resume} on doit utiliser la bonne version.
+  Observe que les problèmes~\eqref{eq:qp_standard_form_resume} et~\eqref{eq:quadratic_objective_compact_batch_resume} sont equivalents (même solution), mais ils ne sont pas le même problème, alors si on doit calculer la fonction objectif~\eqref{eq:quadratic_objective_compact_batch_resume} on doit utiliser la bonne version.
 \end{remark}
 
 La communauté de la \mpc\ utilise beaucoup les \qp{}, une fois qu'existe
@@ -801,6 +801,7 @@ Pour ça les auteurs utilises troix axes pour répérer les types d'attaques, Co
   \caption{Espace d'attaques avec 3 axes.}\label{fig:3_dimensions_attack_resume}
 \end{figure}
 
+\newpage
 Pour illustrer on peut peupler le space d'attaque avec des différents types d'attaque
 (Fig.~\ref{fig:3_dimensions_attack_with_attacks_resume}).
 
@@ -868,7 +869,7 @@ Pour illustrer on peut peupler le space d'attaque avec des différents types d'a
   \caption{Espace d'attaques peuplé.)}\label{fig:3_dimensions_attack_with_attacks_resume}
 \end{figure}
 
-Les types peuvent être rétrouvés dans les travails suivants
+Les attaques montrés dans la figure peuvent être rétrouvés dans les travaux suivants
 \begin{description}
 \item[\DoS{}]~\cite{SunYang2019,ZhaoEtAl2020,YangEtAl2019}
 \item[Topology]~\cite{KimTong2013,WuEtAl2016,ZhangEtAl2021b}.
@@ -883,6 +884,49 @@ Autres attaques peuvent être trouvé en~\cite{TeixeiraEtAl2015,ZhangEtAl2021b} 
 
 Dans ce travail, nous nos intéressons aux attaques \fdi{}, où avec un peu de connaissance sur le système, l'attaqueur modifie le trafique d'informations pour altérer son comportement pour son propre bénéfice.
 
+\subsection{Attaques à la \dmpc{}}\label{sec:attacks_in_dmpc_resume}
+
+Comme montré par~\cite{ArauzEtAl2021}, la sécurité des \cps{} a été étudie au cadre des \mpc{}~\cite{SunYang2019,FranzeEtAl2022}, mais la communauté de la \dmpc{} ne l'a pas étudié suffisamment.
+
+Dans la plupart des travaux les agents coopèrent et aucune vulnérabilité est exploré.
+Cependant, dans les dernières années un effort a été fait pour explorer la vulnérabilité de quelques méthodes décomposition, de manière plus perceptible la décomposition duale ~\cite{VelardeEtAl2017b,VelardeEtAl2017a,VelardeEtAl2018,AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} et la décomposition de Jacobi-Gauß~\cite{ChanfreutEtAl2018}.
+
+Dans ces travaux les attaques ne sont pas comme origine un agent externe.
+Un (ou un groupe) des agents se comporte de manière non coopérative et essaye de piloter la décomposition de façon a déstabiliser le système ou se bénéficier.
+Ces attaques peuvent être appellés \textbf{attaques inter-agents} et parfoir considéré comme \textbf{attaques interne} (comme si un agent interne avec accès suffisant prend contrôle du système).
+Normalement les objectives sont accomplis utilisant des attaques du type \emph{deception}.
+
+Les travaux présentent quatre types de attaques \fdi{}, que sont catégorisé à partir d'où l'information est modifiée.
+\\L'attaque dénommé \textbf{Selfish} (égoïste) quand l'attaqueur modifie sa fonction objectif (généralement la multipliant par une constante positive) pour qu'elle soit plus pénalisée, causant les autres agents d'augmenter ses effort pour équilibrer la désavantage et decroitre le coût local de l'attaqueur.
+\\L'attaque \textbf{Fake weights} (poids faux), l'agent non-cooperative utilise des poids faux pour sa fonction objectif locale.
+L'attaque \emph{selfish} peut être considéré comme un cas spécifique de ce genre d'attaque.
+\\Supposant que l'agent suit une référence, dans l'attaque \textbf{false reference} (référence fausse) l'agent malicieux utilise une valeur différente pour la référence pour calculer sa fonction objectif locale.
+\\Pour l'attaque \textbf{fake constraints}, l'attaqueur utilise des contraintes fausses pour résoudre le problème d'optmisation.
+\\Le dernier attaque présenté est le \textbf{``liar'' agent} (agent menteur) où après la fin de la négotiation entre les agents, l'attaqueur utilise un contrôle différent de ce qui été convenu.
+
+\subsection{Sécurisant le \cps{}}\label{sec:maintaining_security_resume}
+Pour sécuriser le \cps{}, il faut d'abord évalue les vulnérabilités et choisir les plus riquées à être attaquées ou à souffert un défaut.
+Des méthodes existent pour diférrent types de systèmes, quelques exemples sont donnés en~\cite{Bishop2005} et~\cite{WangLu2013}.
+
+Après on essaye de protéger les éléments plus susceptibles en utilisant des méthodes de \textbf{prévention}.
+
+Comme exemples de protection on peut citer \emph{renfermer} composants physiques entre parois, et le portes utilisés pour les accéder doivent avoir \emph{contrôle d'accès}.
+On peut aussi ajouter des \emph{dispositfs de surveillance} (cameras et des alarmes)~\cite{CardenasEtAl2008,DingEtAl2018}, persuadant l'attaqueur à ne pas s'approcher des équipements.
+Les défauts causés par \emph{détérioration} sont prévenu par la \emph{maintenance préventive périodique}~\cite{ChenEtAl2021}, et la substitution des composantes détériorées par des nouvelles plus neuves.
+
+Pour chaque vulnérabilité il existe une mésure de prévention, \emph{rajeunissement de  software}~\cite{AlonsoEtAl2012,GriffioenEtAl2020}, et \emph{cryptography}~\cite{DingEtAl2018} sont d'autres méthodes utilisés.
+
+~\\Si la prévention faille, il est nécessaire d'avoir d'autres stratégies.
+Dans la littérature, ces statégies sont presque toujours accompagné de deux mots:
+robustesse et résilience.
+Bien que ces termes sont utilisé indistinctement, dans ce travail on donne des significations un peu différentes.
+
+\textbf{Robustesse} peut être définie par l'habilité de tolérer des perturbation sans changer de fonction~\cite{Jen2003}.
+\textbf{Résilience} est l'habilité de maintenir un niveau acceptable d'opération en réponse des perturbations, incluant les ménaces de nature inattendue et malicieuse~\cite{Rieger2010}.
+
+On interprète les méthodes robustes comme des stratégies plus passives, pendant que les méthodes résilients plus adaptatifs, actifs de façon à rétablir un comportement plus optimal.
+
+Alors, on divise les méthodes en deux catégories: méthodes actives et passives.
 
 \newpage
 \section{Vulnerabilités de la decomposition primal}\label{sec:vulnerabilites-de-la}
