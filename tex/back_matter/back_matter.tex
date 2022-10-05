@@ -135,7 +135,7 @@ Motivé par exemples réels comme les black-out de 2010 au Brési~\cite{Conti201
 
 Dans ce travail on va focaliser sur la securité des \cps{} command par \dmpc{}.
 
-Utilisant la connaisance acquise on propose des méthodes pour sécurises ses systèmes.
+Utilisant la connaisance acquise on propose des méthodes pour sécuriser ses systèmes.
 
 On utilise comme guide les questions suivantes:
 \simplebox{
@@ -188,7 +188,6 @@ Les discussion dans cette thèse a donné comme résultats les publications suiv
 
 \newpage
 \section{Commande Prédictive et sa décomposition}\label{sec:comm-pred-et}
-
 
 La commande prédictive basée en modèle, ou commande prédictive, ou encore \mpclong{} en anglais, est une stratégie de commande en boucle fermée basée dans la solution des problèmes d'optimisation.
 Ayant un modèle du système à commander et une fonction objectif, la stratégie utilise le modèle pour prévoir l'évolution de ses états et computer une séquence optimale de command qui optimise la fonction donnée.
@@ -390,7 +389,7 @@ Pour trouver la valeure optimale des variables auxiliaires, il est nécessaire l
 
 
 Le problème equivalent est appelé \emph{problème principal}, il est résolu par la coordination entre les sous-problèmes en utilisant la mise à jour des variables auxiliaires, appelées \emph{variables d'interface}.
-Les méthodes de mis à jour sont basés sur un algorithme d'optimisation, comme
+Les méthodes de mis à jour sont basées sur un algorithme d'optimisation, comme
 la bisection, plans sécants, ou d'autres méthodes qui utilisent le (sub)gradient ou des approximations.
 La dernière classe est la plus utilisée, et quelques exemples sont l'iteration de Arrow-Hurwicz-Uzawa~\cite{BourdaisEtAl2012}, sub-gradient projeté~\cite{BiegelEtAl2012}, et la plus forte descente~\cite{BoydEtAl2011}.
 La forme exacte depend de la topologie utilisée (discuté en \S\ref{sec:differents-topologies}).
@@ -924,14 +923,14 @@ Bien que ces termes sont utilisé indistinctement, dans ce travail on donne des 
 \textbf{Robustesse} peut être définie par l'habilité de tolérer des perturbation sans changer de fonction~\cite{Jen2003}.
 \textbf{Résilience} est l'habilité de maintenir un niveau acceptable d'opération en réponse des perturbations, incluant les ménaces de nature inattendue et malicieuse~\cite{Rieger2010}.
 
-On interprète les méthodes robustes comme des stratégies plus passives, pendant que les méthodes résilients plus adaptatifs, actifs de façon à rétablir un comportement plus optimal.
+On interprète les méthodes robustes comme des stratégies plus passives, pendant que les méthodes résilientes plus adaptatifs, actifs de façon à rétablir un comportement plus optimal.
 
 Alors, on divise les méthodes en deux catégories: méthodes actives et passives.
 
 \subsection{Stratégies Passives}\label{sec:protecting_against_attacks_resume}
-Les méthodes passifs sont normalement basés sur le contrôle robuste, où la loi de commande implémenté ne change pas quand en présence des fautes ni d'attaques.
+Les méthodes passives sont normalement basées sur le contrôle robuste, où la loi de commande implémentée ne change pas quand en présence des fautes ni d'attaques.
 
-La plupart des méthodes robustes sont utilisé pour la commande tolérante aux défauts, en anglais \ftc{}, par contre, à cause de quelques similarités, ces méthodes sont aussi utilisés contre des attaques~\cite{TeixeiraEtAl2015,DingEtAl2018,ArauzEtAl2021}.
+La plupart des méthodes robustes sont utilisé pour la commande tolérante aux défauts, en anglais \ftc{}, par contre, à cause de quelques similarités, ces méthodes sont aussi utilisées contre des attaques~\cite{TeixeiraEtAl2015,DingEtAl2018,ArauzEtAl2021}.
 
 Un exemple c'est pour attaques \fdi{} qui changes une variable et alors utilisant une méthode robuste~\cite{VahidNaghaviEtAl2014} on peut contrôller le système malgré la déviation.
 
@@ -939,7 +938,20 @@ Un autre exemple est pour le réseau de distribution, on utilise un index de sé
 \citeauthor{VelardeEtAl2018} en~\cite{VelardeEtAl2018} utilisent une solution similaire basée sur la robustesse f des graphes\footnote{Le Graphe maintient la connectivité même si un nombre $f$ d'agents est déconnecté}~\cite{DibajiIshii2015,WangIshii2019} pour créer une \dmpc{} robuste basée sur la décomposition duale.
 Pendant la négotiation, les valeurs extrêmes (les f plus petites et plus grandes) sont ignorées.
 
-Encore une autre stratégie est presentée en~\cite{VelardeEtAl2017a,MaestreEtAl2021}, où des scénarios historiques (des trajectoires de la \mpc{}) sont connus avec des probabilités d'occurrence associées sont enregistrées et utilisées pour résoudre le problème avec le calcul des agents, qui peuvent être peu fiable à cause des attaques.
+Encore une autre stratégie est presentée en~\cite{VelardeEtAl2017a,MaestreEtAl2021}, où des scénarios historiques (des trajectoires de la \mpc{}) sont connus avec des probabilités d'occurrence associées sont enregistrées et utilisées pour résoudre le problème avec le calcul des agents, qui peut être peu fiable à cause des attaques.
+
+\subsection{Stratégies Actives}\label{sec:protecting_against_attacks_resume}
+Les méthodes actives sont normalement bi-modales.
+Un mode pour quand il n'y a pas d'attaque et un autre pour quand le système change de comportement.
+
+À fin d'identifier les comportements anormaux, on a besoin premièrement d'une information de comportement normal du système, par exemple la dynamique de quelques variables, des bornes ou n'importe quel autre information utile.
+Avec cette connaisance, on peut superviser les composants menacés et créer des moniteurs.
+Cette partie est appellée la phase de \textbf{Détection}, ou l'attaque peut être dectecté à partir des dits moniteurs et détecteurs.
+Dans quelques cas la phase est associé d'un pas d'isolation, ou l'agent qui se comporte mal est identifié.
+
+Quand l'attaque est détecté, la loi de commande change pour qu'on puisse mitiger les effets du comportement anormal.
+Cette phase est appelée \textbf{Mitigation} ou \textbf{Récupération}.
+
 \newpage
 \section{Vulnerabilités de la decomposition primal}\label{sec:vulnerabilites-de-la}
 
