@@ -997,7 +997,43 @@ Similairement à~\cite{VelardeEtAl2018}, en~\cite{AnandutaEtAl2018,AnandutaEtAl2
 
 Une autre option est d'utiliser les stratégies adaptatives qui essayaient d'estimer variables, ou ensembles et les utiliser pour compenser les perturbations causées par les comportement anormaux~\cite{YangEtAl2022,LuEtAl2020}.
 
-Cette dernière stratégie est la stratégie choisie dans ce travail, qui sera détailé dans les prochâines sections.
+\newpage
+\section{Comparaison avec état de l'art}\label{sec:comp-avec-etat}
+Ce travail utlise~\cite{VelardeEtAl2017b,ChanfreutEtAl2018} comm inspiration pour démontrer les vulnérabilités du méthode de décomposition primal, qui n'ont jamais été présentées.
+
+Comme les autres travaux adjacents, nous nos intéressons par des attaques entre agents du type \textbf{\fdi{}}.
+Le modèle exact est présenté dans la prochaîne section.
+
+En~\cite{VelardeEtAl2017a,VelardeEtAl2017b,VelardeEtAl2018}, les auteurs présentent des méthodes robustes baséees sur la théorie des graphes, où l'attaqueur n'est pas detecté par soi, mais agents suspects sont déconnectés ou ignorés.
+
+Nous optons, par contre, comme dans~\cite{AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020}, par une méthode
+\textbf{active} et \textbf{résiliente}.
+La stratégie est plus détailée dans les prochaines sections, mais pour la détection, on utilise une méthode \textbf{active}, où nous ajoutons des données pour détecter l'attaqueur..
+On utilise une méthode hybride de connaissance analytiques de la décomposition et aussi des méthodes d'apprentissage pour créer le dit détecteur.
+Pour la récupération, on utilise les mêmes connaissances analytiques utilisées pour la détection à fin de réconstruire quelques variables et compenser les perturbations causées par l'attaque.
+
+Comme la liste de travaux adjacents à ce travail est curte, on peut les compiler et comparer dans un tableau.
+Le Tab.~\ref{tab:compare_works_resume} compare les travaux avec les méthodes présentées dans cette thèse.
+
+\begin{landscape}
+  \vspace*{\fill}
+\begin{table}[H]
+  \centering
+  \begin{tabular}[h]{lccccc}
+    \toprule
+     & Décomposition & Présente vulnérabilités?  & Résiliente/Robuste & Détection & Mitigation\\
+    \midrule
+    \cite{VelardeEtAl2017a} & Duale & Oui & Robuste (Scénario) & NA & NA\\
+    \parbox{20pt}{\cite{VelardeEtAl2017b} \\ \cite{VelardeEtAl2018}} & Duale & Oui & Robuste (f-robustesse) & NA & NA\\
+    \cite{ChanfreutEtAl2018} & Jacobi-Gauß & Oui & -- & -- & --\\
+    \parbox{40pt}{\cite{AnandutaEtAl2018}\\\cite{AnandutaEtAl2019}\\\cite{AnandutaEtAl2020}} & Duale & Oui & Résiliente& Analyt/Apprent. & Déconnexion (Robustesse)\\
+    Notre & Primale & Oui & Résiliente & Active Analyt./Apprent. & Reconstruction de données\\
+    \bottomrule
+  \end{tabular}
+  \caption[Comparaison entre travaux adjacents]{Comparaison entre travaux adjacents. NA signifie non applicable.}\label{tab:compare_works_resume}
+\end{table}
+  \vspace*{\fill}
+\end{landscape}
 
 \newpage
 \section{Vulnerabilités de la decomposition primal}\label{sec:vulnerabilites-de-la}
