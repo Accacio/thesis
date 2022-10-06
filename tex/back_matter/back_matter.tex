@@ -393,7 +393,7 @@ la bisection, plans sécants, ou d'autres méthodes qui utilisent le (sub)gradie
 La dernière classe est la plus utilisée, et quelques exemples sont l'iteration de Arrow-Hurwicz-Uzawa~\cite{BourdaisEtAl2012}, sub-gradient projeté~\cite{BiegelEtAl2012}, et la plus forte descente~\cite{BoydEtAl2011}.
 La forme exacte depend de la topologie utilisée (discuté en \S\ref{sec:differents-topologies}).
 
-Les sous-problemès, on les appele \emph{problèmes locaux}.
+Les sous-problemès, on les appelle \emph{problèmes locaux}.
 Ils sont obtenus en utilisant des méthodes d'equivalence entre problèmes d'optimisation~\cite{BoydVandenberghe2004}, comme le problème original (primal)~\cite{PaulenEtAl2016, CamisaEtAl2022}, le dual ~\cite{MorosanEtAl2011, BourdaisEtAl2012,VelardeEtAl2018}, utilisant des opérateur comme l'opérateur proximal~\cite{Iiduka2019,OconnorVandenberghe2014}, ou d'autres stratégies.
 
 Les \emph{problèmes locaux} ont un ensemble de contraintes formé par les contraintes derivées des contraintes décomposables du problème original, appelées \emph{contraintes locales}, et quelques autres contraintes derivées de la partie compliquante, \emph{contraintes globales d'accouplement}.
@@ -458,7 +458,7 @@ Une autre classification est par l'influence que les agents exercent les uns sur
 Par example, quelques agents peuvent avoir plus de pouvoir (être plus importants) qu'autres.
 Ce genre de relation est appellé hiérarchique, normalement le pouvoir est démontré par le différentes types d'actions réalisées par les agents.
 Normalement les plus importants ont des rôles de médiateur, certificateur, régulateur et etc.
-Pour les systèmes où il n'y a pas de différence de comportement ou d'influence entre les agents, on les appele anarchiques.
+Pour les systèmes où il n'y a pas de différence de comportement ou d'influence entre les agents, on les appelle anarchiques.
 Dans Fig.~\ref{fig:hierarchic_anarchic_resume} on voit des exemples de ces deux types de structures.
 \begin{figure}[h]
 \begin{subfigure}[b]{.45\textwidth}
@@ -880,7 +880,7 @@ Les attaques montrés dans la figure peuvent être rétrouvés dans les travaux 
 La liste des attaques cités n'est pas extensive mais répresente le attaques plus étudié dans la littérature.
 Autres attaques peuvent être trouvé en~\cite{TeixeiraEtAl2015,ZhangEtAl2021b} et dans autres textes cités dasn cette section.
 
-Dans ce travail, nous nos intéressons aux attaques \fdi{}, où avec un peu de connaissance sur le système, l'attaqueur modifie le trafique d'informations pour altérer son comportement pour son propre bénéfice.
+Dans ce travail, nous nous intéressons aux attaques \fdi{}, où avec un peu de connaissance sur le système, l'attaqueur modifie le trafique d'informations pour altérer son comportement pour son propre bénéfice.
 
 \subsection{Attaques à la \dmpc{}}\label{sec:attacks_in_dmpc_resume}
 
@@ -1000,7 +1000,7 @@ Une autre option est d'utiliser les stratégies adaptatives qui essayaient d'est
 \section{Comparaison avec état de l'art}\label{sec:comp-avec-etat}
 Ce travail utlise~\cite{VelardeEtAl2017b,ChanfreutEtAl2018} comm inspiration pour démontrer les vulnérabilités du méthode de décomposition primale, qui n'ont jamais été présentées.
 
-Comme les autres travaux adjacents, nous nos intéressons par des attaques entre agents du type \textbf{\fdi{}}.
+Comme les autres travaux adjacents, nous nous intéressons par des attaques entre agents du type \textbf{\fdi{}}.
 Le modèle exact est présenté dans la prochaîne section.
 
 En~\cite{VelardeEtAl2017a,VelardeEtAl2017b,VelardeEtAl2018}, les auteurs présentent des méthodes robustes baséees sur la théorie des graphes, où l'attaqueur n'est pas detecté par soi, mais agents suspects sont déconnectés ou ignorés.
@@ -1122,7 +1122,7 @@ L'Algorithm~\ref{alg:primal_decomposition_based_dmpc} resume la \dmpc{} basée s
         $p\gets p+1$\;
       }
     }
-    Agents appliquent la dernière commande $\vec{u}_{i}^{\star}[0|k]$ en son sous-système respective\;
+    Agents appliquent la dernière commande $\vec{u}_{i}^{\star}[0|k]$ en son sous-système respectif\;
     $k\gets k+1$\;
   }
   \caption{La \dmpc{} basée sur la décomposition primale.}\label{alg:primal_decomposition_based_dmpc_resume}
@@ -1147,6 +1147,106 @@ L'Algorithm~\ref{alg:primal_decomposition_based_dmpc} resume la \dmpc{} basée s
   \end{tikzpicture}
   \caption{Échange entre agents et coordinateur pendant une \dmpc{} basée sur la décomposition primale.}\label{fig:dmpc_communication_resume}
 \end{figure}
+
+Si on donne un example, on peut voir la dynamique des $\thetai$ et $\lambdai$ en Fig.~\ref{fig:example_variables_resume}.
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../img/example_primal_decomposition/example_theta.pdf}
+    \caption{Évolution de $\thetai$.}\label{fig:example_theta_resume}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../img/example_primal_decomposition/example_lambda.pdf}
+    \caption{Évolution de $\lambdai$.}\label{fig:example_lambda_resume}
+  \end{subfigure}
+    \caption{Évolution des variables pendant procès itératif.}\label{fig:example_variables_resume}
+\end{figure}
+
+Les valeurs de $\thetai$ représentent une allocation de l'entréé maximale donnée aux agents par le coordinateur, et $\lambdai$ est une mésure de insatisfaction de chaque agent à la valeur allouée.
+Le rôle du coordinateur est de négocier les allocations jusqu'à que tous les agenst soient également insatisfaits.
+Le procès itératif est appellé la \textbf{phase de négociation}.
+
+À cause de ce procès d'allocations itératives, autres noms sont donés à la décomposition, comme \textbf{allocation des ressources} ou \textbf{décomposition par quantités}.
+
+\subsection{Attack of interest}\label{sec:attack-interest_resume}
+
+Comme les $\lambdai$ sont les sous-gradients des problème locaux~\eqref{eq:DOP_local_resume}, il est possible de voir qu'ils portent de l'information du problème, i.e.\ il y a d'une certaine façon l'information de la $5$-tuple $(H_{i},\vec{f}_{i}[k],\bar{\Gamma}_{i},\thetaik)$, qu'on appelle l'information locale complète $\set{I}_{i}$.
+Alors, les attaques en~\cite{VelardeEtAl2018} (montrés en \S\ref{sec:attacks_in_dmpc_resume}) vont réfléchir en modifications du $\lambdai$.
+
+Pour cette raison, nous nous intéressons en attaques du type \fdi{} entre agents, qui modifient leur propre $\lambdai$.
+
+On suppose qu'avant chaque négociation, l'attaqueur décide une fonction ${\gamma:\R^{c}\times\R\to \R^{c}}$, pour modifier $\lambdai$ avant de l'envoyer au coordinateur.
+Pour faciliter l'analyse on suppose la fonction est linéaire comme
+\begin{equation}
+  \label{eq:linear_attack_resume}
+  \lambdaicheat[k]=\gamma(\lambdaik,k)=\Tik\lambdaik.
+\end{equation}
+
+On appelle $\Tik$ la matrice de triche.
+
+Cet attaque peut être interprété comme un cas générale du attaque dit selfish ~\cite{VelardeEtAl2018},
+où la constante positive qui multiplie la fonction objectif locale est traduite par une matrice de triche diagonale
+\begin{equation}
+  \label{eq:selfish_attack}
+  \Tik=\tau_{i}[k] I_{c}.
+\end{equation}
+
+On illustre avec un example d'un système avec $3$ sous agents.
+On fait que l'agent $3$ attaque le système avec~\eqref{eq:linear_attack_resume}.
+On simule pour différent scénarios.
+Pour chaqe scénario agent $3$ utilise un coefficient de triche $\tau_{3}[k]$ distinct.
+
+En Fig.~\ref{fig:example_vary_tau_objective_resume} et~\ref{fig:example_vary_tau_objective_detail_resume}, on accumule les fonctions objectif locales ${\Jiacc=\sum\limits_{k\in\set{K}}\optobji(\optthetai[k])[k]}$
+et aussi l'objectif total ${\Jacc=\sum\limits_{i\in\set{M}}J_{i}^{\text{acc}}}$ pour chaque valeur différent de $\tau_{3}$.
+
+Observe (Fig.~\ref{fig:example_vary_tau_objective_detail_resume}) que $\Jacc$ a sa valeur la plus petite quen $\tau_{3}=1$, i.e., quand il n'y a pas de triche.
+Quand $\tau_{3}$ augmente, les fonctions objectif de l'attaqueur ($\Jiacc[3]$) décroît au même moment que celles des autres augmentent.
+L'opposé se passe pour des valeurs de $\tau_{3}$ entre $0$ et $1$.
+Dans ce cas l'attaqueur détériore sa propre performance, ce qui ne justifie pas tel attaque, sauf dans un scénario de détournement.
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.50\textwidth}
+    \includegraphics[width=\textwidth]{../img/example_primal_decomposition/example_vary_tau_J.pdf}
+    \caption{}\label{fig:example_vary_tau_objective_resume}
+  \end{subfigure}
+  \begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{../img/example_primal_decomposition/example_vary_tau_J_detail.pdf}
+    \caption{(detail)}\label{fig:example_vary_tau_objective_detail_resume}
+  \end{subfigure}
+  \caption{Accumulate objective functions for different values of $\tau_{3}$.}\label{fig:example_vary_tau_objective_both_resume}
+\end{figure}
+
+Un autre fait peut être vu dans la zone hachurée en rouge de la Fig.~\ref{fig:example_vary_tau_objective_resume}.
+Les fonctions objectif trouvent l'équilibre mais recommencent à augmenter.
+Cela est causé par un effondrement de la négociation et les agents n'entrent plus en consensus.
+On présente la négociation de $\lambdai$ pour $4$ valeurs différentes de $\tau_{3}$ (Figs.~\ref{fig:example_vary_tau_lambda_resume}).
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../img/example_primal_decomposition/example_vary_tau_lambda_tau_1.0.pdf}
+    \caption{$\tau_{3}=1$.}\label{fig:example_vary_tau_lambda_tau_1}
+  \end{subfigure}
+  \begin{subfigure}{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../img/example_primal_decomposition/example_vary_tau_lambda_tau_5.0.pdf}
+    \caption{$\tau_{3}=5$.}\label{fig:example_vary_tau_lambda_tau_5}
+  \end{subfigure}
+  \\~\\
+  \begin{subfigure}{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../img/example_primal_decomposition/example_vary_tau_lambda_tau_20.0.pdf}
+    \caption{$\tau_{3}=20$.}\label{fig:example_vary_tau_lambda_tau_20}
+  \end{subfigure}
+  \begin{subfigure}{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../img/example_primal_decomposition/example_vary_tau_lambda_tau_40.0.pdf}
+    \caption{$\tau_{3}=40$.}\label{fig:example_vary_tau_lambda_tau_40}
+  \end{subfigure}
+    \caption{Evolution of $\lambdai$ during negotiation for $k=5$ with different values of $\tau_{3}$.}\label{fig:example_vary_tau_lambda_resume}
+\end{figure}
+Comme on voit, quand $\tau_{3}$ augmente, la négociation présente un comportement oscillatoire atténué.
+L'attenuation diminue si $\tau_{3}$ augmente, jusqu'à la négociation oscille et aucun consensus soit achévé, cassant la \dmpc{} et peut être aussi le système.
 
 \newpage
 \section{Commande Prédictive résiliente pour systèmes dépourvus}\label{sec:comm-pred-resil}
