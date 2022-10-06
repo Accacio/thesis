@@ -683,7 +683,6 @@ In the next section we will discuss ways to adapt the detection and mitigation s
 We propose to use a similar strategy to the one used in the last chapter.
 However, some difficulties arise.
 We do not have one tuple $(\Plin,\sik)$ for each subsystem, but we have $2^{\predhorz c}$ different tuples.
-
 Here follow proposals on how to counter the difficulties.
 
 \subsection{Mitigation and artificial scarcity}\label{sec:mitigation_ineq}
@@ -842,7 +841,7 @@ However, an inspiring example was proposed for the estimation of switched system
 In the next subsection we describe the method more precisely.
 
 \subsubsection{Expectation Maximization}
-The main objective of the \EM{} algorithm is to find, from a set of observable data $\set{B}$, estimators of a set of parameters $\set{P}$ that maximize the log marginal likelihood of the observed data ${\ln\probability{\set{B};\set{P}}}$. The models generally have latent variables (unobservable) in a set $\set{U}$.
+The objective of the \EM{} algorithm is to find, from a set of observable data $\set{B}$, estimators of a set of parameters $\set{P}$ that maximize the log marginal likelihood of the observed data ${\ln\probability{\set{B};\set{P}}}$. The models generally have latent variables (unobservable) in a set $\set{U}$.
 
 The problem is that maximizing ${\ln\probability{\set{B};\set{P}}}$ does not have an analytical solution.
 So, the algorithm solves the optimization problem in a iterative manner.
