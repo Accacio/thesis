@@ -39,7 +39,7 @@ We suppose the communication is \textbf{bidirectional}, where the agents can com
 We also suppose the agents communicate \textbf{synchronously}, so we don't have delays on the communication.
 
 \section{Security}
-For the security, we use~\cite{VelardeEtAl2017b,ChanfreutEtAl2018} as inspiration to demonstrate the \textbf{vulnerabilities of the primal decomposition} method, which was never presented.
+For the security, we use~\cite{VelardeEtAl2017b,ChanfreutEtAl2018} as inspiration to demonstrate the \textbf{vulnerabilities of the primal decomposition} method, which were never presented.
 
 As the other most adjacent works, we are only interested in \textbf{inter-agent attacks} of the \textbf{\fdi{}} type, whose exact model is presented in the next chapter.
 
@@ -47,9 +47,9 @@ In~\cite{VelardeEtAl2017a,VelardeEtAl2017b,VelardeEtAl2018}, the authors present
 
 We opt however, as in~\cite{AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020},
 for an \textbf{active} \textbf{resilient} approach.
-The strategy is precisely detailed in the next chapters, but for the detection we use an \textbf{active} method, where we add some data to detect the attacker.
+The strategy is precisely detailed in the next chapters, but for the detection, we use an \textbf{active} method, where we add some data to detect the attacker.
 We use a \textbf{hybrid} of \textbf{analytical knowledge} of the decomposition and \textbf{learning methods} create the detector.
-For the recovery, we use the same \textbf{analytical knowledge} used for the detection to reconstruct some variables and compensate disturbances.
+For the recovery, we use the same \textbf{analytical knowledge} used for the detection to reconstruct some variables and compensate disturbances caused by the attack.
 
 Duo to the reduced number of adjacent works, we can compile and compare them in a tabular manner.
 In Tab.~\ref{tab:compare_works} we compare them with the methods presented in this thesis.
@@ -60,7 +60,7 @@ In Tab.~\ref{tab:compare_works} we compare them with the methods presented in th
   \centering
   \begin{tabular}[h]{lccccc}
     \toprule
-     & Decomposition & Present vulnerabilities  & Resilient/Robust & Detection & Mitigation\\
+     & Decomposition & Present vulnerabilities?  & Resilient/Robust & Detection & Mitigation\\
     \midrule
     \cite{VelardeEtAl2017a} & Dual & Yes & Robust (Scenario) & NA & NA\\
     \parbox{20pt}{\cite{VelardeEtAl2017b} \\ \cite{VelardeEtAl2018}} & Dual & Yes & Robust (f-robust) & NA & NA\\
