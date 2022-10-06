@@ -189,21 +189,24 @@ This work has as objective to answer these questions, at least for specific case
 
 To understand and answer those questions, we divide this work into two parts.
 
-\paragraph{Part~\ref{part:mpc_intro}} It serves as a gentle introduction to \dmpc{} design, security and attacks.
+\paragraph{Part~\ref{part:mpc_intro}} It serves as a gentle introduction to \dmpc{} design, security and attacks in \cps{} and the choices in this work for each one of those steps.
+A reader accustomed with the theme is refered to Part~\ref{part:safe_dmpc}.
 
 For an unfamiliar reader, Chapter~\ref{sec:decomposing_mpc} explains what is a \mpc{} to begin with and shows some of the challenges to decompose it.
 Chapter~\ref{sec:topology_trust} discuss possible topologies used for those decompositions.
-In Chapter~\ref{sec:anomalous} we define anomalous behaviors, give some examples, categorize them and present some methods used to prevent and combat them.
+In Chapter~\ref{sec:anomalous} we define anomalous behaviors, give some examples, categorize them and present some methods used in the literature to prevent and combat them.
 
+\newpage
 \paragraph{Part~\ref{part:safe_dmpc}} It contains the contributions of this work.
 
-Chapter~\ref{sec:primal_decomposition} presents the decomposition studied in this work (primal decomposition). We present its vulnerabilities and how they can affect the performance of the system. Here we formalize the example given in the story giving it a more quantitative approach.
+We begin Chapter~\ref{sec:positioning} with a brief recapitulation of the choices made in each of the chapters in Part~\ref{part:mpc_intro} and we finish by a comparison of the method in this work with the most adjacent works in the literature.
+\\Chapter~\ref{sec:primal_decomposition} presents the decomposition studied in this work (primal decomposition). We present its vulnerabilities and how they can affect the performance of the system. Here we formalize the example given in the story giving it a more quantitative approach.
 Once we know the vulnerabilities and possible effects of attacks, we divide the mitigation problem into more manageable parts.
 \\ First in Chapter~\ref{sec:safe_pddmpc_eq}, we analyze an unsophisticated problem, so we can assess the difficulties that can be found when solving the mitigation problem. From the analysis of the problem we propose a detection and mitigation mechanism, followed by an academical example to illustrate its functioning.
 \\Then, in Chapter~\ref{sec:safe_pddmpc_ineq}, we analyze a similar problem but with a twist. As we will see, just one small modification on the initial problem can increase exponentially its complexity.
 From the analysis of the newly-found problem we propose a similar strategy, but with adequate modifications to contain the exponential nature of the problem.
 % \todo{\\Finally, we continue in Chapter~\ref{sec:safe_pddmpc_ineq_reconst} the methodology and explore some more properties to create a less conservative strategy.}
-\\Then, we conclude this work in Chapter~\ref{sec:conclusion} with a discussion about the results found during this study, benefits as well as shortcomings. Some of this discussion leads to open questions which can incite new works.
+\\We conclude this work in Chapter~\ref{sec:conclusion} with a discussion about the results found during this study, benefits as well as shortcomings. Some of this discussion leads to open questions which can incite new works.
 
 \subsubsection{Contributions}
 We can list as a minor contribution of this work the study of vulnerabilities of Primal decomposition-based \dmpc{}, which wasn't studied to the best of our knowledge,
