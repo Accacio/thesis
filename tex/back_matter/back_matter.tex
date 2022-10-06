@@ -157,7 +157,7 @@ Section~\ref{sec:comp-anorm} définit comportements anormaux, donne quelques exe
 
 \paragraph{La seconde partie} (\S\ref{sec:vulnerabilites-de-la} à~\ref{sec:comm-pred-resil-1}) contient les contributions de cette thèse.
 
-Section~\ref{sec:vulnerabilites-de-la} présente la décomposition étudié (décomposition primal). On presents ses vulnérabilités et comment elles peuvent affecter la perfomance du système.
+Section~\ref{sec:vulnerabilites-de-la} présente la décomposition étudié (décomposition primale). On presents ses vulnérabilités et comment elles peuvent affecter la perfomance du système.
 On formalise l'example en donnant une approche plus quantitative.
 Une fois les vulnérabilités et les possibles effets des attaques découverts, on divise la mitigation en parties plus gérable.
 \\ Premièrement en Section~\ref{sec:comm-pred-resil}, on analyse un problème simple, pour qu'on puisse apprécier les possibles difficultés qui peuvent être rencontrées pendant le problème de mitigation.
@@ -168,7 +168,7 @@ L'analyse de ce nouvel problème résulte une stratégie similaire, mais avec mo
 Finallement, on conclue le travail avec Section~\ref{sec:conclusion_resume}, où on discute les résultats de l'étude, ses bénéfices et inconvénients.
 La discussion ouvre des questions qui peuvent inciter des nouveau travaux.
 \subsection{Contributions}
-Comme un contribution mineure, on démontre l'étude de la vulnérabilité des \dmpc{} basées sur la décomposition primal, qu'au meilleur de nos connaissance n'a pas jamais été étudié.
+Comme un contribution mineure, on démontre l'étude de la vulnérabilité des \dmpc{} basées sur la décomposition primale, qu'au meilleur de nos connaissance n'a pas jamais été étudié.
 
 Comme contributions majeures, deux stratégies de mitigation pour types différents de système de complexité croissante.
 
@@ -197,7 +197,7 @@ Cette stratégie a une place spéciale dans l'industrie et est présente dans un
 
 Dans ce travail, on focalise sur la \mpc{} pour des systèmes linéaires avec entrées contraintes.
 
-\subsection{\mpc{} pour des systèmes linéaires}
+\subsection{\mpc{} pour des systèmes linéaires}\label{sec:mpc-pour-des}
 Comme la \mpc{} est normalement développée en utilisant un ordinateur digital et la transmission des signaux continus peuvent demander une bande passante infinite~\cite{HeEtAl2022}, naturellement on utilise un modèle de temps discret pour le système a commander:
 \begin{equation}\label{eq:large_scale_system_model_resume}
   \begin{array}{rclll}
@@ -218,7 +218,7 @@ On suppose qu'on a un objectif de commande $\vec{v}$,
 qui peut être \emph{rejeter perturbations}, où ${ \vec{v}[k]=\vec{x}[k] }$, ou \emph{suivi de trajectoire}, où ${ \vec{v}[k]=\vec{w}[k]-\vec{x}[k] }$, soit $\vec{w}[k]$ la trajectoire à suivre.
 On utilise comme example le suivi de trajectoire de sortie (utilisant les relations entre $\vec{x}[k]$ et $\vec{y}[k]$), mais tout les résultats de ce travail sont aussi valable pour l'autre objectif.
 
-La \mpc{} trouve une séquence d'entrées ${\vec{U}^{\star}[k]=[\vec{u}^{\star}[0|k];\dots; \vec{u}^{\star}[\predhorz-1|k]]}$ prédite dans un horizon $\predictionSet=\{1\mathbin{:}\predhorz\}$ qui minimize la fonction ${J:\R^{n_{x}}\times\R^{\predhorz\cdot n_{u}}\to \R}$, définie comme
+La \mpc{} trouve une séquence d'entrées ${\vec{U}^{\star}[k]=[\vec{u}^{\star}[0|k];\dots; \vec{u}^{\star}[\predhorz-1|k]]}$ prédite dans un horizon $\predictionSet=\{1\mathbin{:}\predhorz\}$ qui minimiser la fonction ${J:\R^{n_{x}}\times\R^{\predhorz\cdot n_{u}}\to \R}$, définie comme
 \begin{equation}
   \label{eq:quadratic_objective_with_sum_resume}
   J(\vec{x}[0|k],\vec{U}[k])=\sum_{i\in\predictionSet}\left[\norm{\mpcvec{v}[ ][i][k]}^{2}_{Q} +\norm{\mpcvec{u}[ ][i-1][k]}^{2}_{R}\right].
@@ -231,8 +231,8 @@ En mettant en form matriciel, le problème résolu par la \mpc{} est le suivant
   \small
   \begin{aligned}
     \begin{matrix}
-      \minimize\limits_{\vec{U}[k]} &\norm{\vec{V}[k]}^{2}_{\bar{Q}} + \norm{\vec{U}[k] }^{2}_{\bar{R}}&\\
-      \mathrm{subject~ to} &
+      \minimiser\limits_{\vec{U}[k]} &\norm{\vec{V}[k]}^{2}_{\bar{Q}} + \norm{\vec{U}[k] }^{2}_{\bar{R}}&\\
+      \mathrm{sous} &
       \vec{x}[i|k]=A\vec{x}[i-1|k]+B\vec{u}[i-1|k]
       &
        \forall i\in\predictionSet \\
@@ -258,10 +258,9 @@ En choisissant l'approche \emph{batch}~\cite[Chapter 8.2]{BorrelliEtAl2017}, on 
   \label{eq:quadratic_objective_compact_batch_resume}
   \begin{aligned}
     \begin{matrix}
-      \minimize\limits_{\vec{U}[k]} &
+      \minimiser\limits_{\vec{U}[k]} &
       \norm{\vec{U}[k]}^{2}_{H} + 2{\vec{f}[k]}^{T}\vec{U}[k] + c[k] &\\
-      \mathrm{subject~ to} &
-\bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}}
+      \mathrm{sous} & \bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}}
     \end{matrix}
   \end{aligned}
 \end{equation}
@@ -316,9 +315,9 @@ Si on divise la fonction objectiv par $2$ et on ignore le terme constant $c[k]$,
   \label{eq:qp_standard_form_resume}
   \begin{aligned}
     \begin{matrix}
-      \minimize\limits_{\vec{U}[k]} &
+      \minimiser\limits_{\vec{U}[k]} &
       \frac{1}{2}\norm{\vec{U}[k]}^{2}_{H} + {\vec{f}[k]}^{T}\vec{U}[k] &\\
-      \mathrm{subject~ to} &
+      \mathrm{sous} &
 \bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}}
     \end{matrix}
   \end{aligned}.
@@ -350,7 +349,7 @@ L'idée générale est de prendre un problème décomposable comme
   \small
   \begin{aligned}
     \begin{matrix}
-      \minimize\limits_{\text{variables de decision}}  &\text{objective}_{1}&+&\text{objective}_{2}&\\
+      \minimiser\limits_{\text{variables de decision}}  &\text{objective}_{1}&+&\text{objective}_{2}&\\
       \mathrm{sous} & \text{constraintes}_{1},&&  \text{constraintes}_{2}\\
       &&\text{contraintes compliquantes}_{12}&
     \end{matrix}
@@ -361,7 +360,7 @@ et le récrire comme un problème équivalent avec des variables auxiliaires, co
   \small
   \begin{aligned}
     \begin{matrix}
-      \minimize\limits_{\mathop{\operatorname{+}}\limits^{\text{variables de decision}}_{\text{variables auxiliaires}}}  &\text{objective}^{*}_{1}(\text{variables auxiliaires })+\text{objective}^{*}_{2}(\text{variables auxiliaires})&\\
+      \minimiser\limits_{\mathop{\operatorname{+}}\limits^{\text{variables de decision}}_{\text{variables auxiliaires}}}  &\text{objective}^{*}_{1}(\text{variables auxiliaires })+\text{objective}^{*}_{2}(\text{variables auxiliaires})&\\
     \end{matrix}
   \end{aligned}
 \end{equation}
@@ -369,7 +368,7 @@ où $\text{objective}^{*}_{1}(\text{variables auxiliaires})$ et $\text{objective
 \begin{subequations}\label{eq:general_coupled_optimization_problem_decomposed}
 \begin{equation}\label{eq:general_coupled_optimization_problem_decomposed_1}
     \begin{matrix}
-      \minimize\limits_{\text{variables de decision}_{1}}  &\text{objective}_{1}&\\
+      \minimiser\limits_{\text{variables de decision}_{1}}  &\text{objective}_{1}&\\
 
       \mathrm{sous} & \text{constraints}_{1}\\
       &\text{contraintes compliquants}_{12_{1}}(\text{variables auxiliaires}_{1})
@@ -377,7 +376,7 @@ où $\text{objective}^{*}_{1}(\text{variables auxiliaires})$ et $\text{objective
 \end{equation}
 \begin{equation}\label{eq:general_coupled_optimization_problem_decomposed_2}
     \begin{matrix}
-      \minimize\limits_{\text{variables de decision}_{2}}  &\text{objective}_{2}&\\
+      \minimiser\limits_{\text{variables de decision}_{2}}  &\text{objective}_{2}&\\
 
       \mathrm{sous} & \text{constraints}_{2}\\
       &\text{contraintes compliquants}_{12_{2}}(\text{variables auxiliaires}_{2})
@@ -403,7 +402,7 @@ La solution de cette partie des contraintes d'accouplement dépendent des variab
 Les variables d'interface dépendent des problèmes locaux choisis.
 Par example, pour des problèmes primaux, normalement les variables duales sont utilisées~\cite{Cohen1978}; pour les problèmes duals, le résidu des contraintes~\cite{BoydEtAl2015}; et pour la méthode d'alternance de direction des multiplicateurs, en anglais \ADMM, variables primales et autres multiplicateurs sont utilisés (la mise à jour de ses multiplicateurs donnent le nom de la méthode)~\cite{BoydEtAl2011}.
 
-Ce travail se concentre à la décomposition primal et utilise le sub-gradient projeté.
+Ce travail se concentre à la décomposition primale et utilise le sub-gradient projeté.
 Cette décomposition sera expliquée dans une section future (\S\ref{sec:vulnerabilites-de-la}).
 Pour d'autres exemples on réfère~\cite{MaestreEtAl2014} ou~\cite{ConejoEtAl2006}.
 
@@ -999,7 +998,7 @@ Une autre option est d'utiliser les stratégies adaptatives qui essayaient d'est
 
 \newpage
 \section{Comparaison avec état de l'art}\label{sec:comp-avec-etat}
-Ce travail utlise~\cite{VelardeEtAl2017b,ChanfreutEtAl2018} comm inspiration pour démontrer les vulnérabilités du méthode de décomposition primal, qui n'ont jamais été présentées.
+Ce travail utlise~\cite{VelardeEtAl2017b,ChanfreutEtAl2018} comm inspiration pour démontrer les vulnérabilités du méthode de décomposition primale, qui n'ont jamais été présentées.
 
 Comme les autres travaux adjacents, nous nos intéressons par des attaques entre agents du type \textbf{\fdi{}}.
 Le modèle exact est présenté dans la prochaîne section.
@@ -1036,7 +1035,118 @@ Le Tab.~\ref{tab:compare_works_resume} compare les travaux avec les méthodes pr
 \end{landscape}
 
 \newpage
-\section{Vulnerabilités de la decomposition primal}\label{sec:vulnerabilites-de-la}
+\section{Vulnérabilités de la decomposition primale}\label{sec:vulnerabilites-de-la}
+
+\subsection{La \dmpc{} baséee sur la décomposition primale}\label{sec:decomposition_PD_resume}
+
+On prend le problème de la \mpc{} en sa forme monolitique présentée en ~\eqref{eq:qp_standard_form_resume}, et on le divise en $M$ parties de même taille, qui correspondent à une sousdivision du système initial~\eqref{eq:large_scale_system_model_resume}.
+La dynamique des sous-systèmes est décrite par des matrices d'état $(A_{i},B_{i},C_{i})$, et sous états $\vec{x}_{i}[k]$, références $\vec{w}_{i}[k]$ et entrées $\vec{u}_{i}[k]$.
+
+On donne un index dans l'ensemble $\set{M}=\{1\mathbin{:}M\}$ pour chaque sous-système et on récrit~\eqref{eq:qp_standard_form_resume} comme
+\begin{equation}
+  \label{eq:qp_standard_form_decomposable_resume}
+  \begin{aligned}
+    \begin{matrix}
+      \minimiser\limits_{\vec{U}_{1}[k],\dots, \vec{U}_{M}[k]} &
+      \sum\limits_{i\in\set{M}}\left[\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\right]&\\
+      \mathrm{sous} & \sum\limits_{i\in\set{M}}\left[\bar{\Gamma}_{i}\vec{U}_{i}[k]\right] \preceq {\vec{U}}_{\text{max}}
+    \end{matrix}
+  \end{aligned},
+\end{equation}
+avec des versions locales $\vec{U}_{i}[k]=\left[\vec{u}_{i}[0|k]; \dots; \vec{u}_{i}[\predhorz-1|k]\right]$, $\bar{\Gamma}_{i}$, $H_{i}$ et $\vec{f}_{i}[k]$ des variables presentées en~\S\ref{sec:mpc-pour-des}.
+
+Pour la décomposition primale, on divise~\eqref{eq:qp_standard_form_decomposable_resume} en un problème principal~\eqref{eq:DOP_main_resume} et $M$ problèmes locaux~\eqref{eq:DOP_local_resume} basés sur le problème original (primal)~\eqref{eq:qp_standard_form_decomposable_resume} et utilisant des variables d'interface $\thetaik,\forall i\in\set{M}$:
+\begin{subequations}
+  \begin{equation}
+        \eqoptobji(\thetaik)[k]=
+        \begin{matrix}
+          \minimiser\limits_{\vec{U}_{i}[k]}&\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+          \mathrm{sous} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \preceq \thetaik:\lambdaik
+      \end{matrix}
+    \label{eq:DOP_local_resume}
+  \end{equation}
+
+  \begin{equation}
+    \begin{aligned}
+      \eqoptobj[k]=
+      \begin{matrix}
+        \minimiser\limits_{\mpcvec{\theta}[i][k], \dots, \mpcvec{\theta}[M][k]} &\sum\limits_{i\in\set{M}} J^{\star}_i(\thetaik)\\
+        \mathrm{sous} &
+          \begin{aligned}
+            \quad \sum_{i\in\set{M}}\thetaik\preceq\vec{U}_{\max}\\
+          \end{aligned}
+      \end{matrix}
+    \end{aligned},
+    \label{eq:DOP_main_resume}
+  \end{equation}
+\end{subequations}
+où $\lambdaik,\forall i\in\set{M}$ sont des variables duales des problèmes, i.e. les multiplicateurs de Lagrange associés aux contraintes~\cite{BoydVandenberghe2004}.
+
+Le problème~\eqref{eq:DOP_main_resumé} est résolu par mises à jour de $\theta_{i}$ jusqu'à une convergence.
+La méthode iterative choisie est le sous-gradient projeté, dans laquelle on utilise $\lambdaik$ comme sous-gradient~\cite{BoydVandenberghe2004,BoydEtAl2015}.
+La loi de mise à jour est donné par
+\begin{equation}
+  \label{eq:projectedSubgradient_lambda_resume}
+  \vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p).
+\end{equation}
+où
+$p$ est un pas d'itération,
+$\rho^{(p)}$ est la largeur du pas d'itération\footnote{choisie comme montré en~\cite{ConejoEtAl2006}},
+$\vec{\theta}[k]=[\vec{\theta}_{1}[k];\dots;\vec{\theta}_{M}[k]]$,
+$\vec{\lambda}[k]=[\vec{\lambda}_{1}[k];\dots;\vec{\lambda}_{M}[k]]$.
+La projection est faite sur l'ensemble ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k]\preceq \vec{U}_{\max}}}$\footnote{${c=\card{\lambdaik}=\card{\thetaik}=\card{\vec{U}_{\max}}=n_{c}\predhorz}$, et
+${I_{c}^{M}=\kron{\1_{M}\T}{I_{c}}}$}.
+
+Comme chaque problème~\eqref{eq:DOP_local_resume} peut être résolu en parallèle, une unité de computation est attribuée pour résoudre chaque un des sous-problèmes.
+Pour la mise à jour~\eqref{eq:projectedSubgradient_lambda_resume}, les agents ont besoin des $\lambdaik$ des autres agents pour mettre à jour leur propre $\thetaik$.
+On pourrait créer une solution anarchique comme celle en~\cite{VelardeEtAl2018}, où l'information $\lambdaik$ circulerait entre les agents et chaque agent mettrait à jour son $\thetaik$.
+Cependant, nous avons décidé d'utiliser une structure plus privative.
+On a opté pour une solution \textbf{hierarchique}, où un agent agrège les $\lambdaik$ et coordonne les mises à jour des $\thetaik$, on appelle cet agent le \emph{coordinateur}.
+De cette façon, chaque agent a accès juste à ses propres valeurs de $\lambdaik$ et $\thetaik$.
+
+On illustre la structure de  communication en Fig.~\ref{fig:dmpc_communication_resume}.
+On peut voir la structure hierarchique vu en \S\ref{sec:differents-topologies}.
+L'Algorithm~\ref{alg:primal_decomposition_based_dmpc} resume la \dmpc{} basée sur la décomposition primale
+\begin{algorithm2e}[h]
+  \DontPrintSemicolon%
+  \coordinitfr{
+    Initialiser $k$, $p$, $p_{\max}$ et $\epsilon$\;
+  }
+  \Whilefr{$k\geq 0$}{
+    Initialiser ${\thetaik}^{(p)},$ $\forall i\in\set{M}$, tel que ${\vec{\theta}[k]}^{(p)}\in\set{S}$\;
+    Coordinateur envoie $\thetaik^{(p)}$ pour tous les agents\;
+    \exchangefr{
+      \Repeatfr{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\lor \left[p\geq p_{\max}\right]$}{
+        Agents résolvent sous-problèmes~\eqref{eq:DOP_local_resume} et envoient ${\vec{\lambda}_{i}[k]}^{(p)}$ au coordinateur\;
+        Coordinateut met à jour les $\vec{\theta}[k]$ utilisant~\eqref{eq:projectedSubgradient_lambda_resume} et les renvoie\;
+        $p\gets p+1$\;
+      }
+    }
+    Agents appliquent la dernière commande $\vec{u}_{i}^{\star}[0|k]$ en son sous-système respective\;
+    $k\gets k+1$\;
+  }
+  \caption{La \dmpc{} basée sur la décomposition primale.}\label{alg:primal_decomposition_based_dmpc_resume}
+\end{algorithm2e}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[font=\small,thick,node distance=3*0.6180cm and 0.6180cm,every node/.style=rectangle,
+    mpcSmall/.style={fill=mpc_agent, minimum height=0.6180*2cm, minimum width=2cm},
+    coordinator/.style={fill=mpc_coordinator, minimum height=0.6180*3cm, minimum width=6cm},
+    ]
+
+    \node[draw, mpcSmall,] (block1) {\small Agent 1};
+    \node[fill=none, draw=none, right=of block1,] (mult) {\bf $\dots$};
+    \node[draw, mpcSmall, fill=mpc_agent, right=of mult,] (blockM) {\small Agent M};
+    \node[draw, coordinator, below=of mult,] (coordinator) {Coordinateur};
+
+    \draw[-latex,line width=1pt] (block1.south)+(0.4,.0) -- ( coordinator.north -| {$(block1.south)+(0.4,.0)$}) node [right,midway] {$\lambda_{1}$};
+    \draw[latex-,line width=1pt] (block1.south)+(-0.4,0) -- (  coordinator.north -| {$(block1.south)+(-0.4,0)$}) node [left,midway] {$\theta_{1}$};
+    \draw[-latex,line width=1pt] (blockM.south)+(0.4,.0) -- ( coordinator.north -| {$(blockM.south)+(0.4,.0)$}) node [right,midway] {$\lambda_{M}$};
+    \draw[latex-,line width=1pt] (blockM.south)+(-0.4,0) -- (  coordinator.north -| {$(blockM.south)+(-0.4,0)$}) node [left,midway] {$\theta_{M}$};
+  \end{tikzpicture}
+  \caption{Échange entre agents et coordinateur pendant une \dmpc{} basée sur la décomposition primale.}\label{fig:dmpc_communication_resume}
+\end{figure}
 
 \newpage
 \section{Commande Prédictive résiliente pour systèmes dépourvus}\label{sec:comm-pred-resil}
