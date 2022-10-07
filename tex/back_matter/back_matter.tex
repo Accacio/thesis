@@ -1499,7 +1499,7 @@ Alors, s'il y a un changement de cette évolution, ça veut dire que le système
 
 Comme on peut observer, une perturbation en $\Plin$ (changement de la fonction objectif ou contraintes) change les valeurs de $\mathcal{A}_{\theta}$, et par conséquence sa dynamique.
 Ce changement peut déstabiliser le système si les valeurs propres sont décalées dehors le cercle unitaire, comme déjà montré en \S\ref{sec:attack-interest_resume}.
-Par contre, les perturbations en $\sik$ (modification de la function objectif, contraintes ou état/réference) peuvent change l'état en régime permanent (changement en $\mathcal{\vec{B}}_{\theta}[k]$).
+Par contre, les perturbations en $\sik$ (modification de la function objectif, contraintes ou état/référence) peuvent change l'état en régime permanent (changement en $\mathcal{\vec{B}}_{\theta}[k]$).
 
 Si on suppose que le système est sous attaque et tous les agents sont suspects on a la dynamique
 \begin{equation}
@@ -1817,6 +1817,290 @@ Alors, on peut moduler la négociation en choisissant la version de $\lambdai$ q
   Une solution serait ignorer l'attaquant comme montré.
   Par contre, on ignore les cas où l'estimation ne converge pas.
 \end{remark}
+
+\subsection{La dMPC résiliente pour systèmes dépourvus}\label{sec:complete-safe-dmpc_resume}
+En mettant ensemble les méthodes de détection et mitigation présentées, on peut finalement avoir notre \dmpc{} résiliente basée sur la décomposition primale pour systèmes dépourvus, ou en anglais \rpdmpcss{}.
+On peut observer que les mécanismes présentés peuvent être vus comme un superviseur ajouté pour chaque agent (Fig.~\ref{fig:dmpc_communication_safe_eq_resume}).
+Algorithme~\ref{alg:rpdbdmpcss} systematize la méthode.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[font=\small,thick,node distance=3*0.6180cm and 0.6180cm,every node/.style=rectangle,
+    mpcSmall/.style={fill=mpc_agent, minimum height=0.6180*2cm, minimum width=2cm},
+    coordinator/.style={fill=mpc_coordinator, minimum height=0.6180*3.5cm, minimum width=6.5cm},
+    supervisor/.style={fill=mpc_green, minimum height=0.6180*3*0.3cm, minimum width=2cm},
+    ]
+
+    \node[draw, mpcSmall,] (block1) {\small Agent 1};
+    \node[fill=none, draw=none, right=of block1,] (mult) {\bf $\dots$};
+    \node[draw, mpcSmall, fill=mpc_agent, right=of mult,] (blockM) {\small Agent M};
+    \node[draw, coordinator, below=of mult,] (coordinator) {Coordinateur};
+
+    \node[draw, supervisor,anchor=north west] at (coordinator.north west) {\small Superviseur 1};
+    \node[draw, supervisor,anchor=north east] at (coordinator.north east) {\small Superviseur M};
+
+    \draw[-latex,line width=1pt] (block1.south)+(0.4,.0) -- ( coordinator.north -| {$(block1.south)+(0.4,.0)$}) node [right,midway] {$\lambda_{1}$};
+    \draw[latex-,line width=1pt] (block1.south)+(-0.4,0) -- (  coordinator.north -| {$(block1.south)+(-0.4,0)$}) node [left,midway] {$\theta_{1}$};
+    \draw[-latex,line width=1pt] (blockM.south)+(0.4,.0) -- ( coordinator.north -| {$(blockM.south)+(0.4,.0)$}) node [right,midway] {$\lambda_{M}$};
+    \draw[latex-,line width=1pt] (blockM.south)+(-0.4,0) -- (  coordinator.north -| {$(blockM.south)+(-0.4,0)$}) node [left,midway] {$\theta_{M}$};
+  \end{tikzpicture}
+  \caption{Échange entre agents et coordinateur dans la \rpdmpcss{}.}\label{fig:dmpc_communication_safe_eq_resume}
+\end{figure}
+
+\begin{algorithm2e}[h]
+  \DontPrintSemicolon
+  \detectPhasefr{
+    Coordinateur compute $d_{i}$ et estimations de $\Plintildeestimate$ avec Algorithme~\ref{alg:detection_rls_resume}\;
+  }
+  \negotPhasefr{
+    $p\gets 0$\;
+    Coordinateur initialise $\vec{\theta}^{(p)}$ et les envoie aux sous-systèmes\;
+    \Repeter{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\lor \left[p\geq p_{\max}\right]$}{
+      Sous-systèmes résout~\eqref{eq:DOP_local_resume}, et envoient $\vec{\lambda}^{\star}_{i}(\vec{\theta}\p)$\;
+
+      Coordinateur m-à-j les allocations~\eqref{eq:example_projectedSubgradient_lambda_reprise_resume} avec versions adéquates de $\vec{\lambda}_{i}$:\;
+      \quad$\vec{\lambda}_{i}^{\star}(\vec{\theta}\p)$, si $d_{i}=0$ et $\lambdaireconstructed$, si ${d_{i}=1}$~\eqref{eq:lambdareconstruction}\;
+      $p\gets p+1$
+    }
+    Agents appliquent la dernière commande $\vec{u}_{i}^{\star}[0|k]$ calculée\;
+    $k\gets k+1$\;
+  }
+  \caption{La \dmpc{} Résiliente basée sur la décomposition primale pour systèmes dépourvus.}\label{alg:rpdbdmpcss_resume}
+\end{algorithm2e}
+
+\subsection{Expériment Numérique}\label{sec:numerical-experiment_resume}
+
+\subsubsection{Étude de cas}\label{sec:case-study}
+
+Notre étude de cas est un simple \dhn{} composé par ${M=4}$ petites maisons (appelées I, II, II and IV).
+Chacune a un état $\vec{x}_{i}$, et une référence de temperature différente $\vec{w}_{i}(t)$ (besoins diveses).
+Les maisons sont equipées de convecteurs, et la puissance total de chauffage de chaque maison est l'entrée $\vec{u}_{i}(t)$.
+Comme il n'y a pas de dispositifs pour rafraîchir l'ambient, les entrées sont positives, i.e., $\vec{u}_{i}[k]\succeq\0$.
+En Fig.~\ref{fig:houses} les maisons consomment la puissance d'un fournisseur.
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[node distance=.5cm and .75cm,scale=1]
+    \node[color=mpc_agent] (house1) at (0,0) {\scalebox{2.5}{\faHome}};
+    \node[minimum height=1cm,below=of house1] (medium) {};
+    \node[color=mpc_agent,right=of medium] (house2)  {\scalebox{3.5}{\faHome}};
+    \node[color=mpc_agent,below=of medium] (house3)  {\scalebox{3}{\faHome}};
+    \node[color=mpc_agent,left=3cm of medium] (house4)  {\scalebox{7}{\faHome}};
+
+    \draw[latex-,line width=1pt] (house1) -- (medium.center);
+    \draw[latex-,line width=1pt] (house2) -- (medium.center);
+    \draw[latex-,line width=1pt] (house3) -- (medium.center);
+    \draw[latex-,line width=1pt] (house4) -- (medium.center) node[above,midway] {\large $\vec{u}_{i}(t)$};
+    \draw[color=black,fill=mpc_coordinator,] (medium) circle [radius=.2cm];
+
+    \node[latex-,line width=7pt] at ($(house4) +(-1,1)$) {\large $w_{i}(t)$};
+    \node[latex-,line width=7pt] at ($(house4)$) {$\vec{x}_{i}(t)$};
+
+  \end{tikzpicture}
+  \caption{District avec 4 maisons.}\label{fig:houses_resume}
+\end{figure}
+
+On modèle des maisons utilisant des modèles 3R-2C monozone ave des fenêtres~\cite{GoudaEtAl2002} (Fig.~\ref{fig:3R2C_model_resume}).
+Les paramètres sont décrits sur Tab.~\ref{tab:modelParamMeaning_resume} et~\ref{tab:modelParam_resume}.
+
+\begin{figure}[h]
+  \centering
+  \begin{circuitikz}[european]
+    \draw (0,0) node[tlground]{} to[isource, l=$P^{\text{heat}}$] ++(0,2) to[short, -*] ++(1.5,0) coordinate (a);
+
+    \draw (a) node[above]{$T^{\text{in}}$}  to[C=$C^{\text{air}}$] ++(0,-2) node[tlground]{};
+    \draw (0,-3) node[tlground]{} to[isource, l=$I^{\text{sol}}$] ++(0,2)
+    to[short, -*] ++(1.5,0) coordinate (b);
+    \draw (b) to[C=$C^{\text{walls}}$] ++(0,-2) node[tlground]{};
+
+    \draw (a) -- ++(2,0) coordinate (c) -- ++(0,-.5) to[R=$R^{\text{iw/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (d);
+
+    \draw (b) node[above]{$T^{\text{walls}}$} to[short,-*] (d);
+
+    \draw (c) --  ++(2.5,0) -- ++(0,-.5) to[R=$R^{\text{oa/ia}}$] ++(0,-2) -- ++(0,-.5) coordinate (e);
+
+    \draw (d) to[R=$R^{\text{ow/oa}}$] (e) to[battery,l=$T^{\text{out}}$] ++(0,-2) node[tlground]{};
+  \end{circuitikz}
+  \caption{Modèle thermique 3R-2C d'une maison.}\label{fig:3R2C_model_resume}
+\end{figure}
+
+\begin{table}[h]
+  \centering
+  \caption{Paramètres du Modèle}\label{tab:modelParamMeaning_resume}
+  \begin{tabular}[b]{cl}
+    \toprule
+    Symbole&Signification\\
+    \midrule
+    $C^{\text{air}}_{i}$  &Capacité termique de l'air intérieur\\
+    $C^{\text{walls}}_{i}$ &Capacité termique des parois externes\\
+    $R^{\text{iw/ia}}_{i}$ &Resist.\ entre l'air et parois internes\\
+    $R^{\text{ow/oa}}_{i}$ &Resist.\ entre l'air et parois externes\\
+    $R^{\text{oa/ia}}_{i}$ &Resist.\ entre l'air intérieur et extérieur (à travers des fenêtres)\\
+    $P^{\text{heat}}$ &Puissance de chauffage des convecteurs\\
+    $I^{\text{sol}}$ &Puissance irradiée par le Soleil\\
+    $T^{\text{in}}$ &Temperature moyenne de l'air à l'intérieur\\
+    $T^{\text{walls}}$ &Temperature moyenne des parois internes\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[h]
+  \centering
+  \caption{
+    Paramètres pour chaque maison}\label{tab:modelParam_resume}
+  \begin{tabular}[t]{cccccc} \toprule
+    Élément& I & II & III & IV &Unit\\
+    \midrule
+    \input{../data/resilient_eq/thermic_params.tex}\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+
+Le circuit peut être traduit par le modèle d'espace d'état
+  \begin{equation}
+  \begin{matrix}
+    \label{eq:systems_cont_resume}
+    \dot{\vec{x}}_{i}(t)  &=&{A_{c}}_{i}\vec{x}_{i}(t) &+& {B_{c}}_{i}\vec{u}_{i}(t)+{D_{c}}_{i}\vec{d}_{i}(t)\\
+    \vec{y}_{i}(t)        &=&{C_{c}}_{i}\vec{x}_{i}(t) &&
+  \end{matrix},
+\end{equation}
+où
+
+\begin{equation}
+  \label{eq:4_resume}
+  \begin{matrix}
+    A_{\mathrm{c}_{i}}=\left[
+    \begin{matrix}
+      -\frac{1}{C^{\text{walls}}_{i}R^{\text{oa/ia}}_{i}}-\frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}& \frac{1}{C^{\text{walls}}_{i}R^{\text{iw/ia}}_{i}}\\
+      \frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}} &-\frac{1}{C^{\text{air}}_{i}R^{\text{ow/oa}}o_{i}}-\frac{1}{C^{\text{air}}_{i}R^{\text{iw/ia}}_{i}}
+    \end{matrix}\right]
+                                                         &
+      B_{\mathrm{c}_{i}}=\left[\begin{matrix}  \frac{1}{C^{\text{air}}_{i}}\\ 0\end{matrix}\right]\T
+  \\\\
+    D_{\mathrm{c}_{i}}=\left[
+    \begin{matrix}
+      0& \frac{1}{C^{\text{air}}_{i}R^{\text{ow/oa}}_{i}}\\
+      \frac{1}{C^{\text{air}}_{i}} &\frac{1}{C^{\text{air}}_{i}R^{\text{ow/oa}}}
+    \end{matrix}\right]&C_{\mathrm{c}_{i}}=\left[\begin{matrix}1 & 0\end{matrix}\right]
+
+\end{matrix}
+\end{equation}
+
+avec
+${\vec{x}_{i}(t)=\left[T^{\text{in}}_{i}(t)\ T^{\text{walls}}_{i}(t)\right]\T}$,
+${\vec{u}_{i}(t)=P^{\text{heat}}_{i}}$,
+${\vec{d}_{i}(t)=\left[I^{\text{sol}}(t)\ T^{\text{out}}(t)\right]\T}$.
+
+Les entrées $\vec{u}_{i}(t)$ sont contraintes par une puissance de chauffage maximale disponibilisée par le founisseur, i.e.,
+\begin{equation}
+\sum\limits_{i\in\set{M}}\left[\vec{u}_{i}(t)\right]\preceq \vec{u}_{\max}
+\end{equation}
+où
+$\vec{u}_{\max}=40\mathrm{kW}.$
+
+\begin{remark}
+  On ignore les perturbation causées par le soleil et la temperature à l'éxterieur, i.e., $\vec{d}_{i}(t)=\0$.
+\end{remark}
+
+Comme on utilise la \mpc{}, on discretise le système avec un bloqueur d'ordre zéro et $T_{s}=0.25\mathrm{h}$ comme pas d'échantillonnage, resultant en les $3$-tuples $(A_{i},B_{i},C_{i})$.
+
+\subsubsection{Appliquant le \rpdmpcss{}}
+D'abord, on suppose que le système est dépourvu, c'est à dire, ayant des états initiaux $\vec{x}_{i}[0]$, les références $\vec{w}_{i}[k]$ ne peuvent pas être achevées.
+
+On utilise par exemple, les états
+\input{../data/resilient_eq/initial_states.tex},
+et références
+\input{../data/resilient_eq/references.tex}.
+Utilisant les gains
+$Q_{i}=10I$,
+et
+$R_{i}=   I_{2}$,
+et en choisissant de contrôler le système avec un horizon de prédiction
+$\predhorz=4$,
+on structure le problème de la \dmpc{} et le décompose avec la décomposition primale, avec des problèmes locaux
+\begin{equation}
+  \label{eq:houses_deprived_local_problem_resume}
+  \begin{matrix}
+    \minimize\limits_{\vec{U}_{i}[k]}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+    \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] = \thetaik:\lambdaik\\
+                                     &\vec{U}_{i}[k]\succeq\0
+  \end{matrix}
+\end{equation}
+
+et équations de mise à jour~\eqref{eq:example_projectedSubgradient_lambda_reprise_resume}.
+
+\subsubsection{Résultats}\label{sec:results_resume}
+On teste l'algorithme avec une simulation dans une période de
+$5$
+heures, i.e.,
+${k\in\{0,5/T_{s}\}}$,
+dans quelques scénarios différents:
+\begin{enumerate}
+  \item Comportement Nominal (dénoté N)
+  \item Agent I attaque le système commandé par \dmpc{} standard (dénoté S)\label{it:case_selfish_resume}
+  \item Agent I attaque le système commandé par \rpdmpcss{} (dénoté C)\label{it:case_selfish_recovered_resume}
+  % \todo{\item Agents I and IV attack system controlled by standard \dmpc{} (denoted as MS)\label{it:case_selfish_multiple}\note{only if a have time to simulate}}
+  % \todo{\item Agents I and IV attack system controlled by \rpdmpcss{} (denoted as MC)\label{it:case_selfish_multiple_recovered}\note{only if a have time to simulate}}
+\end{enumerate}
+
+L'attaque choisi pour les scénarios~\ref{it:case_selfish_resume} et~\ref{it:case_selfish_recovered_resume},
+sont
+\begin{align}
+  T_{I}=&\begin{cases}
+          \left[\input{../data/resilient_eq/triche_matrix_I}\right],&\text{if }k> 5\\
+          I_{c},&\text{otherwise}
+        \end{cases}
+  % T_{IV}=\begin{cases}
+  %         \todo{4I_{c}\text{, if }k< 6}\\
+  %         I_{c}\text{, otherwise}
+  %       \end{cases}
+.
+\end{align}
+
+Dans Fig.~\ref{fig:response_houseI_3Scenarios_resume}, on compare la temperature de la maison I ($\vec{y}_{I}[k]$) avec sa référence $\vec{w}_{I}[k]$, et après la variable de détection ${E_{I}(k)}$ avec sa borne $\epsilon_{P}=10^{-4}$.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.7\textwidth]{../img/resilient_eq/ErrorWX_command_normErrH.pdf}
+\caption{Temperature de la maison I et la variable $E_{I}(k)$ pour les 3 scénarios.}\label{fig:response_houseI_3Scenarios_resume}
+\end{figure}
+Comme attendu, les variables de détection repose sous la borne $\epsilon_{P}=10^{-4}$ quand on est dans le scénario nominal.
+Par contre, pour les scénarios S et C, où l'agent attaque le système, la variable dépasse la borne, indiquant la triche.
+En scénario S, on observe l'erreur de suivi ${w_{I}-y_{I}}$ se réduire quand l'attaque est activé, suggérant que l'attaquant pousse la négocitation pour recevoir plus de ressources.
+D'ailleurs, les autres agents reçoivent moins de ressources, et leur erreur de suivi augmente (Fig.~\ref{fig:response_housesII_to_IV_3Scenarios_resume}).
+
+\begin{figure}[h]
+  \centering
+ \includegraphics[width=.7\textwidth,trim=0 .3cm 0 .2cm,clip]{../img/resilient_eq/ErrorWX_command_normErrH_all_houses.pdf}
+  \caption{Temperature de l'air dans toutes les maisons pour les 3 scénarios.}\label{fig:response_housesII_to_IV_3Scenarios_resume}
+\end{figure}
+
+Quand la \rpdmpcss{} est activée en scénario C, les temperatures récupèrent un comportement proche du nominal, comme on voit dans Fig.~\ref{fig:response_houseI_3Scenarios_resume} et~\ref{fig:response_housesII_to_IV_3Scenarios_resume}.
+
+% \todo{
+%   Similarly, we can show the method works for cases where multiple agents attack the system (Fig.~\ref{fig:response_houses_N_M}),
+% \begin{figure}[h]
+%   \centering
+%   \includegraphics[width=7cm]{AirTempAndDecisionVariable.pdf}
+% \caption{Temperature of all houses, and respective references for scenarios N,MS and MC. \todo{remake figure}}\label{fig:response_houses_N_M}
+% \end{figure}
+% }
+
+On peut aussi comparer les fonctions objectif locales et global $\Jiacc$ et $\Jacc$ dans Tab.~\ref{tab:eq_costsGlobalLocal_resume}.
+Comme attendue, la fonction decroît pour l'attaqueur si la \dmpc{} n'est pas sécurisée. Cependant une fois que la \rpdmpcss{} est activé les objectifs reviennent à une valeur proche de l'originale.
+
+\begin{table}[h]
+  \centering
+  \caption{Fonctions objectif $J_{i}$ (\% erreur)}\label{tab:eq_costsGlobalLocal_resume}
+  \begin{tabular}[t]{cccc}
+    \toprule
+    Agent  & Scénario N& Scénario S & Scénario C\\
+    \midrule
+    \input{../data/resilient_eq/table_costs_all_houses_error.tex}\\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \newpage
 \section{Commande Prédictive résiliente sur pénurie artificielle}\label{sec:comm-pred-resil-1}
