@@ -141,7 +141,7 @@ On utilise comme guide les questions suivantes:
 \simplebox{
   \begin{itemize} \bfseries
     \item Peut-on detecter l'attaque?
-    \item Peut-on identifier l'attaqueur?
+    \item Peut-on identifier l'attaquant?
     \item Peut-ont miniser les effets du dit attaque?
   \end{itemize}
 }
@@ -633,7 +633,7 @@ Les \cps{} ont des composant des domaines physiques et cyber.
 On peut les diviser en partie matériel et immatériel.
 Chacune de ces parties sont des points de vulnerabilité d'un \cps{}.
 
-Dispositifs physiques comme des transducteurs (capteur/actionneur) peuvent être cibles de sabotage. Par example un attaqueur peut utiliser un objet frais pour changer la lecture des capteurs de témperature d'une salle. Mais ils peuvent aussi se détériorer avec le temps ou d'autres accidents naturelles (chute d'arbres ,glissement de terres, attaques d'animaux, ouragans etc) et causer des défauts.
+Dispositifs physiques comme des transducteurs (capteur/actionneur) peuvent être cibles de sabotage. Par example un attaquant peut utiliser un objet frais pour changer la lecture des capteurs de témperature d'une salle. Mais ils peuvent aussi se détériorer avec le temps ou d'autres accidents naturelles (chute d'arbres ,glissement de terres, attaques d'animaux, ouragans etc) et causer des défauts.
 
 Le software peut aussi être une source de vulnérabilité à cause des \emph{bogues}, qui peut interrompre le fonctionnement du système ou même permettre un \emph{hacker} de s'infiltrer et gagner accès au système.
 L'ordinateur utilisé pour la commande peut être mal dimensionné (puissance de calcul insuffisante), et recevoir plus de requêtes qu'attendu, arrivant à un état de surcharge cessant de répondre.
@@ -649,7 +649,7 @@ Le premier modèle est basé dans la cyber-security appélé 3D ou \DDDshort par
 \textbf{Disruption} est l'interruption du fonctionnement du système (rupture de la disponibilité). Aussi on peut ajouter l'\textbf{usurpation} d'identité (rupture de la authenticité).
 
 On définit comme un attaque n'importe laquelle action mal-intentionné qui utilise les vulnérabilités d'un \cps{} à fin de violer sa sécurité.
-L'agent est appellé attaqueur.
+L'agent est appellé attaquant.
 
 Utilisant comme base~\cite{Bishop2005},~\cite{CardenasEtAl2008},~\cite{AminEtAl2009}, et autres, on peu créer une abstraction des \cps{} dans un réseau (Fig.~\ref{fig:networked_cps_abstraction_resume}).
 
@@ -692,11 +692,11 @@ Les signaux $I_{\text{ent}}$ et $I_{\text{sort}}$ sont les informations reçu et
 Avec le modèle \DDD{}, on peut catégoriser les attaques par où dans le système ils surviennent.
 Dans la Fig.~\ref{fig:attacks_networked_cps_resume} on voit différents types d'attaques énumérés de A1 à A13.
 Les attaques de A1 à A4 sont des attaques du type \emph{disclosure}, qui se passent au niveau de l'information.
-L'attaqueur observe le trafic d'information pour une utilisation postérieure.
+L'attaquant observe le trafic d'information pour une utilisation postérieure.
 Ce genre d'attaque est aussi appellé \textbf{snooping} ou \textbf{eavesdropping} (furetage et écoute illicite).
 A5 à A8 representent attaques du type \emph{deception}.
 Aussi au niveau informationnel, mais dans ce cas le signaux sont modifiés (representés par un \~{} dans le symbole de la variable).
-Les attaques A10 à A12 sont du type \emph{disruption}, quand l'attaqueur attaque le canal de c communication, empêchant la communication entre deux entités.
+Les attaques A10 à A12 sont du type \emph{disruption}, quand l'attaquant attaque le canal de c communication, empêchant la communication entre deux entités.
 Et finallement, A13 sont des attaques physiques, ou le système physique est attaqué directement.
 Cet attaque change physiquement le comportement du système.
 
@@ -880,7 +880,7 @@ Les attaques montrés dans la figure peuvent être rétrouvés dans les travaux 
 La liste des attaques cités n'est pas extensive mais répresente le attaques plus étudié dans la littérature.
 Autres attaques peuvent être trouvé en~\cite{TeixeiraEtAl2015,ZhangEtAl2021b} et dans autres textes cités dasn cette section.
 
-Dans ce travail, nous nous intéressons aux attaques \fdi{}, où avec un peu de connaissance sur le système, l'attaqueur modifie le trafique d'informations pour altérer son comportement pour son propre bénéfice.
+Dans ce travail, nous nous intéressons aux attaques \fdi{}, où avec un peu de connaissance sur le système, l'attaquant modifie le trafique d'informations pour altérer son comportement pour son propre bénéfice.
 
 \subsection{Attaques à la \dmpc{}}\label{sec:attacks_in_dmpc_resume}
 
@@ -895,12 +895,12 @@ Ces attaques peuvent être appellés \textbf{attaques inter-agents} et parfoir c
 Normalement les objectives sont accomplis utilisant des attaques du type \emph{deception}.
 
 Les travaux présentent quatre types de attaques \fdi{}, que sont catégorisé à partir d'où l'information est modifiée.
-\\L'attaque dénommé \textbf{Selfish} (égoïste) quand l'attaqueur modifie sa fonction objectif (généralement la multipliant par une constante positive) pour qu'elle soit plus pénalisée, causant les autres agents d'augmenter ses effort pour équilibrer la désavantage et decroitre le coût local de l'attaqueur.
+\\L'attaque dénommé \textbf{Selfish} (égoïste) quand l'attaquant modifie sa fonction objectif (généralement la multipliant par une constante positive) pour qu'elle soit plus pénalisée, causant les autres agents d'augmenter ses effort pour équilibrer la désavantage et decroitre le coût local de l'attaquant.
 \\L'attaque \textbf{Fake weights} (poids faux), l'agent non-cooperative utilise des poids faux pour sa fonction objectif locale.
 L'attaque \emph{selfish} peut être considéré comme un cas spécifique de ce genre d'attaque.
 \\Supposant que l'agent suit une référence, dans l'attaque \textbf{false reference} (référence fausse) l'agent malicieux utilise une valeur différente pour la référence pour calculer sa fonction objectif locale.
-\\Pour l'attaque \textbf{fake constraints}, l'attaqueur utilise des contraintes fausses pour résoudre le problème d'optmisation.
-\\Le dernier attaque présenté est le \textbf{``liar'' agent} (agent menteur) où après la fin de la négotiation entre les agents, l'attaqueur utilise un contrôle différent de ce qui été convenu.
+\\Pour l'attaque \textbf{fake constraints}, l'attaquant utilise des contraintes fausses pour résoudre le problème d'optmisation.
+\\Le dernier attaque présenté est le \textbf{``liar'' agent} (agent menteur) où après la fin de la négotiation entre les agents, l'attaquant utilise un contrôle différent de ce qui été convenu.
 
 \subsection{Sécurisant le \cps{}}\label{sec:maintaining_security_resume}
 Pour sécuriser le \cps{}, il faut d'abord évalue les vulnérabilités et choisir les plus riquées à être attaquées ou à souffert un défaut.
@@ -909,7 +909,7 @@ Des méthodes existent pour diférrent types de systèmes, quelques exemples son
 Après on essaye de protéger les éléments plus susceptibles en utilisant des méthodes de \textbf{prévention}.
 
 Comme exemples de protection on peut citer \emph{renfermer} composants physiques entre parois, et le portes utilisés pour les accéder doivent avoir \emph{contrôle d'accès}.
-On peut aussi ajouter des \emph{dispositfs de surveillance} (cameras et des alarmes)~\cite{CardenasEtAl2008,DingEtAl2018}, persuadant l'attaqueur à ne pas s'approcher des équipements.
+On peut aussi ajouter des \emph{dispositfs de surveillance} (cameras et des alarmes)~\cite{CardenasEtAl2008,DingEtAl2018}, persuadant l'attaquant à ne pas s'approcher des équipements.
 Les défauts causés par \emph{détérioration} sont prévenu par la \emph{maintenance préventive périodique}~\cite{ChenEtAl2021}, et la substitution des composantes détériorées par des nouvelles plus neuves.
 
 Pour chaque vulnérabilité il existe une mésure de prévention, \emph{rajeunissement de  software}~\cite{AlonsoEtAl2012,GriffioenEtAl2020}, et \emph{cryptography}~\cite{DingEtAl2018} sont d'autres méthodes utilisés.
@@ -968,7 +968,7 @@ Ce méthode est connu pour protèger contre les attaques du type replay, une foi
 Un exemple passive et analytique sont les the observateurs utilisées en~\cite{HoehnZhang2016} ou les résidus de la dynamique des états~\cite{TeixeiraEtAl2015,BoemEtAl2020}, qui peuvent être associés à un test d'hypothèse~\cite{MoSinopoli2009} (détecteurs $\chi^{2}$), ou encore la détection à partir de la détection d'appartenance à quelques ensembles~\cite{FortiEtAl2016,MaestreEtAl2018}.
 D'autres exemples de décteurs sont trouvés en~\cite{PasqualettiEtAl2012,PasqualettiEtAl2013,ZhangEtAl2021a,ArauzEtAl2021}.
 
-Pour les méthodes d'apprentissage, on peut citer~\cite{AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} qui utilises une approche bayésiènne pour apprender quelques bornes et détecter agents suspects.
+Pour les méthodes d'apprentissage, on peut citer~\cite{AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} qui utilises une approche bayésiènne pour apprendre quelques bornes et détecter agents suspects.
 Un autre exemple et l'utilisation des réseaux neuronaux/apprentissage profonde
 pour créer des détecteurs.
 En~\cite{HussainEtAl2021}, les auteurs entraînent un réseau neuronal convolutionnel pour détecter 91\% des attaques \dDoS{} d'un certain genre.
@@ -977,8 +977,8 @@ En~\cite{BraunEtAl2020,BraunEtAl2020a}, les auteurs utilisent un problème d'opt
 
 Encore une autre méthode est d'utiliser le contrôle des coalitions~\cite{ChanfreutEtAl2021} qui peut potentiellement regrouper les agents sains et détecter changements de topologie.
 
-\begin{remark}
-Comme indiqué en~\cite{ArauzEtAl2021} il est important d'observer que le choix du borne de détection influencie les faux positifs associés.
+\begin{remark}\label{rem:bounds_and_error_resume}
+Comme indiqué en~\cite{ArauzEtAl2021} il est important d'observer que le choix de la borne de détection influencie les faux positifs associés.
 \end{remark}
 
 \subsection{Mitigation/Récupération}
@@ -989,7 +989,7 @@ Après on peut réparer le composant pour le réutiliser (si possible).
 
 Quand une substition immédiate n'est pas possible, la loi de commande est changée.
 Le composant est déconnecté et on utilise des stratégies robustes, qui peuvent mitiger les effets du comportement anormal.
-Ces stratégies font le système se comporterr pas forcement de la manière originale, mais d'une manière sub-optimale satisfaisante, jusque la normalité soit restaureée.
+Ces stratégies font le système se comporterr pas forcément de la manière originale, mais d'une manière sub-optimale satisfaisante, jusque la normalité soit restaureée.
 
 Des exemples peuvent être~\cite{MaestreEtAl2018} dans le quel une \mpc{} robuste  utilisant la robustesse \emph{tube-based} est utilisé contre les perturbations dans une zone de sûreté.
 Similairement à~\cite{VelardeEtAl2018}, en~\cite{AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} les auteurs basent leur solution dans la robustesse f-local des graphes, où les agents suspects sont ignorés pendant la négotiation de la \dmpc{}.
@@ -1003,12 +1003,12 @@ Ce travail utlise~\cite{VelardeEtAl2017b,ChanfreutEtAl2018} comm inspiration pou
 Comme les autres travaux adjacents, nous nous intéressons par des attaques entre agents du type \textbf{\fdi{}}.
 Le modèle exact est présenté dans la prochaîne section.
 
-En~\cite{VelardeEtAl2017b,VelardeEtAl2018}, les auteurs présentent des méthodes robustes baséees sur la théorie des graphes, où l'attaqueur n'est pas detecté par soi, mais agents suspects sont déconnectés ou ignorés.
+En~\cite{VelardeEtAl2017b,VelardeEtAl2018}, les auteurs présentent des méthodes robustes baséees sur la théorie des graphes, où l'attaquant n'est pas detecté par soi, mais agents suspects sont déconnectés ou ignorés.
 En~\cite{VelardeEtAl2017a,MaestreEtAl2021}, une autre méthode robuste est utilisée, mais cette fois là avec une approche basée sur des scénarios, où séquences suspectes reçoivent poids différents.
 
 Nous optons, par contre, comme dans~\cite{AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020}, par une méthode
 \textbf{active} et \textbf{résiliente}.
-La stratégie est plus détailée dans les prochaines sections, mais pour la détection, on utilise une méthode \textbf{active}, où nous ajoutons des données pour détecter l'attaqueur..
+La stratégie est plus détailée dans les prochaines sections, mais pour la détection, on utilise une méthode \textbf{active}, où nous ajoutons des données pour détecter l'attaquant..
 On utilise une méthode hybride de connaissance analytiques de la décomposition et aussi des méthodes d'apprentissage pour créer le dit détecteur.
 Pour la récupération, on utilise les mêmes connaissances analytiques utilisées pour la détection à fin de réconstruire quelques variables et compenser les perturbations causées par l'attaque.
 
@@ -1178,7 +1178,7 @@ Alors, les attaques en~\cite{VelardeEtAl2018} (montrés en \S\ref{sec:attacks_in
 
 Pour cette raison, nous nous intéressons en attaques du type \fdi{} entre agents qui modifient leur propre $\lambdai$.
 
-On suppose qu'avant chaque négociation, l'attaqueur décide une fonction ${\gamma:\R^{c}\times\R\to \R^{c}}$, pour modifier $\lambdai$ avant de l'envoyer au coordinateur.
+On suppose qu'avant chaque négociation, l'attaquant décide une fonction ${\gamma:\R^{c}\times\R\to \R^{c}}$, pour modifier $\lambdai$ avant de l'envoyer au coordinateur.
 Pour faciliter l'analyse on suppose la fonction est linéaire comme
 \begin{equation}
   \label{eq:linear_attack_resume}
@@ -1203,9 +1203,9 @@ En Fig.~\ref{fig:example_vary_tau_objective_resume} et~\ref{fig:example_vary_tau
 et aussi l'objectif total ${\Jacc=\sum\limits_{i\in\set{M}}J_{i}^{\text{acc}}}$ pour chaque valeur différent de $\tau_{3}$.
 
 Observe (Fig.~\ref{fig:example_vary_tau_objective_detail_resume}) que $\Jacc$ a sa valeur la plus petite quen $\tau_{3}=1$, i.e., quand il n'y a pas de triche.
-Quand $\tau_{3}$ augmente, les fonctions objectif de l'attaqueur ($\Jiacc[3]$) décroît au même moment que celles des autres augmentent.
+Quand $\tau_{3}$ augmente, les fonctions objectif de l'attaquant ($\Jiacc[3]$) décroît au même moment que celles des autres augmentent.
 L'opposé se passe pour des valeurs de $\tau_{3}$ entre $0$ et $1$.
-Dans ce cas l'attaqueur détériore sa propre performance, ce qui ne justifie pas tel attaque, sauf dans un scénario de détournement.
+Dans ce cas l'attaquant détériore sa propre performance, ce qui ne justifie pas tel attaque, sauf dans un scénario de détournement.
 
 \begin{figure}[h]
   \centering
@@ -1422,7 +1422,7 @@ Si le système est sous attaque, on utilise le modèle~\eqref{eq:linear_attack_r
   \tag{\ref*{eq:linear_attack_resume}}
   \lambdaicheat[k]=\Tik\lambdaik.
 \end{equation}
-Comme n'importe quel agent peut être l'attaqueur, on suppose tous les agents attaquent simultanément le système résultant en:
+Comme n'importe quel agent peut être l'attaquant, on suppose tous les agents attaquent simultanément le système résultant en:
 \begin{equation}
   \label{eq:negotiation_equation_substituting_organizing_under_attack_resume}
   \tilde{\vec{\lambda}}\pplusone=\tilde{\mathcal{A}}_{\lambda}\tilde{\vec{\lambda}}\p,
