@@ -73,7 +73,7 @@ We call a system deprived when its unconstrained solution $\optuncU$ lies outsid
 \bar{\Gamma}\optuncU\succ {\vec{U}}_{\text{max}}, \forall k.
 \end{equation}
 
-Furthermore, in this chapter, we assume that for all sub-systems, their unconstrained solutions $\optuncUik$ neither respect the local constraints, that means,
+Furthermore, in this chapter, we assume that for all sub-systems, their unconstrained solutions $\optuncUik$ neither respect the constraints
 \begin{equation}
 \bar{\Gamma}_{i}\optuncUik\succ \thetaik, \forall i\in\set{M}, \forall k,
 \end{equation}
@@ -270,7 +270,7 @@ I-\frac{M-1}{M}\rho\p \Plin[1] & \frac{1}{M}\rho\p \Plin[1]&\dots&\frac{1}{M}\rh
 \right],
 \end{equation}
 which is a \dt{} homogeneous system.
-The system varies with time, since $p$ changes, but usually it vanishes as it approaches infinity, as seen in~\eqref{eq:rho_update}.
+The system varies with time, since $\rho$ changes with $p$, but usually it vanishes as it approaches infinity, as seen in~\eqref{eq:rho_update}.
 So, we can use Lyapunov criteria~\cite[\S8.6]{Hespanha2009}, i.e., the eigenvalues of $\mathcal{A}_{\lambda}$, must be inside the unit circle for the system to be stable.
 For smaller systems, we can use Jury's criteria to test the system~\cite{Jury1962}.
 
@@ -279,7 +279,7 @@ which means that $1$ is a right eigenvalue of $\mathcal{A}_{\lambda}$:
 \begin{equation*}
   \mathcal{A}_{\lambda}\1=\1
 \end{equation*}
-So, supposing the other eigenvalues are inside the unit circle, the system converges to a state $\1c$, i.e., where all lambdas are equal~\cite{GarinSchenato2010,XiaoEtAl2007}.
+So, supposing the other eigenvalues are inside the unit circle, the system converges to a state $\1c$, i.e., where all $\lambdai$ are equal~\cite{GarinSchenato2010,XiaoEtAl2007}.
 On the other hand, the sum of rows is not equal, which means the sum of all states is not constant, or as said in the consensus community, the mass is not conserved.
 This way, we could not use average consensus strategies, unless all subsystems had the same $\Plin$, which would render the problem extremely uninteresting (solution is divide the resources equally).
 

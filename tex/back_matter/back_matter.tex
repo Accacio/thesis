@@ -1003,7 +1003,8 @@ Ce travail utlise~\cite{VelardeEtAl2017b,ChanfreutEtAl2018} comm inspiration pou
 Comme les autres travaux adjacents, nous nous intéressons par des attaques entre agents du type \textbf{\fdi{}}.
 Le modèle exact est présenté dans la prochaîne section.
 
-En~\cite{VelardeEtAl2017a,VelardeEtAl2017b,VelardeEtAl2018}, les auteurs présentent des méthodes robustes baséees sur la théorie des graphes, où l'attaqueur n'est pas detecté par soi, mais agents suspects sont déconnectés ou ignorés.
+En~\cite{VelardeEtAl2017b,VelardeEtAl2018}, les auteurs présentent des méthodes robustes baséees sur la théorie des graphes, où l'attaqueur n'est pas detecté par soi, mais agents suspects sont déconnectés ou ignorés.
+En~\cite{VelardeEtAl2017a,MaestreEtAl2021}, une autre méthode robuste est utilisée, mais cette fois là avec une approche basée sur des scénarios, où séquences suspectes reçoivent poids différents.
 
 Nous optons, par contre, comme dans~\cite{AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020}, par une méthode
 \textbf{active} et \textbf{résiliente}.
@@ -1022,10 +1023,10 @@ Le Tab.~\ref{tab:compare_works_resume} compare les travaux avec les méthodes pr
     \toprule
      & Décomposition & Présente vulnérabilités?  & Résiliente/Robuste & Détection & Mitigation\\
     \midrule
-    \cite{VelardeEtAl2017a} & Duale & Oui & Robuste (Scénario) & NA & NA\\
-    \parbox{20pt}{\cite{VelardeEtAl2017b} \\ \cite{VelardeEtAl2018}} & Duale & Oui & Robuste (f-robustesse) & NA & NA\\
-    \cite{ChanfreutEtAl2018} & Jacobi-Gauß & Oui & -- & -- & --\\
-    \parbox{40pt}{\cite{AnandutaEtAl2018}\\\cite{AnandutaEtAl2019}\\\cite{AnandutaEtAl2020}} & Duale & Oui & Résiliente& Analyt/Apprent. & Déconnexion (Robustesse)\\
+    \parbox{20pt}{\cite{VelardeEtAl2017a}\\ \cite{MaestreEtAl2021}} & Duale & Oui & Robuste (Scénario) & NA & NA\\\\
+    \parbox{20pt}{\cite{VelardeEtAl2017b} \\ \cite{VelardeEtAl2018}} & Duale & Oui & Robuste (f-robustesse) & NA & NA\\\\
+    \cite{ChanfreutEtAl2018} & Jacobi-Gauß & Oui & -- & -- & --\\\\
+    \parbox{40pt}{\cite{AnandutaEtAl2018}\\\cite{AnandutaEtAl2019}\\\cite{AnandutaEtAl2020}} & Duale & Oui & Résiliente& Analyt./Apprent. & Déconnexion (Robustesse)\\\\
     Notre & Primale & Oui & Résiliente & Active Analyt./Apprent. & Reconstruction de données\\
     \bottomrule
   \end{tabular}
@@ -1175,7 +1176,7 @@ Le procès itératif est appellé la \textbf{phase de négociation}.
 Comme les $\lambdai$ sont les sous-gradients des problème locaux~\eqref{eq:DOP_local_resume}, il est possible de voir qu'ils portent de l'information du problème, i.e.\ il y a d'une certaine façon l'information de la $5$-tuple $(H_{i},\vec{f}_{i}[k],\bar{\Gamma}_{i},\thetaik)$, qu'on appelle l'information locale complète $\set{I}_{i}$.
 Alors, les attaques en~\cite{VelardeEtAl2018} (montrés en \S\ref{sec:attacks_in_dmpc_resume}) vont réfléchir en modifications du $\lambdai$.
 
-Pour cette raison, nous nous intéressons en attaques du type \fdi{} entre agents, qui modifient leur propre $\lambdai$.
+Pour cette raison, nous nous intéressons en attaques du type \fdi{} entre agents qui modifient leur propre $\lambdai$.
 
 On suppose qu'avant chaque négociation, l'attaqueur décide une fonction ${\gamma:\R^{c}\times\R\to \R^{c}}$, pour modifier $\lambdai$ avant de l'envoyer au coordinateur.
 Pour faciliter l'analyse on suppose la fonction est linéaire comme
@@ -1195,8 +1196,8 @@ où la constante positive qui multiplie la fonction objectif locale est traduite
 
 On illustre avec un example d'un système avec $3$ sous agents.
 On fait que l'agent $3$ attaque le système avec~\eqref{eq:linear_attack_resume}.
-On simule pour différent scénarios.
-Pour chaqe scénario agent $3$ utilise un coefficient de triche $\tau_{3}[k]$ distinct.
+On simule pour scénarios différents.
+Pour chaque scénario, agent $3$ utilise un coefficient de triche $\tau_{3}[k]$ distinct.
 
 En Fig.~\ref{fig:example_vary_tau_objective_resume} et~\ref{fig:example_vary_tau_objective_detail_resume}, on accumule les fonctions objectif locales ${\Jiacc=\sum\limits_{k\in\set{K}}\optobji(\optthetai[k])[k]}$
 et aussi l'objectif total ${\Jacc=\sum\limits_{i\in\set{M}}J_{i}^{\text{acc}}}$ pour chaque valeur différent de $\tau_{3}$.
@@ -1250,6 +1251,195 @@ L'attenuation diminue si $\tau_{3}$ augmente, jusqu'à la négociation oscille e
 
 \newpage
 \section{Commande Prédictive résiliente pour systèmes dépourvus}\label{sec:comm-pred-resil}
+
+\subsection{Systèmes dépourvus sous attaque}\label{sec:syst-depo-sous}
+
+Différemment de~\cite{VelardeEtAl2018,MaestreEtAl2021}, notre solution pour la \dmpc{} sécurisée est résiliente basée sur la détection active utilisant des méthodes d'apprentissage et des connaissances analytiques du problème.  which propose robust solutions, we propose a resilient \dmpc{} based on a hybrid of analytical/learning active detection method.
+Alors, on commence par analyser le système sous attaque.
+
+\subsection{Systèmes dépourvus}\label{sec:deprived-systems_resume}
+Premièrement, on rappelle le problème équivalent de la \mpc{} en forme monolitique~\eqref{eq:qp_standard_form_resume}, reproduit ici par convenience,
+\begin{equation}
+  \label{eq:qp_standard_form_again_resume}
+  \tag{\ref*{eq:qp_standard_form_resume}}
+  \begin{aligned}
+    \begin{matrix}
+      \minimiser\limits_{\vec{U}[k]} &
+                                                 \frac{1}{2}\norm{\vec{U}[k]}^{2}_{H} + {\vec{f}[k]}^{T}\vec{U}[k] &\\
+      \mathrm{sous} &
+                             \bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}}
+    \end{matrix}
+  \end{aligned},
+\end{equation}
+et on rappelle les problèmes locaux~\eqref{eq:DOP_local_resume} de la décomposition primale,
+
+\begin{equation}
+  \label{eq:DOP_local_reprise_resume}
+  \tag{\ref*{eq:DOP_local_resume}}
+  \eqoptobji(\thetaik)[k]=
+  \begin{matrix}
+    \minimiser\limits_{\vec{U}_{i}[k]}&\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+    \mathrm{sous} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \preceq \thetaik:\lambdaik
+  \end{matrix}.
+\end{equation}
+
+Les versions sans contraintes de ces problèmes sont
+\begin{align}
+  \label{eq:qp_standard_form_unconstrained_resume}
+  \begin{aligned}
+    \begin{matrix}
+      \minimiser\limits_{\vec{U}[k]} &
+                                                 \frac{1}{2}\norm{\vec{U}[k]}^{2}_{H} + {\vec{f}[k]}^{T}\vec{U}[k] &\\
+    \end{matrix},
+  \end{aligned}\\
+  \label{eq:DOP_local_unconstrained_resume}
+  \begin{aligned}
+    \begin{matrix}
+    \minimiser\limits_{\vec{U}_{i}[k]}&\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+    \end{matrix},
+  \end{aligned}
+\end{align}
+et ses solutions sont analytiques~\cite{BoydVandenberghe2004}
+\begin{align}
+  \label{eq:qp_standard_form_unconstrained_solution_resume}
+  \optuncU=-H^{-1}\vec{f}[k],\\
+  \label{eq:DOP_local_unconstrained_solution_resume}
+  \optuncUik=-H_{i}^{-1}\vec{f}_{i}[k].
+\end{align}
+
+On appelle un système dépourvu quand la solution sans contrainte $\optuncU$ se situe dehors les frontières du polytope formé par les constraintes pour tout $k$, i.e.,
+\begin{equation}
+\bar{\Gamma}\optuncU\succ {\vec{U}}_{\text{max}}, \forall k.
+\end{equation}
+
+De plus, dans cette section, nous supposons que pour tous les sous-systèmes, leur solutions sans contraintes $\optuncUik$ ne respectent pas les contraintes
+\begin{equation}
+\bar{\Gamma}_{i}\optuncUik\succ \thetaik, \forall i\in\set{M}, \forall k,
+\end{equation}
+i.e., même si tous les ressources sont allouées pour un seul sous-système, il n'est pas capable d'achever ses besoin.
+
+Ces hypothèses signifient que la solution optimal de chaque problème nécessiterait beaucoup plus de ressources que le disponible ($\vec{U}_{\max}$).
+Alors, les solutions de ces \qp{} sont trouvées par la projection pondérée\footnote{Un problème \qp{} peut être vu comme une projection pondérée, dans laquelle la mésure de l'ensemble est pondérée par $H$ et le point original est décalé utilisant $\vec{f}_i[k]$} des solutions sans contraintes sur le polytope.
+Normalement, le résultat se donne au périmètre du polytope.
+
+Alors, avec quelques mises en garde\footnote{Par example, si on suppose que les contraintes forment un cone, il est facilement prouvé géométriquement que le point projeté est l'apex du cone.}, la solution peut être la même que pour un problème avec des contraintes d'égalité
+\begin{equation}
+  \label{eq:qp_standard_form_equality}
+  \begin{aligned}
+    \begin{matrix}
+      \minimiser\limits_{\vec{U}[k]} &
+                                                 \frac{1}{2}\norm{\vec{U}[k]}^{2}_{H} + {\vec{f}[k]}^{T}\vec{U}[k] &\\
+      \mathrm{sous} &
+                             \bar{\Gamma}\vec{U}[k]= {\vec{U}}_{\text{max}}
+    \end{matrix}
+  \end{aligned}.
+\end{equation}
+
+Si on utilise la décomposition primale on a
+\begin{equation}
+  \label{eq:example_local_problem_reprise_resume}
+   \eqoptobji(\thetaik)[k]= \begin{matrix}
+    \minimize\limits_{\vec{U}_{i}[k]}&\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+    \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] = \thetaik:\lambdaik
+  \end{matrix}
+\end{equation}
+comme problèmes locaux et pour la mise à jour on développe la projection pour une intersection de hyperplans résultant
+\begin{equation}
+  \label{eq:example_projectedSubgradient_lambda_reprise_resume}
+ \thetai\pplusone=\thetai\p+\rho\p\left(\lambdai\p-\frac{1}{M}\sum_{j=1}^{M}\vec{\lambda}_j\p\right),\forall i\in\set{M}.
+\end{equation}
+
+Ces équations seront utilisées pour une brève analyse du système sous attaque.
+\begin{remark}
+  On utilise des systèmes dépourvus, car quand en manque de ressources, les agents doivent faire le compromis.
+  Ça instigue la compétition entre eux et éventuellement des comportements égoïstes.
+  Si ses besoins étaient achévés, il n'aurait pas de motivation pour une triche, tous les agents seraient satisfaits.
+\end{remark}
+
+\subsection{Analysises des problèmes locaux}\label{sec:analysis-local-problems_resume}
+Comme les problèmes~\eqref{eq:example_local_problem_reprise_resume} sont des \qp{} avec des contraintes d'égalité, on peut trouver une solution analytique~\cite{BoydVandenberghe2004}.
+
+En se basant sur la dualité Lagrangienne on est capable de trouver aussi une solution analytique pour $\lambdaik$.
+En calculant le Lagrangien et quelques gradients pour achever les conditions d'optimalité de \KKT{} on a
+\begin{equation}
+  \label{eq:lambda_function_theta_resume}
+  \lambdaik=-\Plin\thetaik-\sik,
+\end{equation}
+où $\Plin={(\linearcoefi)}^{-1}$ et $\sik=\Plin\bar{\Gamma}_{i}H_{i}^{-1}\vec{f}_{i}[k]$.
+
+Comme attendu, $\lambdaik$ depend de $\thetaik$.
+De plus, à cause de la forme quadratique, la solution est affine.
+
+\begin{remark}
+  On peut remarquer, comme dit avant la solution intègre les information de la fonction objectif (présence de $H_{i}$ et $\vec{f}_{i}[k]$), et aussi des constraintes (présence de $\bar{\Gamma}_{i}$ et $\thetaik$).
+\end{remark}
+
+\subsection{Analyse de la négociation}\label{sec:analysis-negotiation_resume}
+Utilisant~\eqref{eq:example_projectedSubgradient_lambda_reprise_resume} et~\eqref{eq:lambda_function_theta_resume}, on peut observer les dynamiques de $\thetai$ et $\lambdai$ pendant la négociation.
+Cette analyse donne des idées pour une méthode future de détection et mitigation.
+
+\subsubsection{Dynamique de $\lambdai$}
+Si on substitue~\eqref{eq:example_projectedSubgradient_lambda_reprise} en~\eqref{eq:lambda_function_theta}, on a pour chaque sous-système
+\begin{equation}
+  \label{eq:lambda_dynamics}
+\lambdai\pplusone=-\Plin\left(\thetai\p+\rho\p\left(\lambdai\p-\frac{1}{M}\sum_{j=1}^{M}\vec{\lambda}_j\p\right)\right)-\sik.
+\end{equation}
+
+En forme matricielle on a la dynamique complète
+\begin{equation}
+  \label{eq:negotiation_equation_substituting_organizing_matrix_lambda_resume}
+  \vec{\lambda}\pplusone=\mathcal{A}_{\lambda}\vec{\lambda}\p,
+\end{equation}
+où
+\begin{equation}
+\mathcal{A}_{\lambda}=\left[
+\begin{matrix}
+I-\frac{M-1}{M}\rho\p \Plin[1] & \frac{1}{M}\rho\p \Plin[1]&\dots&\frac{1}{M}\rho\p \Plin[1]\\
+\frac{1}{M}\rho\p \Plin[2]&I-\frac{M-1}{M}\rho\p \Plin[2]&\dots&\frac{1}{M}\rho\p \Plin[2]\\
+\vdots&\vdots&\ddots&\vdots\\
+\frac{1}{M}\rho\p \Plin[M]&\frac{1}{M}\rho\p \Plin[M]&\dots&I-\frac{M-1}{M}\rho\p \Plin[M]\\
+\end{matrix}
+\right].
+\end{equation}
+
+On voit que c'est un système à temps discret, en anglais \dt{}, homogène.
+Le système varie avec le temps, à cause de $\rho$, mais on peut le choisir de façon qu'il disparaisse quand $p\to\infty$.
+Alors, on peu utiliser le critère de Lyapunov~\cite[\S8.6]{Hespanha2009}, i.e., les valeurs propres de $\mathcal{A}_{\lambda}$ doivent être dans le cercle unitaire pour que le système soit stable.
+Pour des systèmes petits, on peut utiliser le critère de Jury~\cite{Jury1962} pour vérifier ça.
+
+Analisant $\mathcal{A}_{\lambda}$ encore, on voit que la somme des ses colonnes est égale a un\footnote{$I+\frac{M-1}{M}\rho\p \Plin+\sum\limits_{j=1}^{M-1}\frac{1}{M}\rho\p \Plin=I$},
+signifiant que $1$ est une valeur propre par la droite $\mathcal{A}_{\lambda}$:
+\begin{equation*}
+  \mathcal{A}_{\lambda}\1=\1
+\end{equation*}
+Alors, si on suppose que les autres valeurs propres sont dedans le cercle unitaire, le système converge à un état $\1c$, i.e., où tous les $\lambdaik$ sont égaux~\cite{GarinSchenato2010,XiaoEtAl2007}.
+Par contre, la somme des lignes n'est pas égal, alors la somme des états n'est pa constante, où comme dit dans la communauté des algorithmes de consensus, la masse n'est pas conservée.
+De cette façon, on ne pourrait pas utiliser des stratégies de consensus moyen, sauf si tous les systèmes avaient le même $\Plin$, ce qui rendrait le problème extrêmement pas intéressent (la solution serait de diviser les ressources également entre les sous-systèmes).
+
+Si le système est sous attaque, on utilise le modèle~\eqref{eq:linear_attack_resume},
+\begin{equation}
+  \label{eq:linear_attack_reprise_resume}
+  \tag{\ref*{eq:linear_attack_resume}}
+  \lambdaicheat[k]=\Tik\lambdaik.
+\end{equation}
+Comme n'importe quel agent peut être l'attaqueur, on suppose tous les agents attaquent simultanément le système résultant en:
+\begin{equation}
+  \label{eq:negotiation_equation_substituting_organizing_under_attack_resume}
+  \tilde{\vec{\lambda}}\pplusone=\tilde{\mathcal{A}}_{\lambda}\tilde{\vec{\lambda}}\p,
+\end{equation}
+où
+\begin{equation}
+\tilde{\mathcal{A}}_{\lambda}=\left[
+\begin{matrix}
+I-\frac{M-1}{M}\rho\p \Tik[1]\Plin[1] & \frac{1}{M}\rho\p \Tik[1]\Plin[1]&\dots&\frac{1}{M}\rho\p \Tik[1]\Plin[1]\\
+\frac{1}{M}\rho\p \Tik[2]\Plin[2]&I-\frac{M-1}{M}\rho\p \Tik[2]\Plin[2]&\dots&\frac{1}{M}\rho\p \Tik[2]\Plin[2]\\
+\vdots&\vdots&\ddots&\vdots\\
+\frac{1}{M}\rho\p \Tik[M]\Plin[M]&\frac{1}{M}\rho\p \Tik[M]\Plin[M]&\dots&I-\frac{M-1}{M}\rho\p \Tik[M]\Plin[M]\\
+\end{matrix}
+\right],
+\end{equation}
+
+Comme on a montré en \S\ref{sec:attack-interest_resume}, les matrices de triche $\Tik$ peuvent change les valeurs propres de la matrice, éventuellement faisant le système osciller et ne pas converger aux valeurs optimales.
 \newpage
 \section{Commande Prédictive résiliente sur pénurie artificielle}\label{sec:comm-pred-resil-1}
 
