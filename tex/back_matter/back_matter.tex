@@ -1774,6 +1774,50 @@ Cela permet de passer des courbes du système attaqué (Fig.~\ref{fig:minimum_af
   \caption{Valeur optimale après récuperer comportement original.}\label{fig:minimum_recovered_resume}
 \end{figure}
 
+\subsubsection{Récuperant comportement nominal}\label{sec:recov-nomin-behav_resume}
+Comme vu, si $\lambdai=\0$, ça veut dire que l'allocation de l'agent lui satisfait.
+Alors, on n'espère pas que l'attaquant va tricher pour dire qu'il est satisfait quand il n'y est pas.
+
+De cette façon, on assume que
+\begin{equation}
+  \left[\lambdaicheat=\0 \right] \iff \left[\lambdai=\0 \right],
+\end{equation}
+qui signifie que
+\begin{equation}
+  \label{eq:T_is_invertible}
+  \lambdaicheat=\Tik\lambdai=\0\text{, if and only if }\lambdai=\0,
+\end{equation}
+impliquant que $\Tik$ est \textbf{inversible}.
+
+En observant~\eqref{eq:lambda_function_theta_tilde_resume}, on suppose aussi que le choix de $\Tik$ ne change pas le structure de $\Plin$, i.e., $\Plintilde$ est aussi symétrique.
+
+Si on a l'estimation $\Plintildeestimate$ et la valeur nominale $\Plinnominal$, avec ces hypothèses on peut estimer l'inverse de $\Tik$:
+\begin{equation}
+  \label{eq:estimate_T_inverse}
+{\Tikinvestimate=\Plinnominal{\Plintildeestimate}^{-1}}.
+\end{equation}
+
+Et avec cette estimation on peut reconstruire $\lambdai$:
+\begin{equation}
+  \label{eq:lambdareconstruction}
+  \lambdaireconstructed=-\Plinnominal\thetai-\Tikinvestimate\siktildeestimate
+\end{equation}
+
+Alors, on peut moduler la négociation en choisissant la version de $\lambdai$ qu'on veut, i.e.,
+\begin{equation}
+  \lambdaimodified=
+          \begin{cases}
+            \lambdaicheat, &\text{if } d_{i}=0\\
+            \lambdaireconstructed, &\text{if }d_{i}=1\\
+        \end{cases}
+\end{equation}
+
+\begin{remark}
+  Observe que si l'estimation ne converge pas on ne peut pas réconstruire $\lambdaik$.
+  Une solution serait ignorer l'attaquant comme montré.
+  Par contre, on ignore les cas où l'estimation ne converge pas.
+\end{remark}
+
 \newpage
 \section{Commande Prédictive résiliente sur pénurie artificielle}\label{sec:comm-pred-resil-1}
 
