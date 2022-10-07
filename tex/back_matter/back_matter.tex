@@ -1113,11 +1113,11 @@ L'Algorithm~\ref{alg:primal_decomposition_based_dmpc} resume la \dmpc{} basée s
   \coordinitfr{
     Initialiser $k$, $p$, $p_{\max}$ et $\epsilon$\;
   }
-  \Whilefr{$k\geq 0$}{
+  \Tq{$k\geq 0$}{
     Initialiser ${\thetaik}^{(p)},$ $\forall i\in\set{M}$, tel que ${\vec{\theta}[k]}^{(p)}\in\set{S}$\;
     Coordinateur envoie $\thetaik^{(p)}$ pour tous les agents\;
     \exchangefr{
-      \Repeatfr{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\lor \left[p\geq p_{\max}\right]$}{
+      \Repeter{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\lor \left[p\geq p_{\max}\right]$}{
         Agents résolvent sous-problèmes~\eqref{eq:DOP_local_resume} et envoient ${\vec{\lambda}_{i}[k]}^{(p)}$ au coordinateur\;
         Coordinateut met à jour les $\vec{\theta}[k]$ utilisant~\eqref{eq:projectedSubgradient_lambda_resume} et les renvoie\;
         $p\gets p+1$\;
@@ -1580,6 +1580,148 @@ qui détecte un attaque quand la borne est surpassée, i.e., $d_{i}=1$.
 
 Une brève discussion pour l'estimation de $\Plintildeestimate$ suit.
 
+\subsection{Estimation}\label{sec:about-estimation_resume}
+On choisie la méthode des moindres carrés récursive, en anglais \RLS{}~\cite{AstroemWittenmark1989}, pour estimer les paramètres.
+
+Dans le \RLS{}, pour estimer un paramètre $\rlsparam$, on utilise un modèle de régression avec entrées et sorties ($\rlssysinput$ et $\rlssysoutput$) qui nous possibilitent de calculer un résidu $\epsilon$.
+Ce résidue, allié à un gain $\rlsgain$, est utilisé pour mettre à jour les estimations de $\rlsparam$.
+Comme la valeur exacte n'est pas connue on utilise une initialisation et un terme d'oubli $\rlsforget$ pour mettre à jour le gain $\rlsgain$, et naturellement comme dit le nome, oubliant les événements du passé.
+
+On transforme~\eqref{eq:lambda_function_theta_tilde} pour utiliser un modèle comme  
+\begin{equation}
+  \rlssysinput\rlsparam=\rlssysoutput,
+\end{equation}
+où on vectorise $\Plintildeestimate$ and $\siktildeestimate$ en $\rlsparam$ et change la structure de $\thetai$ pour créer $\rlssysinput$ et $\rlssysoutput$
+\begin{equation}
+  \rlsparam=\left[
+    \begin{matrix}
+      \vectorize{\Plintildeestimate}\\
+      \siktildeestimate\\
+    \end{matrix}
+  \right],
+\end{equation}
+\begin{equation}
+  \rlssysinput=\left[
+    \begin{matrix}
+      \kron{I_{c}}{\thetai\T}&I_{c}\\
+    \end{matrix}
+  \right].
+\end{equation}
+
+Si on veut utiliser le structure symétrique de $\Plintildeestimate$ and on peut estimer juste le triangle supérieur, en réduisant le total d'éléments à ${\frac{c^{2}+3c}{2}}$.
+
+
+On restructure $\rlsparam$
+\begin{equation}
+  \rlsparam=\left[
+    \begin{matrix}
+      \elem[1,1:c]{\Plintildeestimate}\T\\
+      \elem[2,2:c]{\Plintildeestimate}\T\\
+      \vdots\\
+      \elem[c,c]{\Plintildeestimate}\T\\
+      \siktildeestimate\\
+    \end{matrix}
+  \right].
+\end{equation}
+
+Cependant, pour $\rlssysinput$, on utilise un algorithme de construction (Algorithme~\ref{alg:struct_symmetric_resume}):
+\begin{equation}
+  \rlssysinput=\left[
+    \begin{matrix}
+      \text{\structDataSym}(\thetai) &  I_{c}
+    \end{matrix}
+  \right].
+\end{equation}
+
+\begin{algorithm2e}[h]
+  \DontPrintSemicolon%
+  \Fn{\structDataSym($\vec{x}$)}{
+    $s\gets\card\vec{x}$\;
+    \eSi{$s==1$}{
+      $Y\gets \vec{x}$\;
+    }
+    {
+      $Y\gets \left[\begin{smallmatrix}
+                  \left[\begin{smallmatrix}
+                          \vec{x}\T \\
+                          \left[\begin{matrix}
+                                  \0_{s-1}& \elem[1]{\vec{x}}I_{s-1}
+                                \end{matrix} \right]
+                        \end{smallmatrix} \right]
+                  & \begin{smallmatrix}
+                      \0_{\frac{s^{2}-s}{2}}\T \\
+                      \text{\structDataSym}(\elem[2:s]{\vec{x}})
+                    \end{smallmatrix}
+                \end{smallmatrix}\right]$\;
+            }
+          }
+          \caption{Restructuration de forme symétrique.}\label{alg:struct_symmetric_resume}
+        \end{algorithm2e}
+Pour mieux comprendre on donne un example.
+Si $\thetai$ a ${c=3}$ éléments, en appliquant \structDataSym, ça résulte en
+\begin{equation}
+  \text{\structDataSym}(\theta_i)=
+  \left[
+  \begin{matrix}
+     \elem[1]{\theta_{i}}  &   \elem[2]{\theta_{i}}   &  \elem[3]{\theta_{i}} &    0  &   0  &   0 \\
+     0  &   \elem[1]{\theta_{i}}   &  0 &    \elem[2]{\theta_{i}}  &   \elem[3]{\theta_{i}}  &   0 \\
+     0  &   0   &  \elem[1]{\theta_{i}} &    0  &   \elem[2]{\theta_{i}}  &   \elem[3]{\theta_{i}}
+  \end{matrix}
+  \right].
+\end{equation}
+
+\begin{remark}
+  On ne nécessite pas de $\sik$ pour la estimation, on l'estime quand même car on l'utilisera pour la mitigation.
+\end{remark}
+
+On décrit en Algorithme~\ref{alg:update_rls_resume} comme calculer une estimation de $\rlsparam$.
+
+\begin{algorithm2e}[h]
+  \DontPrintSemicolon%
+  \Entree{Pas $h$, Oubli $\rlsforget$, Estimation $\rlsparam\h$, Gain $\rlsgain\h$, Entrée $\thetai\h$, Sortie $\rlssysoutput\h$}
+  \Sortie{Nouvelle estimation $\rlsparam\hplusone$, Nouveau Gain $\rlsgain\hplusone$ }
+  $\rlssysinput\gets\left[\text{\structDataSym}(\thetai\h),I_{c}\right]$\;
+  Calculate residual $\rlsresidual$: $\rlsresidual\gets \rlssysoutput-\rlssysinput\rlsparam$\;
+  Update gain $\rlsgain$: $\rlsgain\hplusone\gets \rlsforget^{-1}\rlsgain\h-\rlsforget^{-2}\rlsgain\h\rlssysinput\T{(I_{c}+\rlsforget^{-1}\rlssysinput\rlsgain\h\rlssysinput\T)}^{-1}\rlssysinput\rlsgain\h$\;
+  Calculate new estimate $\rlsparam$: $\rlsparam\hplusone\gets\rlsparam\h+\rlsgain\hplusone\rlssysinput\T\rlsresidual$\;
+  \caption{Update of \RLS{} to estimate $\Plintildeestimate$ and $\siktildeestimate$ simultaneously.}\label{alg:update_rls_resume}
+\end{algorithm2e}
+
+On pourrait essayer d'utiliser l'estimation pendant la négociation, mais l'agorithme ne marcherait pas.
+Le fait que $\lambdai$ dépend de $\thetai$ et vice-versa fait que la négociation se comporte comme un système \dt{} (comme vu en~\S\ref{sec:analysis-negotiation_resume}).
+Cette dépendance diminue l'excitation de l'algorithme et comme vu en~\cite{AstroemWittenmark1989}, ça fait que la solution devienne pas unique, une des matrices devienne singulière.
+Une façon d'augmenter artificiellement l'excitation est de déconecter les $\thetai$ de la négociation et utiliser un autre type d'entrée.
+
+On a opté d'utiliser un bruit comme entrée une foi que comme vu en~\cite[\S3.4]{AstroemWittenmark1989}, le signal aléatoire a excitation persistent de n'importe quel ordre.
+
+\subsection{Technique de détection Complete }\label{sec:compl-detect-algor_resume}
+La détection peut être décrite enfin par l'Algorithme~\ref{alg:detection_rls_resume}.
+
+\begin{algorithm2e}[h]
+  \DontPrintSemicolon%
+  \Entree{$\Plinnominal$ Nominal, $h_{\max}$, Borne $\epsilon_{\rlsparam}$, Borne $\epsilon_{\Plin}$, }
+  \Sortie{Détection $d_{i}$, Estimations de $\Plintildeestimate$ et $\siktildeestimate$}
+  $h\gets0$\;
+  Initialise $\rlsparam\p$\;
+  \Repeter{$\norm{\rlsparam\hplusone-\rlsparam\h}\leq\epsilon_{\rlsparam}$}
+  {
+    Coordinateur envoie $\thetai\h$ aléatoire à agent $i$ \;
+    Sous-système résout~\eqref{eq:DOP_local_resume}, et envoie  $\lambdaikstar(\thetai\p)$ en retour\;
+    Coordinateur met à jour l'estimation de $\rlsparam$ avec Algorithme~\ref{alg:update_rls}\;
+    \Si{$\ \left[h\geq h_{\max}\right]$}{
+      Coordinateut fixe $d_{i}$: $d_{i}\gets 1$\;
+      break\;
+    }
+    $h\gets h+1$\;
+  }
+  Reconstruit $\Plintildeestimate$ et $\siktildeestimate$ à partir de $\rlsparam$\;
+  $E_{i}[k]\gets\norm{\Plintildeestimate-\Plinnominal}_{F}$\;
+  Coordinateur calcule $d_{i}$: $d_{i}\gets d_{i}\lor \indicator{E_{i}[k]\geq\epsilon_{\Plin}}$\;
+
+  \caption{Algorithme de détection dans un pas $k$ (en parallèle si possible).}\label{alg:detection_rls_resume}
+\end{algorithm2e}
+
+Une fois les attaquants identifiés, on a besoin de la mitigation pour réduire les effets.
 \newpage
 \section{Commande Prédictive résiliente sur pénurie artificielle}\label{sec:comm-pred-resil-1}
 
