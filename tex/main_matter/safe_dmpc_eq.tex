@@ -586,8 +586,8 @@ Algorithm~\ref{alg:update_rls} shows how to calculate a new parameter estimate $
 
 \begin{algorithm2e}[h]
   \DontPrintSemicolon%
-  \KwIn{Current estimation step $h$, Forgetting rate $\rlsforget$, Current parameter estimate $\rlsparam\h$, Current gain $\rlsgain\h$, Current input $\thetai\h$, Current output $\rlssysoutput\h$}
-  \KwOut{New estimate $\rlsparam\h$}
+  \KwIn{Step $h$, Forgetting rate $\rlsforget$, Parameter estimate $\rlsparam\h$, Gain $\rlsgain\h$, Input $\thetai\h$, Output $\rlssysoutput\h$}
+  \KwOut{New estimate $\rlsparam\hplusone$, New gain $\rlsgain\hplusone$}
   $\rlssysinput\gets\left[\text{\structDataSym}(\thetai\h),I_{c}\right]$\;
   Calculate residual $\rlsresidual$: $\rlsresidual\gets \rlssysoutput-\rlssysinput\rlsparam$\;
   Update gain $\rlsgain$: $\rlsgain\hplusone\gets \rlsforget^{-1}\rlsgain\h-\rlsforget^{-2}\rlsgain\h\rlssysinput\T{(I_{c}+\rlsforget^{-1}\rlssysinput\rlsgain\h\rlssysinput\T)}^{-1}\rlssysinput\rlsgain\h$\;
@@ -619,7 +619,7 @@ We can systematize the detection technique in Algorithm~\ref{alg:detection_rls}.
   \KwIn{Nominal $\Plinnominal$, Maximum number of iterations $h_{\max}$, Bound $\epsilon_{\rlsparam}$, Bound $\epsilon_{\Plin}$, }
   \KwOut{Detection $d_{i}$, Estimates $\Plintildeestimate$ and $\siktildeestimate$}
   $h\gets0$\;
-  Initialize $\rlsparam\p$
+  Initialize $\rlsparam\p$\;
   \Repeat{$\norm{\rlsparam\hplusone-\rlsparam\h}\leq\epsilon_{\rlsparam}$}
   {
     Coordinator sends random $\thetai\h$ to $i$ \;
