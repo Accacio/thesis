@@ -1440,6 +1440,146 @@ I-\frac{M-1}{M}\rho\p \Tik[1]\Plin[1] & \frac{1}{M}\rho\p \Tik[1]\Plin[1]&\dots&
 \end{equation}
 
 Comme on a montré en \S\ref{sec:attack-interest_resume}, les matrices de triche $\Tik$ peuvent change les valeurs propres de la matrice, éventuellement faisant le système osciller et ne pas converger aux valeurs optimales.
+
+\subsubsection{Dynamique de $\thetai$}
+Similairement, si on fait le contraire et substitue~\eqref{eq:lambda_function_theta_resume} en~\eqref{eq:example_projectedSubgradient_lambda_reprise_resume},
+ça résulte en
+\begin{equation}
+  \label{eq:negotiation_equation_substituting_resume}
+ \thetai\pplusone=\thetai\p+\rho\p\left((-\Plin\thetai\p-\sik)-\frac{1}{M}\sum_{j\in\set{M}}(-\Plin[j]\vec{\theta}_{j}\p-\vec{s}_{j}[k])\right),\forall i\in\set{M}.
+\end{equation}
+ou en forme matricielle
+\begin{equation}
+  \label{eq:negotiation_equation_substituting_organizing_matrix_theta_resume}
+  \vec{\theta}\pplusone=\mathcal{A}_{\theta}\vec{\theta}\p+\mathcal{\vec{B}}_{\theta}[k],
+\end{equation}
+où
+\begin{equation}
+\mathcal{A}_{\theta}=\left[
+\begin{matrix}
+I-\frac{M-1}{M}\rho\p \Plin[1] & \frac{1}{M}\rho\p \Plin[2]&\dots&\frac{1}{M}\rho\p \Plin[M]\\
+\frac{1}{M}\rho\p \Plin[1]&I-\frac{M-1}{M}\rho\p \Plin[2]&\dots&\frac{1}{M}\rho\p \Plin[M]\\
+\vdots&\vdots&\ddots&\vdots\\
+\frac{1}{M}\rho\p \Plin[1]&\frac{1}{M}\rho\p \Plin[2]&\dots&I-\frac{M-1}{M}\rho\p \Plin[M]\\
+\end{matrix}
+\right]
+\end{equation}
+\begin{equation}
+\mathcal{\vec{B}}_{\theta}[k]=\left[
+\begin{matrix}
+-\frac{M-1}{M}\rho\p \vec{s}_{1}[k]+\frac{1}{M}\rho\p \vec{s}_{2}[k]\dots-\frac{1}{M}\rho\p \vec{s}_{M}[k]\\
+\frac{1}{M}\rho\p \vec{s}_{1}[k]-\frac{M-1}{M}\rho\p \vec{s}_{2}[k] \dots-\frac{1}{M}\rho\p \vec{s}_{M}[k]\\
+\vdots\\
+\frac{1}{M}\rho\p \vec{s}_{1}[k]+\frac{1}{M}\rho\p \vec{s}_{2}[k]\dots-\frac{M-1}{M}\rho\p \vec{s}_{M}[k]\\
+\end{matrix}
+\right],
+\end{equation}
+qui aussi est un système \dt{}, mais avec une entrée forcée ($\mathcal{\vec{B}}_{\theta}$).
+
+On peut analyser la stabilité de $\mathcal{A}_{\theta}$ exactement comme fait avec $\mathcal{A}_{\lambda}$, c'est-à-dire, les valeurs propres doivent être dans le cercle unitaire.
+
+On analyse aussi la somme de ses lignes et colonnes.
+La somme des colonnes est égal à $1$.
+Alors, $1$ est une de ces valeurs propres par la gauche:
+\begin{equation}
+  \label{eq:1}
+  \1^{T}\mathcal{A}_{\theta}=\1^{T}
+\end{equation}
+Comme esperé, le système conserve la masse, i.e., les $\theta_{i}$ respectent la contrainte d'égalité globale.
+De cette façon, la dépendence linéaire entre les $\theta_{i}$ est explicite.
+Si on analyse les colonnes, on voit que la somme n'est pas $1$.
+Alors, comme nous avons constaté, le système converge mais pas nécessairement à un état où tous les $\theta_{i}$ sont égaux.
+Cela serait le cas où les $\Plin$ sont égaux.
+
+Comme on voit, les valeurs propres dependent just de $\Plin$ et $\rho\p$.
+Comme les $\Plin$ sont des paramètres du système, le designer ne peut que choisir l'évolution de $\rho\p$.
+
+Une fois le $\rho\p$ choisi, la matrice $\mathcal{A}_{\theta}$ évolue toujours de la même manière.
+Alors, s'il y a un changement de cette évolution, ça veut dire que le système présente un comportement anormale.
+
+Comme on peut observer, une perturbation en $\Plin$ (changement de la fonction objectif ou contraintes) change les valeurs de $\mathcal{A}_{\theta}$, et par conséquence sa dynamique.
+Ce changement peut déstabiliser le système si les valeurs propres sont décalées dehors le cercle unitaire, comme déjà montré en \S\ref{sec:attack-interest_resume}.
+Par contre, les perturbations en $\sik$ (modification de la function objectif, contraintes ou état/réference) peuvent change l'état en régime permanent (changement en $\mathcal{\vec{B}}_{\theta}[k]$).
+
+Si on suppose que le système est sous attaque et tous les agents sont suspects on a la dynamique
+\begin{equation}
+  \label{eq:negotiation_equation_substituting_organizing_tilde_resume}
+  \vec{\theta}\pplusone=\tilde{\mathcal{A}}_{\theta}[k]\vec{\theta}\p+\tilde{\mathcal{\vec{B}}}_{\theta}[k]
+\end{equation}
+où
+\begin{equation}
+\tilde{\mathcal{A}_{\theta}}[k]=\left[
+\begin{matrix}
+I-\frac{M-1}{M}\rho\p \Tik[1]\Plin[1] & \frac{1}{M}\rho\p \Tik[2]\Plin[2]&\dots&\frac{1}{M}\rho\p \Tik[M]\Plin[M]\\
+\frac{1}{M}\rho\p \Tik[1]\Plin[1]&I-\frac{M-1}{M}\rho\p \Tik[2]\Plin[2]&\dots&\frac{1}{M}\rho\p \Tik[M]\Plin[M]\\
+\vdots&\vdots&\ddots&\vdots\\
+\frac{1}{M}\rho\p \Tik[1]\Plin[1]&\frac{1}{M}\rho\p \Tik[2]\Plin[2]&\dots&I-\frac{M-1}{M}\rho\p \Tik[M]\Plin[M]\\
+\end{matrix}
+\right]
+\end{equation}
+\begin{equation}
+\tilde{\mathcal{\vec{B}}}_{\theta}[k]=\left[
+\begin{matrix}
+-\frac{M-1}{M}\rho\p \Tik[1]\vec{s}_{1}[k]+\frac{1}{M}\rho\p \Tik[2]\vec{s}_{2}[k]\dots-\frac{1}{M}\rho\p \Tik[M]\vec{s}_{M}[k]\\
+\frac{1}{M}\rho\p \Tik[1]\vec{s}_{1}[k]-\frac{M-1}{M}\rho\p \Tik[2]\vec{s}_{2}[k] \dots-\frac{1}{M}\rho\p \Tik[M]\vec{s}_{M}[k]\\
+\vdots\\
+\frac{1}{M}\rho\p \Tik[1]\vec{s}_{1}[k]+\frac{1}{M}\rho\p \Tik[2]\vec{s}_{2}[k]\dots-\frac{M-1}{M}\rho\p \Tik[M]\vec{s}_{M}[k]\\
+\end{matrix}
+\right]
+\end{equation}
+
+Comme dans le cas avec $\mathcal{A}_{\theta}$, en ajustant les $\Tik$, un attaquant peut changer les valeurs propres de $\mathcal{A}_{\lambda}$.
+Les matrices de triche $\Tik$ peuvent être aussi ajusté pour pousser la négociation à un nouveau point, mais comme on voit, ça modifie aussi la dynamique do système.
+Alors, les ataquants doivent faire le compromis entre leur gourmandise et de ne pas casser la négociation, ce qu'est pire pour tous les agents, incluant les attaquants.
+
+Quelqu'un peut remarquer qu'on pourrait créer un détecteur de comportement anormale en supervisant la matrice $\mathcal{A}_{\theta}$.
+Une fois qu'il y a un changement d'une de ses valeurs propres, un comportement anormale est détecté.
+
+Malheureusement, cette méthode nous donne que la détection, mais pas forcément quel agent à causé l'anomalie, ce que serait utile pour un algorithm de mitigation.
+D'ailleurs, pour estimer les éléments de $\mathcal{A}_{\theta}$, il nous serait nécessaire estimer $M^{2}{(c)}^{2}$ éléments\footnote{$M^{2}$ blocs de taille ${c}$}.
+Exploitant la structure connue de la matrice et des blocs, on pourrait réduire le total au moins $2M{(\frac{c+{c}^{2}}{2})}$ éléments\footnote{($M$ diagonal + $M$ hors diagonal) blocs symmetriques de taille ${c}$ (seulement triangle supérieur)}.
+
+En suite on verra un mécanisme capable de pas seulement détecter les attaques, mais aussi de identifier l'attaquant, et ça en utilisant la moitié des éléments cités.
+
+\subsection{Détection}\label{sec:detection-mechanism_resume}
+
+Utilisant~\eqref{eq:linear_attack_reprise_resume} on peut récrire~\eqref{eq:lambda_function_theta} comme
+\begin{equation}
+  \label{eq:lambda_function_theta_tilde}
+\lambdaicheat[k]=-\Plintilde\thetaik-\tilde{\vec{s}}_{i}[k],
+\end{equation}
+où $\Plintilde=\Tik\Plin$ et $\tilde{\vec{s}}_{i}[k]=\Tik\sik$.
+
+Une fois que $\Plin$ doit est constant, n'importe quel chagement entre deux négociations est une conséquence d'un comportement anormal, dans ce cas causé par $\Tik$.
+
+Utilisant la relation entre $\thetaik$ et $\lambdaik$, on peut superviser les échanges entre coordinateur et agents, estimant $\Plintildeestimate$ et $\siktildeestimate$ tels que
+\begin{equation}
+  \lambdaicheat[k]=-\Plintilde\thetaik-\tilde{\vec{s}}_{i}[k],
+\end{equation}
+
+Si on a accès à la valeur nominale de $\Plin$\footnote{Donnée ou estimée à partir de données historiques fiables.}, notée $\Plinnominal$, on peut créer une loi de détection pour chaque agent $i$.
+En choisissant une borne arbitraire $\epsilon_{\Plin}$, on peut définir l'erreur
+\begin{equation}
+  E_{i}[k] =\norm{\Plintildeestimate-\Plinnominal}_{F},
+\end{equation}
+et la fonction de détection $d_{i}$:
+\begin{equation}
+  d_{i}=\indicator{E_{i}[k]\geq\epsilon_{\Plin}},
+\end{equation}
+qui détecte un attaque quand la borne est surpassée, i.e., $d_{i}=1$.
+\todo{remarque}
+\begin{remark}
+  Comme montré en Remarque~\ref{rem:bounds_and_error_resume}, le choix de $\epsilon_{\Plin}$ peut influencer le taux de faux positifs.
+  La borne doit être supérieure à l'erreur d'estimation pour un scénario sans attaque.
+  La propagation des érreurs n'est pas dans le cadre d'étude de cette thèse.
+\end{remark}
+
+\begin{remark}
+  Si l'estimation ne converge pas, ça veut dire que les rélations ne sont plus linéaires, et alors on pourrait comme ça détecter un comportement anormal.
+\end{remark}
+
+Une brève discussion pour l'estimation de $\Plintildeestimate$ suit.
+
 \newpage
 \section{Commande Prédictive résiliente sur pénurie artificielle}\label{sec:comm-pred-resil-1}
 
