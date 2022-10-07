@@ -1722,6 +1722,58 @@ La détection peut être décrite enfin par l'Algorithme~\ref{alg:detection_rls_
 \end{algorithm2e}
 
 Une fois les attaquants identifiés, on a besoin de la mitigation pour réduire les effets.
+
+\newpage
+\subsection{Mitigation}\label{sec:mitigation_resume}
+Pour la mitigation on a quelques possibilités d'objectifs.
+On donne un petit exemple.
+
+\subsubsection{Exemple Qualitatif}\label{sec:qualitative-example_resume}
+
+Imaginons un système simple de deux sous-systèmes \ltidt{} d'une dimension, contraints par l'entrée, controllés par la \dmpc{} presentée dans ce travail, problèmes du type \qp{} et toute autre condition imposé dans cette section.
+On utilise un horizon de prédiction $\predhorz=1$ and contraintes locales $\vec{u}_{i}\geq\0$ pour faciliter la visualisation.
+
+Si on trace les courbes de niveaux du système (Fig.~\ref{fig:original_minimum_resume}), on voit le minimum sans contraintes projeté (projection pondérée) sur le hyperplan.
+La projection résulte la solution sous contraintes (point bleu).
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=7cm]{../img/resilient_eq/original-minimum.pdf}
+  \caption{Minimum Original.}\label{fig:original_minimum_resume}
+\end{figure}
+
+Une fois qu'un agent attaque le système~\eqref{eq:linear_attack_reprise_resume}, les courbes sont déformées (Fig.~\ref{fig:minimum_after_attack_resume}).
+Cette distortion change la projection, resultant en une nouvelle solution (en vert).
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=7cm]{../img/resilient_eq/new-minimum-selfish.pdf}
+  \caption{Minimum après attaque.}\label{fig:minimum_after_attack_resume}
+\end{figure}
+
+Si l'attaquant est détecté, une option est de mitiger la dérive par substituant le $\lambdaicheat$ réçu par $\0$.
+Cela peut être interpreté comme un coordinateur punissant l'attaquant, en supposant que l'attaquant est satisfait $\lambdai=\0$, indépendamment de l'allocation faite.
+Cette négligence vers l'attaquant résulte en lui recevant moins et moins de ressources.
+À la limite, ça serait comme si l'attaquant ne faisait plus part de la négociation, en étant débranché, comme en~\cite{VelardeEtAl2018,MaestreEtAl2021}.
+
+Si on le fait (Fig.~\ref{fig:minimum_ignoring_attacker}) on voit les nouvelles courbes et la nouvelle solution (en orange).
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=7cm]{../img/resilient_eq/ignoreX.png}
+  \caption{Nouveau optimal quand négligent l'attaquant.}\label{fig:minimum_ignoring_attacker_resume}
+\end{figure}
+
+Même si l'idée de punir l'attaquant semble attirante, comme nous controllons un \cps{} ça peut affecter la qualité de service, en anglais \QoS{}, et par conséquence les personnes.
+
+Une solution serait d'allouer des ressources suffisantes pour un niveau minimal de \QoS{}, mais ça peut être un peu difficile à cause de sa subjectivité.
+
+Nous proposons une autre solution, essayer de récuperer le comportement normal, tant que quelques hypothèses soient garanties.
+Cela permet de passer des courbes du système attaqué (Fig.~\ref{fig:minimum_after_attack_resume}) à des autres, comme montré en Fig.~\ref{fig:minimum_recovered_resume}, où le nouveau minimum s'encontre dans une voisinage acceptable de l'original.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=7cm]{../img/resilient_eq/correctX.png}
+  \caption{Valeur optimale après récuperer comportement original.}\label{fig:minimum_recovered_resume}
+\end{figure}
+
 \newpage
 \section{Commande Prédictive résiliente sur pénurie artificielle}\label{sec:comm-pred-resil-1}
 
