@@ -184,7 +184,8 @@ Imagine an example where we have $2$ constraints with associated $\elem[1]{\lamb
   \end{tikzpicture}
   \caption{Two constraints partitioning $\thetai$ solution space.}\label{fig:constraints_partition_theta}
 \end{figure}
-For any $\thetai$ inside the grey area, the solution to~\eqref{eq:local_problem_equality_standard_notation} will be unconstrained, i.e., the constraint will be active.
+
+For any $\thetai$ inside the grey area, the solution to~\eqref{eq:local_problem_equality_standard_notation} will be unconstrained, i.e., the constraints will be active.
 Thus, for this case, by definition the value of $\lambdai=\0$.
 For all other cases, where we know at least one constraint in~\eqref{eq:local_problem_equality_standard_notation} is inactive, we can remove the constraint in~\eqref{eq:ineq_lambda_equation} for the element of $\lambdai$ corresponding to the inactive constraint.
 For instance, if all constraints in~\eqref{eq:local_problem_equality_standard_notation} are inactive, we can remove all constraints of~\eqref{eq:ineq_lambda_equation}, which will result in problem~\eqref{eq:eq_lambda_equation}, whose solution we known already:
@@ -239,7 +240,7 @@ If we take the same example, Eq.~\eqref{eq:lambda_function_theta_some_active} wo
 \end{equation}
 
 
-To facilitate the notation, let us use a binary representation such if we have $\nineq$, we use $\nineq$ binary digits to represent the active constraints.
+To facilitate the notation, let us use a binary representation such if we have $\nineq$ constraints, we use $\nineq$ binary digits to represent their status.
 And we will mark the digtis $1$ if the constraint is active and $0$ if inactive, indicating which constraints were removed or kept.
 
 If we retake the $2$-constraints example in Fig.~\ref{fig:constraints_partition_theta}, ${00}_{(2)}$ would represent both constraints inactive (bottom left quadrant), ${01}_{(2)}$ and ${10}_{(2)}$ represents one of the constraints are active (bottom right and top left quadrants, respectively) and ${11}_{(2)}$ where both constraints are active (grey area in top right quadrant).
