@@ -1750,7 +1750,7 @@ En observant~\eqref{eq:lambda_function_theta_tilde_fr}, on suppose aussi que le 
 
 Si on a l'estimation $\Plintildeestimate$ et la valeur nominale $\Plinnominal$, avec ces hypothèses on peut estimer l'inverse de $\Tik$:
 \begin{equation}
-  \label{eq:estimate_T_inverse}
+  \label{eq:estimate_T_inverse_fr}
 {\Tikinvestimate=\Plinnominal{\Plintildeestimate}^{-1}}.
 \end{equation}
 
@@ -2609,4 +2609,97 @@ Pour la dynamique générale du système hybride on peut utiliser des méthodes 
 
 Comme on voit, la relaxation de l'hypothèse a complexifié la solution exponentielment.
 On discutera comment adapter la détection pour surmonter cette complexité.
+
+\subsection{Mitigation et pénurie artificielle}\label{sec:mitigation_ineq_fr}
+On commence par la mitigation, car quelques choix facilitent la détection.
+
+On utilise la même méthode de reconstruction de $\lambdai$.
+Si on a une estimation de $T_{i}$, qui on assume inversible, on peut reconstruire $\lambdai$
+\begin{equation}
+  \label{eq:lambda_reconstruction_fr}
+  \lambdaireconstructed=\Tikinvestimate \lambdaicheat.
+\end{equation}
+
+On estime $\Tikinvestimate$ comme en~\eqref{eq:estimate_T_inverse_fr}, mais utilisant la seule version de $\Plinineq[i][n]$ inversible:
+\begin{equation}
+  \label{eq:estimate_T_inverse_ineq_fr}
+  {\Tikinvestimate=\Plinineqnominal{\Plinineqtildeestimate}^{-1}}.
+\end{equation}
+
+
+We cannot use~\eqref{eq:estimate_T_inverse} anymore (reprised for clarity), since we do not have $\Plin$.
+\begin{equation}
+  \label{eq:estimate_T_inverse_reprise_}
+  \tag{\ref*{eq:estimate_T_inverse_fr}}
+  {\Tikinvestimate=\Plinnominal{\Plintildeestimate}^{-1}}.
+\end{equation}
+
+Pour ça on a besoin de que $\Plinineq$ existe et qu'on aye accès à la valeur nominal $\Plinineqnominal$.
+
+La condition nécessaire pour l'existence de $\Plinineq$ (la $0$-zone) est qu'on puisse choisir $\thetai$ tel que les contraintes soient inactive pour la solution sans contraintes $\optuncUik$.
+
+Alors on appelle \emph{pénurie artificielle} la méthode de forcer les contraintes à être inactives en choisissant la valeur de $\thetai$.
+Une valuer $\thetairestricted$ qui déactive les contraintes est appelé le \emph{point de pénurie artificielle}.
+
+En générant des points dans une boule ($\set{B}(\vec{x}_{c},r)=\setbuild{\vec{x}}{\norm{\vec{x}-\vec{x}_{c}}\leq r}$) autour $\thetairestricted$ (Fig.~\ref{fig:ball_around_theta_restricted_fr}), on peut surveiller la communication comme dans la dernière section pour estimer $\Plinineq$.
+
+Comme on ne connait les frontières des polytopes, il est possible de mal choisir un rayon que ne les traversent pas (voir Fig.~\ref{fig:ball_around_theta_restricted_traversing}).
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.4\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \def\height{3}
+      \def\length{5}
+      \node at (0,0) {} coordinate (p0)  ++(0:\length*2.4/5) coordinate (p1) ;
+      \node at (0,0) {} ++(90:\height*2.7/5) coordinate (p2) ;
+
+      \draw[black] (p2) ++(-1:5) coordinate (p3);
+      \draw[black] (p1) ++(80:3) coordinate (p4);
+      \coordinate (p6) at (p3|-p4);
+
+      \coordinate (p5) at (intersection cs:first line={(p2)--(p3)}, second line={(p1)--(p4)});
+      \path[fill=gray!20] (p6) -- (p4) -- (p5) -- (p3);
+      \draw[black] (p2) -- (p3);
+      \draw[black] (p1) -- (p4);
+
+      \draw[-latex] (0,-.1) - - (0,\height) node[left]{$\elem[2]{\thetai}$};
+      \draw[-latex] (-.1,0) - - (\length,0) node[below]{$\elem[1]{\thetai}$};
+
+      \node[draw,circle,minimum width=1cm] at (\length*.375,\height*0.3) {$\thetairestricted$};
+    \end{tikzpicture}
+    \caption{Boule $\set{B}(\thetairestricted,r)$.}\label{fig:ball_around_theta_restricted_fr}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.4\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \def\height{3}
+      \def\length{5}
+      \node at (0,0) {} coordinate (p0)  ++(0:\length*2.4/5) coordinate (p1) ;
+      \node at (0,0) {} ++(90:\height*2.7/5) coordinate (p2) ;
+
+      \draw[black] (p2) ++(-1:5) coordinate (p3);
+      \draw[black] (p1) ++(80:3) coordinate (p4);
+      \coordinate (p6) at (p3|-p4);
+
+      \coordinate (p5) at (intersection cs:first line={(p2)--(p3)}, second line={(p1)--(p4)});
+      \path[fill=gray!20] (p6) -- (p4) -- (p5) -- (p3);
+      \draw[black] (p2) -- (p3);
+      \draw[black] (p1) -- (p4);
+
+      \draw[-latex] (0,-.1) - - (0,\height) node[left]{$\elem[2]{\thetai}$};
+      \draw[-latex] (-.1,0) - - (\length,0) node[below]{$\elem[1]{\thetai}$};
+
+      \node[draw,circle,minimum width=2.5cm] at (\length*.375,\height*0.3) {$\thetairestricted$};
+    \end{tikzpicture}
+    \caption{Boule $\set{B}(\thetairestricted,r)$ qui traverse les zones.}\label{fig:ball_around_theta_restricted_traversing_fr}
+  \end{subfigure}
+  \caption{Effets de la génération avec différent rayons $r$.}
+\end{figure}
+
+Alors, pour l'estimation on a besoin d'une méthode que puisse estimer $\Plinineq$ malgré le choix du rayon.
+Une méthode qui puisse aussi classifier les zones (vue en \S\ref{sec:cons-about-mult_fr}).
+
 \end{document}
