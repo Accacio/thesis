@@ -74,7 +74,7 @@ Les allocations sont mises à jour basées sur ces indices jusq'un consensus soi
 Dans un certain moment, un des agents, plus spécifiquement celui correspondant à la maison I, commence a modifier la valeur de $\lambdai$ envoyée.
 Il l'augmente a chaque jour jusqu'à un jour la commande est arretée due à une manque de consensus entre les agents.
 
-En utilisant des métriques comme les fonctions objectifs, dans laquelle valeures plus petites signifiquent une meilleure perfomance, on peut voir que la performance de l'agent I a amélioré à partir d'une certaine date à la fin d'octobre (Fig.~\ref{fig:change_in_j_fr}).
+En utilisant des métriques comme les fonctions objectifs, dans laquelle valeures plus petites signifiquent une meilleure performance, on peut voir que la performance de l'agent I a amélioré à partir d'une certaine date à la fin d'octobre (Fig.~\ref{fig:change_in_j_fr}).
 Par contre, la performance de toutes les autres agents a empiré.
 On peut voir aussi dans l'aire hachuré quand le consensus n'est plut trouvé.
 \begin{figure}[h]
@@ -112,7 +112,7 @@ Section~\ref{sec:comp-anorm} définit comportements anormaux, donne quelques exe
 
 \paragraph{La seconde partie} (\S\ref{sec:vulnerabilites-de-la} à~\ref{sec:comm-pred-resil-1}) contient les contributions de cette thèse.
 
-Section~\ref{sec:vulnerabilites-de-la} présente la décomposition étudié (décomposition primale). On presents ses vulnérabilités et comment elles peuvent affecter la perfomance du système.
+Section~\ref{sec:vulnerabilites-de-la} présente la décomposition étudié (décomposition primale). On presents ses vulnérabilités et comment elles peuvent affecter la performance du système.
 On formalise l'example en donnant une approche plus quantitative.
 Une fois les vulnérabilités et les possibles effets des attaques découverts, on divise la mitigation en parties plus gérable.
 \\ Premièrement en Section~\ref{sec:comm-pred-resil}, on analyse un problème simple, pour qu'on puisse apprécier les possibles difficultés qui peuvent être rencontrées pendant le problème de mitigation.
@@ -1126,7 +1126,7 @@ Le procès itératif est appellé la \textbf{phase de négociation}.
 
 À cause de ce procès d'allocations itératives, autres noms sont donés à la décomposition, comme \textbf{allocation des ressources} ou \textbf{décomposition par quantités}.
 
-\subsection{Attack of interest}\label{sec:attack-interest_fr}
+\subsection{Attaque d'intérêt}\label{sec:attack-interest_fr}
 
 Comme les $\lambdai$ sont les sous-gradients des problème locaux~\eqref{eq:DOP_local_fr}, il est possible de voir qu'ils portent de l'information du problème, i.e.\ il y a d'une certaine façon l'information de la $5$-tuple $(H_{i},\vec{f}_{i}[k],\bar{\Gamma}_{i},\thetaik)$, qu'on appelle l'information locale complète $\set{I}_{i}$.
 Alors, les attaques en~\cite{VelardeEtAl2018} (montrés en \S\ref{sec:attacks_in_dmpc_fr}) vont réfléchir en modifications du $\lambdai$.
@@ -1442,7 +1442,7 @@ Alors, $1$ est une de ces valeurs propres par la gauche:
   \label{eq:1}
   \1^{T}\mathcal{A}_{\theta}=\1^{T}
 \end{equation}
-Comme esperé, le système conserve la masse, i.e., les $\theta_{i}$ respectent la contrainte d'égalité globale.
+Comme espéré, le système conserve la masse, i.e., les $\theta_{i}$ respectent la contrainte d'égalité globale.
 De cette façon, la dépendence linéaire entre les $\theta_{i}$ est explicite.
 Si on analyse les colonnes, on voit que la somme n'est pas $1$.
 Alors, comme nous avons constaté, le système converge mais pas nécessairement à un état où tous les $\theta_{i}$ sont égaux.
@@ -1813,7 +1813,7 @@ Algorithme~\ref{alg:rpdbdmpcss} systematize la méthode.
     $p\gets 0$\;
     Coordinateur initialise $\vec{\theta}^{(p)}$ et les envoie aux sous-systèmes\;
     \Repeter{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\lor \left[p\geq p_{\max}\right]$}{
-      Sous-systèmes résout~\eqref{eq:DOP_local_fr}, et envoient $\vec{\lambda}^{\star}_{i}(\vec{\theta}\p)$\;
+      Sous-systèmes résolvent~\eqref{eq:DOP_local_fr}, et envoient $\vec{\lambda}^{\star}_{i}(\vec{\theta}\p)$\;
 
       Coordinateur m-à-j les allocations~\eqref{eq:example_projectedSubgradient_lambda_reprise_fr} avec versions adéquates de $\vec{\lambda}_{i}$:\;
       \quad$\vec{\lambda}_{i}^{\star}(\vec{\theta}\p)$, si $d_{i}=0$ et $\lambdaireconstructed$, si ${d_{i}=1}$~\eqref{eq:lambdareconstruction}\;
@@ -1827,7 +1827,7 @@ Algorithme~\ref{alg:rpdbdmpcss} systematize la méthode.
 
 \subsection{Expériment Numérique}\label{sec:numerical-experiment_fr}
 
-\subsubsection{Étude de cas}\label{sec:case-study}
+\subsubsection{Étude de cas}\label{sec:case-study_fr}
 
 Notre étude de cas est un simple \dhn{} composé par ${M=4}$ petites maisons (appelées I, II, II and IV).
 Chacune a un état $\vec{x}_{i}$, et une référence de temperature différente $\vec{w}_{i}(t)$ (besoins diveses).
@@ -2926,5 +2926,111 @@ De nouveau, on peut voir la détection et reconstitution conditionnel de $\lambd
 }
  \caption{La dMPC résiliente basée sur la décomposition primale utilisant pénurie artificielle.}\label{alg:safeDMPC_fr}
 \end{algorithm2e}
+
+\subsection{Expériment Numérique}\label{sec:numerical-experiment-ineq_fr}
+
+On utilise le même étude de cas que en \S\ref{sec:case-study_fr}, avec des moidication pour respecter les hypothèses de cette section.
+
+Pour utiliser la \rpdmpcas{} on suppose que $\optuncUik$ respecte les contraintes locales.
+Alors, comme on a $\vec{u}_{i}[k]\succeq\0$ en \S\ref{sec:case-study_fr}, on suppose que $\optuncUik\succeq\0$.
+
+Cela est accompli en changeant les états initiaux et les références ($\vec{x}_{i}[k]$ et $\vec{w}_{i}[k]$).
+
+De cette façon on utilise pour les états
+\input{../data/resilient_ineq/initial_states.tex},
+et pour les réferénces
+\input{../data/resilient_ineq/references.tex}.
+On maintien tous les autres paramètres, avec qui quand on décompose la \mpc{} on a
+\begin{equation}
+  \label{eq:houses_artificial_deprived_local_problem_fr}
+  \begin{matrix}
+    \minimiser\limits_{\vec{U}_{i}[k]}&\obji=\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+    \mathrm{sous} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \succeq \thetaik:\lambdaik\\
+                                     &\vec{U}_{i}[k]\succeq\0
+  \end{matrix}
+\end{equation}
+
+et fonction de mise à jour~\eqref{eq:projectedSubgradient_lambda_reprise_fr}.
+
+\subsubsection{Résultats}\label{sec:results_fr}
+On test l'algorithm avec la même période de simulation
+$\input{../data/resilient_ineq/hours.tex}$
+heures, i.e.,
+${k\in\{0,\input{../data/resilient_ineq/hours.tex}/T_{s}\}}$.
+Les mêmes scénarios sont utilisés:
+\begin{enumerate}
+  \item Comportement Nominal (dénoté N)
+  \item Agent I attaque le système commandé par \dmpc{} standard (dénoté S)\label{it:case_selfish_as_fr}
+  \item Agent I attaque le système commandé par \rpdmpcss{} (dénoté C)\label{it:case_selfish_recovered_as_fr}
+  % \todo{\item Agents I and IV attack system controlled by standard \dmpc{} (denoted as MS)\label{it:case_selfish_multiple_as}\note{only if a have time to simulate}}
+  % \todo{\item Agents I and IV attack system controlled by \rpdmpcas{} (denoted as MC)\label{it:case_selfish_multiple_recovered_as}\note{only if a have time to simulate}}
+\end{enumerate}
+
+L'attaque choisi pour les scenarios~\ref{it:case_selfish_as_fr} et~\ref{it:case_selfish_recovered_as_fr},
+sont
+\begin{align}
+  T_{I}=&\begin{cases}
+          \left[\input{../data/resilient_ineq/triche_matrix_I}\right],&\text{si }k> \input{../data/resilient_ineq/selfish_time_I.tex}\\
+          I_{c},&\text{sinon}
+        \end{cases}
+  % T_{IV}=&\begin{cases}
+  %         \todo[verify]{\left[\input{../data/resilient_ineq/triche_matrix_IV}\right]},&\text{if }k> \input{../data/resilient_ineq/selfish_time_IV.tex}\\
+  %         I_{c},&\text{otherwise}
+  %       \end{cases}.
+\end{align}
+
+Si on regarde Fig.~\ref{fig:response3Scenarios}, on peut comparer la température de l'air à l'intérieur de la maison~I
+avec ses références $w_{I}$.
+On peut voir aussi dans la figure les variables ${E_{I}^{(0)}[k]}$ et borne $\epsilon_{\Plinineq}$.
+Observe comment les références $w_{I}$ ne sont achevées dans le comportement nominal (en magenta),
+du aux conditions initiales et contraintes de puissance.
+Comme attendu, da variable de decision se situe sous la borne ${\epsilon_{\Plinineq}=10^{-4}}$ avec valeurs de l'orde ${E_{I}^{N}(k)\approx10^{-10}}$ (pas d'attaque détecté).
+
+\begin{figure}[h]
+  \centering
+ \includegraphics[width=.7\textwidth,trim=0 .3cm 0 .2cm,clip]{../img/resilient_ineq/ErrorWX_command_normErrH.pdf}
+  \caption{Température de la maison I et la variable $E_{I}[k]$ pour les 3 scénarios.}\label{fig:response3Scenarios_fr}
+\end{figure}
+\begin{figure}[h]
+  \centering
+ \includegraphics[width=.7\textwidth,trim=0 .3cm 0 .2cm,clip]{../img/resilient_ineq/ErrorWX_command_normErrH_all_houses.pdf}
+  \caption{Température de l'air dans toutes les maisons pour les 3 scénarios.}\label{fig:response3Scenarios_all_houses_fr}
+\end{figure}
+
+Quand agent~I attaque le système (en orange), l'erreur de suivi
+${w_{I}-y_{I}}$ décroît, et l'agent presque achève la référence.
+En Fig.~\ref{fig:response3Scenarios_all_houses_fr}, on voit que quand agent~I triche, les ressources sont transférées de toutes les autres maisons, qui perdent en performance.
+
+Dans ce cas, la variable de détection surpasse la borne $\epsilon_{\Plinineq}$,
+${E_{I}^{S}\approx200}$, ce qu'indique le changement de comportement, un possible attaque.
+
+Si on applique l'algorithme proposé (point noires), la température approche sa valeur nominale $y_{I}^{N}$.
+On peut comparer aussi les entrées en Fig.~\ref{fig:control_3Scenarios_fr}.
+Quand agent~I est égoïste, sa commande devienne plus importante, tant que celles des autres maisons diminuent,
+montrant le déplacement de la négociation.
+Et quand la correction est activée, la commande aussi récupere sa valeur d'origine.
+\begin{figure}[H]
+  \centering
+ \includegraphics[width=.7\textwidth,trim=0 .1cm 0 .3cm,clip]{../img/resilient_ineq/control.pdf}
+  \caption{Commande appliquée en toutes les maisons pour les 3 scénarios.}\label{fig:control_3Scenarios_fr}
+\end{figure}
+
+Une autre façon de comparer les performance et d'accumuler les fonctions objectif pendant la simulation pour les trois scénarios (Tab.~\ref{tab:costsGlobalLocal_fr}).
+On calcule aussi l'erreur percentuel ${\frac{J^{i}-J^{N}}{J^{N}}}$.
+Quand agent~I attaque, on voit une décroissance de son objectif ($\approx\!-40\%$), dégradant la performance global en $\approx\!+10\%$.
+Cependant, quand la correction est activée, l'erreur percentuel est de l'ordre ${|\frac{J^{C}-J^{N}}{J^{N}}|\leq10^{-8}}$.
+
+\begin{table}[H]
+  \centering
+  \caption{Fonctions objectif $J_{i}$ (\% erreur).}\label{tab:costsGlobalLocal_fr}
+  \begin{tabular}[t]{cccc}
+    \toprule
+    Agent  & Scénario N& Scénario S & Scénario C\\
+    \midrule
+    \input{../data/resilient_ineq/table_costs_all_houses_error.tex}\\
+    % \input{table_costs_only_global.tex}\\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \end{document}
