@@ -2003,11 +2003,11 @@ L'attaque choisi pour les scénarios~\ref{it:case_selfish_fr} et~\ref{it:case_se
 sont
 \begin{align}
   T_{I}=&\begin{cases}
-          \left[\input{../data/resilient_eq/triche_matrix_I}\right],&\text{if }k> 5\\
-          I_{c},&\text{otherwise}
+          \left[\input{../data/resilient_eq/triche_matrix_I}\right],&\text{si }k> 5\\
+          I_{c},&\text{sinon}
         \end{cases}
   % T_{IV}=\begin{cases}
-  %         \todo{4I_{c}\text{, if }k< 6}\\
+  %         \todo{4I_{c}\text{, si }k< 6}\\
   %         I_{c}\text{, otherwise}
   %       \end{cases}
 .
@@ -2225,9 +2225,9 @@ On peut alors, écrire la solution complète comme une fonction affine par morce
   \begin{aligned}
     \lambdaik=
     \begin{cases}
-      -\Plinineq\thetaik-\sikineq,&\text{if}\ \thetaik \in\set{R}_{\lambdai}^{n}\\
+      -\Plinineq\thetaik-\sikineq,&\text{si}\ \thetaik \in\set{R}_{\lambdai}^{n}\\
       \qquad\quad \vdots&\qquad\quad \vdots\\
-      -\Plinineq[i][2^{\nineq}-1]\thetaik-\sikineq[i][2^{\nineq}-1],&\text{if}\ \thetaik \in\set{R}_{\lambdai}^{2^{\nineq}-1}\\
+      -\Plinineq[i][2^{\nineq}-1]\thetaik-\sikineq[i][2^{\nineq}-1],&\text{si}\ \thetaik \in\set{R}_{\lambdai}^{2^{\nineq}-1}\\
     \end{cases}
   \end{aligned}.
 \end{equation}
@@ -2341,9 +2341,9 @@ Et par conséquence la solution a la même forme \pwa{} que~\eqref{eq:lambdafunt
     \vec{\theta}[k]\pplusone=
     \begin{cases}
       \vec{x}_{0}+
-      {I_{c}^{M}}^{(0)}\left[-P_{\vec{\mu}}^{(0)}\vec{U}_{max}+\vec{s}_{\vec{\mu}}^{(0)}[k]\right],&\text{if}\ \vec{x}_{0}\in\set{R}_{\vec{\mu}}^{0}\\
+      {I_{c}^{M}}^{(0)}\left[-P_{\vec{\mu}}^{(0)}\vec{U}_{max}+\vec{s}_{\vec{\mu}}^{(0)}[k]\right],&\text{si}\ \vec{x}_{0}\in\set{R}_{\vec{\mu}}^{0}\\
       \qquad\quad \vdots&\qquad\quad \vdots\\
-      \vec{x}_{0},&\text{if}\ \vec{x}_{0}\in\set{R}_{\vec{\mu}}^{2^{c}-1}\\
+      \vec{x}_{0},&\text{si}\ \vec{x}_{0}\in\set{R}_{\vec{\mu}}^{2^{c}-1}\\
     \end{cases}
   \end{aligned},
 \end{equation}
@@ -2392,18 +2392,18 @@ Et alors, la solution en~\eqref{eq:negotiation_equation_substituting_organizing_
   \label{eq:negotiation_equation_substituting_organizing_matrix_lambda_switched_fr}
   \vec{\lambda}[k]\pplusone=
   \begin{cases}
-    \mathcal{A}_{\lambda}^{0}\vec{\lambda}[k]\p,&\text{if}\ \vec{\theta} \in \set{R}_{\vec{\lambda}}^{0}\\
+    \mathcal{A}_{\lambda}^{0}\vec{\lambda}[k]\p,&\text{si}\ \vec{\theta} \in \set{R}_{\vec{\lambda}}^{0}\\
     \quad\vdots&\quad\vdots\\
-    \mathcal{A}_{\lambda}^{N_{\vec{\lambda}}}\vec{\lambda}[k]\p,&\text{if}\ \vec{\theta}\in\set{R}_{\vec{\lambda}}^{0}\\
+    \mathcal{A}_{\lambda}^{N_{\vec{\lambda}}}\vec{\lambda}[k]\p,&\text{si}\ \vec{\theta}\in\set{R}_{\vec{\lambda}}^{0}\\
   \end{cases}
 \end{equation}
 \begin{equation}
   \label{eq:negotiation_equation_substituting_organizing_matrix_theta_switched_fr}
   \vec{\theta}[k]\pplusone=
   \begin{cases}
-    \mathcal{A}_{\theta}^{0}\vec{\theta}[k]\p+\mathcal{\vec{B}}_{\theta}^{0}[k],&\text{if}\ \vec{\theta}\in\set{R}_{\vec{\theta}}^{0}\\
+    \mathcal{A}_{\theta}^{0}\vec{\theta}[k]\p+\mathcal{\vec{B}}_{\theta}^{0}[k],&\text{si}\ \vec{\theta}\in\set{R}_{\vec{\theta}}^{0}\\
     \qquad\quad \vdots&\quad \vdots\\
-    \mathcal{A}_{\theta}^{N_{\vec{\theta}}}\vec{\theta}[k]\p+\mathcal{\vec{B}}_{\theta}^{N_{\vec{\theta}}}[k],&\text{if}\ \vec{\theta}\in\set{R}_{\vec{\theta}}^{N_{\vec{\theta}}}\\
+    \mathcal{A}_{\theta}^{N_{\vec{\theta}}}\vec{\theta}[k]\p+\mathcal{\vec{B}}_{\theta}^{N_{\vec{\theta}}}[k],&\text{si}\ \vec{\theta}\in\set{R}_{\vec{\theta}}^{N_{\vec{\theta}}}\\
   \end{cases}
 \end{equation}
 where $N_{\vec{\lambda}}=N_{\vec{\theta}}=2^{c+M\nineq}-1$.
@@ -2416,18 +2416,18 @@ Si on applique l'attaque~\eqref{eq:linear_attack_fr}, on a des résultats simila
   \label{eq:negotiation_equation_substituting_organizing_matrix_lambda_switched_cheating_fr}
   \tilde{\vec{\lambda}}[k]\pplusone=
   \begin{cases}
-    \tilde{\mathcal{A}}_{\lambda}^{0}\tilde{\vec{\lambda}}[k]\p,&\text{if}\ \vec{x}_{0}\in\set{R}_{\vec{\lambda}}^{0}\\
+    \tilde{\mathcal{A}}_{\lambda}^{0}\tilde{\vec{\lambda}}[k]\p,&\text{si}\ \vec{x}_{0}\in\set{R}_{\vec{\lambda}}^{0}\\
     \quad\vdots&\quad\vdots\\
-    \tilde{\mathcal{A}}_{\lambda}^{N_{\vec{\lambda}}}\tilde{\vec{\lambda}}[k]\p,&\text{if}\ \vec{x}_{0}\in\set{R}_{\vec{\lambda}}^{N_{\vec{\lambda}}}\\
+    \tilde{\mathcal{A}}_{\lambda}^{N_{\vec{\lambda}}}\tilde{\vec{\lambda}}[k]\p,&\text{si}\ \vec{x}_{0}\in\set{R}_{\vec{\lambda}}^{N_{\vec{\lambda}}}\\
   \end{cases}
 \end{equation}
 \begin{equation}
   \label{eq:negotiation_equation_substituting_organizing_matrix_theta_switched_cheating_fr}
   \vec{\theta}[k]\pplusone=
   \begin{cases}
-    \tilde{\mathcal{A}}_{\theta}^{0}\vec{\theta}[k]\p+\mathcal{\tilde{\vec{B}}}_{\theta}^{0}[k],&\text{if}\ \vec{\theta}\in\set{R}_{\vec{\theta}}^{0}\\
+    \tilde{\mathcal{A}}_{\theta}^{0}\vec{\theta}[k]\p+\mathcal{\tilde{\vec{B}}}_{\theta}^{0}[k],&\text{si}\ \vec{\theta}\in\set{R}_{\vec{\theta}}^{0}\\
     \qquad\quad \vdots&\quad \vdots\\
-    \tilde{\mathcal{A}}_{\theta}^{N_{\vec{\theta}}}\vec{\theta}[k]\p+\mathcal{\tilde{\vec{B}}}_{\theta}^{N_{\vec{\theta}}}[k],&\text{if}\ \vec{\theta}\in\set{R}_{\vec{\theta}}^{N_{\vec{\theta}}}\\
+    \tilde{\mathcal{A}}_{\theta}^{N_{\vec{\theta}}}\vec{\theta}[k]\p+\mathcal{\tilde{\vec{B}}}_{\theta}^{N_{\vec{\theta}}}[k],&\text{si}\ \vec{\theta}\in\set{R}_{\vec{\theta}}^{N_{\vec{\theta}}}\\
   \end{cases}
 \end{equation}
 On peut voir que comme l'attaque multiplie $\lambdai$ par $T_{i}[k]$, les partitions ne changent pas.
@@ -2454,10 +2454,10 @@ Comme on a $2$ contraintes, on a $4$ zones:
 \begin{equation}
   \lambdaicheat[k]=
   \begin{cases}
-    -\Plinineqtilde      \thetaik-\sikineqtilde      ,&\text{if }\thetaik\in\set{R}^{0}\\
-    -\Plinineqtilde[i][1]\thetaik-\sikineqtilde[i][1],&\text{if }\thetaik\in\set{R}^{1}\\
-    -\Plinineqtilde[i][2]\thetaik-\sikineqtilde[i][2],&\text{if }\thetaik\in\set{R}^{2}\\
-    -\Plinineqtilde[i][3]\thetaik-\sikineqtilde[i][3],&\text{if }\thetaik\in\set{R}^{3}\\
+    -\Plinineqtilde      \thetaik-\sikineqtilde      ,&\text{si }\thetaik\in\set{R}^{0}\\
+    -\Plinineqtilde[i][1]\thetaik-\sikineqtilde[i][1],&\text{si }\thetaik\in\set{R}^{1}\\
+    -\Plinineqtilde[i][2]\thetaik-\sikineqtilde[i][2],&\text{si }\thetaik\in\set{R}^{2}\\
+    -\Plinineqtilde[i][3]\thetaik-\sikineqtilde[i][3],&\text{si }\thetaik\in\set{R}^{3}\\
   \end{cases}\label{eq:1}
 \end{equation}
 où
