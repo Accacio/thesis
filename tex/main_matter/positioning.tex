@@ -5,30 +5,31 @@
 \chapter*{Choices \& Stance}\label{sec:positioning}
 \epigraph{\centering There are few people, however, who, if you told them a result, would be able to evolve from their own inner consciousness what the steps were which led up to that result.}
 {\textit{A Study in Scarlet}\\ \textsc{Sir Arthur Conan Doyle}}
+As we have seen in the last chapters, there are many steps a designer have to take to design a \cps{} and decompose the \mpc{}.
+And if we are interested in security, some more thinking must be put into it and choices to be made.
 
-In this chapter we try to recapitulate the choices made for this work, mentioned in the course of the chapters.
+In this brief chapter we retrace the steps, recapitulating the choices made for this work, mentioned in the course of the chapters.
 The idea of this chapter is to concentrate them all in one place so a reader can have a better global vision, and know more or less what to expect (or not) from the next chapters.
 
-We divide this chapter into two sections.
+We divide it into two sections.
 The first for the choices regarding the design of the control of the system.
 And the second one for the choices for the security.
-In this latter section, we compare this thesis with the most adjacent works, already presented in Chapter~\ref{sec:anomalous}.
+In the latter, we compare this thesis with the most adjacent works, already presented in Chapter~\ref{sec:anomalous}.
 
 \section*{Control design}
-\subsection*{Control}\label{sec:control_chosen}
+\paragraph*{Control}\label{sec:control_chosen}
 We model the system as a \textbf{\ltidt{} system} with \textbf{linear input constraints}, and we choose to control it using \textbf{\mpc{}}.
 The objective function used is \textbf{quadratic}, which by consequence produces a \mpc{} that solves a \textbf{\qp{} problem}.
 However, we suppose the problem may have an impact on the calculation if we try to solve it in a monolithic form. We need to \textbf{decompose} it.
 
-\subsection*{Decomposition}\label{sec:decomposition_chosen}
+\paragraph*{Decomposition}\label{sec:decomposition_chosen}
 We choose to use the \textbf{optimization decomposition framework}, shown in~\cite{ConejoEtAl2006,BoydEtAl2015}.
 We suppose the system is \textbf{decomposable} into \textbf{sub-systems} and our original problem is decomposable into \textbf{sub-problems}.
 
 Using the framework, we see the input constraints \textbf{couple} the sub-systems, and as a consequence the sub-problems.
 The system is decomposed using the configuration for \textbf{complicating constraints}. Finally, we choose to use a decomposition called \textbf{primal decomposition}, detailed in the next chapter, which needs \textbf{coordination} to find the optimal solution.
 
-\newpage
-\subsection*{Topology}\label{sec:decomposition_chosen}
+\paragraph*{Topology}\label{sec:decomposition_chosen}
 The first choice for the topology of the system was to assume \textbf{correspondence} between sub-systems and sub-problems.
 
 The agents were supposed to form a \textbf{connected} graph, in which the agents can communicate to coordinate the decomposition (\textbf{coordinated control}).
