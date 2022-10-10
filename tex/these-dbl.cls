@@ -36,6 +36,7 @@
 \RequirePackage{parcolumns}
 \RequirePackage{multicol}
 \RequirePackage{booktabs}
+\RequirePackage[french]{isodate}
 \RequirePackage[ruled,noend,algo2e,algochapter]{algorithm2e}
 \RequirePackage[T1]{fontenc} % permet de sp\'{e}cifier \`{a} LaTeX l'utilisation du codage de caract\`{e}res T1, nouvelle norme LaTeX non utilis\'{e}e par d\'{e}faut pour des raisons de compatibilit\'{e} avec les anciens documents LaTeX.
 \RequirePackage{lmodern} % Assurer une bonne impression!
@@ -767,6 +768,7 @@ backrefstyle=three,
 
 %mise en page de la page de garde
 \def\maketitle{%
+  \selectlanguage{french}
   \thispagestyle{empty}
   \clearpage
     \begin{tikzpicture}[remember picture,overlay,line width=0mm]
@@ -804,7 +806,7 @@ backrefstyle=three,
       \node[align=left,anchor=north west] at (-2,-9.5) {
         \hspace{0.6cm}{\normalTwelve Par}\\[.2cm]
         \hspace{0.6cm}{\LARGETwelve \textbf{\@author}}\\[.5cm]
-        {\LargeTwelve \textbf{\@title}} \\[0.25cm]
+        {\begin{minipage}{14cm}\centering \LargeTwelve \textbf{\@title}\end{minipage}} \\[0.25cm]
         {\largeTwelve \@lesoustitre} \\[0.5cm]
         	 \smallTwelve
            \textbf{Th\`{e}se pr\'{e}sent\'{e}e et soutenue \`{a} \@lieu, le \@date} \\
