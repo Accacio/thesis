@@ -2702,4 +2702,22 @@ Comme on ne connait les frontières des polytopes, il est possible de mal choisi
 Alors, pour l'estimation on a besoin d'une méthode que puisse estimer $\Plinineq$ malgré le choix du rayon.
 Une méthode qui puisse aussi classifier les zones (vue en \S\ref{sec:cons-about-mult_fr}).
 
+\subsection{Détection}\label{sec:detection_ineq_fr}
+
+Comme vu en~\eqref{eq:lambdafuntheta_fr}, les parties affines $\Plinineq[i][n]$ sont invariantes avec le temps.
+Alors, si on estime $\Plinineqtildeestimate[i][n]$, on peut détecter l'attaques si il y a une différence entre la valeur estimée et la nominal $\Plinineqnominal[i][n]$.
+On peut comparer pour n'importe quel mode non creux\footnote{$2^{Nc}$-zones sont completèment creuses et ne changent pas avec la triche (\S\ref{sec:impact-local-problem_fr}).}.
+Par contre, comme on aura besoin de $\Plinineqtildeestimate$ pour la mitigation, on peut l'utiliser pour la détection aussi.
+
+En fixant une borne $\epsilon_{\Plinineq}$, et en calculant une érreur
+\begin{equation}
+  E_{i}^{(0)}[k] =\norm{\Plinineqtildeestimate-\Plinineqnominal}_{F},
+\end{equation}
+avec une fonction de détection associée $\mathfrak{d}_{i}^{(0)}$:
+\begin{equation}
+  \label{eq:detection_ineq}
+  \mathfrak{d}_{i}^{(0)}=\indicator{E_{i}^{(0)}[k]\geq\epsilon_{\Plinineq}},
+\end{equation}
+on détecte un attaque une fois que la borne soit surpassée, i.e., $\mathfrak{d}_{i}^{(0)}=1$.
+
 \end{document}
