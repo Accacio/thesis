@@ -3033,4 +3033,56 @@ Cependant, quand la correction est activée, l'erreur percentuel est de l'ordre 
   \end{tabular}
 \end{table}
 
+\newpage
+\section{Conclusion}\label{sec:conclusion_fr}
+
+\subsection{Rétrospective et Contributions}\label{sec:retr-contr_fr}
+Dans cette thèse on a étudié des attaques de type \fdi{} sur les \cps{} commandés par la \dmpc{} basée sur la décomposition primale.
+
+D'abord, on a présenté la \dmpc{} et des méthodes pour la décomposer.
+De la topologie jusqu'à communication.
+On a discuté la sécurité des \cps{} avec un focus sur les attaques en systèmes commandés par la \dmpc{}.
+Ce qui est assez récent (moins de 5 ans).
+
+On a présenté la \dmpc{} basée sur la décomposition primale et nous avons étudié ses vulnerabilités.
+
+À partir de quelques hypothèses et analyse du système, on a créé des schémas de détection et mitigation des effet des attaques.
+
+Après on a relaxé une hypothèse, ce qui a augenté de manière exponentiel la complexité du problème.
+En utilisant quelques proprietés, on a adapté les méthodes présentées pour contourner la complexité.
+
+\subsection{Contributions}
+À part de la systematization du déssin des \cps{} commandés par \dmpc{}, on liste comme contribution:
+\begin{itemize}
+  \item L'étude de la vulnerabilité de la \dmpc{} basée sur la décomposition primale
+  \item Stratégies Résilientes pour 2 types de systèmes de complexités croissantes
+        \begin{itemize}
+          \item Systèmes dépourvus (demande plus grande que les ressources)
+          \item Systèmes avec pénurie artificielle possible (demande optimale raisonable)
+        \end{itemize}
+\end{itemize}
+
+\subsection{Inconvénient}
+L'inconvénient principal de l'approche est la necessité de l'information de pénurie du système.
+D'abord, c'était donné par la nature du système, avec contraints qui privaient le système d'achever ses objectifs.
+Après, même avec un système pas dépourvu, une privation complète pourrait être imposée par le coordinateur, de manière artificielle en changeant les allocations.
+Par contre, on nécessitait de supposer que le point de pénurie artificielle respectait les contraintes locales.
+Alors, la question en ouvert est qu'est-ce que ce passe quand on ne peut pas imposer la pénurie complète, c'est à dire quand on n'a pluse les points de pénurie artificielle.
+
+\section{Directions Futures}
+Comme tout travail, plusieurs question sont émergées pendant les études et nous sommes nous rencontrés plusieurs fois à des carrefours, qui nous ont obligé de choisir une direction.
+
+Ayant à l'esprit les inconvénient et aussi des choix faits, on liste quelques questions et chemins non croisés.
+Et on espère qu'ils servent comme inspiration pour des travaux futurs.
+On les liste en ordre de moins marche arrière nécessaire, i.e., quant fundamentaux les changements nécessaires pour achever l'étude.
+\begin{itemize}
+  \item Étude de la robustesse de la stratégie sous bruit de communication
+  \item Réconstruction partiel de la matrice de triche, quand $\Plinineqtildeestimate$ n'est pas disponible
+  \item Adaptation de la stratégie résiliente pour les contraintes souples~\cite{AlessioBemporad2009}
+  \item Utiliser l'\EM{} (ou alternative) récursive pour l'estimation
+  \item Étude de l'adaptation de la stratégie résilient avec arrêt acceleré (comme en~\cite{DaiEtAl2017})
+  \item Étude de l'adaptation de la stratégie pour autres méthodes de décomposition
+  \item Étude d'autre modèles d'attaque (attaque affin initialement)
+\end{itemize}
+
 \end{document}
