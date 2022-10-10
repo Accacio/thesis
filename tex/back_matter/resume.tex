@@ -2893,4 +2893,38 @@ Une autre solution est considérer la matrice diagonal avec les mêmes valeurs~\
 Encore autre solution est d'utiliser la technique appellée \emph{recuite simulée}~\cite{CeleuxGovaert1992,OzerovFevotte2010}, où les covariances sont initialisées avec des valeurs importantes, indiquant l'incertitude des paramètres, et les faires decroitre à chaque itération.
 Dans ce travail on a utilisé les deux dernières solutions combinées.
 
+\subsection{La dMPC résiliente utilissant la pénurie artificielle}\label{sec:complete-safe-dmpc-ineq_fr}
+En mettant ensemble toutes les parties on a l'Algorithme~\ref{alg:safeDMPC_fr}, qui résume la \dmpc{} résiliente basée sur la décomposition primale utilisant la pénurie artificielle, ou en anglais \rpdmpcas{}.
+De nouveau, on peut voir la détection et reconstitution conditionnel de $\lambdai$ comme un superviseur, comme montré dans la dernière section.
+
+\begin{algorithm2e}[h]
+  \DontPrintSemicolon
+  \coordinit{
+    Initialiser $k$, $p$, $a$, $b$, $p_{\max}$ and $\epsilon$\;
+  }
+  \While{$k\geq 0$}{
+  \detectPhase{
+    Initialiser taille de la boule $r$\;
+    \For{$o\in\set{O}$}{
+    Coordinateur envoie $\vec{\theta}_{i}^{o}\in\set{B}(\thetairestricted,r)$\;
+    Sous-systèmes résolvent~\eqref{eq:DOP_local}, et envoient $\tilde{\vec{\lambda}}^{o}_{i}$\;
+    }
+    Coordinator estime $\Plinineqtildeestimate$ et $\sikineqtildeestimate$ avec \EM{} (Algorithme~\ref{alg:em_fr})\;
+    Coordinator compute $\mathfrak{d}_{i}$ utilisant~\eqref{eq:detection_ineq_fr}\;
+  }
+  \negotPhase{
+    Coordinator initialise $\vec{\theta}^{(p)}$ et les envoie aux sous-systèmes\;
+    \Repeat{$\left[\norm{{\vec{\theta}[k]}^{(p)}-{\vec{\theta}[k]}^{(p-1)}}\leq\epsilon\right]\lor \left[p\geq p_{\max}\right]$}{
+      Agents résolvent~\eqref{eq:DOP_local_fr} et envoient ${\vec{\lambda}_{i}[k]}^{(p)}$\;
+  Coordinateur m-à-j les allocations~\eqref{eq:projectedSubgradient_lambda_reprise_fr} avec versions adéquades de $\lambdai$:\;
+  \quad$\vec{\lambda}_{i}^{\star}(\vec{\theta}\p)$, si $\mathfrak{d}_{i}=0$ et $\lambdaireconstructed$, si ${\mathfrak{d}_{i}=1}$~\eqref{eq:lambda_reconstruction}\;
+  $p\gets p+1$
+ }
+  Agents appliquent la dernière commande $\vec{u}_{i}^{\star}[0|k]$ calculée\;
+  $k\gets k+1$
+}
+}
+ \caption{La dMPC résiliente basée sur la décomposition primale utilisant pénurie artificielle.}\label{alg:safeDMPC_fr}
+\end{algorithm2e}
+
 \end{document}
