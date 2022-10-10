@@ -26,32 +26,38 @@
 \titleFR{Sécurité de la Commande Prédictive distribuée sous injection de données fausses}
 \keywordsFR{Systèmes cyber-physiques, Commande Prédictive distribuée, Optimisation distribuée}
 \abstractFR{%
-\todo[Write French Abstract]{
-  Controlling large-scale systems sometimes requires decentralized computation.
-  Communication among agents is crucial to achieving consensus and optimal global behavior.
-  These negotiation mechanisms are sensitive to attacks on those exchanges.
-  This paper proposes an algorithm based on Expectation Maximization to mitigate the effects of attacks in a resource allocation based distributed model predictive control.
-  The performance is assessed through an academic example of the temperature control of multiple houses under input power constraints.
-}}
+  Les dispositifs informatiques sont partout, ils commandent systèmes de différentes
+  échelles, dès drones de la taille d'une pièce aux systèmes de distribution d'énergie de la taille des pays.
+  La mixture de ces dispositifs avec des systèmes physiques essentiels pour la vie quotidienne origine les systèmes cyber-physiques.
+  Dépendant de l'échelle des systèmes, la computation est divisée en différents dispositifs, qui nécessitent de négocier pour trouver un consensus de la meilleure commande à être appliquée.
+  La communication entre agents est d'extrême importance pour que le consensus soit achevé.
+  Par contre, la négociation est sensible à déviations dans les valeurs échangées.
+  An attaquant peut utiliser cette information pour influencer la négociation pour bénéficier un groupe d'agents.
+  Cette thèse propose une étude de la conception de la commande de tels systèmes jusqu'à leur sécurité.
+  Et après, on propose des méthodes pour sécuriser le système contre des attaques où l'agent malintentionné injecte de la fausse information pendant la négociation.
+  La performance des méthodes est étudiée en utilisant des simulations d'un petit réseau de distribution de chaleur.
+}
 
 \makeatletter
 \titleEN{\@title}
 \makeatother
 \keywordsEN{Cyber-physical systems, Large-scale systems, Model Predictive Control, Distributed Optimisation}
 \abstractEN{%
-  \todo[Write English Abstract]{
-  Controlling large-scale systems sometimes requires decentralized computation.
-  Communication among agents is crucial to achieving consensus and optimal global behavior.
-  These negotiation mechanisms are sensitive to attacks on those exchanges.
-  This paper proposes an algorithm based on Expectation Maximization to mitigate the effects of attacks in a resource allocation based distributed model predictive control.
-  The performance is assessed through an academic example of the temperature control of multiple houses under input power constraints.
-}}
+  Computing devices are everywhere, controlling systems of different scales, from drones of the size of a coin to country-wise energy distribution grids.
+  The amalgamation of these devices and the physical systems essential for our everyday lives originates the cyber-physical systems.
+  Depending on their scale, the computation is divided into multiple computing devices, which need to negotiate to find a consensus of the best control to be applied.
+  The communication among agents is vital for the consensus to be achieved. However, the negotiation is sensitive to deviations in the exchanged values.
+  An attacker can use this information to influence the negotiation to benefit a group of agents.
+  This thesis proposes a study from the conception of the control of such systems to its security.
+  And then, we propose methods to secure the system from attacks where an ill-intentioned agent injects false data into the negotiation.
+  The performance of the proposed methods is assessed through academic simulations of a small district heating network.
+}
 
 \day12
 \month12
 \year2022
 \lieu{Cesson Sévigné}
-\numthese{`` si pertinent ''}
+% \numthese{20}\todo[change number]{}
 
 \reporter{José María MAESTRE}{Professeur}{Universidad de Sevilla}
 \reporter{Ionela PRODAN}{Maître de Conférences}{Grenoble INP}
