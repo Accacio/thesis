@@ -921,12 +921,15 @@ backrefstyle=three,
 }
 
 \providecommand{\listacronymsname}{}
+\providecommand{\remarkname}{}
 
 \addto\captionsenglish{
   \renewcommand{\listacronymsname}{List of Acronyms}
+  \renewcommand{\remarkname}{Remark}
 }
 \addto\captionsfrench{
   \renewcommand{\listacronymsname}{Liste des abréviations}
+  \renewcommand{\remarkname}{Remarque}
 }
 
 \captionsetup{justification=centering}
@@ -1180,8 +1183,8 @@ backrefstyle=three,
 \begin{infobox}[
   skipabove={1.2\baselineskip},
   innertopmargin={1.2\baselineskip},
-  firstextra={\useasboundingbox (P) rectangle (P); \node[fill=fondtitre!80,text=white,anchor=west,xshift=5mm] at (P-|O)  {\sffamily\textbf{\strut Remark~\theremark}};},
-  singleextra={\useasboundingbox (P) rectangle (P); \node[fill=fondtitre!80,text=white,anchor=west,xshift=5mm] at (P-|O)  {\sffamily\textbf{\strut Remark~\theremark}};},
+  firstextra={\useasboundingbox (P) rectangle (P); \node[fill=fondtitre!80,text=white,anchor=west,xshift=5mm] at (P-|O)  {\sffamily\textbf{\strut \remarkname~\theremark}};},
+  singleextra={\useasboundingbox (P) rectangle (P); \node[fill=fondtitre!80,text=white,anchor=west,xshift=5mm] at (P-|O)  {\sffamily\textbf{\strut \remarkname~\theremark}};},
  ]
  %https://tex.stackexchange.com/questions/135083/mdframed-does-not-split-correctly-between-pages
 }
