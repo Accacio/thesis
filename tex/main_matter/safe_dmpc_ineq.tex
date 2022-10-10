@@ -1011,7 +1011,7 @@ When estimates $\vec{\phi}_{z}^{\mathrm{new}}$ converge, we can retrieve the est
   For example, if we generate points inside one single region $j$, all $Z$ regions would have the estimated parameter of such region $j$.
 \end{remark}
 
-Since the $z$ indices do not necessarily correspond to the in~\eqref{eq:lambdafuntheta}, we need to recover the $z$ that corresponds to the $0$-zone.
+Since the $z$ indices do not necessarily correspond to the ones in~\eqref{eq:lambdafuntheta}, we need to recover the $z$ that corresponds to the $0$-zone.
 We take the observation $o$ corresponding to the $\thetairestricted$, which we know belongs to the $0$-zone, and we find its most probable region $z$ with
 \begin{equation*}\label{eq:argmaxz}
   \arg\underset{z}{\max\!.}\ {\zeta_{zo}(\set{P})}.
@@ -1098,7 +1098,7 @@ All other parameters are the same, which when decomposing the \mpc{} problem we 
 and update equation~\eqref{eq:projectedSubgradient_lambda_reprise}.
 
 \subsubsection{Results}\label{sec:results}
-We test the algorithm using the same similation period of
+We test the algorithm using the same simulation period of
 $\input{../data/resilient_ineq/hours.tex}$
 hours, i.e.,
 ${k\in\{0,\input{../data/resilient_ineq/hours.tex}/T_{s}\}}$.
@@ -1111,7 +1111,7 @@ The same scenarios are used:
   % \todo{\item Agents I and IV attack system controlled by \rpdmpcas{} (denoted as MC)\label{it:case_selfish_multiple_recovered_as}\note{only if a have time to simulate}}
 \end{enumerate}
 
-The attack model used for scenarios~\ref{it:case_selfish} and~\ref{it:case_selfish_recovered},
+The attack model used for scenarios~\ref{it:case_selfish_as} and~\ref{it:case_selfish_recovered_as},
 are
 \begin{align}
   T_{I}=&\begin{cases}
@@ -1129,7 +1129,7 @@ with its reference $w_{I}$.
 We can also see in the figure the values of the decision variable ${E_{I}^{(0)}[k]}$ with the threshold $\epsilon_{\Plinineq}$.
 Notice how the reference $w_{I}$ is not reached even in the nominal behavior (in magenta),
 due to initial states and power constraints, indicating that the unconstrained solution $\optuncUik\succeq\0$.
-As expected, the decision variable lies under the threshold ${\epsilon_{P}=10^{-4}}$ with values of order ${E_{I}^{N}(k)\approx10^{-10}}$ (no attack detected).
+As expected, the decision variable lies under the threshold ${\epsilon_{\Plinineq}=10^{-4}}$ with values of order ${E_{I}^{N}(k)\approx10^{-10}}$ (no attack detected).
 
 \begin{figure}[h]
   \centering
@@ -1146,7 +1146,7 @@ When agent~I attacks the system (in orange), its tracking error
 ${w_{I}-y_{I}}$ decreases, and it almost reaches the reference.
 In Fig.~\ref{fig:response3Scenarios_all_houses}, we see how the resources from house~I were transferred from all other houses, who lose performance.
 
-In this case, the detection variable surpasses the bound $\epsilon_{P}$,
+In this case, the detection variable surpasses the bound $\epsilon_{\Plinineq}$,
 ${E_{I}^{S}\approx200}$, indicating a change of behavior, a possible attack.
 
 If the proposed resilient algorithm is activated (black dots), the temperatures approach their nominal value $y_{I}^{N}$.
