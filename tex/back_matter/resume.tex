@@ -2107,14 +2107,14 @@ Même si on a des problèmes \qp{} avec des contraintes d'inégalité, on peut e
 Par contre, les variables duales qui correspondent aux contraintes d'inégalité doivent être positives~\cite{BoydVandenberghe2004}.
 En utilisant les conditions de complémentarité, il est possible de vérifier que $\lambdaik$ est $0$ (ou différent de $0$) dépendant du statuts de chaque contrainte pour la solution sans contrainte $\optuncUik$.
 
-Alors, la solution complète de $\lambdaik$ dépendra de la permutation des statuts des contraintes d'inégalité.
-Et si on a $\nineq$ contraintes, on peut avoir potentiellement $2^{\nineq}$ permutations différentes.
+Alors, la solution complète de $\lambdaik$ dépendra de la permutation des statuts des contraintes.
+Et si on a $\nineq$ contraintes, on peut avoir potentiellement $2^{\nineq}$ permutations.
 \begin{remark}
   On dit potentiellement, car ça peut dépendre de la forme des contraintes, comme on verra en \S\ref{sec:cons-about-stat_fr}.
 \end{remark}
 
 On voit que la solution de \eqref{eq:DOP_local_set_constraint_fr} dépend du statut des contraintes, qui dépendent de la valeur de $\thetaik$.
-De cette façon, on remarque que l'ensemble des contraintes divise l'espace de $\thetaik$ en plusieurs régions notées $\set{R}_{\lambdai}^{n}$, ou chaque région répresente la combinaison de contraintes actives ou pas pour $\optuncUik$.
+De cette façon, on remarque que l'ensemble des contraintes divise l'espace de $\thetaik$ en plusieurs régions dénotées $\set{R}_{\lambdai}^{n}$, ou chaque région répresente la combinaison de contraintes actives ou pas pour $\optuncUik$.
 
 Les régions $\set{R}_{\lambdai}^{n}$ sont des polytopes définis par ${\set{R}_{\lambdai}^{n}=\setbuild{\vec{x}}{G^{n}[k]\vec{x} \preceq b^{n}[k]}}$ où les hyperplans peuvent varier avec le temps $k$.
 Comme remarqué en~\cite{BemporadEtAl2002}, les polytopes ne se chevauchent pas, i.e., ${\set{R}_{\lambdai}^{i}\cap\set{R}_{\lambdai}^{j}=\emptyset, \forall i\neq j}$.
