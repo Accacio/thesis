@@ -2720,4 +2720,177 @@ avec une fonction de détection associée $\mathfrak{d}_{i}^{(0)}$:
 \end{equation}
 on détecte un attaque une fois que la borne soit surpassée, i.e., $\mathfrak{d}_{i}^{(0)}=1$.
 
+\subsection{Estimation de paramètres multiples}\label{sec:cons-about-mult_fr}
+
+On utilise une méthode de la \emph{famille de partitions}\footnote{Les méthodes dans cette famille résolvent des problèmes de régression et classification successifs.}
+La méthode choisie est l'\EM{}~\cite{DempsterEtAl1977,Bishop2006}.
+
+\subsubsection{Expectation Maximization}
+Son objectif est de trouver, à partir de un jeux de données observables $\set{B}$, des estimateurs des paramètres $\set{P}$ qui maximisent le log de la vraisemblance marginal ${\ln\probability{\set{B};\set{P}}}$.
+Les modèles normalement on des variables latentes (pas observables) dans un ensemble $\set{U}$.
+
+Ce problème de maximiser ${\ln\probability{\set{B};\set{P}}}$ n'a pas de solution analytique.
+
+À la place on maximise la valeur espérée du log de la vraisemblance de données complète $\ln\probability{\set{B},\set{U};\set{P}}$ par rapport les probabilités à posterior ${\probability{\set{U}|\set{B};\set{P}}}$.
+
+Pour calculer les probabilités à posteriori on utilise d'estimations currantes $\set{P}$ dénotés $\set{P}_{\mathrm{cur}}$.
+
+L'algorithm est résumé en Algorithm~\ref{alg:em_fr}.
+
+\SetKwBlock{Estepfr}{ Pas E:}{}
+\SetKwBlock{Mstepfr}{ Pas M:}{}
+\begin{algorithm2e}[h]
+  \DontPrintSemicolon%
+  Initialiser $\set{P}_{\mathrm{new}}$\;
+  \Repeat{$\set{P}_{\mathrm{cur}}$ a convergé}{
+    $\set{P}_{\mathrm{cur}}\gets\set{P}_{\mathrm{new}}$\;
+    \Estepfr{
+      Calculer ${\probability{\set{U}|\set{B};\set{P}_{\mathrm{cur}}}}$\;
+    }
+    \Mstepfr{
+      Estimer $\set{P}_{\text{new}}$: \begin{equation}
+        \label{eq:m_step_fr}
+        \set{P}_{\mathrm{new}}=\argmax_{\set{P}}\ \expectation[{\probability{\set{U}|\set{B};\set{P}_{\mathrm{cur}}}}]{\ln\probability{\set{B},\set{U};\set{P}}}
+      \end{equation}
+    }
+}
+ \caption{Expectation Maximization}\label{alg:em_fr}
+\end{algorithm2e}
+
+\subsection{Adaptation pour le problème étudié}
+Comme \EM{} est probabilistique on doit incorporer un comportement probabilistique dans notre modèle~\eqref{eq:lambdafuntheta_fr}.
+
+On enlève les indices $i$ et $[k]$, pour faciliter la lecture.
+
+D'abord, on utilise les homolques stochastiques $\random{\thetai}$ and $\random{\lambdai}$.
+Si on surveille $O$ échanges entre agent et coordinateur, on voit variables d'entrée et réponses, ${\random{\vec{\theta}}_{o}}$ et ${\random{\vec{\lambda}}_{o}}$, ${o\in\set{O}=\{0\until O-1\}}$.
+On les organise en ${\random{\Theta},\random{\Lambda}\in\R^{c\times O}}$.
+Et la tuple ${(\random{\Theta},\random{\Lambda})}$ est l'ensemble observable $\set{B}$.
+
+Comme chaque $\randomvec{\theta}_{o}$ reste dans une région, on l'associe à une variable ${z\in\set{Z}=\{0\until Z-1\}}$ qui indique le numéro de zone.
+Notre modèle devient
+
+\begin{equation}\label{eq:linear_cheating_random_fr}
+  \randomvec{\lambda}_{o}=
+  \begin{cases}
+    -\tilde{P}^{0}\randomvec{\theta}_{o}-\tilde{\vec{s}}^{0},&\text{si dans zone } 0\\
+    \qquad\quad \vdots&\qquad\quad \vdots\\
+    -\tilde{P}^{Z-1}\randomvec{\theta}_{o}-\tilde{\vec{s}}^{Z},&\text{si dans zone } {Z-1}\\
+  \end{cases}.
+\end{equation}
+
+En~\cite{FariaSoromenho2010}, une méthode similaire est appellée \emph{mixture de régressions linéaires}, mais comme on a des fonctions \pwa{}, on l'apelle \emph{mixture de régressions affines}.
+
+Comme on ne connait pas l'appartenance de chaque point observé, associe l'index $z$ de chaque observation ${(\randomvec{\lambda}_{o}, \randomvec{\theta}_{o})}$ à une variable latente ${\random{z}_{o}}$.
+On organise $\random{z}_{o}$ en ${\random{Z}\in\R^{1\times O}}$, qui est notre ensemble pas observable $\set{U}$.
+
+On suppose que $\random{z}_{o}$ suit une distribution catégorique, avec des probabilités associées ${\Pi=\{\pi^{z}|z\in\set{Z}\}}$ tels que
+\[\probability{\random{z}_{o}=z}=\pi^{z} \in [0,1], \qquad \sum_{z\in\set{Z}} \pi^{z} = 1.
+\]
+
+On construit l'ensemble de paramètres ${\set{P}=\setbuild{\set{P}^{z}}{z\in\set{Z}}}$, avec ${\set{P}^{z}=(\tilde{P}^{z},\tilde{\vec{s}}^{z},\pi^{z})}$.
+
+\begin{remark}
+  On estime $\pi^{z}$ et $\tilde{\vec{s}}^{z}$ puremen pour mettre le modèle à jour et contraindre l'identification de $\tilde{P}^{z}$.
+\end{remark}
+
+Pour $\vec{\theta}$, on considère une densité de probabilité impropre et non informative~\cite{ChristensenEtAl2010}
+\[
+  \probability{\randomvec{\theta}_{o}} \,\propto \,1,
+\]
+que signifie qu'on connait presque sûrement la valeur de $\randomvec{\theta}_{o}$.
+
+Une fois définies les variables d'entrées et latents, on modèle la réponse $\random{\lambda}_{o}$ comme une variable normale multivariables avec fonction de densité de probabilité
+\begin{equation}
+  \label{eq:multivariate_gaussian_fr}
+\probability{\randomvec{\lambda}_{o}|\randomvec{\theta}_{o},\random{z}_{o}=z; \set{P}^{z}} = \mathcal{N}(\randomvec{\lambda}_{o};f(\randomvec{\theta}_{o};\set{P}^{z}),{\Sigma^{z}}),
+\end{equation}
+qui suivant le modèle de la mixture de régressions affines~\eqref{eq:linear_cheating_random_fr} a comme valeur espérée
+\begin{equation}
+  f(\randomvec{\theta}_{o};(P,\vec{s},\pi))=-{P}\randomvec{\theta}_{o}-{\vec{s}},
+\end{equation}
+
+Les matrices de covariance $\Sigma^{z}$ tend à $0_{c}$, s'approachant des valeurs originales des fonctions en~\eqref{eq:lambdafuntheta_fr}.
+
+Un exemple de la répresentation de tel fonction pour $1$ dimension est vue en Fig.~\ref{fig:affine_gaussian_mixture}, où points plus sombres présentent plus de probabilité que les plus clairs.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{../img/resilient_ineq/pwa.pdf}
+  \caption{Mixture gaussianne pour \pwa{} d'une dimension.}\label{fig:affine_gaussian_mixture_fr}
+\end{figure}
+
+Les probabilités à posteriori $\zeta_{zo}(\set{P})=\probability{\random{z}_{o}=z|\randomvec{\lambda}_{o},\randomvec{\theta}_{o};\set{P}}$, aussi appellées \emph{responsabilités}, sont calculées:
+\begin{align}
+  \label{eq:responsibilities_fr}
+\zeta_{zo}(\set{P})&=\frac{\pi_{z}{\mathcal{N}(\randomvec{\lambda}_{o};f(\randomvec{\theta}_{o};\set{P}^{z}),{\Sigma^{z}})}}{\sum\limits_{j=1}^{Z}\pi_{j}\mathcal{N}(\randomvec{\lambda}_{o};f(\randomvec{\theta}_{o};\set{P}^{j}),{\Sigma^{j}})}.
+\end{align}
+On les appelle responsabilités car on calcule la probabilité de que la zone $z$ soit responsable d'avoir généré l'observation $o$.
+
+On calcule la valeur espérée de ${\ln\probability{\random{\Theta},\random{\Lambda},\random{Z};\set{P}}}$ par rapport à ${\zeta_{zo}(\set{P}_{\mathrm{cur}})}$~\cite[Chapitre 9]{Bishop2006} en utilisant
+\begin{align}
+  \label{eq:completedataLogLikelihood_expectation}
+\expectation[{\zeta_{zo}(\set{P}_{\mathrm{cur}})}]{\ln\probability{\random{\Theta},\random{\Lambda},\random{Z};\set{P}}}&= \sum_{o\in\set{O}}\sum_{z\in\set{Z}}  \zeta_{zo}(\set{P}_{\mathrm{cur}})\alpha_{zo},
+\end{align}
+où ${\alpha_{zo}=\ln{\pi_{z}}+\ln{\mathcal{N}(\randomvec{\lambda}_{o};f(\randomvec{\theta}_{o};\set{P}^{z}),{\Sigma^{z}})}}$.
+
+Pour faciliter les calculs, on introduit une variable $\vec{\phi}^{z}$ pour intégrer les paramètres, ainsi comme on a fait dans le cas avec le cas \RLS{} (\S\ref{sec:about-estimation_fr})
+\begin{equation}
+  \vec{\phi}^{z}=\left[
+      \begin{matrix}
+      \vectorize{\tilde{P}^{z}}^{T}\\\tilde{\vec{s}}^{z}
+      \end{matrix}
+    \right].
+\end{equation}
+
+Pour trouver le $\vec{\phi}^{z}$ optimal pour le problème en~\eqref{eq:m_step_fr}, on prend les gradients de~\eqref{eq:completedataLogLikelihood_expectation_fr} par rapport aux vecteurs $\vec{\phi}^{z}$ et on les fait disparaître.
+
+On trouve comme solution
+\begin{equation}
+  \label{eq:mstepestimation_fr}
+  \vec{\phi}^{z}_{\mathrm{new}}=\pseudoinv{(\Xi^{z}\random{\Omega})}\Xi^{z}\vectorize{\random{\Lambda}},
+\end{equation}
+où
+${\random{\Omega}=[\hadamard{(\Upsilon \random{\Theta}\Delta)}{Y};G]}$,
+avec des matrices
+${\Upsilon=\kron{\1_{c}^{T}}{I_{c}}}$,
+${\Delta=\kron{I_{O}}{\1_{c}^{T}}}$,
+${Y=\kron{G}{\1_{c}}}$,
+${G=\kron{\1_{O}^{T}}{I_{c}}}$,
+et
+\[{\Xi^{z}={\diag(\sqrt{{\zeta(z_{z1};\set{P}_{\mathrm{cur}})}}I_{c},\cdots,\sqrt{{\zeta(z_{zO};\set{P}_{\mathrm{cur}})}}I_{c})}}.\]
+Si on fait le même, mais pour $\pi^{z}$ on trouve
+\begin{equation*}
+  \label{eq:3_fr}
+  \pi^{z}=\sum\limits_{o\in\set{O}}\tfrac{\zeta_{zo}(\set{P}_{\mathrm{cur}})}{O}.
+\end{equation*}
+
+On voit que~\eqref{eq:mstepestimation_fr} est une solution pondéré d'un \LS{}, avec les responsabilités comme poids,  qui ajustent la contribution de tous les observations aux modèles de régression.
+
+Il existe quelques similarités avec la méthode K-planes (et k-means) (voir~\cite{BradleyMangasarian2000}), mais l'\EM{} est plus transigen.
+Au lieu d'affecter l'observation à un zone avec 100\% de sûreté, \EM{} utilise la responsabilité de chase zone (\emph{affectation fluide}).
+
+Quand $\vec{\phi}_{z}^{\mathrm{new}}$ converge, on peut récupérer les estimations de $\tilde{P}^{z}$ et $\tilde{\vec{s}}^{z}$, pour utiliser dans les schémas de détection et mitigation.
+
+Comme les indices $z$ ne correspondent pas forcément à ceux de~\eqref{eq:lambdafuntheta_fr}, il faut trouver le $z$ qui correspond à la $0$-zone.
+On prend l'observation $o$ qui correspond à $\thetairestricted$, qui comme on sait appartient à la $0$-zone, et trouve la région plus probable avec
+\begin{equation*}\label{eq:argmaxz_fr}
+  \arg\underset{z}{\max\!.}\ {\zeta_{zo}(\set{P})}.
+\end{equation*}
+
+Le paramètre avec cet index correspond à notre $\Plinineqtildeestimate$.
+
+\subsubsection{Quelques réserves}
+
+C'est connu~\cite{CeleuxGovaert1992,Bishop2006,BaudryCeleux2015} que l'algorithme peut présenter une convergence lente.
+En~\cite{FariaSoromenho2010}, les autrices comparent la convergence de l'\EM{} avec quelques variantes (\sEM{} et \CEM{}).
+
+Un autre point est la dépendance de la solution par rapport l'initialisation de l'algorithme~\cite{KarlisXekalaki2003,BaudryCeleux2015}.
+
+Encore un autre et l'inversion de quelques variables (notably the covariance $\Sigma$) quand utilisant modèles de dimensions élevés.
+Ça va dépendre des observations $O$ et le nombre de zones $Z$.
+Une façon de contrer l'éffet est inclure dans les éléments estimés.
+Une autre solution est considérer la matrice diagonal avec les mêmes valeurs~\cite{KarlisXekalaki2003}.
+Encore autre solution est d'utiliser la technique appellée \emph{recuite simulée}~\cite{CeleuxGovaert1992,OzerovFevotte2010}, où les covariances sont initialisées avec des valeurs importantes, indiquant l'incertitude des paramètres, et les faires decroitre à chaque itération.
+Dans ce travail on a utilisé les deux dernières solutions combinées.
+
 \end{document}
