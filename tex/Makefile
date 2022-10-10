@@ -34,4 +34,4 @@ clean-pdf:
 	@rm -f $(TARGET).pdf
 
 preview: $(TARGET).pdf
-	convert -density 300 'main.pdf[0]' ../main_preview.png
+	convert -density 300 'main.pdf[0]' ../img/main_preview.png
