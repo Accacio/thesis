@@ -638,7 +638,6 @@ axs[1].set_xlabel('Time (k)',usetex=True,fontsize=16)
 axs[0].tick_params(axis='both', which='major', labelsize=20)
 axs[1].tick_params(axis='both', which='major', labelsize=20)
 
-
 fig.tight_layout()
 # plot(reshape(subsystems.uHist(1,end,:,i),[simK 1]),linS{i},'Color',colors{i})
 
@@ -664,6 +663,12 @@ fig.tight_layout()
 plt.savefig(outputFolder + "/" +  "ErrorWX_command_normErrH" +  ".pdf",bbox_inches='tight')
 plt.savefig(outputFolder + "/" +  "ErrorWX_command_normErrH" +  ".png",bbox_inches='tight')
 
+axs[0].set_title('Température de l\'air dans maison I ($^oC$)',fontsize=16)
+axs[1].set_title("Norme de l'erreur $\| \hat{P_i}-P_{0_i}\|$",fontsize=16)
+axs[1].set_xlabel('Temps (k)',usetex=True,fontsize=16)
+
+plt.savefig(outputFolder + "/" +  "ErrorWX_command_normErrH" +  "_fr.pdf",bbox_inches='tight')
+plt.savefig(outputFolder + "/" +  "ErrorWX_command_normErrH" +  "_fr.png",bbox_inches='tight')
 
 
 fig, axs = plt.subplots(4, 1,facecolor=(.0, .0, .0, .0),figsize=(8,8))
@@ -725,7 +730,14 @@ plt.savefig(outputFolder + "ErrorWX_command_normErrH_all_houses" +  ".pdf",bbox_
 plt.savefig(outputFolder + "ErrorWX_command_normErrH_all_houses" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
 
 
+ax0.set_title('Température de l\'air dans maison I ($^oC$)',fontsize=20)
+ax1.set_title('Température de l\'air dans maison II ($^oC$)',fontsize=20)
+ax2.set_title('Température de l\'air dans maison III ($^oC$)',fontsize=20)
+ax3.set_title('Température de l\'air dans maison IV ($^oC$)',fontsize=20)
+ax3.set_xlabel('Temps (k)',usetex=True,fontsize=16)
 
+plt.savefig(outputFolder + "ErrorWX_command_normErrH_all_houses" +  "_fr.pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig(outputFolder + "ErrorWX_command_normErrH_all_houses" +  "_fr.png",bbox_inches='tight',facecolor=fig.get_facecolor())
 
 
 

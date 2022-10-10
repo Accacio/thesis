@@ -260,7 +260,7 @@ axs[0].set_ylim([15, 27])
 axs[0].set_title('Air temperature in house I ($^oC$)',fontsize=16)
 axs[0].tick_params(axis='both', which='major', labelsize=20)
 
-axs[1].plot(np.arange(1,simK+1),1e-4*np.ones([simK,1]),'-',drawstyle='steps-post',label='$\epsilon_p$') # error line
+axs[1].plot(np.arange(1,simK+1),1e-4*np.ones([simK,1]),'-',drawstyle='steps-post',label='$\epsilon_{P_I^{(0)}}$') # error line
 axs[1].scatter(np.arange(1,simK+1),nominal_err[0:simK,0],color='magenta',s=10,label='$E_{\mathrm{I}}^N[k]$')
 axs[1].plot(np.arange(1,simK+1),selfish_err[0:simK,0],'-',color='darkorange',drawstyle='steps-post',label='$E_{\mathrm{I}}^S[k]$')
 axs[1].scatter(np.arange(1,simK+1),corrected_err[0:simK,0],color='black',s=10,label='$E_{\mathrm{I}}^C[k]$')
@@ -283,6 +283,13 @@ fig.tight_layout()
 
 plt.savefig(outputFolder + "/ErrorWX_command_normErrH" +  ".pdf",bbox_inches='tight',transparent=True)
 plt.savefig(outputFolder + "/ErrorWX_command_normErrH" +  ".png",bbox_inches='tight',transparent=True)
+
+axs[0].set_title('Température de l\'air dans maison I ($^oC$)',fontsize=16)
+axs[1].set_title("Norme de l'erreur $\| \hat{P_i}-P_{0_i}\|$",fontsize=16)
+axs[1].set_xlabel('Temps (k)',usetex=True,fontsize=16)
+
+plt.savefig(outputFolder + "/ErrorWX_command_normErrH" +  "_fr.pdf",bbox_inches='tight',transparent=True)
+plt.savefig(outputFolder + "/ErrorWX_command_normErrH" +  "_fr.png",bbox_inches='tight',transparent=True)
 
 fig, axs = plt.subplots(4, 1,facecolor=(.0, .0, .0, .0),figsize=(8,8))
 ax0=plt.subplot(4,1,1,aspect=1/5)
@@ -342,6 +349,15 @@ ax1.legend(( '$w_{i}[k]$','$y_{i}^{N}[k]$','$y_{i}^{S}[k]$','$y_{i}^{C}[k]$'),lo
 plt.savefig(outputFolder + "ErrorWX_command_normErrH_all_houses" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
 plt.savefig(outputFolder + "ErrorWX_command_normErrH_all_houses" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
 
+ax0.set_title('Température de l\'air dans maison I ($^oC$)',fontsize=20)
+ax1.set_title('Température de l\'air dans maison II ($^oC$)',fontsize=20)
+ax2.set_title('Température de l\'air dans maison III ($^oC$)',fontsize=20)
+ax3.set_title('Température de l\'air dans maison IV ($^oC$)',fontsize=20)
+ax3.set_xlabel('Temps (k)',usetex=True,fontsize=16)
+
+plt.savefig(outputFolder + "ErrorWX_command_normErrH_all_houses" +  "_fr.pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig(outputFolder + "ErrorWX_command_normErrH_all_houses" +  "_fr.png",bbox_inches='tight',facecolor=fig.get_facecolor())
+
 # NOTE(accacio): control
 fig, axs = plt.subplots(3, 1,facecolor=(.0, .0, .0, .0))
 
@@ -378,6 +394,12 @@ fig.tight_layout()
 
 plt.savefig(outputFolder + "control" +  ".pdf",bbox_inches='tight',transparent=True)
 plt.savefig(outputFolder + "control" +  ".png",bbox_inches='tight',transparent=True)
+
+axs[0].set_title('Commande appliquée $u_i$ ($kW$) ',fontsize=16)
+axs[2].set_xlabel('Temps (k)',usetex=True,fontsize=16)
+
+plt.savefig(outputFolder + "control" +  "_fr.pdf",bbox_inches='tight',transparent=True)
+plt.savefig(outputFolder + "control" +  "_fr.png",bbox_inches='tight',transparent=True)
 
 # rc('font', **arial_font)
 axs[0].set_xticks([])

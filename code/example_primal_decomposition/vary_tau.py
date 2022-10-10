@@ -49,6 +49,10 @@ fig.tight_layout()
 plt.savefig(outputFolder + "example_vary_tau_J" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
 plt.savefig(outputFolder + "example_vary_tau_J" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
 
+plt.xlabel('Coefficient non-cooperatif ($\\tau_{3}$)',usetex=True,fontsize=16)
+plt.savefig(outputFolder + "example_vary_tau_J_fr" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig(outputFolder + "example_vary_tau_J_fr" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
+
 
 fig, axs = plt.subplots(2, 1,figsize=(4, 3),facecolor=(.0, .0, .0, .0))
 axs[0].plot(taus,np.sum(Ji_accum,axis=0),'b')
@@ -74,6 +78,10 @@ fig.tight_layout()
 plt.savefig(outputFolder + "example_vary_tau_J_detail" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
 plt.savefig(outputFolder + "example_vary_tau_J_detail" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
 
+plt.xlabel('Coefficient non-cooperatif ($\\tau_{3}$)',usetex=True,fontsize=16)
+plt.savefig(outputFolder + "example_vary_tau_J_detail_fr" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig(outputFolder + "example_vary_tau_J_detail_fr" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
+
 lambda_hist=var_tau['lambdaHist']
 lastp=var_tau['lastp'][0]
 
@@ -97,6 +105,9 @@ plt.legend((  '$\\lambda_{1_1}$', '$\\lambda_{1_2}$', '$\\lambda_{2_1}$', '$\\la
 plt.savefig(outputFolder + "example_vary_tau_lambda_tau_" + str(taus[tau_index])  +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
 plt.savefig(outputFolder + "example_vary_tau_lambda_tau_" + str(taus[tau_index])  +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
 
+plt.xlabel('Pas de la négociation ($p$)',usetex=True,fontsize=16)
+plt.savefig(outputFolder + "example_vary_tau_lambda_tau_" + str(taus[tau_index])  +  "_fr.pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig(outputFolder + "example_vary_tau_lambda_tau_" + str(taus[tau_index])  +  "_fr.png",bbox_inches='tight',facecolor=fig.get_facecolor())
 
 tau_index=13
 fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
@@ -115,6 +126,10 @@ plt.legend((  '$\\lambda_{1_1}$', '$\\lambda_{1_2}$', '$\\lambda_{2_1}$', '$\\la
 plt.savefig(outputFolder + "example_vary_tau_lambda_tau_" + str(taus[tau_index])  +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
 plt.savefig(outputFolder + "example_vary_tau_lambda_tau_" + str(taus[tau_index])  +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
 
+plt.xlabel('Pas de la négociation ($p$)',usetex=True,fontsize=16)
+plt.savefig(outputFolder + "example_vary_tau_lambda_tau_" + str(taus[tau_index])  +  "_fr.pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig(outputFolder + "example_vary_tau_lambda_tau_" + str(taus[tau_index])  +  "_fr.png",bbox_inches='tight',facecolor=fig.get_facecolor())
+
 tau_index=18
 fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
 axs.plot(np.arange(0,lastp[k]),np.transpose(lambda_hist[0,0:lastp[k],k,0,tau_index]),color_map[0])
@@ -132,6 +147,9 @@ plt.legend((  '$\\lambda_{1_1}$', '$\\lambda_{1_2}$', '$\\lambda_{2_1}$', '$\\la
 plt.savefig(outputFolder + "example_vary_tau_lambda_tau_" + str(taus[tau_index])  +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
 plt.savefig(outputFolder + "example_vary_tau_lambda_tau_" + str(taus[tau_index])  +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
 
+plt.xlabel('Pas de la négociation ($p$)',usetex=True,fontsize=16)
+plt.savefig(outputFolder + "example_vary_tau_lambda_tau_" + str(taus[tau_index])  +  "_fr.pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig(outputFolder + "example_vary_tau_lambda_tau_" + str(taus[tau_index])  +  "_fr.png",bbox_inches='tight',facecolor=fig.get_facecolor())
 
 tau_index=22
 fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
@@ -150,4 +168,7 @@ plt.legend((  '$\\lambda_{1_1}$', '$\\lambda_{1_2}$', '$\\lambda_{2_1}$', '$\\la
 plt.savefig(outputFolder + "example_vary_tau_lambda_tau_" + str(taus[tau_index])  +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
 plt.savefig(outputFolder + "example_vary_tau_lambda_tau_" + str(taus[tau_index])  +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
 
+plt.xlabel('Pas de la négociation ($p$)',usetex=True,fontsize=16)
+plt.savefig(outputFolder + "example_vary_tau_lambda_tau_" + str(taus[tau_index])  +  "_fr.pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig(outputFolder + "example_vary_tau_lambda_tau_" + str(taus[tau_index])  +  "_fr.png",bbox_inches='tight',facecolor=fig.get_facecolor())
 # plt.show()

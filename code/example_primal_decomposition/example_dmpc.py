@@ -77,6 +77,11 @@ plt.legend((  '$\\theta_{1_1}$', '$\\theta_{1_2}$', '$\\theta_{2_1}$', '$\\theta
 plt.savefig(outputFolder + "example_theta" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
 plt.savefig(outputFolder + "example_theta" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
 
+plt.xlabel('Pas de la négociation ($p$)',usetex=True,fontsize=16)
+plt.savefig(outputFolder + "example_theta_fr" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig(outputFolder + "example_theta_fr" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
+
+
 fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
 axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[0,0:lastp[k],k,0]),color_map[0])
 axs.plot(np.arange(0,lastp[k]),np.transpose(lambdaHist[1,0:lastp[k],k,0]),color_map[1])
@@ -93,6 +98,10 @@ plt.yticks(fontsize = 20)
 plt.legend((  '$\\lambda_{1_1}$', '$\\lambda_{1_2}$', '$\\lambda_{2_1}$', '$\\lambda_{2_2}$','$\\lambda_{3_1}$', '$\\lambda_{3_2}$'),ncol=3,fontsize=16)
 plt.savefig(outputFolder + "example_lambda" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
 plt.savefig(outputFolder + "example_lambda" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
+
+plt.xlabel('Pas de la négociation ($p$)',usetex=True,fontsize=16)
+plt.savefig(outputFolder + "example_lambda_fr" +  ".pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig(outputFolder + "example_lambda_fr" +  ".png",bbox_inches='tight',facecolor=fig.get_facecolor())
 
 fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
 axs.plot(np.arange(0,simK),np.repeat(Wt[0],simK),lineStyle='--',color=color_map[0])
