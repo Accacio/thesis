@@ -3,7 +3,7 @@ name: Compile Latex and Release PDF
 on:
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '0 17 * * *'
+    #- cron:  '0 17 * * *'
   workflow_dispatch:
 
 jobs:
