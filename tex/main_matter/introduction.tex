@@ -48,11 +48,11 @@ ERR706
 
 Something is wrong.
 This is the first time you have seen this message, and it is the last week of the project.
-You look around, trying to find the manual given on your first day. Nada!
+You look around, searchin for the manual given on your first day. Nada!
 
 You take your coat, put on some gloves, and look outside your window.
 You observe the centralized heat provider unit in the middle of the \emph{cul-de-sac} you live.
-A similar orange light is flashing.
+\\A similar orange light is flashing.
 \begin{figure}[H]
   \centering
   \includegraphics[width=.75\textwidth]{../img/district_3d.png}
@@ -173,8 +173,8 @@ A bibliometric study~\cite{ZacchiaEtAl2019} shows how awareness on security of \
 This awereness was sadly motivated by many examples of attacks and faults all around the world in the last two decades.
 Some examples are the Brazilian blackouts in 2010~\cite{Conti2010}, the Stuxnet attack on an Iranian uranium enrichment plant in 2011~\cite{Langner2011}, attacks in Ukrainian Power System in 2016~\cite{Bindra2017} and other~\cite{DingEtAl2018,DibajiEtAl2019}.
 
-The main motivation of this work is to the securiy in a \cps{} controlled by a \dmpc{}.
-Focusing on the cases where the systems are attacked by ill-intentioned agents who change some variables for their own benefit.
+The main motivation of this work is the security of \cps{} controlled by \dmpc{}.
+We focus on the cases where the systems are attacked by ill-intentioned agents who change some variables for their own benefit.
 As we will, see these attacks are called \textbf{\fdi{} attacks}.
 
 And using the knowledge gathered throughout the study we want to be able to reduce the effects of the attacks as much as possible.
@@ -230,15 +230,47 @@ The second one, for a exponentially more complex class of systems, where we assu
 
 \section{Publications}
 The work and discussion presented in this thesis yielded the following publications
-\begin{itemize}
-  \item Published
-        \begin{description}
-          \item[\cite{NogueiraEtAl2021}] Conference article for the SysTol'21
-          \item[\cite{NogueiraEtAl2022}] Conference article for the NecSys'22
-        \end{description}
-\end{itemize}
+\begin{description}
+  \item[\cite{NogueiraEtAl2021}] Conference article for the SysTol'21
+  \item[\cite{NogueiraEtAl2022}] Conference article for the NecSys'22
+\end{description}
 
+\section{Programming and material}
+All the simulations were done using a PC with
+\begin{description}
+\item [Processor] Intel(R) Core(TM) i7-8750H CPU @ 2.20GHz
+\item [Memory] 15GiB System memory
+\end{description}
+under an GNU/Linux system based on architecture x86\_64 with
+\begin{description}
+    \item[Linux kernel] version 5.4.0-73-generic
+    \item[Ubuntu distribution] version \#82~18.04.1-Ubuntu SMP Fri Apr 16 15:10:02 UTC 2021
+\end{description}
 
+They were executed on
+\begin{description}
+\item[MATLAB] version R2019b Update 3 (9.7.0.1261785) 64-bit (glnxa64).
+\end{description}
+
+The graphs were generated using
+\begin{description}
+\item[python] version 3.6.9
+\end{description}
+with packages:
+\begin{description}
+    \item[matplotlib] version 3.2.2
+    \item[numpy] version 1.19.0
+    \item[scipy] version 1.3.2
+\end{description}
+
+Images and diagrams created using
+\begin{description}
+  \item[TikZ] version 3.1.9a
+  \item[Inkscape] version 0.92.3
+  \item[Blender] version 3.3.1
+\end{description}
+
+All source code of this work is available at \url{https://github.com/Accacio/thesis/}
 
 % \chapterEndOrnament
 
