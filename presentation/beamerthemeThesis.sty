@@ -1,0 +1,146 @@
+
+\mode<presentation>
+{
+  \useoutertheme{split}
+
+  \usecolortheme{whale}
+  \usecolortheme{orchid}
+  \setbeamerfont{block title}{size={}}
+
+  \useoutertheme{split}
+  \useinnertheme{circles}
+  \usefonttheme[onlymath]{serif}
+
+  \definecolor{supelecRed}{RGB}{120,30,56}
+  \definecolor{supelecPurple}{RGB}{104,95,115}
+  %
+  % \setbeamercolor{palette primary}{bg=red!50!black!80}
+  \setbeamercolor{palette primary}{bg=supelecRed}
+  % \setbeamercolor{palette secondary}{bg=red!50!black!70}
+  \setbeamercolor{palette secondary}{bg=supelecRed}
+  \setbeamercolor{palette tertiary}{bg=gray!90!black!50}
+  % \setbeamercolor{palette tertiary}{bg=supelecPurple}
+  \setbeamercolor{palette quaternary}{bg=gray!90!black!90}
+  % \setbeamercolor{palette quaternary}{bg=supelecPurple}
+  % \setbeamercolor{block title}{bg=red!50!black!70}
+  \setbeamercolor{block title}{bg=supelecRed}
+  \setbeamercolor{block title example}{bg=gray!90!black!90}
+  \setbeamercolor{block title example}{bg=gray!90!black!90}
+
+  \setbeamercolor{block title example}{bg=supelecPurple!90}
+  \setbeamercolor{block title example}{bg=supelecPurple!90}
+  \setbeamercolor{palette quaternary}{bg=supelecPurple!90}
+
+  % \setbeamercolor{item}{fg=red!50!black!80}
+  \setbeamercolor{item}{fg=supelecRed}
+  \setbeamercolor{section in toc}{fg=red!50!black!80}
+  % \setbeamercolor{frametitle}{fg=supelecRed!90,bg=white}
+  \setbeamercolor{framesubtitle}{fg=white,bg=supelecPurple!90}
+  \setbeamercolor{framesubtitle}{fg=supelecRed,bg=supelecRed!10}
+  % \setbeamercolor{framesubtitle}{fg=supelecRed,bg=supelecRed!10}
+
+  % \setbeamercolor{section in head}{bg=supelecRed!20}
+
+  % \setbeamercolor{bibliography entry author}{fg=red!50!black!80}
+  \setbeamercolor{bibliography entry author}{fg=supelecRed}
+  % \setbeamercolor{bibliography entry location}{fg=red!50!black!40}
+  \setbeamercolor{bibliography entry location}{fg=supelecRed!70}
+
+  % \setbeamercolor{author in head/foot}{bg=grey!60}
+  \setbeamercovered{transparent}
+  \setbeamertemplate{navigation symbols}{}
+  \makeatletter
+  \protected\def\protectedempty{}
+  \setbeamertemplate{page number in head/foot}[appendixframenumber]
+
+  \setbeamertemplate{frametitle}
+  {%
+    \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+    \@tempdima=\textwidth%
+    \advance\@tempdima by\beamer@leftmargin%
+    \advance\@tempdima by\beamer@rightmargin%
+    \begin{beamercolorbox}[sep=0.2cm,wd=\the\@tempdima]{frametitle}
+      \usebeamerfont{frametitle}%
+      \vbox{}\vskip-1ex%
+      \strut\insertframetitle\strut\par%
+    \end{beamercolorbox}%
+    \vskip-0.2ex%
+    \ifx\insertframesubtitle\@empty%
+    \else%
+    \begin{beamercolorbox}[sep=0.15cm,wd=\the\@tempdima]{framesubtitle}
+      {%
+        {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\strut\insertframesubtitle\strut\par}%
+      }%
+      % \vskip-1ex%
+      % \if@tempswa\else\vskip-.3cm\fi% set inside beamercolorbox... evil here...
+    \end{beamercolorbox}%
+    \fi
+  }
+
+  \setbeamertemplate{footline}
+  {%
+    \leavevmode%
+    \hbox{%
+      \begin{beamercolorbox}[wd=.1\paperwidth,ht=2.25ex,dp=1ex,center]{date in head/foot}%
+        \centering
+        \usebeamerfont{date in head/foot}\usebeamercolor[fg]{page number in head/foot}\usebeamerfont{page number in head/foot}\usebeamertemplate{page number in head/foot}
+        % \hspace*{2ex}
+      \end{beamercolorbox}%
+      \begin{beamercolorbox}[wd=.25\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+        \centering
+        \usebeamerfont{author in head/foot}\insertshortauthor{}
+      \end{beamercolorbox}%
+      \begin{beamercolorbox}[wd=.65\paperwidth,ht=2.25ex,dp=1ex,right]{title in head/foot}%
+        \centering
+        \insertshorttitle{}
+      \end{beamercolorbox}%
+    }%
+    \vskip0pt%
+  }
+
+  \setbeamertemplate{note page}{
+    \vfill
+    \insertnote
+    \vfill
+  }
+
+  \setbeamersize{text margin right=1.5cm}
+  \setbeamersize{text margin left=1.5cm}
+
+  \setbeamertemplate{sidebar right}{
+    % \vskip1.3cm%
+    % \llap{\tikz{\draw[fill=black] (.75,0) circle [radius=.75cm]}\hskip0.2cm}%
+    \vfill%
+    \llap{\insertlogo\hskip0.2cm}%
+    \vskip3pt%
+  }
+  \setbeamertemplate{sidebar left}{
+    \vfill%
+    \ifwebcast{\hspace{3pt}\tikz{\draw[fill=pink,draw=pink] (.6,0) circle [radius=.6cm]}}%
+    \else%
+    % \hspace{3pt}\tikz{\draw[fill=white,draw=white] (.6,0) circle [radius=.6cm]}%
+    \fi
+    \vskip3pt%
+  }
+
+  \setbeamertemplate{headline}
+  {%
+    \leavevmode%
+    \hbox{%
+      \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,center]{section in head/foot}%
+        \centering
+        \usebeamerfont{author in head/foot}\insertsection{}
+      \end{beamercolorbox}%
+      \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,right]{subsection in head/foot}%
+        \centering
+        \insertsubsection{}
+      \end{beamercolorbox}%
+    }
+    \vskip0pt%
+  }
+
+  \setbeamertemplate{caption}[numbered]
+  % or whatever (possibly just delete it)
+}
+\mode
+<all>

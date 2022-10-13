@@ -1,0 +1,160 @@
+\documentclass[aspectratio=169]{beamer}
+% \includeonlyframes{current}
+\usepackage{pgfpages}
+% \setbeameroption{show notes on second screen}
+\newif\ifwebcast
+\webcastfalse
+\newcommand{\webcast}{\webcasttrue}
+% \webcast
+% \newcommand<>{\script}[1]{\note#2{{#1}}}
+\newcommand<>{\script}[1]{\note{\onslide#2{#1}}}
+
+\definecolor{supelecRed}{RGB}{120,30,56}
+\definecolor{supelecPurple}{RGB}{104,95,115}
+\usetheme{Thesis}
+
+\usepackage[english]{babel}
+\usepackage{tikz}
+\usetikzlibrary{calc,shapes,positioning}
+\usetikzlibrary{overlay-beamer-styles}
+\usepackage{pgfplots}
+\usepackage{amssymb}
+ \usetikzlibrary{plotmarks}
+  \usetikzlibrary{arrows.meta}
+  \usepgfplotslibrary{patchplots}
+  \usepackage{grffile}
+\usepackage{booktabs}       % filenames
+% or whatever
+
+\usepackage[utf8]{inputenc}
+% or whatever
+
+% \usepackage{times}
+\usepackage[T1]{fontenc}
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+\graphicspath{{../img/}}
+\usepackage{bm}
+\usepackage[ruled,noend]{algorithm2e}
+\SetKwRepeat{Do}{do}{while}
+
+\newcommand{\eq}[2]{\mbox{$#1=#2$}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Np}{N_{\text{p}}}
+\newcommand{\T}{^{\mathrm{T}}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\0}{\mathbf{0}}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\Varepsilon}{\mathcal{E}}
+\newcommand{\diff}{\mathop{}\mathopen{}\mathrm{d}}
+\newcommand{\set}[1]{\mathcal{#1}}
+\newcommand{\p}{^{(p)}}
+\newcommand{\pplusone}{^{(p+1)}}
+\renewcommand{\vec}[1]{\bm{#1}}
+\newcommand{\enstq}[2]{\{#1\mathrel{}\mid\mathrel{}#2\}}
+
+\newtheorem{assumption}{Assumption}%[numberby]
+
+
+\title[Security of dMPC under False Data injection] % (optional, use only with long paper titles)
+{Security of distributed Model Predictive Control\\ under False Data injection}
+
+% \subtitle
+% {Include Only If Paper Has a Subtitle}
+
+\author[Rafael Accácio Nogueira] % (optional, use only with lots of authors)
+{Rafael Accácio NOGUEIRA}
+% - Give the names in the same order as the appear in the paper.
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+
+\institute[IETR --- CentraleSupélec] % (optional, but mostly needed)
+{
+  % \inst{1}%
+  % \\[10pt]\\\includegraphics[width=1.5cm]{../img/logos/supelec.jpeg}
+}
+% - Use the \inst command only if there are several affiliations.
+% - Keep it simple, no one is interested in your street address.
+
+\date[2022-12-12] % (optional, should be abbreviation of conference name)
+{
+  \begin{minipage}{.3\textwidth}
+    \centering
+    \includegraphics[width=2cm]{logos/logo_IETR.png}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{.3\textwidth}
+    \centering
+    \vspace{10pt}
+    \includegraphics[width=1.5cm]{qrPresentation.png}
+    % qrencode https://github.com/Accacio/thesis/raw/main/presentation/presentation.pdf -o ~/git/SysTol21/img/qrPresentation.png
+    \href{https://git.io/JEFGW}{https://git.io/JEFGW}
+  \end{minipage}
+  \begin{minipage}{.3\textwidth}
+    \centering
+    \vspace{10pt}
+    \includegraphics[width=2cm]{logos/supelec.jpeg}
+  \end{minipage}
+}
+% - Either use conference name or its abbreviation.
+% - Not really informative to the audience, more for people (including
+%   yourself) who are reading the slides online
+
+\subject{}
+
+\logo{\includegraphics[width=1.5cm]{logos/supelec.jpeg}}
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+\AtBeginSection[]
+{
+  \begin{frame}<beamer>{Outline}
+    \tableofcontents[currentsection,subsectionstyle=show/show/shaded]
+  \end{frame}
+}
+
+\begin{document}
+
+\begin{frame}[plain]
+  % \frametitle{Ph.D. Defense}
+  \titlepage%
+  \note{45 minutes !!!!\\}
+  \script{Hello, I'm Rafael Accácio}
+  \script{This presentation is available at the address shown or by flashing the QR code.\\}
+\end{frame}
+
+
+\begin{frame}[plain]
+  \centering
+  \vfill
+  Thank you!
+  \vfill
+  \begin{minipage}[t]{.45\linewidth}
+    \small
+    \centering
+    Repository
+    \href{https://github.com/Accacio/thesis}{https://github.com/Accacio/thesis}
+
+    \includegraphics[width=2cm]{qrRepo.png}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{.5\linewidth}
+    \small
+    \centering
+    Contact\\
+    \href{mailto:rafael.accacio.nogueira@gmail.com?subject=Thesis Defense Presentation}{rafael.accacio.nogueira@gmail.com}
+
+    \includegraphics[width=2cm]{qrContact.png}
+  \end{minipage}
+  \ifwebcast{\tikz{\draw[fill=pink,draw=pink] (1.5,0) circle [radius=1.5cm]}}%
+  \fi
+      \script{If you want to see the simulations of this paper we have a github repository, and if you want to send me an email about this paper or this presentation you can flash the QR code in the right. Thank you!\\}
+
+\end{frame}
+
+\end{document}
