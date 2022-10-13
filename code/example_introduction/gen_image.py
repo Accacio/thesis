@@ -61,7 +61,7 @@ plt.xlim([mdates.date2num(pd.to_datetime('2022-10-17')), mdates.date2num(pd.to_d
 
 rect = Rectangle((start, 0), width, 20, color='red',hatch='/',lw=0,fill=False)
 ax.add_patch(rect)
-plt.legend(('$J^\star$', '$J^\star_1$', '$J^\star_2$','$J^\star_3$','$J^\star_4$'),ncol=2,fontsize=15)
+plt.legend(('$J^\star$', '$J^\star_1$', '$J^\star_2$','$J^\star_3$','$J^\star_4$'),ncol=5,fontsize=13)
 plt.savefig(outputFolder + "/example_J" +  ".pdf",facecolor=fig.get_facecolor())
 plt.savefig(outputFolder + "/example_J" +  ".png",facecolor=fig.get_facecolor())
 
