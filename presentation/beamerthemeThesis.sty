@@ -12,6 +12,8 @@
   \usefonttheme[onlymath]{serif}
 
   \definecolor{supelecRed}{RGB}{120,30,56}
+  \definecolor{ietrbrightRed}{RGB}{229, 54, 43}
+  \definecolor{ietrRed}{RGB}{192, 96, 90}
   \definecolor{supelecPurple}{RGB}{104,95,115}
   %
   % \setbeamercolor{palette primary}{bg=red!50!black!80}
@@ -35,8 +37,8 @@
   \setbeamercolor{item}{fg=supelecRed}
   \setbeamercolor{section in toc}{fg=red!50!black!80}
   % \setbeamercolor{frametitle}{fg=supelecRed!90,bg=white}
-  \setbeamercolor{framesubtitle}{fg=white,bg=supelecPurple!90}
-  \setbeamercolor{framesubtitle}{fg=supelecRed,bg=supelecRed!10}
+  \setbeamercolor{framesubtitle}{fg=white,bg=ietrbrightRed!90}
+  \setbeamercolor{framesubtitle}{fg=supelecRed,bg=ietrRed!10}
   % \setbeamercolor{framesubtitle}{fg=supelecRed,bg=supelecRed!10}
 
   % \setbeamercolor{section in head}{bg=supelecRed!20}
@@ -125,17 +127,20 @@
 
   \setbeamertemplate{headline}
   {%
-    \leavevmode%
+    % \leavevmode%
+    \ifx\secname{}\@empty%
+    \else%
     \hbox{%
       \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,center]{section in head/foot}%
         \centering
-        \usebeamerfont{author in head/foot}\insertsection{}
+        \usebeamerfont{author in head/foot}\strut\insertsectionhead\strut\par%
       \end{beamercolorbox}%
       \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,right]{subsection in head/foot}%
         \centering
         \insertsubsection{}
       \end{beamercolorbox}%
     }
+    \fi
     \vskip0pt%
   }
 
