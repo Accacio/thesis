@@ -408,9 +408,9 @@ In \textbf{this work}, we choose to use a \textbf{hierarchical} structure, descr
 
 \section{How units communicate?}
 Depending on the problem and the structure, the connection of the nodes can be unidirectional or bidirectional. As said, these connections are represented by arcs and edges as shown in Fig.~\ref{fig:arc_edges}.
-While edges are usually more simple to deal, arcs may need some more convoluted ways to prove that the two nodes can somehow communicate (if there is a path between them), or that the algorithm converge~\cite{GarinSchenato2010}.
+While edges are usually more simple to deal, arcs may need some more convoluted ways to prove that the two nodes can somehow communicate (if there is a path between them), or that the algorithm converges~\cite{GarinSchenato2010}.
 
-Another classification of the communication is about the synchronization of the exchanges. Agents can exchange simultaneously (synchronously), or not. In general synchronous communication is the most straightforward, while asynchronous depends on the communication scheme/policy. Broadcast and gossiping~\cite{GarinSchenato2010} are examples of these communication schemes.
+Another classification of the communication is about the synchronization of the exchanges. Agents can exchange simultaneously (synchronously), or not. In general, synchronous communication is the most straightforward, while asynchronous depends on the communication scheme/policy. Broadcast and gossiping~\cite{GarinSchenato2010} are examples of these communication schemes.
 \\In the broadcast scheme (a unidirectional scheme), an agent transmits its information to all its out-neighbors ($\set{N}_{\text{out}}$) and each recipient agent updates its local variables.
 \\Gossiping can be divided into two, asymmetric and symmetric.
 In the asymmetric (unidirectional), an agent chooses one of its out-neighbors, sends its information, and the recipient updates its local variables on the arrival of the message.
@@ -433,7 +433,7 @@ This definition, as we will see can be used in favor of some decomposition techn
 
 \paragraph{Propagation of information}
 It is known that the propagation of information depends on the connectivity of the graphs, that means, to the neighborhood of each node.
-For instance, for a network with ring topology (Fig.~\ref{fig:ring_topology}) the more agents there are, more the information takes to be diffused for all nodes.
+For instance, for a network with ring topology (Fig.~\ref{fig:ring_topology}) the more agents there are, the more time the information takes to be diffused to all nodes.
 On the other hand, in a small-world topology (Fig.~\ref{fig:smallworld_topology}), where there are some hubs (in red) propagation is increased.
 
 \begin{figure}[h]

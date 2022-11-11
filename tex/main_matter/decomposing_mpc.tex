@@ -446,7 +446,7 @@ is rewritten as an equivalent problem
     \end{matrix}
   \end{aligned}
 \end{equation}
-where $\text{objective}^{*}_{1}(\text{auxiliary variables})$ et $\text{objective}^{*}_{2}(\text{auxiliary variables})$ are calculated by solving
+where $\text{objective}^{*}_{1}(\text{auxiliary variables})$ and $\text{objective}^{*}_{2}(\text{auxiliary variables})$ are calculated by solving
 sub-problems
 \begin{subequations}\label{eq:general_coupled_optimization_problem_decomposed}
 \begin{equation}\label{eq:general_coupled_optimization_problem_decomposed_1}
@@ -466,9 +466,9 @@ sub-problems
     \end{matrix}
 \end{equation}
 \end{subequations}
-whose solution depend on auxiliary variables and need some coordination needed to find optimal values for those auxiliary variables.
+whose solution depend on auxiliary variables and need some coordination to find optimal values for those auxiliary variables.
 
-The equivalent problem we call \emph{main problem}, while the sub-problems we call \emph{local problems}, which have some \emph{local constraints}, and part of the \emph{global (coupling) constraints} which depend on auxiliary variables that we call \emph{interface variables}.
+The equivalent problem, we call it \emph{main problem}, while the sub-problems we call them \emph{local problems}, which have some \emph{local constraints}, and part of the \emph{global (coupling) constraints} which depend on auxiliary variables that we call \emph{interface variables}.
 
 The coordination is usually an iterative method chosen to solve the \emph{main problem}.
 At an iteration, the coordination uses some information from the solution of the sub-problems (given a value of \emph{interface variables} as input) in order to update the \emph{interface variables} to be used in the next step.
