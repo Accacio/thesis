@@ -1,0 +1,106 @@
+%% Creator: Inkscape inkscape 0.92.3, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'diagQuantSafe2.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{473.25bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.74167987)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{diagQuantSafe2.pdf}}%
+    \put(0.05813407,0.12236514){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{diagQuantSafe2.pdf}}%
+    \put(0.05813407,0.34651982){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}2\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{diagQuantSafe2.pdf}}%
+    \put(0.62027195,0.69111902){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Coordinator\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{diagQuantSafe2.pdf}}%
+    \put(0.72314976,0.3067141){\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{\lambda}_i\to\vec{\lambda}$\end{tabular}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{diagQuantSafe2.pdf}}%
+    \put(0.23642789,0.3912599){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Agent 2 Supervisor\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{diagQuantSafe2.pdf}}%
+    \put(0.08384834,0.41382994){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\tilde{\vec{\lambda}}_{2}\pplusone$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{diagQuantSafe2.pdf}}%
+    \put(0.10741569,0.2799835){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\mathring{\vec{\theta}_{2}}\p$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{diagQuantSafe2.pdf}}%
+    \put(0.48796877,0.46295831){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\mathring{\vec{\lambda}_{2}}\pplusone$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{diagQuantSafe2.pdf}}%
+    \put(0.23642789,0.16231995){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Agent 1 Supervisor\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=10]{diagQuantSafe2.pdf}}%
+    \put(0.56366687,0.34651982){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}negot\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=11]{diagQuantSafe2.pdf}}%
+    \put(0.56366687,0.11757988){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}negot\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=12]{diagQuantSafe2.pdf}}%
+    \put(0.08384834,0.19037494){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\tilde{\vec{\lambda}}_{1}\pplusone$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=13]{diagQuantSafe2.pdf}}%
+    \put(0.10686751,0.05421329){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\mathring{\vec{\theta}_{1}}\p$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=14]{diagQuantSafe2.pdf}}%
+    \put(0.4939949,0.22788685){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\mathring{\vec{\lambda}_{1}}\pplusone$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=15]{diagQuantSafe2.pdf}}%
+    \put(0.49591108,0.28315307){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{\theta}_{2}\p$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=16]{diagQuantSafe2.pdf}}%
+    \put(0.67050587,0.10180253){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\mathring{\vec{\lambda}}\p$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=17]{diagQuantSafe2.pdf}}%
+    \put(0.49432629,0.04945893){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{\theta}_{1}\p$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=18]{diagQuantSafe2.pdf}}%
+    \put(0.2369046,0.62019984){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Agent M Supervisor\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=19]{diagQuantSafe2.pdf}}%
+    \put(0.56366687,0.5754599){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}negot\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=20]{diagQuantSafe2.pdf}}%
+    \put(0.0512,0.5754599){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}M\end{tabular}}}}%
+    \put(0.06233756,0.44655944){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vdots$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=21]{diagQuantSafe2.pdf}}%
+    \put(0.47846005,0.67524865){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\mathring{\vec{\lambda}_{M}}\pplusone$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=22]{diagQuantSafe2.pdf}}%
+    \put(0.49749587,0.51209318){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{\theta}_{M}\p$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=23]{diagQuantSafe2.pdf}}%
+    \put(0.1021832,0.50733233){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\mathring{\vec{\theta}_{M}}\p$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=24]{diagQuantSafe2.pdf}}%
+    \put(0.08384834,0.65154786){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\tilde{\vec{\lambda}}_{M}\pplusone$\end{tabular}}}}%
+  \end{picture}%
+\endgroup%

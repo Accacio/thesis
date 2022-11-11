@@ -1,0 +1,88 @@
+%% Creator: Inkscape inkscape 0.92.3, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'diagQuantMod.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{303bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.81930693)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{diagQuantMod.pdf}}%
+    \put(0.08368119,0.61327328){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}M\end{tabular}}}}%
+    \put(0.10107673,0.49095471){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vdots$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{diagQuantMod.pdf}}%
+    \put(0.09451139,0.14470892){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{diagQuantMod.pdf}}%
+    \put(0.08975891,0.37899108){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}2\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{diagQuantMod.pdf}}%
+    \put(0.57730594,0.74137795){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Coordinator\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{diagQuantMod.pdf}}%
+    \put(0.72801361,0.33001955){\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{\lambda}_i\to\vec{\lambda}$\end{tabular}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{diagQuantMod.pdf}}%
+    \put(0.47392031,0.37899108){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}negot\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{diagQuantMod.pdf}}%
+    \put(0.47392031,0.14780298){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}negot\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{diagQuantMod.pdf}}%
+    \put(0.47392031,0.61327328){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}negot\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{diagQuantMod.pdf}}%
+    \put(0.16971213,0.69051731){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{\lambda}_M\p$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=10]{diagQuantMod.pdf}}%
+    \put(0.16905099,0.45419304){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{\lambda}_2\p$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=11]{diagQuantMod.pdf}}%
+    \put(0.16905099,0.21814947){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{\lambda}_1\p$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=12]{diagQuantMod.pdf}}%
+    \put(0.1248896,0.2851354){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{\theta}_2\pplusone$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=13]{diagQuantMod.pdf}}%
+    \put(0.66982005,0.12316041){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{\lambda}\p$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=14]{diagQuantMod.pdf}}%
+    \put(0.1275203,0.05060003){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{\theta}_1\pplusone$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=15]{diagQuantMod.pdf}}%
+    \put(0.12459827,0.52614427){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{\theta}_M\pplusone$\end{tabular}}}}%
+  \end{picture}%
+\endgroup%

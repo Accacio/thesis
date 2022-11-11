@@ -1,0 +1,122 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.47000,0.12000,0.22000}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.675\fwidth,
+height=0.419\fheight,
+at={(0\fwidth,0.581\fheight)},
+scale only axis,
+xmin=1,
+xmax=10,
+ymin=18,
+ymax=22,
+axis background/.style={fill=white},
+title style={font=\bfseries},
+title={Temperature in Room},
+legend style={at={(1.03,0)}, anchor=south west, legend cell align=left, align=left, draw=white!15!black}
+]
+\addplot[const plot, color=gray, line width=1.5pt] table[row sep=crcr] {%
+1	20\\
+2	20\\
+3	20\\
+4	20\\
+5	20\\
+6	21\\
+7	21\\
+8	21\\
+9	21\\
+10	21\\
+};
+\addlegendentry{Setpoint}
+
+\addplot [color=mycolor1, only marks, mark=asterisk, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+1	18.3\\
+2	19.2922432972485\\
+};
+\addlegendentry{State}
+
+\addplot[const plot, color=mycolor1, dashed, line width=1.0pt] table[row sep=crcr] {%
+2	19.2922432972485\\
+3	19.6586714912936\\
+4	19.7837827178459\\
+5	19.7795571241486\\
+6	19.6425574643411\\
+7	19.250864938813\\
+};
+\addlegendentry{Prediction}
+
+
+\addplot[area legend, draw=none, fill=mycolor1, fill opacity=0.1, forget plot]
+table[row sep=crcr] {%
+x	y\\
+2	18\\
+2	22\\
+7	22\\
+7	18\\
+}--cycle;
+\end{axis}
+
+\begin{axis}[%
+width=0.793\fwidth,
+height=0.419\fheight,
+at={(0\fwidth,0\fheight)},
+scale only axis,
+xmin=1,
+xmax=10,
+ymin=0,
+ymax=2,
+axis background/.style={fill=white},
+title style={font=\bfseries},
+title={Control},
+legend style={at={(1.03,0)}, anchor=south west, legend cell align=left, align=left, draw=white!15!black}
+]
+\addplot[const plot, color=mycolor1, dashed, line width=1.0pt] table[row sep=crcr] {%
+2	1.49968322994835\\
+3	1.25662232225619\\
+4	1.12102224827958\\
+5	0.973858909383093\\
+6	0.685517728585202\\
+};
+\addlegendentry{Prediction}
+
+\addplot[const plot, color=mycolor1, draw=none, only marks, mark=asterisk, mark options={solid, mycolor1}] table[row sep=crcr] {%
+1	1.99999997976911\\
+2	1.49968322994835\\
+};
+\addlegendentry{Applied}
+
+
+\addplot[area legend, draw=none, fill=mycolor1, fill opacity=0.1, forget plot]
+table[row sep=crcr] {%
+x	y\\
+2	0\\
+2	2\\
+7	2\\
+7	0\\
+}--cycle;
+\end{axis}
+
+\begin{axis}[%
+width=1.227\fwidth,
+height=1.227\fheight,
+at={(-0.16\fwidth,-0.135\fheight)},
+scale only axis,
+xmin=0,
+xmax=1,
+ymin=0,
+ymax=1,
+axis line style={draw=none},
+ticks=none,
+axis x line*=bottom,
+axis y line*=left
+]
+\end{axis}
+\end{tikzpicture}%

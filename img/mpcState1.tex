@@ -1,0 +1,50 @@
+% This file was created by matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.47000,0.12000,0.22000}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.959\fwidth,
+height=\fheight,
+at={(0\fwidth,0\fheight)},
+scale only axis,
+xmin=1,
+xmax=10,
+ymin=18,
+ymax=22,
+ylabel style={font=\color{white!15!black}},
+ylabel={$\text{Temperature (}^\text{o}\text{C)}$},
+axis background/.style={fill=white},
+title style={font=\bfseries},
+title={Temperature in Room},
+legend style={at={(0.97,0.03)}, anchor=south east, legend cell align=left, align=left, draw=white!15!black}
+]
+\addplot[const plot, color=gray, line width=1.5pt] table[row sep=crcr] {%
+1	20\\
+2	20\\
+3	20\\
+4	20\\
+5	20\\
+6	21\\
+7	21\\
+8	21\\
+9	21\\
+10	21\\
+};
+\addlegendentry{Setpoint}
+
+\addplot [color=mycolor1, only marks, mark=triangle*, mark options={solid, fill=mycolor1, mycolor1}]
+  table[row sep=crcr]{%
+1	18.3\\
+};
+\addlegendentry{State}
+
+\addplot [color=white!50!mycolor1, line width=1.0pt, only marks, mark=triangle, mark options={solid, white!50!mycolor1}]
+  table[row sep=crcr]{%
+0	18.3\\
+};
+\addlegendentry{Prediction}
+
+\end{axis}
+\end{tikzpicture}%

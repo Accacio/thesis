@@ -1,0 +1,49 @@
+% This file was created by matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.73500,0.56000,0.61000}%
+\definecolor{mycolor2}{rgb}{0.47000,0.12000,0.22000}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.951\fwidth,
+height=\fheight,
+at={(0\fwidth,0\fheight)},
+scale only axis,
+xmin=1,
+xmax=10,
+ymin=0,
+ymax=2,
+ylabel style={font=\color{white!15!black}},
+ylabel={Power (kW)},
+axis background/.style={fill=white},
+title style={font=\bfseries},
+title={Control},
+legend style={at={(0.97,0.03)}, anchor=south east, legend cell align=left, align=left, draw=white!15!black}
+]
+\addplot[const plot, color=mycolor1, dashed, line width=1.0pt] table[row sep=crcr] {%
+1	1.99999997976911\\
+2	1.53956947240415\\
+3	1.23460068841189\\
+4	1.01877961771561\\
+5	0.701243917251587\\
+6	0.701243917251587\\
+};
+\addlegendentry{Prediction}
+
+\addplot[const plot, color=mycolor2] table[row sep=crcr] {%
+1	1.99999997976911\\
+};
+\addlegendentry{Applied}
+
+
+\addplot[area legend, draw=none, fill=mycolor2, fill opacity=0.1, forget plot]
+table[row sep=crcr] {%
+x	y\\
+1	0\\
+1	2\\
+6	2\\
+6	0\\
+}--cycle;
+\end{axis}
+\end{tikzpicture}%
