@@ -63,8 +63,8 @@
   % \frametitle{Ph.D. Defense}
   \titlepage%
   \note{45 minutes !!!!\\}
-  \script{Hello, I'm Rafael Accácio}
-  \script{This presentation is available at the address shown or by flashing the QR code.\\}
+  \script{Good afternoon, thank you all for being here.}
+  \script{I'm Rafael Accácio and I'm going to present my work on the security of distributed model predictive control under false data injection.}
 \end{frame}
 
 \begin{frame}{Context}
@@ -82,9 +82,15 @@
     \end{itemize}
   \end{minipage}
   \hfill
+\script{
+  Well, I don't think I need to convince you that computing devices are everywhere.
+  And in the recent years,  almost everyone has a computing device 1000 time more powerful than the computer used to land Apollo on the moon.
+}
+\script<2>{In the industry is not different,  we have computing devices everywhere, from sensing to aching.The combination of the computer domain with the physical domains results in what we call cyberphysical systems.
+}
 \end{frame}
 
-\begin{frame}{Context}{Maybe?}
+\begin{frame}{Context}
   \centering
   % \only<6>{
   % Smart City\\}
@@ -122,16 +128,19 @@
     \end{itemize}
   \end{minipage}
   }
-  \script<1->{With the ever increasing connection between systems such as Energy Distribution System, }
-  \script<2->{Traffic management, }
-  \script<3->{Heat distribution, }
-  \script<4->{Water distribution and many others we stroll to the so called smart cities\\}
   \script<5->{The systems are usually }
   \script<5->{Geographically distributed }
   \script<6->{Coupled by constraints as maximum input power or energy }
   \script<7->{and when they are implemented we try to optimize objectives such as cost, energy, user satisfaction and others.\\ }
   \script<8>{A solution is to use MPC}
+  \script{These cyberphysical systems are the majority of the systems in our everyday lives.}
+  \script{We can give example the traffic management,}
+  \script{water distribution,}
+  \script{electricity distribution, heat and cold and many more.}
 
+  \script{But how to control those kinds of systems.
+    Each has its own Dynamics and constraints,  such comfort (Quality of service) or technical.
+    Solution, mpc since we use models and it is easy to integrate the constraints.}
 
 \end{frame}
 
@@ -166,6 +175,19 @@
     \end{equation*}
     % }
   }%
+  \script<1>{For those who are not familiar with mpc. Mpc is the model based predictive controller.}
+  \script<2>{The objective is to find the best control sequence using predictions based on a model.}
+  \script<3>{When we say best,}
+  \script<4>{we mean optimal.}
+  \script<5>{So we need to solve an optimization problem.}
+  \script<6>{And we have the control sequence of u as the decision variable.}
+  \script<7>{Calculated during a horizon N}
+  \script<8>{So, we need an objective function}
+  \script<9>{A model of the system}
+  \script<10>{with its states }
+  \script<11>{and inputs }
+  \script<12>{But we can also integrate some constraints, such QoS or technical restrictions}
+
 \end{frame}
 % \begin{frame}
 % \begin{animateinline}[autoplay,loop]{2}
@@ -274,9 +296,14 @@
     }
   \end{figure}
   \end{overlayarea}
-  \script<1->{We find an optimal control sequence }
-  \script<2->{We apply only the first element }
-  \script<3->{and then we repeat }
+  \script<1>{So, resume the algorithm, for example we may have a setpoint to follow}
+  \script<2>{We find an optimal control sequence }
+  \script<3>{We apply only the first element }
+  \script<4>{and then we repeat }
+  \script<5>{following what we call the receding horizon strategy}
+  \script<6>{However this problem is not always straightforward to solve, for some cases it can be easier.
+}
+
 \end{frame}
 
 \begin{frame}{Distributed Model Predictive Control}
@@ -340,8 +367,9 @@
       }%
     \end{figure}
   \end{minipage}
-  \script<1->{The problem is when the systems are large, since the complexity depends on Np the number of constraints and sizes of input and states }
-  \script<2->{The solution is to divide the problem where it is separable and use a coordinator to create a consensus in the coupling variables or constraints}
+  \script<1>{However, the solution will depend on the horizon, the number of constraints, and sizes of input and states, increasing the complexity of the calculation }
+  \script<2>{A strategy to alleviate is to distribute the calculation whenever possible. And there are many ways to divide it as the book shows.}
+\script<3>{Here we opt for a hierarchical strategy where we use multiple MPCs and an agent to coordinate and manage the coupling aspects of the problem.}
 \end{frame}
 
 \definecolor{mpc_agent}{RGB}{243, 146, 0} % logo necsys
@@ -437,8 +465,8 @@
   \tableofcontents[subsectionstyle=hide/hide/hide,pausesections]
   % You might wish to add the option [pausesections]
   \script<1->{To respond this this presentation is divided into 3 parts.}
-  \script<1->{First We present the vulnerabilites of this decomposition method, }
-  \script<2->{We propose one way to secure the method,}
+  \script<1->{First we present the decomposition and its vulnerabilites, }
+  \script<2->{We propose a resilient method for a certain kind of systems,}
   \script<3->{and finally we present our results.}
 \end{frame}
 
