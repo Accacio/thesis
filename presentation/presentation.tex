@@ -67,66 +67,65 @@
   \script{I'm Rafael Accácio and I'm going to present my work on the security of distributed model predictive control under false data injection.}
 \end{frame}
 
-\begin{frame}{Context}
-  \centering
+\begin{frame}{Context}{Requirements evolve with time}
   % \only<6>{
   % Smart City\\}
-  \begin{minipage}{.45\textwidth}
-    \begin{itemize}
-      \item[] \includegraphics<1>[width=1cm]{rocket.pdf}%
-    CPU 1.024MHz\\
-    RAM 2KB
-      \item[] \includegraphics<1>[width=1.2cm]{mobile.pdf}%
-    CPU 2GHz\\
-    RAM 6GB
-    \end{itemize}
-  \end{minipage}
-  \hfill
-\script{
-  Well, I don't think I need to convince you that computing devices are everywhere.
-  And in the recent years,  almost everyone has a computing device 1000 time more powerful than the computer used to land Apollo on the moon.
-}
-\script<2>{In the industry is not different,  we have computing devices everywhere, from sensing to aching.The combination of the computer domain with the physical domains results in what we call cyberphysical systems.
-}
-\end{frame}
+  \only<1-4>{
+    \centering
+    \begin{tikzpicture}
+      \node (image) at (0,0) {\includegraphics<1->[width=0.5\textwidth]{city_grass_layer.pdf}};
+      \node (image) at (0,0) {\includegraphics<4->[width=0.5\textwidth]{city_streets_layer.pdf}};
+      \node (image) at (0,0) {\includegraphics<2->[width=0.5\textwidth]{city_houses_layer.pdf}};
+      \node (image) at (0,0) {\includegraphics<3->[width=0.5\textwidth]{city_buildings_layer.pdf}};
+      \node (image) at (0,0) {\includegraphics<1->[width=0.5\textwidth]{city_trees_layer.pdf}};
+    \end{tikzpicture}
 
-\begin{frame}{Context}
-  \centering
-  % \only<6>{
-  % Smart City\\}
-  \begin{minipage}{.45\textwidth}
-    \includegraphics<1>[width=\textwidth]{the_city_nothing.pdf}%
-    \includegraphics<2>[width=\textwidth]{the_city_houses.pdf}%
-    \includegraphics<3>[width=\textwidth]{the_city_buildings.pdf}%
-    \includegraphics<4>[width=\textwidth]{the_city_cars.pdf}%
-    \includegraphics<5>[width=\textwidth]{the_city_cars.pdf}%
+
+    }
+    \only<5->{
+      \begin{minipage}{.45\textwidth}
+    \centering
+
+    \begin{tikzpicture}
+      \node (image) at (0,0) {\includegraphics<1->[width=\textwidth]{city_grass_layer.pdf}};
+      \node (image) at (0,0) {\includegraphics<3->[width=\textwidth]{city_streets_layer.pdf}};
+      \node (image) at (0,0) {\includegraphics<2->[width=\textwidth]{city_houses_layer.pdf}};
+      \node (image) at (0,0) {\includegraphics<4->[width=\textwidth]{city_buildings_layer.pdf}};
+      \node (image) at (0,0) {\includegraphics<1->[width=\textwidth]{city_trees_layer.pdf}};
+      \node (image) at (0,0) {\includegraphics<6->[width=\textwidth]{city_energy_layer.pdf}};
+      \node (image) at (0,0) {\includegraphics<7->[width=\textwidth]{city_heat_water_layer.pdf}};
+      \node (image) at (0,0) {\includegraphics<8->[width=\textwidth]{city_cars_layer.pdf}};
+    \end{tikzpicture}
   \end{minipage}
   \hfill
-  \only<2-5>{
+  \only<6-9>{
   \begin{minipage}{.5\textwidth}
     \begin{itemize}
-      \item<+> Energy Distribution System
-      \item<+> Traffic management
-      \item<+> Heat distribution
-      \item<+> Water distribution\\
-      \item[]<+>\dots
+      \item<6-> Electricity Distribution System
+      \item<7-> Heat distribution
+      \item<7-> Water distribution\\
+      \item<8-> Traffic management
+      \item[]<9->(include your problem here)
     \end{itemize}
   \end{minipage}
   }
-\only<6->{
+  \only<10->{
   \begin{minipage}{.5\textwidth}
     \begin{itemize}
-      \item<6> Geographically distributed
-      \item<7> Coupled by constraints (energy)
-      \item<8> Optimization objectives
+      \item<10-> Multiple systems interacting
+      \item<11-> Coupled by constraints (energy)
+      \item<12-> Optimization objectives
             \begin{itemize}
-              \item Energy
-              \item User satisfaction
-              \item \dots
+              \item<13-> Minimize energy consumption
+              \item<14-> Maximize user satisfaction
+              \item<15-> Follow a trajectory
+              \item[]<16-> \dots
             \end{itemize}
-      \item<9-> Solution $\to$ MPC
+      \item<17-> Solution $\to$ MPC
     \end{itemize}
   \end{minipage}
+  }
+
   }
   \script<5->{The systems are usually }
   \script<5->{Geographically distributed }
@@ -150,7 +149,7 @@
     \begin{itemize}
       \item<8-> Objective function to optimize
       \item<9-> System's Model (\alert<10>{states} and \alert<11>{inputs})
-      \item<12-> Other constraints to respect
+      \item<12-> Other constraints to respect \onslide<13->{(QoS, technical restrictions, ...)}
     \end{itemize}
   \vspace{1cm}
   % \only<4-12>{
@@ -181,8 +180,8 @@
   \script<4>{we mean optimal.}
   \script<5>{So we need to solve an optimization problem.}
   \script<6>{And we have the control sequence of u as the decision variable.}
-  \script<7>{Calculated during a horizon N}
-  \script<8>{So, we need an objective function}
+  \script<7>{which is calculated for a horizon N}
+  \script<8>{So, we need an objective function. For example follow a trajectory while minimizing the energy.}
   \script<9>{A model of the system}
   \script<10>{with its states }
   \script<11>{and inputs }
@@ -296,19 +295,18 @@
     }
   \end{figure}
   \end{overlayarea}
-  \script<1>{So, resume the algorithm, for example we may have a setpoint to follow}
+  \script<1>{So, for example, if we may have a setpoint to follow}
   \script<2>{We find an optimal control sequence }
   \script<3>{We apply only the first element }
   \script<4>{and then we repeat }
-  \script<5>{following what we call the receding horizon strategy}
-  \script<6>{However this problem is not always straightforward to solve, for some cases it can be easier.
+  \script<5>{following what we call the receding horizon strategy. However this problem is not always straightforward to solve, for some cases it can be easier.
 }
 
 \end{frame}
 
 \begin{frame}{Distributed Model Predictive Control}
   \begin{itemize}
-    \item<1> Problem: Complexity depends on $\predhorz,m,p$ and sizes of $\vec{x}$ and $\vec{u}$
+    \item<1-> Problem: Complexity depends on $\predhorz,m,p$ and sizes of $\vec{x}$ and $\vec{u}$
     \item<2-> Solution: Divide and Conquer\footnote{\footnotesize\visible<2->{\lower4pt\hbox{\pgfuseimage{beamericonbook}} \citetitle{MaestreEtAl2014}}}
   \end{itemize}
   \vfill
@@ -415,7 +413,7 @@
 \end{frame}
 
 \begin{frame}{Distributed Model Predictive Control}
-  Negotiation works fine if agents comply.\\\pause
+  Negotiation works if agents comply.\\\pause
   But what if some agents are ill-intentioned and attack the system?\\~\\\pause
   \begin{itemize}
     \item What are the consequences of an attack?\pause
@@ -466,8 +464,7 @@
   % You might wish to add the option [pausesections]
   \script<1->{To respond this this presentation is divided into 3 parts.}
   \script<1->{First we present the decomposition and its vulnerabilites, }
-  \script<2->{We propose a resilient method for a certain kind of systems,}
-  \script<3->{and finally we present our results.}
+  \script<2->{We propose a resilient method for two kind of systems with increasing complexities.}
 \end{frame}
 
 \section[Vulnerabilities in dMPC based on Primal decomposition]{Vulnerabilities in distributed MPC based on Primal Decomposition}
@@ -501,7 +498,7 @@
     \only<3-4>{
       \begin{equation*}
         \begin{matrix}
-          \minimize\limits_{\vec{u}[0:\predhorz-1|k]} &\sum\limits_{i\in\set{M}} \sum\limits_{j\in\set{N}}\left[\norm{\tikzmark{a}\alert<4>{\vec{v}_i[j|k]}}^{2}_{Q_i}+\norm{\vec{u}_i[j-1|k]}^{2}_{R_i}\right]&\\
+          \minimize\limits_{\vec{u}[0:\predhorz-1|k]} &\sum\limits_{i\in\set{M}} \sum\limits_{\xi\in\set{N}}\left[\norm{\tikzmark{a}\alert<4>{\vec{v}_i[\xi|k]}}^{2}_{Q_i}+\norm{\vec{u}_i[\xi-1|k]}^{2}_{R_i}\right]&\\
           \mathrm{subject~ to} &
                                  \left.
                                  \begin{matrix}
@@ -521,7 +518,7 @@
     \only<5>{
       \begin{equation*}
         \begin{matrix}
-          \minimize\limits_{\vec{u}[0:\predhorz-1|k]} &\sum\limits_{i\in\set{M}} \sum\limits_{j\in\set{N}}\left[\norm{\tikzmark{a}\vec{v}_i[j|k]}^{2}_{Q_i}+\norm{\vec{u}_i[j-1|k]}^{2}_{R_i}\right]&\\
+          \minimize\limits_{\vec{u}[0:\predhorz-1|k]} &\sum\limits_{i\in\set{M}} \sum\limits_{\xi\in\set{N}}\left[\norm{\tikzmark{a}\vec{v}_i[\xi|k]}^{2}_{Q_i}+\norm{\vec{u}_i[\xi-1|k]}^{2}_{R_i}\right]&\\
           \mathrm{subject~ to} &
                                  \left.
                                  \begin{matrix}
@@ -541,24 +538,86 @@
     \only<6>{
       \begin{equation*}
         \begin{matrix}
-          \minimize\limits_{\vec{u}[0:\predhorz-1|k]} &\sum\limits_{i\in\set{M}} \sum\limits_{j\in\set{N}}\left[\norm{\tikzmark{a}\vec{v}_i[j|k]}^{2}_{Q_i}+\norm{\vec{u}_i[j-1|k]}^{2}_{R_i}\right]&\\
+          \minimize\limits_{\vec{u}[0:\predhorz-1|k]} &\sum\limits_{i\in\set{M}} \sum\limits_{\xi\in\set{N}}\left[\norm{\tikzmark{a}\vec{v}_i[\xi|k]}^{2}_{Q_i}+\norm{\vec{u}_i[\xi-1|k]}^{2}_{R_i}\right]&\\
           \mathrm{subject~ to} &
                                  \left.
                                  \begin{matrix}
-                                   \vec{x}[j|k]=A_{i}\vec{x}[j-1|k]+B_{i}\vec{u}[j-1|k]\\
-                                   \sum\limits_{i\in\set{M}}\Gamma_{i}\vec{u}_{i}[j|k]\leq\vec{u}_{\mathrm{\max}}
+                                   \vec{x}[\xi|k]=A_{i}\vec{x}[\xi-1|k]+B_{i}\vec{u}[\xi-1|k]\\
+                                   \sum\limits_{i\in\set{M}}\Gamma_{i}\vec{u}_{i}[\xi|k]\leq\vec{u}_{\mathrm{\max}}
                                  \end{matrix}
           \right\}
           \begin{aligned}
-            &\forall j\in\set{N}\\
+            &\forall \xi\in\set{N}\\
           \end{aligned}
         \end{matrix}
       \end{equation*}
     }
+    \only<7>{
+      \begin{equation*}
+        \begin{matrix}
+      \minimize\limits_{\vec{U}_{1}[k],\dots, \vec{U}_{M}[k]} &
+      \sum\limits_{i\in\set{M}}\left[\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\right]&\\
+      \mathrm{subject~ to} & \sum\limits_{i\in\set{M}}\left[\bar{\Gamma}_{i}\vec{U}_{i}[k]\right] \preceq {\vec{U}}_{\text{max}}
+    \end{matrix}
+      \end{equation*}
+    }
 
-    \only<4-5>{
+    \only<8-10>{
+      \begin{minipage}[c]{.4\linewidth}
+        \begin{equation*}
+        \begin{matrix}
+          \minimize\limits_{\vec{U}_{1}[k]}&\frac{1}{2}\norm{\vec{U}_{1}[k]}^{2}_{H_{1}} + {\vec{f}_{1}[k]}^{T}\vec{U}_{1}[k]\\
+          \mathrm{subject~ to} & \bar{\Gamma}_{1}\vec{U}_{1}[k] \preceq \tikzmark{theta1}\mpcvec{\theta}[1][k]:\mpcvec{\lambda}[1][k]
+          \\
+          &\vdots&
+          \\
+          \minimize\limits_{\vec{U}_{M}[k]}&\frac{1}{2}\norm{\vec{U}_{M}[k]}^{2}_{H_{M}} + {\vec{f}_{M}[k]}^{T}\vec{U}_{M}[k]\\
+          \mathrm{subject~ to} & \bar{\Gamma}_{M}\vec{U}_{M}[k] \preceq \tikzmark{thetam}\mpcvec{\theta}[M][k]:\mpcvec{\lambda}[M][k]
+        \end{matrix}
+        \end{equation*}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[c]{.4\linewidth}
+        \begin{equation*}
+          \label{eq:projectedSubgradient_lambda}
+          \vec{\theta}[k]\pplusone=\Proj^{\tikzmark{sets}\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p)
+        \end{equation*}
+      \end{minipage}
+    }
+    \only<4>{
       \begin{tikzpicture}[overlay, remember picture]
         \draw[latex-,thick] (a) .. controls +(.5,.5) and +(-0.5,-1.0) .. +(3.5,1) node[above=.25cm,align=center,anchor=center,text=black,text width = 2in] {E.g. ${v_{i}=w_{i}-x_{i}}$};
+      \end{tikzpicture}%
+    }
+    \tikzset{%
+      show curve controls/.style={
+        postaction={
+          decoration={
+            show path construction,
+            curveto code={
+              \draw [blue]
+              (\tikzinputsegmentfirst) -- (\tikzinputsegmentsupporta)
+              (\tikzinputsegmentlast) -- (\tikzinputsegmentsupportb);
+              \fill [red, opacity=0.5]
+              (\tikzinputsegmentsupporta) circle [radius=.2ex]
+              (\tikzinputsegmentsupportb) circle [radius=.2ex];
+            }
+          },
+          decorate
+        }}}
+
+
+
+    \only<9>{
+      \begin{tikzpicture}[overlay, remember picture]
+        \draw[-latex,thick] ($(thetam) + (0.1,0.25)$) .. controls +(1.5,.5) and +(-0.0,-1.5) .. +(2.725,.75) .. controls +(0,2) and +(0,-1.5) .. +(6.5,3) coordinate (ends)   node[above=.25cm,align=center,anchor=center,text=black,text width = 2in] {${{\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k]\preceq \vec{U}_{\max}}}}$};
+        \draw[-latex,thick] ($(theta1) + (0.1,0.25)$) .. controls +(1.5,.275) and +(-0.0,-1.0) .. (ends) node[above=.25cm,align=center,anchor=center,text=black,text width = 2in] {};
+        \draw[-latex,thick] (sets) .. controls +(.5,.5) and +(-0.0,-1.0) .. (ends) node[above=.25cm,align=center,anchor=center,text=black,text width = 2in] {};
+      \end{tikzpicture}%
+    }
+    \only<10>{
+      \begin{tikzpicture}[overlay, remember picture]
+        \draw[draw,line width=0cm] ($(thetam) + (0.1,0.25)$)  +(6.5,3) node[above=.25cm,align=center,anchor=center,text=black,text width = 2in] {${{\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k]\preceq \vec{U}_{\max}}}}$};
       \end{tikzpicture}%
     }
 
@@ -726,10 +785,21 @@
       % \caption{Quantity decomposition based DMPC}\label{fig:quantityDecompDMPC}
     \end{figure}
   \end{minipage}
-  \only<7->{\begin{minipage}{.45\linewidth}
+  \only<2->{\begin{minipage}{.45\linewidth}
     \begin{figure}
       \centering
-      % \includegraphics[width=\textwidth]{dmpcQuantity4systemsTriche_.mat_thetalambdanegot.pdf}
+      \begin{tikzpicture}[balloon/.style={
+          line width=1pt, draw, ellipse callout,
+            align=center, inner sep=.1cm}]
+        \node (image) {
+          \includegraphics[width=\textwidth,trim=2cm 2 20 4,clip]{cut-cake.jpg}
+        };
+        \visible<3>{\node[balloon,fill=blue!50, callout relative pointer={(0,1)}] at ($(image.center)+(-.5cm,0.8cm)$) {Is it ok?};}
+        \visible<4>{\node[balloon,fill=green!50, callout relative pointer={(-1,1)}] at ($(image.center)+(-1.5cm,1.0cm)$) {I want more!};}
+        \visible<4>{\node[balloon,fill=red!50, callout relative pointer={(1,1)}] at ($(image.center)+(1.5cm,1.0cm)$) {I want more!};}
+        \visible<5>{\node[balloon,fill=blue!50, callout relative pointer={(0,1)}] at ($(image.center)+(-.5cm,0.8cm)$) {And like this?};}
+        \visible<6>{\node[balloon,fill=blue!50, callout relative pointer={(0,1)}] at ($(image.center)+(-.5cm,0.8cm)$) {Guys,\\ let's compromise ...};}
+      \end{tikzpicture}
     \end{figure}
   \end{minipage}}
   \script<1->{In a flowchart for a quantity decomposition based DMPC,}
@@ -740,55 +810,134 @@
   \script<7->{then the negotiation ends and each agent applies the first element of the control found}
 \end{frame}
 
-% \begin{frame}{}
-%   \centering
-%   \vfill
-% What if agents send a non-agreed $\vec{\lambda}_{i}$?
-%   \vfill
-%   \script<1>{But what if the agents send a non-agreed lambda?}
-% \end{frame}
-
+\begin{frame}{Quantity Decomposition | Resource Allocation}
+  \centering
+  % \centering
+  \begin{minipage}{0.45\textwidth}
+    \begin{figure}
+      \includegraphics[width=\textwidth]{../img/example_primal_decomposition/example_theta.pdf}
+    \end{figure}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.45\textwidth}
+    \begin{figure}
+      \centering
+      \includegraphics[width=\textwidth]{../img/example_primal_decomposition/example_lambda.pdf}
+    \end{figure}
+  \end{minipage}
+\end{frame}
 
 \subsection{How can an agent attack?}
+\begin{frame}{How can a non-cooperative agent attack?}{Literature}
 
-\begin{frame}{How can a non-cooperative agent attack?}
+    \begin{itemize}
+      \item<1-> \cite{VelardeEtAl2017a,ChanfreutEtAl2018} present some kinds of attacks
+            \begin{itemize}
+              \item<2-> Objective function
+                    \begin{itemize}
+                      \item<3-> Selfish Attack
+                      \item<4-> Fake weights
+                      \item<5-> Fake reference
+                    \end{itemize}
+              \item<6-> Fake constraints
+              \item<7-> Liar agent (use different control)
+            \end{itemize}
+    \end{itemize}
+\end{frame}
 
-  \begin{itemize}
-    \item<1-> $\vec{\lambda}_{i}$ is the only interface with coordination
-    \item<2-> Non-cooperative agent sends $\tilde{\vec{\lambda}}_{i}=\gamma_{i}(\vec{\lambda}_{i})$\pause
-  \end{itemize}
-\script<1->{How can an agent attack the system? Its only interface with the coordination is lambda}
-\script<2->{so we suppose it attacks by sending a different $lambda_i$, modified by a function $gamma_i$ of $lambda_i$ }
+\begin{frame}{How can a non-cooperative agent attack?}{Our approach}
+  \begin{minipage}[t]{.6\linewidth}
+    \begin{itemize}
+      \item<1-> $\vec{\lambda}_{i}$ is the only interface with coordination
+      \item<2-> $\vec{\lambda}_{i}$ depends on the parameters of the system
+      \item<4-> Non-cooperative agent sends a different $\vec{\lambda}_{i}$
+    \end{itemize}
+    \centering
+    \only<5>{$\tilde{\vec{\lambda}}_{i}=\gamma_{i}(\vec{\lambda}_{i})$}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{.3\linewidth}
+    \begin{figure}
+      \centering
+      \visible<3->{\includegraphics[width=\textwidth,trim=2cm 2 20 4,clip]{dick_dastardly.jpg}}
+    \end{figure}
+  \end{minipage}
+  \script<2->{How can an agent attack the system? Its only interface with the coordination is lambda}
+  \script<3->{so we suppose it attacks by sending a different $lambda_i$, modified by a function $gamma_i$ of $lambda_i$ }
 \end{frame}
 
 \subsection{Consequences}
-% \begin{frame}{Example}
-%   \begin{minipage}[c]{.45\linewidth}
-%     \begin{figure}[!t]
-%       \centering
-%       \begin{tikzpicture}
-%         % \node (0,0){\includegraphics[width=\textwidth]{changeOfJ.pdf}};
-%         \draw<4>[rounded corners,red,thick] (-2.3,2.5) rectangle +(.5,-5);
-%         \draw<5>[rounded corners,red,thick] (2.3,2.5) rectangle +(.75,-5);
-%       \end{tikzpicture}
-%     \end{figure}
-%   \end{minipage}
-%   \hfill
-%   \begin{minipage}[c]{.45\linewidth}
-%     \begin{exampleblock}{4 distinct agents}
-%       \begin{itemize}
-%         \item<2-> Agent 1 is non-cooperative\\
-%         \item<3-> It uses $\tilde{\vec{\lambda}}_{1}=\gamma_{1}(\vec{\lambda}_{1})=\tau_{1}I\vec{\lambda}_{1}$
-%       \end{itemize}
-%     \end{exampleblock}
-%   \end{minipage}
-% \script<1->{We give an example of 4 agents negotiating }
-% \script<2->{Agent 1 is non-cooperative\\ }
-% \script<3->{It uses a linear cheating function gamma tau times identity times the original lambda i\\ }
-% \script<3->{In the figure we can see the cost functions for each agent, we see that agent 1 cost decreases if we increase tau, but the overall cost is increased, The minimum value of the global cost is when \\ }
-% \script<4->{tau is equal to one. If tau is close to zero it increases its cost and if tau is too high\\ }
-% \script<5->{it can turn the negotiation unstable \\ }
-% \end{frame}
+\begin{frame}{Example}
+  \begin{minipage}[c]{.45\linewidth}
+    \begin{figure}[!t]
+      \centering
+      \begin{tikzpicture}
+        \visible<4->{\node (0,0){\includegraphics[width=\textwidth]{changeOfJ.pdf}};}
+        \draw<5>[rounded corners,red,thick] (-2.3,2.5) rectangle +(.5,-5);
+        \draw<6>[rounded corners,red,thick] (2.3,2.5) rectangle +(.75,-5);
+      \end{tikzpicture}
+    \end{figure}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[c]{.45\linewidth}
+    \begin{exampleblock}{4 distinct agents}
+      \begin{itemize}
+        \item<2-> Agent 1 is non-cooperative\\
+        \item<3-> It uses $\tilde{\vec{\lambda}}_{1}=\gamma_{1}(\vec{\lambda}_{1})=\tau_{1}I\vec{\lambda}_{1}$
+      \end{itemize}
+    \end{exampleblock}
+  \end{minipage}
+\script<1->{We give an example of 4 agents negotiating }
+\script<2->{Agent 1 is non-cooperative\\ }
+\script<3->{It uses a linear cheating function gamma tau times identity times the original lambda i\\ }
+\script<3->{In the figure we can see the cost functions for each agent, we see that agent 1 cost decreases if we increase tau, but the overall cost is increased, The minimum value of the global cost is when \\ }
+\script<4->{tau is equal to one. If tau is close to zero it increases its cost and if tau is too high\\ }
+\script<5->{it can turn the negotiation unstable \\ }
+\end{frame}
+
+\begin{frame}{Mitigating}
+  \begin{overlayarea}{\textwidth}{.5\textwidth}
+    There are vulnerabilities\\
+    \only<3->{``Great, But what can we do?''}
+
+    \only<2>{
+      \begin{minipage}[t]{.450\linewidth}
+        \begin{figure}[h]
+          \centering
+          \includegraphics[width=\textwidth]{../img/resilient_eq/original-minimum.pdf}
+          \caption*{Original minimum.}\label{fig:original_minimum}
+        \end{figure}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[t]{.45\linewidth}
+        \begin{figure}[h]
+          \centering
+          \includegraphics[width=\textwidth]{../img/resilient_eq/new-minimum-selfish.pdf}
+          \caption*{Minimum after attack.}\label{fig:minimum_after_attack}
+        \end{figure}
+      \end{minipage}
+    }
+    \only<4->{
+      \begin{minipage}[t]{.45\linewidth}
+        \begin{figure}[h]
+          \centering
+          \includegraphics[width=\textwidth]{../img/resilient_eq/ignoreX.pdf}
+          \caption*{Ignore attacker.}\label{fig:minimum_ignoring_attacker}
+        \end{figure}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[t]{.45\linewidth}
+        \begin{figure}[h]
+          \centering
+          \includegraphics[width=\textwidth]{../img/resilient_eq/correctX.pdf}
+          \caption*{\alert<5>{Recover original behavior}.}\label{fig:minimum_recovered}
+        \end{figure}
+      \end{minipage}
+    }
+  \end{overlayarea}
+\end{frame}
+
+\section{Resilient Primal Decomposition-based dMPC for deprived systems}
 
 % \section{Securing the DMPC}
 % \script<1->{In order to secure the method let's analyze the subproblems \\ }
@@ -1257,8 +1406,11 @@
 % \end{table}
 
 % \end{frame}
-\section*{Summary}
 
+
+\section{Resilient Primal Decomposition-based dMPC using Artificial Scarcity}
+
+\section*{Summary}
 % \begin{frame}{Summary}
 %   \pause
 %   \begin{minipage}[t]{.45\textwidth}
@@ -1301,20 +1453,6 @@
 %   \script<8->{and try to implement with non-linear attack models\\}
 
 % \end{frame}
-
-
-
-\begin{frame}
-  \begin{block}{There are vulnerabilites}
-    \pause{}
-    ``Great, But what can we do?''
-  \end{block}
-\end{frame}
-
-\section{Resilient Primal Decomposition-based dMPC for deprived systems}
-\section{Resilient Primal Decomposition-based dMPC using Artificial Scarcity}
-
-
 % % \nocite{VelardeEtAl2017a}
 % % All of the following is optional and typically not needed.
 % % \appendix
