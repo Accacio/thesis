@@ -11,13 +11,14 @@ style=alphabetic,
 \usepackage{pgfpages}
 \usepackage{xargs}
 \usepackage{fontawesome}
+\usepackage{subfig}
 
 \newif\ifwebcast
 \webcastfalse
 \newcommand{\webcast}{\webcasttrue}
 % \webcast
 % \newcommand<>{\script}[1]{\note#2{{#1}}}
-\newcommand<>{\script}[1]{\note{\onslide#2{#1}}}
+\newcommand<>{\script}[1]{\note{\only#2{#1}}}
 
 \definecolor{supelecRed}{RGB}{120,30,56}
 \definecolor{supelecPurple}{RGB}{104,95,115}
@@ -54,3 +55,19 @@ style=alphabetic,
 \input{../tex/math}
 
 \newtheorem{assumption}{Assumption}%[numberby]
+
+\newif\ifdebug%
+\newcommand{\draft}{\debugtrue}
+\newcommand{\final}{\debugfalse}
+\newcommand{\todo}[2][FORGOT TO DO SOMETHING]{\ifdebug%
+  {%
+    \color{red}
+    #2}\else \PackageError{}{#1}{#2}#2\fi}%
+\newcommand\doing[2][FORGOT TO DO SOMETHING]{\ifdebug%
+  {%
+    \color{blue}
+    #2}\else \PackageError{}{#1}{#2}#2\fi}%
+\newcommand\warning[1]{\ifdebug%
+  {%
+    \color{red}
+    #1}\fi}
