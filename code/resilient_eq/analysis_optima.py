@@ -26,10 +26,6 @@ Z1 = (X-1.5)**2 + (Y-2)**2
 Z = (Z1)
 CS = axs.contour(X, Y, Z,extent=[-0,1,0,4],cmap=color_map,levels=10)
 axs.plot(x,1.5-.5*x)
-nx=1
-ny=1.5-.5*nx
-axs.plot(nx,ny,'bo',markersize=14)
-
 rect = Polygon(((0, 0),(0,1.5),(3.,0)),color=region_color)
 axs.add_patch(rect)
 
@@ -39,6 +35,12 @@ axs.clabel(CS, inline=1, fontsize=16)
 plt.xticks(fontsize = 20)
 plt.yticks(fontsize = 20)
 
+plt.savefig(outputFolder + "original-minimum_no_dots.pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig(outputFolder + "original-minimum_no_dots.png",bbox_inches='tight',facecolor=fig.get_facecolor())
+
+nx=1
+ny=1.5-.5*nx
+axs.plot(nx,ny,'bo',markersize=14)
 
 plt.savefig(outputFolder + "original-minimum.pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
 plt.savefig(outputFolder + "original-minimum.png",bbox_inches='tight',facecolor=fig.get_facecolor())
