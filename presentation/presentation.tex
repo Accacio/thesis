@@ -1,10 +1,33 @@
 \documentclass[aspectratio=169]{beamer}
 
 \input{preamble}
-% \setbeameroption{show notes on second screen}
+\setbeameroption{show notes on second screen}
+\draft
 % \webcast
-\setbeamercolor{alerted text}{fg=supelecRed}
+\setbeamercolor{alerted text}{fg=supelecRed!20!red!80}
+% \usetikzlibrary{overlay-beamer-styles}
 \bibliography{../tex/bibliography.bib}
+\newcommand{\arrowthis}[2]{
+        \tikz[remember picture,baseline]{\node[anchor=base,inner sep=0,outer sep=0]%
+        (#1) {\underline{#1}};
+        \node[overlay,single arrow,draw=none,fill=red!50,anchor=tip,rotate=60]
+        at (#1.south) {#2};}%
+    }%
+
+
+\newcommand{\bubblethis}[2]{
+        \tikz[remember picture,baseline]{\node[anchor=base,inner sep=0,outer sep=0]%
+        (#1) {\underline{#1}};\node[overlay,cloud callout,callout relative pointer={(0.2cm,-0.7cm)},%
+        aspect=2.5,fill=yellow!90] at ($(#1.north)+(-0.5cm,1.6cm)$) {#2};}%
+    }%
+
+\newcommand{\pointthis}[2]{
+        \tikz[remember picture,baseline]{\node[anchor=base,inner sep=0,outer sep=0]%
+        (#1) {\underline{#1}};\node[overlay,rectangle callout,%
+        callout relative pointer={(0.2cm,0.7cm)},fill=green!50] at ($(#1.north)+(-.5cm,-1.4cm)$) {#2};}%
+        }%
+
+
 \title[Security of dMPC under False Data injection] % (optional, use only with long paper titles)
 {Security of distributed Model Predictive Control\\ under False Data injection}
 
@@ -113,7 +136,7 @@
   \begin{minipage}{.5\textwidth}
     \begin{itemize}
       \item<10-> Multiple systems interacting
-      \item<11-> Coupled by constraints (energy)
+      \item<11-> Coupled by constraints
       \item<12-> Optimization objectives
             \begin{itemize}
               \item<13-> Minimize energy consumption
@@ -700,6 +723,12 @@
 %   \end{minipage}
 % \end{frame}
 
+\newcommand{\speechthis}[2]{
+  \tikz[remember picture,baseline]{
+    \node[anchor=base,inner sep=0,outer sep=0] (oi) {};
+      }%
+    }%
+
 \begin{frame}{Quantity Decomposition | Resource Allocation}
   \centering
   \begin{minipage}{.45\linewidth}
@@ -846,22 +875,25 @@
 \end{frame}
 
 \begin{frame}{How can a non-cooperative agent attack?}{Our approach}
-  \begin{minipage}[t]{.6\linewidth}
-    \begin{itemize}
-      \item<1-> $\vec{\lambda}_{i}$ is the only interface with coordination
-      \item<2-> $\vec{\lambda}_{i}$ depends on the parameters of the system
-      \item<4-> Non-cooperative agent sends a different $\vec{\lambda}_{i}$
-    \end{itemize}
-    \centering
-    \only<5>{$\tilde{\vec{\lambda}}_{i}=\gamma_{i}(\vec{\lambda}_{i})$}
-  \end{minipage}
-  \hfill
-  \begin{minipage}[t]{.3\linewidth}
-    \begin{figure}
+  \begin{overlayarea}{\textwidth}{.2\textwidth}
+    \begin{minipage}[t]{.6\linewidth}
+      \begin{itemize}
+        \item<1-> $\vec{\lambda}_{i}$ is the only interface with coordination
+        \item<2-> $\vec{\lambda}_{i}$ depends on the parameters of the system
+        \item<4-> Malicious agent sends a different $\vec{\lambda}_{i}$
+      \end{itemize}
       \centering
-      \visible<3->{\includegraphics[width=\textwidth,trim=2cm 2 20 4,clip]{dick_dastardly.jpg}}
-    \end{figure}
-  \end{minipage}
+      \only<5->{$\tilde{\vec{\lambda}}_{i}=\gamma_{i}(\vec{\lambda}_{i})$\\}
+      \only<6>{Let's suppose $\gamma_{i}(\vec{\lambda}_{i})=T_{i}$}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{.3\linewidth}
+      \begin{figure}
+        \centering
+        \visible<3->{\includegraphics[width=\textwidth,trim=2cm 2 20 4,clip]{dick_dastardly.jpg}}
+      \end{figure}
+    \end{minipage}
+  \end{overlayarea}
   \script<2->{How can an agent attack the system? Its only interface with the coordination is lambda}
   \script<3->{so we suppose it attacks by sending a different $lambda_i$, modified by a function $gamma_i$ of $lambda_i$ }
 \end{frame}
@@ -873,8 +905,9 @@
       \centering
       \begin{tikzpicture}
         \visible<4->{\node (0,0){\includegraphics[width=\textwidth]{changeOfJ.pdf}};}
-        \draw<5>[rounded corners,red,thick] (-2.3,2.5) rectangle +(.5,-5);
-        \draw<6>[rounded corners,red,thick] (2.3,2.5) rectangle +(.75,-5);
+        \usebeamercolor{alerted text}
+        \draw<5>[rounded corners,fg,thick] (-2.3,2.5) rectangle +(.5,-5);
+        \draw<6>[rounded corners,fg,thick] (2.3,2.5) rectangle +(.75,-5);
       \end{tikzpicture}
     \end{figure}
   \end{minipage}
@@ -898,40 +931,48 @@
 \begin{frame}{Mitigating}
   \begin{overlayarea}{\textwidth}{.5\textwidth}
     There are vulnerabilities\\
-    \only<3->{``Great, But what can we do?''}
+    \only<4->{``Great''. But what can we do?}
 
-    \only<2>{
+    \only<2-3>{
       \begin{minipage}[t]{.450\linewidth}
+        \only<2-3>{
         \begin{figure}[h]
           \centering
           \includegraphics[width=\textwidth]{../img/resilient_eq/original-minimum.pdf}
           \caption*{Original minimum.}\label{fig:original_minimum}
         \end{figure}
+        }
       \end{minipage}
       \hfill
       \begin{minipage}[t]{.45\linewidth}
-        \begin{figure}[h]
-          \centering
-          \includegraphics[width=\textwidth]{../img/resilient_eq/new-minimum-selfish.pdf}
-          \caption*{Minimum after attack.}\label{fig:minimum_after_attack}
-        \end{figure}
+        \only<3>{
+          \begin{figure}[h]
+            \centering
+            \includegraphics[width=\textwidth]{../img/resilient_eq/new-minimum-selfish.pdf}
+            \caption*{Minimum after attack.}\label{fig:minimum_after_attack}
+          \end{figure}
+        }
       \end{minipage}
     }
-    \only<4->{
+    \only<5->{
       \begin{minipage}[t]{.45\linewidth}
+      \only<5->{
         \begin{figure}[h]
           \centering
           \includegraphics[width=\textwidth]{../img/resilient_eq/ignoreX.pdf}
           \caption*{Ignore attacker.}\label{fig:minimum_ignoring_attacker}
         \end{figure}
+        }
       \end{minipage}
       \hfill
       \begin{minipage}[t]{.45\linewidth}
-        \begin{figure}[h]
-          \centering
-          \includegraphics[width=\textwidth]{../img/resilient_eq/correctX.pdf}
-          \caption*{\alert<5>{Recover original behavior}.}\label{fig:minimum_recovered}
-        \end{figure}
+        \only<6->{
+          \begin{figure}[h]
+            \centering
+            \includegraphics[width=\textwidth]{../img/resilient_eq/correctX.pdf}
+            \caption*{\alert<7>{Recover original behavior}.}\label{fig:minimum_recovered}
+          \end{figure}
+        }
       \end{minipage}
     }
   \end{overlayarea}
@@ -943,6 +984,138 @@
 % \script<1->{In order to secure the method let's analyze the subproblems \\ }
 
 % \subsection{Analysis of Subproblems}
+\begin{frame}{Strategy}
+  \begin{itemize}
+    \item<1-> Recover original behavior
+          \begin{itemize}
+            \item<2-> Invert effects of function $\gamma_{i}(\vec{\lambda}_{i})$
+          \end{itemize}
+  \end{itemize}
+
+  \begin{itemize}
+    \item<3-> Is $\gamma_{i}(\vec{\lambda}_{i})$ invertible?
+          \begin{itemize}
+            \item<4-> Not necessarily, but let's reason
+          \end{itemize}
+          \centering
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Is $\gamma_{i}(\vec{\lambda}_{i})$ invertible?}{Unidimensional Case}
+  \centering
+  \begin{minipage}[c]{.4\linewidth}
+    \definecolor{mycolor1}{rgb}{0.47000,0.12000,0.22000}%
+    \begin{tikzpicture}[domain=0:2]
+      % \draw[very thin,color=gray] (-0.1,-1.1) grid (3.9,3.9);
+      \draw[-latex] (-0.2,0) -- (4.2,0) node[below] {$\lambda$};
+      \draw[-latex] (0,-0.2) -- (0,4.2) node[left] {$\gamma(\lambda)$};
+      \node[below left] (0,0) {0};
+      \only<4>{\draw[red] (0,0) circle (0.1);}
+
+      \only<6->{\draw[color=gray,dashed,domain=0:4] plot (\x,\x);}
+
+      % \x r means to convert '\x' from degrees to _r_adians:
+      \only<7-8>{\draw[color=mycolor1,domain=0:.85] plot (\x,{exp(1.7*\x)-1+0.2*sin(25*\x r)}) node[right] {};}
+      \only<8>{\node[red,draw,solid,cross out,inner sep=.25cm,thick] at (0.5,1.5) {};}
+      \only<9>{\draw[color=orange,domain=0:1.5] plot (\x,{exp(\x)-1}) node[right] {$\mathrm e^\lambda-1$};}
+      \only<9-10>{\draw[color=blue,domain=0:1.25] plot (\x,3*\x) node[above,xshift=.9cm] {$a\lambda\text{, }a>1$} ;}
+    \end{tikzpicture}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[c]{.5\linewidth}
+    \begin{itemize}
+      \item<2-> $\lambda\ge 0$ means dissatisfaction
+      \item<3-> $\lambda=0$ means complete satisfaction
+            \begin{itemize}
+              \item<4-> $\gamma(\lambda)=0\iff \lambda=0$
+            \end{itemize}
+    \end{itemize}
+    \onslide<5->{Assumptions}
+    \begin{itemize}
+      \item<6-> Attacker is greedy $\gamma(\lambda)>\lambda$
+      \item<7-> But not smart \onslide<8->{$\lambda_{b}>\lambda_{a}\to\gamma(\lambda_{b})>\gamma(\lambda_{a})$}
+    \end{itemize}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}{Is $\gamma_{i}(\vec{\lambda}_{i})$ invertible?}{Linear Multidimensional Case}
+  \centering
+  \begin{itemize}
+    \item<1-> $\gamma(\lambda)=T\lambda$
+    \item<2-> $T\lambda=0 \iff \lambda=0 \onslide<3>{\to \exists T^{-1}}$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Strategy}
+  \begin{itemize}
+    \item Recover original behavior
+          \begin{itemize}
+            \item Invert effects of function $\gamma_{i}(\vec{\lambda}_{i})$ \onslide<2>{$\to$ Estimate $T^{-1}$}
+          \end{itemize}
+    \item<3-> But how? \onslide<4>{Analyzing the system}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Deprived Systems}
+  \centering
+  \begin{equation*}
+    \begin{matrix}
+      \alert<2-3>{\minimize\limits_{\vec{U}_{i}[k]}}&\alert<2-3>{\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]}\\
+      \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \preceq \thetaik:\lambdaik
+    \end{matrix}
+  \end{equation*}
+  \begin{itemize}
+    \item<3-> Unconstrained solution $\optuncUik=-H_{i}^{-1}\vec{f}_{i}[k]$
+    \item<4-> Deprived if $\bar{\Gamma}_{i}\optuncUik\succ \thetaik, \forall k$
+  \begin{itemize}
+    \item<5-> Solution projected onto boundaries (equality constraints)
+  \end{itemize}
+  \end{itemize}
+  \begin{figure}[h]
+    \centering
+    \visible<6->{
+      \begin{tikzpicture}
+        \visible<6-7>{\node at (0,0) {\includegraphics[width=.3\textwidth]{../img/resilient_eq/original-minimum_no_dots.pdf}};}
+        \visible<8>{\node at (0,0) {\includegraphics[width=.3\textwidth]{../img/resilient_eq/original-minimum.pdf}};}
+        \visible<7->{\draw[fill] (0.2,1.3) circle (.05) node[below] {$\optuncUik$};}
+        \visible<8->{\draw[] (-0.35,0.15)  node[below,blue] {$U_{i}^{\star}[k]$};}
+      \end{tikzpicture}
+    }
+  \end{figure}
+\end{frame}
+\begin{frame}{Deprived Systems}{But why?}
+  \centering
+  \begin{itemize}
+    \item<2-> No Scarcity \onslide<3->{$\to$ All satisfied} \onslide<4->{ $\to$ $\lambda_{i}=0$} \onslide<5->{$\to$ No coordination needed}
+    \item<6-> Scarcity $\to$ Competition \onslide<7->{$\to$ Consensus/Compromise} \onslide<8->{(or cheating {\color{red}\faUserSecret})}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Deprived Systems}{Analysis}
+   \begin{itemize}
+    \item<2-> We can transform inequality constraints into equality ones\footnote{Under some conditions, \todo{see here} }
+    \item<3-> Solution is analytical and trivial.
+   \begin{itemize}
+    \item<4-> If we solve for $\lambda_{i}$
+   \end{itemize}
+   \end{itemize}
+   \centering
+
+\begin{equation*}
+   \begin{matrix}
+      {\minimize\limits_{\vec{U}_{i}[k]}}&{\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]}\\
+      \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \only<1>{\geq}\only<2->{=} \thetaik:\lambdaik
+    \end{matrix}
+  \end{equation*}
+
+  \onslide<4>{\vspace{-.5cm}
+    \begin{equation*}
+      \lambdaik=-\Plin\thetaik-\sik,
+    \end{equation*}
+    where $\Plin={(\linearcoefi)}^{-1}$ and $\sik=\Plin\bar{\Gamma}_{i}H_{i}^{-1}\vec{f}_{i}[k]$.
+}
+\end{frame}
 
 % \begin{frame}
 %   \frametitle{Quadratic Case}
@@ -1459,7 +1632,38 @@
 % % \section<presentation>*{\appendixname}
 % % \subsection<presentation>*{For Further Reading}
 
-% \appendix
+\appendix
+
+\begin{frame}[plain]
+  \centering
+  \vfill
+  Thank you!
+  \vfill
+  \begin{minipage}[t]{.45\linewidth}
+    \small
+    \centering
+    Repository
+    \href{https://github.com/Accacio/thesis}{https://github.com/Accacio/thesis}
+
+    \includegraphics[width=2cm]{qrRepo.png}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{.5\linewidth}
+    \small
+    \centering
+    Contact\\
+    \href{mailto:rafael.accacio.nogueira@gmail.com?subject=Thesis Defense Presentation}{rafael.accacio.nogueira@gmail.com}
+
+    \includegraphics[width=2cm]{qrContact.png}
+  \end{minipage}
+  \ifwebcast{\tikz{\draw[fill=pink,draw=pink] (1.5,0) circle [radius=1.5cm]}}%
+  \fi
+      \script{If you want to see the simulations of this paper we have a github repository, and if you want to send me an email about this paper or this presentation you can flash the QR code in the right. Thank you!\\}
+
+\end{frame}
+
+
+
 \begin{frame}[allowframebreaks]
 % \bibliographystyle{apalike}
 % \bibliography{../tex/bibliography}
@@ -1494,33 +1698,6 @@
 
 \end{frame}
 
-\begin{frame}[plain]
-  \centering
-  \vfill
-  Thank you!
-  \vfill
-  \begin{minipage}[t]{.45\linewidth}
-    \small
-    \centering
-    Repository
-    \href{https://github.com/Accacio/thesis}{https://github.com/Accacio/thesis}
-
-    \includegraphics[width=2cm]{qrRepo.png}
-  \end{minipage}
-  \hfill
-  \begin{minipage}[t]{.5\linewidth}
-    \small
-    \centering
-    Contact\\
-    \href{mailto:rafael.accacio.nogueira@gmail.com?subject=Thesis Defense Presentation}{rafael.accacio.nogueira@gmail.com}
-
-    \includegraphics[width=2cm]{qrContact.png}
-  \end{minipage}
-  \ifwebcast{\tikz{\draw[fill=pink,draw=pink] (1.5,0) circle [radius=1.5cm]}}%
-  \fi
-      \script{If you want to see the simulations of this paper we have a github repository, and if you want to send me an email about this paper or this presentation you can flash the QR code in the right. Thank you!\\}
-
-\end{frame}
 
 
 \end{document}
