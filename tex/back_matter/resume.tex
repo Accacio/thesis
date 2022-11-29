@@ -2156,10 +2156,10 @@ Par exemple si on $2$ contraintes l'espace de $\thetai$ pourrait être particion
   \caption{Deux contraintes qui partionnent l'espace de $\thetai$.}\label{fig:constraints_partition_theta_fr}
 \end{figure}
 
-Pour n'importe quel $\thetai$ dans l'aire grise (l'intersection des hyperplans), la solution de~\eqref{eq:DOP_local_set_constraint_fr} est sans contrainte, i.e., les contraintes seront actives.
+Pour n'importe quel $\thetai$ dans l'aire grise (l'intersection des hyperplans), la solution de~\eqref{eq:DOP_local_set_constraint_fr} est sans contrainte, i.e., les contraintes seront inactives.
 Et alors, par définition, le $\lambdai=\0$.
-Pour les autres cas, au moins une des contraintes sera inactive, et on peut enlever les actives.
-Si toutes les contraintes sont inactives, le résultat est le même que pour le systèmes dépourvus~\eqref{eq:lambda_function_theta_fr}:
+Pour les autres cas, au moins une des contraintes sera actives, et on peut enlever les inactives.
+Si toutes les contraintes sont actives, le résultat est le même que pour le systèmes dépourvus~\eqref{eq:lambda_function_theta_fr}:
 \begin{equation}
   \label{eq:lambda_function_theta_reprise_fr}
   \tag{\ref*{eq:lambda_function_theta_fr}}
@@ -2169,7 +2169,7 @@ Si toutes les contraintes sont inactives, le résultat est le même que pour le 
 \newcommand{\sikineqnonzero}[1][\star]{\overset{#1}{\vec{s}_{i}}[k]}
 
 Si on enleve un ensemble de contraintes, on peut résoudre un problème similaire mais avec un nombre réduit de variables.
-Par exemple, si on suppose que la première contrainte est active.
+Par exemple, si on suppose que la première contrainte est inactive.
 On fait que $\elem[1]{\lambdai}=0$ et on le met à côté, on enlève les lignes correspondant en $\bar{\Gamma}_{i}$ et $\thetai$, et après on résout pour les éléments restant de $\lambdai$. Le résultat est
 \begin{equation}
   \label{eq:lambda_function_theta_some_active_fr}
@@ -2180,7 +2180,7 @@ où $\Plinineqnonzero[2:c]={(\linearcoefiineqnonzero[2:\elemend,\star])}^{-1}$ e
 On peut faire pareil pour toute autre partition, c'est à dire, toutes les permutations possibles de contraintes actives et inactives.
 Ce résultat est la base pour calculer la solution du problème primal utilisé en~\cite{BemporadEtAl2002,AlessioBemporad2009}, qui est la base de la commande \mpc{} explicite.
 
-Cependant, les équations auront de tailles d'éléments différentes (autant d'éléments que de contraintes inactives).
+Cependant, les équations auront de tailles d'éléments différentes (autant d'éléments que de contraintes actives).
 Pour égaliser la taille des équations, on récupere les éléments de $\lambdai$ mises à zéro et mises à côté.
 Si on réprend l'exemple,~\eqref{eq:lambda_function_theta_some_active_fr} serait récrite comme
 \begin{equation}
@@ -2211,7 +2211,7 @@ Si on réprend l'exemple,~\eqref{eq:lambda_function_theta_some_active_fr} serait
 \end{equation}
 
 Afin de faciliter, on utilise une représentation binaire tel que si on a $\nineq$ contraintes, on utilise $\nineq$ chiffres binaires pour les représenter.
-On marque $1$ si la contrainte est active et $0$ sinon.
+On marque $1$ si la contrainte est inactive et $0$ sinon.
 
 Dans la Fig.~\ref{fig:constraints_partition_theta_fr}, ${00}_{(2)}$ représente le quadrant inférieur gauche, ${01}_{(2)}$ et ${10}_{(2)}$ les quadrant inférieur droit et supérieur gauche, respectivement, et ${11}_{(2)}$ l'aire en gris.
 On utilise la base 10 pour codifier le chiffre.
@@ -2220,7 +2220,7 @@ Alors~\eqref{eq:lambda_function_theta_some_active_same_size_fr} est récrit comm
   \label{eq:lambda_function_theta_same_size_coded}
   \lambdaik=-\Plin^{(2^{n_{\text{ineq}-1}})}\thetaik-\sik^{(2^{n_{\text{ineq}-1}})},
 \end{equation}
-ou l'index $(2^{n_{\text{ineq}-1}})$ indique que juste la première contrainte est active.
+ou l'index $(2^{n_{\text{ineq}-1}})$ indique que juste la première contrainte est inactive.
 
 On peut alors, écrire la solution complète comme une fonction affine par morceaux, ou en anglais
 \pwa{} function:
@@ -2240,14 +2240,14 @@ Avec cette équation on peut envisager le changement causé par la relaxation, o
 
 \begin{remark}\label{rem:sparse_solutions_fr}
   Comme attendu, par définition, $\Plinineq[i][n]$ et $\sikineq[i][n]$ sont de plus en plus creuses.
-  Quand $n$ augmente, plus en plus contraintes deviennent active, et plus de blocs sont mises à zéro et finalement on a $\Plinineq[i][2^{\nineq}-1]=0_{c}$ et $\sikineq[i][2^{\nineq}-1]=\0_{c}$.
+  Quand $n$ augmente, plus en plus contraintes deviennent inactive, et plus de blocs sont mises à zéro et finalement on a $\Plinineq[i][2^{\nineq}-1]=0_{c}$ et $\sikineq[i][2^{\nineq}-1]=\0_{c}$.
 \end{remark}
 
 \subsubsection{Considérations sur le statut des contraintes}\label{sec:cons-about-stat_fr}
 Il est important de constater que, comme dit, pour quelques ensembles de contraintes le numéro de permutations n'est pas forcément $2^{\nineq}$.
 
 On donne quelques examples.
-Il y a des cas où il n'existe pas une région où toutes les contraintes sont actives, i.e., l'intersection des demi-espaces est nulle (voir Fig.~\ref{fig:non_feasible_fr}).
+Il y a des cas où il n'existe pas une région où toutes les contraintes sont inactives, i.e., l'intersection des demi-espaces est nulle (voir Fig.~\ref{fig:non_feasible_fr}).
 Ces problèmes sont appelés infaisable, et alors sont ignorés dans ce travail.
 
 \begin{figure}[H]
@@ -2294,7 +2294,7 @@ Par exemple, pour des contraintes avec vecteurs normaux $\vec{\vec{\eta}}_{i}$, 
 
 Encore autre exemple c'est quand les contraintes forment un polyèdre.
 On présent l'exemple minimal, le simplex en $\R^{2}$ (voir Fig.~\ref{fig:triangle_inequality_fr}).
-Dans ce cas, on aura toujours au moins $2$ contraintes actives.
+Dans ce cas, on aura toujours au moins $1$ contrainte inactive.
 \begin{figure}[h]
   \centering
   \begin{tikzpicture}
@@ -2547,10 +2547,10 @@ avec
   \right]
 \end{align}
 
-One voir que pour les zones $1$ et $2$, les éléments non creux de $\Plinineq[i][n]$ et $\sikineq[i][n]$ influencie les autres éléments utilisant les colonnes de $T_{i}$ équivalentes aux contraintes inactives.
+One voir que pour les zones $1$ et $2$, les éléments non creux de $\Plinineq[i][n]$ et $\sikineq[i][n]$ influencie les autres éléments utilisant les colonnes de $T_{i}$ équivalentes aux contraintes actives.
 Par exemple, dans la zone $1$, $\elem[1,1]{T_{i}}$ et $\elem[2,1]{T_{i}}$ sont utilisés, et pour la zone $2$, $\elem[1,2]{T_{i}}$ et $\elem[2,2]{T_{i}}$.
 \begin{remark}
-  Si $T_{i}$ est diagonale, il n'y a pas l'injection des ``éléments inactives'' dans un ``élément active''.
+  Si $T_{i}$ est diagonale, il n'y a pas l'injection des ``éléments actives'' dans un ``élément inactive''.
 \end{remark}
 
 Alors, juste quelques colonnes de $T_{i}$ sont propagées.
@@ -2640,10 +2640,10 @@ We cannot use~\eqref{eq:estimate_T_inverse} anymore (reprised for clarity), sinc
 
 Pour ça on a besoin de que $\Plinineq$ existe et qu'on aye accès à la valeur nominal $\Plinineqnominal$.
 
-La condition nécessaire pour l'existence de $\Plinineq$ (la $0$-zone) est qu'on puisse choisir $\thetai$ tel que les contraintes soient inactive pour la solution sans contraintes $\optuncUik$.
+La condition nécessaire pour l'existence de $\Plinineq$ (la $0$-zone) est qu'on puisse choisir $\thetai$ tel que les contraintes soient actives pour la solution sans contraintes $\optuncUik$.
 
-Alors on appelle \emph{pénurie artificielle} la méthode de forcer les contraintes à être inactives en choisissant la valeur de $\thetai$.
-Une valuer $\thetairestricted$ qui déactive les contraintes est appelé le \emph{point de pénurie artificielle}.
+Alors on appelle \emph{pénurie artificielle} la méthode de forcer les contraintes à être actives en choisissant la valeur de $\thetai$.
+Une valuer $\thetairestricted$ qui active les contraintes est appelé le \emph{point de pénurie artificielle}.
 
 En générant des points dans une boule ($\set{B}(\vec{x}_{c},r)=\setbuild{\vec{x}}{\norm{\vec{x}-\vec{x}_{c}}\leq r}$) autour $\thetairestricted$ (Fig.~\ref{fig:ball_around_theta_restricted_fr}), on peut surveiller la communication comme dans la dernière section pour estimer $\Plinineq$.
 
