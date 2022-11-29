@@ -122,7 +122,7 @@ These are the equations we will use for our analysis.
   ${\set{S}=\setbuild{\vec{x}}{\bar{\Gamma}\vec{x}\preceq\vec{U}_{\max}}=\bigcap\limits_{i=1}^{c}}\set{S}_{i}$
   (and conversely for $\bar{\Gamma}_{i}$ and $\thetaik$).
 
-  So, to find the equivalent $\bar{\Gamma}_{\text{eq}}$ (or $\bar{\Gamma}_{i_{\text{eq}}}$) for the equality constraint problem, only the inactive halfspaces are kept and transformed into intersection of hyperplanes (equality constraint).
+  So, to find the equivalent $\bar{\Gamma}_{\text{eq}}$ (or $\bar{\Gamma}_{i_{\text{eq}}}$) for the equality constraint problem, only the active halfspaces are kept and transformed into intersection of hyperplanes (equality constraint).
   This computation of active/inactive sets may be costly depending on the number of halfspaces used and the dimensions of the variables.
   Some binary-search-tree and other techniques may be used to increase performance~\cite{SchulzeEtAl2022,AlessioBemporad2009}.
 
@@ -142,11 +142,11 @@ When a system does not suffer from scarcity, the solution of the unconstrained p
 \bar{\Gamma}\optuncU\preceq {\vec{U}}_{\text{max}},\forall k.
 \end{equation}
 
-This way, the elements of $\optuncU$ lie inside the polytope and all the constraints are active.
+This way, the elements of $\optuncU$ lie inside the polytope and all the constraints are inactive.
 As a consequence, no projection onto the polytope is needed, since it would result in the same point.
 That means the solution of the constrained problem is the same as the unconstrained, so the problem is in fact unconstrained.
 
-Instead of needing to solve the local problems~\eqref{eq:DOP_local_reprise} and use a negotiation to decompose the system, the problem doesn't need coordination.
+Instead of needing to solve the local problems~\eqref{eq:DOP_local_reprise} and use a negotiation to decompose the system, the problem does not need coordination.
 The problem is solved as shown in \S\ref{sec:uncoupled_problems}, i.e., each subsystem solves~\eqref{eq:qp_standard_form_unconstrained_solution} and the solution is already given.
 
 This case is uninteresting because since the agents do not need to compromise to find a consensus, there is no incentive to attack the system to gain more resources since it would not be used and it would not affect the others, who would be nevertheless satisfied.
@@ -214,7 +214,7 @@ As presented in~\cite{BoydVandenberghe2004} and as we can see from inspecting~\e
 \begin{equation}
   \label{eq:eq_lambda_equation}
   \begin{matrix}
-    \lambdaikstar=\argmax\limits_{\lambdaik}\maximize\limits_{\lambdaik}&\dualfunction.
+    \lambdaikstar=\argmax\limits_{\lambdaik}&\dualfunction.
   \end{matrix}
 \end{equation}
 
@@ -1046,7 +1046,7 @@ From the analytical solutions for the local optimization problems, we could asse
 
 The analysis gave us some insight on how to detect the attacks and mitigate given consequences of the attacks.
 And exploiting some assumptions we proposed a secure \dmpc{} algorithm.
-We assess its functioning through the simulation of a \dhn{} under different scenarios, with and withou attacks and using the proposed algorithm.
+We assess its functioning through the simulation of a \dhn{} under different scenarios, with and without attacks and using the proposed algorithm.
 
 In the next chapter, we try to relax some of the assumptions used in this chapter.
 As we will see, by alleviating one assumption the problem to solve becomes exponentially more complex.

@@ -93,7 +93,7 @@ Again, since there is only one type of lagrangian multiplier, we will call it si
 
 \begin{remark}
   The complementary slackness still holds, ${\lambdaikstar}^T\inequalityfunctionname(\vec{U}_{i}^{\star}[k],\thetaik)$ will always be zero.
-  If any element of $\inequalityfunctionname(\vec{U}_{i}^{\star}[k],\thetaik)$ is smaller than zero, the corresponding element on the dual variable $\lambdaikstar$ will be zero, indicating the constraint is active.
+  If any element of $\inequalityfunctionname(\vec{U}_{i}^{\star}[k],\thetaik)$ is smaller than zero, the corresponding element on the dual variable $\lambdaikstar$ will be zero, indicating the constraint is inactive.
 \end{remark}
 
 We can define the dual function $\dualfunctionname:\R^{c} \times \R^{c} \to \R$ also calculated by solving
@@ -128,11 +128,11 @@ However, since we are using inequalities, we can only have $\lambdaik$ positive~
 \begin{equation}
   \label{eq:ineq_lambda_equation}
   \begin{matrix}
-    \lambdaikstar=\argmax\limits_{\lambdaik}\left\{
+    \lambdaikstar=
     \begin{matrix}
-      \maximize\limits_{\lambdaik}&\dualfunction\\
-      \mathrm{subject~ to}& \lambdaik\preceq\0
-    \end{matrix}\right\}.
+      \argmax\limits_{\lambdaik}&\dualfunction\\
+      \mathrm{subject~ to}& \lambdaik\succeq\0
+    \end{matrix}.
   \end{matrix}
 \end{equation}
 
@@ -184,10 +184,10 @@ Imagine an example where we have $2$ constraints with associated $\elem[1]{\lamb
   \caption{Two constraints partitioning $\thetai$ solution space.}\label{fig:constraints_partition_theta}
 \end{figure}
 
-For any $\thetai$ inside the grey area, the solution to~\eqref{eq:local_problem_equality_standard_notation} will be unconstrained, i.e., the constraints will be active.
+For any $\thetai$ inside the grey area, the solution to~\eqref{eq:local_problem_equality_standard_notation} will be unconstrained, i.e., the constraints will be inactive.
 Thus, for this case, by definition the value of $\lambdai=\0$.
-For all other cases, where we know at least one constraint in~\eqref{eq:local_problem_equality_standard_notation} is inactive, we can remove the constraint in~\eqref{eq:ineq_lambda_equation} for the element of $\lambdai$ corresponding to the inactive constraint.
-For instance, if all constraints in~\eqref{eq:local_problem_equality_standard_notation} are inactive, we can remove all constraints of~\eqref{eq:ineq_lambda_equation}, which will result in problem~\eqref{eq:eq_lambda_equation}, whose solution we known already:
+For all other cases, where we know at least one constraint in~\eqref{eq:local_problem_equality_standard_notation} is active, we can remove the constraint in~\eqref{eq:ineq_lambda_equation} for the element of $\lambdai$ corresponding to the active constraint.
+For instance, if all constraints in~\eqref{eq:local_problem_equality_standard_notation} are active, we can remove all constraints of~\eqref{eq:ineq_lambda_equation}, which will result in problem~\eqref{eq:eq_lambda_equation}, whose solution we known already:
 \begin{equation}
   \label{eq:lambda_function_theta_reprise}
   \tag{\ref*{eq:lambda_function_theta}}
@@ -197,7 +197,7 @@ For instance, if all constraints in~\eqref{eq:local_problem_equality_standard_no
 \newcommand{\sikineqnonzero}[1][\star]{\overset{#1}{\vec{s}_{i}}[k]}
 
 By removing a set of constraints, we can solve a similar problem, but with reduced number of elements in $\thetai$ and $\lambdai$.
-For example, let us suppose the first constraint in~\eqref{eq:local_problem_equality_standard_notation} is active.
+For example, let us suppose the first constraint in~\eqref{eq:local_problem_equality_standard_notation} is inactive.
 We make $\elem[1]{\lambdai}=0$ and set it aside, we remove the corresponding lines of $\bar{\Gamma}_{i}$ and $\thetai$, and then we solve for all other elements of $\lambdai$, removing the remaining constraints in~\eqref{eq:ineq_lambda_equation}. This results in
 \begin{equation}
   \label{eq:lambda_function_theta_some_active}
@@ -208,7 +208,7 @@ where $\Plinineqnonzero[2:c]={(\linearcoefiineqnonzero[2:\elemend,\star])}^{-1}$
 If we do this for all partitions, i.e., all possible permutations of active and inactive constraints, we will have as many equations similar to~\eqref{eq:lambda_function_theta_some_active} as permutations.
 This result is the base for calculating the solution of the original problem~\eqref{eq:local_problem_equality_standard_notation} as shown in~\cite{BemporadEtAl2002,AlessioBemporad2009}, which is the base for explicit \mpc{}.
 
-However, the equations have different sizes of elements (as many elements as inactive constraints).
+However, the equations have different sizes of elements (as many elements as active constraints).
 To make all equations same-sized, we recover the elements of $\lambdai$ set to zero and set aside.
 If we take the same example, Eq.~\eqref{eq:lambda_function_theta_some_active} would become
 \begin{equation}
@@ -240,16 +240,16 @@ If we take the same example, Eq.~\eqref{eq:lambda_function_theta_some_active} wo
 
 
 To facilitate the notation, let us use a binary representation such if we have $\nineq$ constraints, we use $\nineq$ binary digits to represent their status.
-And we will mark the digtis $1$ if the constraint is active and $0$ if inactive, indicating which constraints were removed or kept.
+And we will mark the digits $1$ if the constraint is inactive and $0$ if active, indicating which constraints were removed or kept.
 
-If we retake the $2$-constraints example in Fig.~\ref{fig:constraints_partition_theta}, ${00}_{(2)}$ would represent both constraints inactive (bottom left quadrant), ${01}_{(2)}$ and ${10}_{(2)}$ represents one of the constraints are active (bottom right and top left quadrants, respectively) and ${11}_{(2)}$ where both constraints are active (grey area in top right quadrant).
+If we retake the $2$-constraints example in Fig.~\ref{fig:constraints_partition_theta}, ${00}_{(2)}$ would represent both constraints active (bottom left quadrant), ${01}_{(2)}$ and ${10}_{(2)}$ represents one of the constraints are active (bottom right and top left quadrants, respectively) and ${11}_{(2)}$ where both constraints are inactive (grey area in top right quadrant).
 We can then use the base 10 to represent such partitions.
 This way~\eqref{eq:lambda_function_theta_some_active_same_size} can be written as
 \begin{equation}
   \label{eq:lambda_function_theta_same_size_coded}
   \lambdaik=-\Plin^{(2^{n_{\text{ineq}-1}})}\thetaik-\sik^{(2^{n_{\text{ineq}-1}})},
 \end{equation}
-with index $(2^{n_{\text{ineq}-1}})$ indicating that only the first constraint is active.
+with index $(2^{n_{\text{ineq}-1}})$ indicating that only the first constraint is inactive.
 
 Then, we can write the complete solution of~\eqref{eq:ineq_lambda_equation} as
 a \pwa{} function
@@ -265,17 +265,17 @@ a \pwa{} function
   \end{aligned}.
 \end{equation}
 
-Here we can begin to regard the change caused by the relaxation, whereas we had only one equation relating $\lambdai$ to $\thetai$, when the system was deprived, now we have potentially $2^{\nineq}$ different equations.
+Here we can begin to regard the change caused by the relaxation, whereas we had only one equation relating $\lambdai$ to $\thetai$ when the system was deprived, now we have potentially $2^{\nineq}$ different equations.
 
 \begin{remark}\label{rem:sparse_solutions}
   As one may expect, by definition, the $\Plinineq[i][n]$ and $\sikineq[i][n]$ are increasingly sparse.
-  When $n$ increases more constraints are active and more blocks are equal to zero, culminating in $\Plinineq[i][2^{\nineq}-1]=0_{c}$ and $\sikineq[i][2^{\nineq}-1]=\0_{c}$.
+  When $n$ increases more constraints are inactive and more blocks are equal to zero, culminating in $\Plinineq[i][2^{\nineq}-1]=0_{c}$ and $\sikineq[i][2^{\nineq}-1]=\0_{c}$.
 \end{remark}
 \newpage
 \subsubsection{Considerations about status of constraints}\label{sec:cons-about-stat}
 It is important to observe that some there are some sets of constraints in which the permutation is not necessarily $2^{\nineq}$.
 
-For example, in some cases there is no partition where all constraints are active, i.e., the intersection of halfspaces is empty (see Fig.~\ref{fig:non_feasible}).
+For example, in some cases there is no partition where all constraints are inactive, i.e., the intersection of halfspaces is empty (see Fig.~\ref{fig:non_feasible}).
 Problems with such constraints are infeasible, thus we ignore them in this work.
 
 \begin{figure}[H]
@@ -297,9 +297,9 @@ Problems with such constraints are infeasible, thus we ignore them in this work.
   \caption{Set of constraints with no intersection.}\label{fig:non_feasible}
 \end{figure}
 
-In other cases, there is no combination where all constraints are inactive.
+In other cases, there is no combination where all constraints are active.
 We give some different examples.
-For instance, for constraints with normals $\vec{\vec{\eta}}_{i}$, if the angles of adjacent halfspaces $\vecangle{\vec{\eta}_{i}}{\vec{\eta}_{j}}$ is $180^{o}$ and the intersection is not nil (see Fig.~\ref{fig:parallel_only_one_active}), at least one of the constraints will always be active.
+For instance, for constraints with normals $\vec{\vec{\eta}}_{i}$, if the angles of adjacent halfspaces $\vecangle{\vec{\eta}_{i}}{\vec{\eta}_{j}}$ is $180^{o}$ and the intersection is not nil (see Fig.~\ref{fig:parallel_only_one_active}), at least one of the constraints will always be inactive.
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}
@@ -322,7 +322,7 @@ For instance, for constraints with normals $\vec{\vec{\eta}}_{i}$, if the angles
 
 Yet another example is when the constraints form a polyhedron.
 We present a minimal example of polyhedron in Fig.~\ref{fig:triangle_inequality}, a triangle in $\R^{2}$ formed by $3$ inequality constraints.
-In this case, there will always be at least $2$ active constraints.
+In this case, there will always be at least $1$ inactive constraint.
 \begin{figure}[h]
   \centering
   \begin{tikzpicture}
@@ -340,8 +340,8 @@ In this case, there will always be at least $2$ active constraints.
   \caption{A $3$-sided polyhedron.}\label{fig:triangle_inequality}
 \end{figure}
 
-Since we suppose there are at most the number of constraints as dimensions, it is not possible to create polyhedrons
-\footnote{For $\R^{n}$, the simplex has $n+1$ faces}.
+Since we suppose there are at most the number of constraints as dimensions, it is not possible to create polyhedra.
+\footnote{For $\R^{n}$, the simplex has $n+1$ faces}
 Although, for superior dimensions, prisms may also be taken into account.
 
 \subsection{Impact on negotiation equations}\label{sec:impact-local-problem}
@@ -349,7 +349,7 @@ We can try to apply the same logic used in \S\ref{sec:analysis-negotiation}, by 
 In this attempt, we can fully contemplate how the relaxation of the assumptions increases the problem's complexity.
 
 The first difficulty is already on the projected subgradient method, which due to the set
-$\set{S}$ being intersection of halfplanes, does not have a straightforward solution as in the equality constraint case~\eqref{eq:example_projectedSubgradient_lambda_reprise}. The solution is found by applying the definition of the euclidean projection, which is by itself a \qp{} problem
+$\set{S}$ being intersection of halfplanes, does not have a straightforward solution as in the equality constraint case~\eqref{eq:example_projectedSubgradient_lambda_reprise}. The solution is found by applying the definition of the Euclidean projection, which is by itself a \qp{} problem
 
 \begin{equation}
   \Proj^{\set{X}}(\vec{x}_{0})=
@@ -399,8 +399,8 @@ Substituting the solution of the dual variables into the lagrangian, and making 
 similarly with non-overlapping regions ${\set{R}_{\vec{\mu}}^{n}=\setbuild{\vec{x}}{G_{\vec{\mu}}^{n}[k]\vec{x} \preceq \vec{U}_{\max}^{n}[k]}}$\footnote{Also not defined in this work} which partition the space of $\vec{x}_{0}$.
 The non-zero elements (coded by $0$ digits in the binary representation of $(n)$) of $P_{\vec{\mu}}^{(n)}$ are ${({I_{c}^{M}}^{(n)}{{I_{c}^{M}}^{(n)}}\T)}^{-1}$, and those of $\vec{s}_{\vec{\mu}}^{(n)}[k]$ are ${{({I_{c}^{M}}^{(n)}{{I_{c}^{M}}^{(n)}}\T)}^{-1}{I_{c}^{M}}^{(n)}\vec{x}_{0}}$, ${I_{c}^{M}}^{(n)}$ is constructed by keeping/removing the constraints as coded by index $(n)$.
 
-Observe that when all constraints are inactive ($n=0$), the solution is the same as in the equality case~\eqref{eq:euclidean_projection_equality_solution} ($\card{I_{c}^{M}}=c\times Mc$).
-And when all constraints are active ($n=2^{c}-1$), the solution is the same as the unconstrained solution, since $\vec{\mu}=\0$ (see Remark~\ref{rem:sparse_solutions}).
+Observe that when all constraints are active ($n=0$), the solution is the same as in the equality case~\eqref{eq:euclidean_projection_equality_solution} ($\card{I_{c}^{M}}=c\times Mc$).
+And when all constraints are inactive ($n=2^{c}-1$), the solution is the same as the unconstrained solution, since $\vec{\mu}=\0$ (see Remark~\ref{rem:sparse_solutions}).
 
 So, we can conclude that the next value $\thetaik\pplusone$ depends on where $\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$ will lie, giving at most $2^{c}$ possibilities.
 In turn, $\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$ depends on the values of each $\lambdaik$, which conversely can have $2^{\nineq}$ different modes each.
@@ -466,7 +466,7 @@ The $0$-th case, as mentioned, is the same we found in the last chapter, giving
 $\mathcal{A}_{\vec{\lambda}}^{0}=\mathcal{A}_{\vec{\lambda}}$,
 $\mathcal{A}_{\vec{\theta}}^{0}=\mathcal{A}_{\vec{\theta}}$, and
 $\vec{B}_{\vec{\theta}}^{0}[k]=\vec{B}_{\vec{\theta}}[k]$.
-Similarly for the $N_{\vec{\theta}}$-th case where all the constraints of all systems are active (implying all $\lambdai=\0$), and the projection of $\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$ is itself, yielding
+Similarly for the $N_{\vec{\theta}}$-th case where all the constraints of all systems are inactive (implying all $\lambdai=\0$), and the projection of $\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$ is itself, yielding
 $\mathcal{A}_{\vec{\lambda}}^{N_{\vec{\lambda}}}=0_{c}$,
 $\mathcal{A}_{\vec{\theta}}^{N_{\vec{\theta}}}=I_{c}$, and
 $\vec{B}_{\vec{\theta}}^{N_{\vec{\theta}}}[k]=\0$.
@@ -507,6 +507,7 @@ $\tilde{\vec{B}}_{\vec{\theta}}^{0}[k]=\tilde{\vec{B}}_{\vec{\theta}}[k]$, and a
   $\tilde{\vec{B}}_{\vec{\theta}}^{N_{\vec{\theta}}}[k]=\vec{B}_{\vec{\theta}}^{N_{\vec{\theta}}}[k]$.
 \end{remark}
 
+\newpage
 We could analyze stability in a case-by-case fashion, seeing what constraints are active/inactive for which agent and how the cheating matrices influence the stability.
 But due to the extension of the analysis (exponential number of cases) we skip it for brevity's sake, and will use a single example, different from the trivial solution, to illustrate how it could be done.
 
@@ -583,6 +584,7 @@ where
                                                    \end{matrix}
   \right]
 \end{align}
+\pagebreak
 with
 \begin{align}
   \sikineq[i][0]&={{(\linearcoefiineqnonzero)}^{-1}}\elem[*,*]{\bar{\Gamma}_{i}}H_{i}^{-1}\vec{f}_{i}[k]\\
@@ -606,13 +608,13 @@ with
   \right]
 \end{align}
 
-One can observe that for zones $1$ and $2$, when the agent attacks, the non-zero elements of $\Plinineq[i][n]$ and $\sikineq[i][n]$ influence the other elements using the columns of $T_{i}$ equivalent to the inactive constraints.
+One can observe that for zones $1$ and $2$, when the agent attacks, the non-zero elements of $\Plinineq[i][n]$ and $\sikineq[i][n]$ influence the other elements using the columns of $T_{i}$ equivalent to the active constraints.
 For example, in zone $1$, $\elem[1,1]{T_{i}}$ and $\elem[2,1]{T_{i}}$ are used, and for zone $2$, $\elem[1,2]{T_{i}}$ and $\elem[2,2]{T_{i}}$.
 \begin{remark}
-  Observe that if $T_{i}$ is diagonal, there is no injection of ``inactive elements'' into an ``active elements''.
+  Observe that if $T_{i}$ is diagonal, there is no injection of ``active elements'' into any ``inactive elements''.
 \end{remark}
 
-So, instead of always propagating to the negotiation all the matrix $T_{i}$, as in the case of the last chapter, only the columns related to the inactive constraints are propagated.
+So, instead of always propagating to the negotiation all the matrix $T_{i}$, as in the case of the last chapter, only the columns related to the active constraints are propagated.
 
 If we have $M=2$ subsystems, one in the $1$-zone and other in the $2$-zone (let us called them agents I and II) and we suppose the solution of the projection is in its $0$-zone, i.e., ${G_{\vec{\mu}}^{0}[k](\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p) \preceq \vec{U}_{\max}^{0}[k]}$, we code the permutation as
 \begin{equation}
@@ -717,7 +719,7 @@ So if we can estimate $\Plinineqtilde$ and we have a nominal $\Plinineqnominal$ 
 
 So, we assume that $\Plinineq$ exists and that is possible to estimate it.
 
-The necessary condition for existence of the $0$-th region ($0$-zone) is that we can choose $\thetai$ such the constraints $\inequalityfunction$ are inactive for the unconstrained solution $\optuncUik$.
+The necessary condition for existence of the $0$-th region ($0$-zone) is that we can choose $\thetai$ such the constraints $\inequalityfunction$ are active for the unconstrained solution $\optuncUik$.
 Since we can only choose $\thetai$ that respects $\dom J_{i}$, to assure feasibility, we assume the unconstrained solution $\optuncU$ and $\optuncUik$ lie inside
 the respective constraint sets
 \begin{align}
@@ -726,7 +728,7 @@ the respective constraint sets
 \end{align}
 
 
-We call \emph{artificial scarcity} the method of forcing the constraints to be inactive.
+We call \emph{artificial scarcity} the method of forcing the constraints to be active.
 And supposing there is a value $\thetairestricted$ that deactivates all constraints, we call it the \emph{artificial scarcity point}.
 
 So, if we can generate points in a ball ($\set{B}(\vec{x}_{c},r)=\setbuild{\vec{x}}{\norm{\vec{x}-\vec{x}_{c}}\leq r}$) around $\thetairestricted$ (See Fig.~\ref{fig:ball_around_theta_restricted}), we can use the same method of supervision of communication of the coordinator and agents used in the last chapter to estimate $\Plinineq$.
