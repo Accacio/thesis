@@ -1,32 +1,32 @@
 \documentclass[aspectratio=169]{beamer}
 
 \input{preamble}
+
+\tikzset{%
+  show controls/.style={
+    postaction={
+      decoration={
+        show path construction,
+        curveto code={
+          \draw [blue]
+          (\tikzinputsegmentfirst) -- (\tikzinputsegmentsupporta)
+          (\tikzinputsegmentlast) -- (\tikzinputsegmentsupportb);
+          \fill [red, opacity=0.5]
+          (\tikzinputsegmentsupporta) circle [radius=.2ex]
+          (\tikzinputsegmentsupportb) circle [radius=.2ex];
+        }
+      },
+      decorate
+    }}}
+
+
+
 \setbeameroption{show notes on second screen}
 \draft
 % \webcast
 \setbeamercolor{alerted text}{fg=supelecRed!20!red!80}
 % \usetikzlibrary{overlay-beamer-styles}
 \bibliography{../tex/bibliography.bib}
-\newcommand{\arrowthis}[2]{
-        \tikz[remember picture,baseline]{\node[anchor=base,inner sep=0,outer sep=0]%
-        (#1) {\underline{#1}};
-        \node[overlay,single arrow,draw=none,fill=red!50,anchor=tip,rotate=60]
-        at (#1.south) {#2};}%
-    }%
-
-
-\newcommand{\bubblethis}[2]{
-        \tikz[remember picture,baseline]{\node[anchor=base,inner sep=0,outer sep=0]%
-        (#1) {\underline{#1}};\node[overlay,cloud callout,callout relative pointer={(0.2cm,-0.7cm)},%
-        aspect=2.5,fill=yellow!90] at ($(#1.north)+(-0.5cm,1.6cm)$) {#2};}%
-    }%
-
-\newcommand{\pointthis}[2]{
-        \tikz[remember picture,baseline]{\node[anchor=base,inner sep=0,outer sep=0]%
-        (#1) {\underline{#1}};\node[overlay,rectangle callout,%
-        callout relative pointer={(0.2cm,0.7cm)},fill=green!50] at ($(#1.north)+(-.5cm,-1.4cm)$) {#2};}%
-        }%
-
 
 \title[Security of dMPC under False Data injection] % (optional, use only with long paper titles)
 {Security of distributed Model Predictive Control\\ under False Data injection}
@@ -397,6 +397,8 @@
 \colorlet{mpc_agent}{supelecRed!90}
 \definecolor{mpc_coordinator}{RGB}{235, 235, 235}
 \colorlet{mpc_coordinator}{supelecRed!10}
+\definecolor{mpc_green}{RGB}{98, 160, 98}
+
 
 \newcommand{\tikzmark}[1]{\tikz[baseline={(#1.base)},overlay,remember picture] \node[outer sep=0pt, inner sep=0pt] (#1) {\phantom{A}};}
 \begin{frame}{Distributed Model Predictive Control}{Optimization Frameworks}
@@ -612,24 +614,6 @@
         \draw[latex-,thick] (a) .. controls +(.5,.5) and +(-0.5,-1.0) .. +(3.5,1) node[above=.25cm,align=center,anchor=center,text=black,text width = 2in] {E.g. ${v_{i}=w_{i}-x_{i}}$};
       \end{tikzpicture}%
     }
-    \tikzset{%
-      show curve controls/.style={
-        postaction={
-          decoration={
-            show path construction,
-            curveto code={
-              \draw [blue]
-              (\tikzinputsegmentfirst) -- (\tikzinputsegmentsupporta)
-              (\tikzinputsegmentlast) -- (\tikzinputsegmentsupportb);
-              \fill [red, opacity=0.5]
-              (\tikzinputsegmentsupporta) circle [radius=.2ex]
-              (\tikzinputsegmentsupportb) circle [radius=.2ex];
-            }
-          },
-          decorate
-        }}}
-
-
 
     \only<9>{
       \begin{tikzpicture}[overlay, remember picture]
@@ -862,7 +846,7 @@
     \begin{itemize}
       \item<1-> \cite{VelardeEtAl2017a,ChanfreutEtAl2018} present some kinds of attacks
             \begin{itemize}
-              \item<2-> Objective function
+              \item<2-> Objective function\tikzmark{a}
                     \begin{itemize}
                       \item<3-> Selfish Attack
                       \item<4-> Fake weights
@@ -872,6 +856,12 @@
               \item<7-> Liar agent (use different control)
             \end{itemize}
     \end{itemize}
+  \onslide<8>{
+  \begin{tikzpicture}[overlay, remember picture,decoration={brace,amplitude=2pt}]
+    \draw[decorate,thick] (a.north east) --+ (0,-2) node[midway, right=0.1cm,text=black,text width = 2in] {Deception Attacks\\ (False Data Injection)};
+  \end{tikzpicture}%
+  }
+
 \end{frame}
 
 \begin{frame}{How can a non-cooperative agent attack?}{Our approach}
@@ -880,11 +870,10 @@
       \begin{itemize}
         \item<1-> $\vec{\lambda}_{i}$ is the only interface with coordination
         \item<2-> $\vec{\lambda}_{i}$ depends on the parameters of the system
-        \item<4-> Malicious agent sends a different $\vec{\lambda}_{i}$
+        \item<3-> Malicious agent sends a different $\vec{\lambda}_{i}$
       \end{itemize}
       \centering
-      \only<5->{$\tilde{\vec{\lambda}}_{i}=\gamma_{i}(\vec{\lambda}_{i})$\\}
-      \only<6>{Let's suppose $\gamma_{i}(\vec{\lambda}_{i})=T_{i}$}
+      \only<4->{$\tilde{\vec{\lambda}}_{i}=\gamma_{i}(\vec{\lambda}_{i})$\\}
     \end{minipage}
     \hfill
     \begin{minipage}[t]{.3\linewidth}
@@ -900,25 +889,29 @@
 
 \subsection{Consequences}
 \begin{frame}{Example}
+  \centering
+  \only<1->{Let's suppose $\gamma_{i}(\vec{\lambda}_{i})=T_{i}\vec{\lambda}_i$}\\
   \begin{minipage}[c]{.45\linewidth}
     \begin{figure}[!t]
       \centering
       \begin{tikzpicture}
-        \visible<4->{\node (0,0){\includegraphics[width=\textwidth]{changeOfJ.pdf}};}
+        \visible<5->{\node (0,0){\includegraphics[width=\textwidth]{changeOfJ.pdf}};}
         \usebeamercolor{alerted text}
-        \draw<5>[rounded corners,fg,thick] (-2.3,2.5) rectangle +(.5,-5);
-        \draw<6>[rounded corners,fg,thick] (2.3,2.5) rectangle +(.75,-5);
+        \draw<6>[rounded corners,fg,thick] (-2.3,2.5) rectangle +(.5,-5);
+        \draw<7>[rounded corners,fg,thick] (2.3,2.5) rectangle +(.75,-5);
       \end{tikzpicture}
     \end{figure}
   \end{minipage}
   \hfill
   \begin{minipage}[c]{.45\linewidth}
+    \only<2->{
     \begin{exampleblock}{4 distinct agents}
       \begin{itemize}
-        \item<2-> Agent 1 is non-cooperative\\
-        \item<3-> It uses $\tilde{\vec{\lambda}}_{1}=\gamma_{1}(\vec{\lambda}_{1})=\tau_{1}I\vec{\lambda}_{1}$
+        \item<3-> Agent 1 is non-cooperative\\
+        \item<4-> It uses $\tilde{\vec{\lambda}}_{1}=\gamma_{1}(\vec{\lambda}_{1})=\tau_{1}I\vec{\lambda}_{1}$
       \end{itemize}
     \end{exampleblock}
+    }
   \end{minipage}
 \script<1->{We give an example of 4 agents negotiating }
 \script<2->{Agent 1 is non-cooperative\\ }
@@ -978,12 +971,8 @@
   \end{overlayarea}
 \end{frame}
 
-\section{Resilient Primal Decomposition-based dMPC for deprived systems}
 
-% \section{Securing the DMPC}
-% \script<1->{In order to secure the method let's analyze the subproblems \\ }
 
-% \subsection{Analysis of Subproblems}
 \begin{frame}{Strategy}
   \begin{itemize}
     \item<1-> Recover original behavior
@@ -1044,20 +1033,24 @@
   \begin{itemize}
     \item<1-> $\gamma(\lambda)=T\lambda$
     \item<2-> $T\lambda=0 \iff \lambda=0 \onslide<3>{\to \exists T^{-1}}$
+    \item<4-> Each agent could choose different $T_{i}$ each time \only<5->{$\to$ $T_{i}[k]$}
   \end{itemize}
 \end{frame}
+
 
 \begin{frame}{Strategy}
   \begin{itemize}
     \item Recover original behavior
           \begin{itemize}
-            \item Invert effects of function $\gamma_{i}(\vec{\lambda}_{i})$ \onslide<2>{$\to$ Estimate $T^{-1}$}
+            \item Invert effects of function $\gamma_{i}(\vec{\lambda}_{i})$ \onslide<2->{$\to$ Estimate $T_{i}[k]^{-1}$}
           \end{itemize}
     \item<3-> But how? \onslide<4>{Analyzing the system}
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Deprived Systems}
+\section{Resilient Primal Decomposition-based dMPC for deprived systems}
+\subsection{Analyzing deprived systems}
+\begin{frame}{What are deprived systems?}
   \centering
   \begin{equation*}
     \begin{matrix}
@@ -1067,7 +1060,7 @@
   \end{equation*}
   \begin{itemize}
     \item<3-> Unconstrained solution $\optuncUik=-H_{i}^{-1}\vec{f}_{i}[k]$
-    \item<4-> Deprived if $\bar{\Gamma}_{i}\optuncUik\succ \thetaik, \forall k$
+    \item<4-> Deprived if constraints are active $\to$ $\bar{\Gamma}_{i}\optuncUik\succ \thetaik, \forall k$
   \begin{itemize}
     \item<5-> Solution projected onto boundaries (equality constraints)
   \end{itemize}
@@ -1084,38 +1077,448 @@
     }
   \end{figure}
 \end{frame}
+
 \begin{frame}{Deprived Systems}{But why?}
   \centering
   \begin{itemize}
-    \item<2-> No Scarcity \onslide<3->{$\to$ All satisfied} \onslide<4->{ $\to$ $\lambda_{i}=0$} \onslide<5->{$\to$ No coordination needed}
+    \item<2-> No Scarcity \onslide<3->{$\to$ All constraints satisfied} \onslide<4->{ $\to$ $\lambda_{i}=0$} \onslide<5->{$\to$ No coordination needed}
     \item<6-> Scarcity $\to$ Competition \onslide<7->{$\to$ Consensus/Compromise} \onslide<8->{(or cheating {\color{red}\faUserSecret})}
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Deprived Systems}{Analysis}
-   \begin{itemize}
-    \item<2-> We can transform inequality constraints into equality ones\footnote{Under some conditions, \todo{see here} }
+  \begin{itemize}
+    \item<2-> We can transform inequality constraints into equality ones\footnote{Under some conditions \hypertarget<2->{analysis_deprived_systems}{}
+  \hyperlink<2->{condition_transform_equality}{\beamergotobutton{see here}} }
     \item<3-> Solution is analytical and trivial.
-   \begin{itemize}
-    \item<4-> If we solve for $\lambda_{i}$
-   \end{itemize}
-   \end{itemize}
-   \centering
+          \begin{itemize}
+            \item<4-> If we solve for $\lambda_{i}$
+          \end{itemize}
+  \end{itemize}
+  \centering
 
-\begin{equation*}
-   \begin{matrix}
+  \begin{equation*}
+    \begin{matrix}
       {\minimize\limits_{\vec{U}_{i}[k]}}&{\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]}\\
       \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \only<1>{\geq}\only<2->{=} \thetaik:\lambdaik
     \end{matrix}
   \end{equation*}
 
-  \onslide<4>{\vspace{-.5cm}
+  \onslide<4->{
+    \vspace{-.5cm}
     \begin{equation*}
       \lambdaik=-\Plin\thetaik-\sik,
     \end{equation*}
-    where $\Plin={(\linearcoefi)}^{-1}$ and $\sik=\Plin\bar{\Gamma}_{i}H_{i}^{-1}\vec{f}_{i}[k]$.
+  }
+  \onslide<5->{
+  where \alert<7>{$\Plin={(\linearcoefi)}^{-1}$}} \onslide<6->{and  \alert<8>{$\sik=\Plin\bar{\Gamma}_{i}H_{i}^{-1}\vec{f}_{i}[k]$}.
+}
+\note{
+  One can notice, that the solution embeds information not only of the objective function and the reference and state (presence of $H_{i}$ and $\vec{f}_{i}[k]$), but also of the constraints (presence of $\bar{\Gamma}_{i}$ and $\thetaik$).
+  So, changes in these parameters affect the resulting value of $\lambdaik$.
 }
 \end{frame}
+
+\begin{frame}{Deprived Systems}{Analysis (Continued)}
+  \centering
+  ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k] \only<1>{\leq}\only<2->{=} \vec{U}_{\max}}}$
+  \begin{overlayarea}{\textwidth}{.1\textwidth}
+    \centering
+    \begin{equation*}
+      \only<1>{\vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p)}
+      \only<2->{\thetai\pplusone=\thetai\p+\rho\p\left(\lambdai\p\tikzmark{lambdai}-\frac{1}{M}\sum_{j=1}^{M}\vec{\lambda}_j\p\tikzmark{lambdaj}\right),\forall i\in\set{M}}
+    \end{equation*}
+    \begin{equation*}
+      \only<5>{\vec{\theta}\pplusone=\mathcal{A}_{\theta}\vec{\theta}\p+\mathcal{\vec{B}}_{\theta}[k] \text{ \hyperlink{theta_dynamics}{\beamergotobutton{see here}}}}
+    \end{equation*}
+    \hypertarget<5>{analysis_continued}{}
+  \end{overlayarea}
+      \only<3->{
+      \begin{tikzpicture}[overlay, remember picture]
+        \only<3-4>{\draw[-latex,thick] ($(lambdai) + (-0.2,0.25)$) .. controls +(0.0,1.5) and +(-0.0,-1.5) .. +(4.5,2) coordinate (ends);}
+        \only<4->{\node[above=.25cm,align=center,anchor=center,text=black,text width = 2in] at (ends) {$\lambdaik=-\Plin\thetaik-\sik$};}
+        \only<3-4>{\draw[-latex,thick] ($(lambdaj) + (-0.2,0.25)$) .. controls +(0.0,1.5) and +(-0.0,-1.5) .. (ends) node[above=.25cm,align=center,anchor=center,text=black,text width = 2in] {};}
+      \end{tikzpicture}%
+    }
+\end{frame}
+
+
+\begin{frame}{Deprived Systems}{Under attack!}
+  \begin{itemize}
+    \item<1-> Normal behavior
+          \begin{equation*}
+            \lambdaik=-\Plin\thetaik-\sik,
+          \end{equation*}
+    \item<2-> Under attack
+          \begin{equation*}
+            \onslide<2->{\tilde{\vec{\lambda}}_{i}=T_{i}[k]\vec{\lambda}_{i}}\onslide<3->{=-T_{i}\Plin\thetaik-T_{i}\sik}
+          \end{equation*}
+          \begin{equation*}
+            \onslide<4->{\lambdaicheat=-\Plintilde\thetaik-\tilde{\vec{s}}_{i}[k]}
+          \end{equation*}
+          \begin{equation*}
+            \only<5->{\vec{\theta}\pplusone=\alert<6>{\tilde{\mathcal{A}}_{\theta}[k]}\vec{\theta}\p+\tilde{\mathcal{\vec{B}}}_{\theta}[k]}
+          \end{equation*}
+  \end{itemize}
+\end{frame}
+
+\subsection{Building an algorithm}
+
+\begin{frame}{Detection Mechanism}
+\begin{assumption}
+  We know nominal $\bar{P}_{i}$
+\end{assumption}
+\pause
+\begin{assumption}
+  Attacker chooses $\tilde{\vec{\lambda}_{i}}=\gamma_{i}(\vec{\lambda}_{i})=T_{i}(k)\vec{\lambda}_{i} $
+
+
+ \pause $-T_{i}(k)P_{i}\vec{\theta}_{i}-T_{i}(k)\vec{s}_{i}(k)$ $\to$ $-\tilde{P}_{i}\vec{\theta}_{i}-\tilde{\vec{s}_{i}}(k)$
+\end{assumption}
+\pause
+\begin{itemize}
+  \item We can estimate%
+        \footnote[1]{Using Recursive Least Squares}
+        $\hat{P}_{i}$ and $\widehat{\tilde{\vec{s}}}_{i}(k)$ such as:
+        \begin{equation*}
+          \label{eq:lambdafuntheta_tilde}
+          \tilde{\vec{\lambda}_{i}}=\gamma_{i}(\vec{\lambda}_{i}(\vec{\theta}_{i}))=-\widehat{\tilde{P}_{i}}(k)\vec{\theta}_{i}-\widehat{\tilde{\vec{s}}}_{i}(k)
+        \end{equation*}
+\pause
+\item If $\widehat{\tilde{{P}}}_{i}(k)\neq\bar{{P}}_{i}$ $\to$ Attack
+\end{itemize}
+\script<1->{For the attack detection, let's assume we know the nominal P, called P bar \\ }
+\script<2->{And we also assume the attacker chooses a linear attack where the lambda sent is equal to a matrix T times the original lambda which yields the formula shown \\ }
+\script<3->{with modified P and s, called P tilde and s tilde\\ }
+\script<4->{Now we can estimate P tilde and s tilde for a given negotiation in time k\\ }
+\script<5->{and if the estimated P tilde is different from the nominal P, then there is an attack\\ }
+
+\end{frame}
+
+
+\begin{frame}{Detection}{In detail}
+  \pause
+  \begin{itemize}
+    \item Error ${E_{i}(k) =\|\widehat{\tilde{P}}_{i}(k)-\bar{P}_{i}\|_{F}}$
+          \pause
+    \item Create threshold $\epsilon_{P}$
+          \pause
+    \item Indicator ${d_{i}\in\{0,1\}}$ detects the attack in agent $i$.
+          \pause
+    \item $d_{i}=1$ if $E_{i}(k)>\epsilon_{P}$, $0$ otherwise
+  \end{itemize}
+\script<1->{So, let's detail the detection mechanism.\\ }
+\script<2->{First we calculate the norm of the error between the estimated P and the nominal. (Here we use the Frobenius norm)\\ }
+\script<3->{Then, we create a threshold epsilon p\\ }
+\script<4->{and finally we create an indicator d $i$ for the attack of agent $i$\\ }
+\script<5->{It is equal to 1 if the error is greater than the threshold, indicating an attack or 0 otherwise\\ }
+\end{frame}
+
+
+
+\begin{frame}{Estimating $\Plintildeestimate$}
+  \centering
+  \begin{itemize}
+    \item We estimate $\hat{P}_{i}$ and $\widehat{\tilde{\vec{s}}}_{i}(k)$ simultaneously using Recursive Least Squares
+          \pause
+    \item Problem: Estimation during negotiation fails
+          \pause
+          \begin{itemize}
+            \item Consecutive $\vec{\lambda}_{i}^{p}$ and $\vec{\theta}_{i}^{p}$ are linearly dependent $\to$ low input excitation
+          \end{itemize}
+          \pause
+    \item Solution: Send sequence of random values of $\vec{\theta}_{i}$ until estimates converge
+  \end{itemize}
+\script<1->{In order to estimate the modified P and s, we use recursive least squares\\ }
+\script<2->{The problem of estimating the value during a normal negotiation is that it fails\\ }
+\script<3->{Consecutive lambdas and thetas are linearly dependent, since they are calculate via the projected subgradient method, which gives us low input excitation\\ }
+\script<4->{In order to increase the input excitation we send a sequence of random theta until the convergence is attained\\ }
+\end{frame}
+
+
+\begin{frame}{Mitigation mechanism}
+  \begin{itemize}
+    \item Main idea: Reconstruct $\vec{\lambda}_{i}$ and use in negotiation
+  \end{itemize}
+  \pause
+  \begin{assumption}
+    We suppose ${\tilde{\vec{\lambda}}_{i}=\vec{0}}$ only if ${\vec{\lambda}_{i}=\vec{0}}$, which implies $T_{i}(k)$ invertible.
+\end{assumption}\pause
+\begin{itemize}
+  \item Estimate the inverse of $T_{i}(k)$
+        \begin{equation*}
+          {\widehat{T_{i}(k)^{-1}}=\bar{P}_{i}\widehat{\tilde{P}_{i}}(k)^{-1}}
+        \end{equation*}
+        \pause
+  \item Reconstruct $\vec{\lambda}_{i}$
+        \begin{equation*}
+          {\vec{\lambda}_{i}}_{\mathrm{rec}}=\widehat{T_{i}(k)^{-1}} \tilde{\vec{\lambda}_{i}} =-\bar{P}_{i}\vec{\theta}_{i}-\widehat{{T_{i}(k)^{-1}}}\widehat{\tilde{\vec{s}}}_{i}(k)
+        \end{equation*}
+
+\end{itemize}
+\script<1->{Now, for the mitigation the main idea is to reconstruct the original lambda from the estimated parameters and use it in the negotiation\\ }
+\script<2->{We suppose the agent wants to decrease its cost, and the lambda sent is only equal to zero if the original is equal to zero. which implies the matrix T is invertible\\ }
+\script<3->{We can estimate the inverse of T, by using the estimate of P tilde and the nominal value of P like in this equation\\ }
+\script<4->{With the estimate of the inverse of T and the estimate of s tilde, we can reconstruct the original lambda\\ }
+\end{frame}
+
+\begin{frame}{Complete Mechanism}
+  \begin{minipage}[c]{.45\linewidth}
+    \begin{figure}[b]
+      \centering
+      \scalebox{.7}{
+\begin{tikzpicture}[font=\small,thick,node distance=3*0.6180cm and 0.6180cm,every node/.style=rectangle,
+    mpcSmall/.style={fill=mpc_agent, minimum height=0.6180*2cm, minimum width=2cm,text=white},
+    coordinator/.style={fill=mpc_coordinator, minimum height=0.6180*3.5cm, minimum width=6.5cm},
+    supervisor/.style={fill=mpc_green, minimum height=0.6180*3*0.3cm, minimum width=2cm},
+    ]
+
+    \node[draw, mpcSmall,] (block1) {\small Agent 1};
+    \node[fill=none, draw=none, right=of block1,] (mult) {\bf $\dots$};
+    \node[draw, mpcSmall, fill=mpc_agent, right=of mult,] (blockM) {\small Agent M};
+    \node[draw, coordinator, below=of mult,] (coordinator) {Coordinator};
+
+    \node[draw, supervisor,anchor=north west] at (coordinator.north west) {\small Supervisor 1};
+    \node[draw, supervisor,anchor=north east] at (coordinator.north east) {\small Supervisor M};
+
+    \draw[-latex,line width=1pt] (block1.south)+(0.4,.0) -- ( coordinator.north -| {$(block1.south)+(0.4,.0)$}) node [right,midway] {$\lambda_{1}$};
+    \draw[latex-,line width=1pt] (block1.south)+(-0.4,0) -- (  coordinator.north -| {$(block1.south)+(-0.4,0)$}) node [left,midway] {$\theta_{1}$};
+    \draw[-latex,line width=1pt] (blockM.south)+(0.4,.0) -- ( coordinator.north -| {$(blockM.south)+(0.4,.0)$}) node [right,midway] {$\lambda_{M}$};
+    \draw[latex-,line width=1pt] (blockM.south)+(-0.4,0) -- (  coordinator.north -| {$(blockM.south)+(-0.4,0)$}) node [left,midway] {$\theta_{M}$};
+  \end{tikzpicture}
+        }
+      % \caption{Scheme for Secure DMPC}\label{fig:schemeSafeQuantity}
+    \end{figure}
+  \end{minipage}
+  \pause
+  \hfill
+  \begin{minipage}[c]{.45\linewidth}
+    Two phases:
+    \pause
+    \begin{enumerate}
+      \item Detect which agents are non-cooperative
+            \pause
+      \item Reconstruct $\vec{\lambda}_{i}$ and use in negotiation
+    \end{enumerate}
+  \end{minipage}
+\script<1->{The complete mechanism is equivalent to add a supervisor for each agent inside the coordinator\\ }
+\script<2->{The mechanism is divided into the two phases, }
+\script<3->{first we detect which agents are non-cooperative }
+\script<4->{and then reconstruct the lambda i s and use in the usual negotiation\\ }
+\end{frame}
+
+% % \begin{frame}
+% % \SetKwBlock{negotPhase}{ Negotiation Phase:}{}
+% % \SetKwBlock{detectPhase}{ Detection Phase:}{}
+% % \scalebox{.8}{  \begin{algorithm}[H]
+% %     \DontPrintSemicolon
+% %     \detectPhase{
+% %     $h:=0$\;
+% %     \Repeat{
+% %     $\|\eta_{i}^{h}-\eta^{h-1}\|\leq\epsilon$
+% %   }{
+% %     Coordinator sets random $\vec{\theta}_{i}^{(h+1)}$ \;
+% %     Subsystems solve~\eqref{eq:DOP_local}, and send $\vec{\lambda}^{\star}_{i}(\vec{\theta}^{(h)})$\;
+% %     Coordinator estimates $\widehat{\tilde{P}}_{i}(k)^{(h)}$ and $\widehat{\tilde{\vec{s}}}_{i}(k)^{(h)}$ \;
+% %     $h:=h+1$\;
+% %   }
+% %     Coordinator computes $d_{i}$ using~\eqref{eq:2}\;
+% %   }
+% %     \negotPhase{
+% %     Coordinator initializes $\vec{\theta}^{(0)}$ \;
+% %     $p:=0$\;
+
+% %     \Repeat{$\|\vec{\theta}^{(p)} -\vec{\theta}^{(p-1)}\|\leq\epsilon$}{
+% %     Subsystems solve~\eqref{eq:DOP_local}, and send $\vec{\lambda}^{\star}_{i}(\vec{\theta}\p)$\;
+
+% %     Coordinator updates allocation~\eqref{eq:thetaNegot} using adequate versions of $\vec{\lambda}_{i}$ for each agent: $\vec{\lambda}_{i}^{\star}(\vec{\theta}\p)$, if $d_{i}=0$ and ${\vec{\lambda}_{i}}_{\mathrm{rec}}$, if ${d_{i}=1}$\;
+% %     $p:=p+1$
+% %   }}
+% %     \caption{Secure DMPC.}\label{alg:safeDMPC}
+% %   \end{algorithm}
+% %   }
+% % \end{frame}
+
+\begin{frame}{Complete algorithm}{RPdMPC-DS}
+  \begin{figure}[h]
+    \centering
+  \scalebox{.55}{
+    \begin{tikzpicture}[font=\small,thick,node distance=.6cm and 6cm]
+      \draw[loosely dashed,
+      minimum width=2.5cm,
+      minimum height=1cm] (8cm,1cm) -- (8cm,-10cm);
+
+      \node[] at (5cm,0cm) {\Large \alert<2>{Detection Phase}};
+      \node[] at (11cm,0cm) {\Large \alert<3>{Negotiation Phase}};
+
+      \node[draw,
+      rounded rectangle,
+      fill=gray!90!black!50,
+      alt=<{4}>{fill=supelecRed!90,text=white},
+      minimum width=2.5cm,
+      minimum height=1cm] (block1) {Start};
+
+      \node[draw,
+      trapezium,
+      trapezium left angle = 65,
+      trapezium right angle = 115,
+      trapezium stretches,
+      align=center,
+      fill=supelecRed!10,
+      alt=<{5}>{fill=supelecRed!90,text=white},
+      below=of block1,
+      minimum width=3.5cm,
+      minimum height=1cm
+      ] (block2) { Coordinator sends \\random $\vec{\theta}_{i}^{(h)}$};
+
+      \node[draw,
+      trapezium,
+      trapezium left angle = 65,
+      trapezium right angle = 115,
+      trapezium stretches,
+      align=center,
+      fill=supelecRed!10,
+      alt=<{6}>{fill=supelecRed!90,text=white},
+      below=of block2,
+      minimum width=3.5cm,
+      minimum height=1cm
+      ] (block3) { Agents send \\ $\vec{\lambda}_{i}^{(h)}(\vec{\theta}_{i}^{(h)})$};
+
+      \node[draw,
+      trapezium,
+      trapezium left angle = 65,
+      trapezium right angle = 115,
+      trapezium stretches,
+      align=center,
+      below=of block3,
+      fill=supelecRed!10,
+      alt=<{7}>{fill=supelecRed!90,text=white},
+      minimum width=3.5cm,
+      minimum height=1cm
+      ] (block4) { Coordinator estimate parameters};
+
+      \node[draw,
+      diamond,
+      below=of block4,
+      minimum width=2.5cm,
+      fill=supelecRed!50,
+      alt=<{8}>{fill=supelecRed!90,text=white},
+      align=center,
+      inner sep=0] (block5) { Estimates\\ converge?};
+
+      \node[draw,
+      trapezium,
+      trapezium left angle = 65,
+      trapezium right angle = 115,
+      trapezium stretches,
+      align=center,
+      fill=supelecRed!10,
+      alt=<{9}>{fill=supelecRed!90,text=white},
+      right=1cm of block5,
+      minimum width=3.5cm,
+      minimum height=1cm
+      ] (block6) { Coordinator detects \\selfish agents};
+
+      \node[coordinate,right=6.cm of block2] (block12) {};
+
+      \node[draw,
+      trapezium,
+      trapezium left angle = 65,
+      trapezium right angle = 115,
+      trapezium stretches,
+      align=center,
+      right=of block12,
+      fill=supelecRed!10,
+      alt=<{10}>{fill=supelecRed!90,text=white},
+      minimum width=3.5cm,
+      minimum height=1cm
+      ] (block7) { Coordinator sends \\$\vec{\theta}_i^{(h)}$};
+      \node[draw,
+      trapezium,
+      trapezium left angle = 65,
+      trapezium right angle = 115,
+      trapezium stretches,
+      align=center,
+      fill=supelecRed!10,
+      alt=<{11}>{fill=supelecRed!90,text=white},
+      below=of block7,
+      minimum width=3.5cm,
+      minimum height=1cm
+      ] (block8) { Agents send \\$\vec{\lambda}_i(\vec{\theta}_{i}^{(h)})$};
+
+      \node[draw,
+      trapezium,
+      trapezium left angle = 65,
+      trapezium right angle = 115,
+      trapezium stretches,
+      align=center,
+      fill=supelecRed!10,
+      alt=<{12}>{fill=supelecRed!90,text=white},
+      below=of block8,
+      minimum width=3.5cm,
+      minimum height=1cm
+      ] (block9) { Coordinator updates \\allocation accordingly};
+
+      \node[draw,
+      diamond,
+      below=of block9,
+      minimum width=2.5cm,
+      fill=supelecRed!50,
+      alt=<{13}>{fill=supelecRed!90,text=white},
+      align=center,
+      inner sep=0] (block10) { Negotiation\\ converges?};
+
+      \node[draw,
+      rounded rectangle,
+      below=of block10,
+      fill=gray!90!black!50,
+      alt=<{14}>{fill=supelecRed!90,text=white},
+      minimum width=2.5cm,
+      minimum height=1cm,] (block11) { Apply first control};
+
+      \draw[-latex] (block1) edge (block2)
+      (block2) edge (block3)
+      (block3) edge (block4)
+      (block4) edge (block5);
+
+      \draw[-latex] (block7) edge (block8)
+      (block8) edge (block9)
+      (block9) edge (block10);
+
+      \draw[-latex] (block5) -- (block6)
+      node[pos=0.4,fill=white,inner sep=0]{Yes};
+
+      \draw[-latex] (block10) -- (block11)
+      node[pos=0.4,fill=white,inner sep=0]{Yes};
+
+      \draw[-latex] (block6) -| ($(block7.west) - (3cm,0)$) -- (block7.west);
+
+      \draw[-latex] (block10) -| ($(block7.east) + (1.5cm,0)$)
+      node[pos=0.25,fill=white,inner sep=0]{No} -- (block7.east);
+
+      \draw[-latex] (block5) -| ($(block2.west) - (1.5cm,0)$)
+      node[pos=0.25,fill=white,inner sep=0]{No} -- (block2.west);
+    \end{tikzpicture}
+    }
+    % \caption{Secure DMPC}\label{fig:secureDMPC}
+  \end{figure}
+  \script<1->{Now, for the complete secure DMPC algorithm, as said it is divided into two phases\\ }
+  \script<2->{The Detection phase \\ }
+  \script<3->{and the negotiation phase\\ }
+  \script<5->{The coordinator sends random theta i\\ }
+  \script<6->{The agents send dual variable lambda i\\ }
+  \script<7->{The coordinator estimates the parameters P and s tilde\\ }
+  \script<8->{when the estimates converge\\ }
+  \script<9->{The coordinator detects which agents are non-cooperative\\ }
+  \script<10->{then the negotiation phase begins, the coordinator sends the theta i\\ }
+  \script<11->{the agents send the dual variable lambda i\\ }
+  \script<12->{and the coordinator updates the allocation accordingly using the reconstructed lambda or the one sent by the agent\\ }
+  \script<13->{and once the negotiation converges\\ }
+  \script<14->{each agent applies the first control\\ }
+
+\end{frame}
+
+
 
 % \begin{frame}
 %   \frametitle{Quadratic Case}
@@ -1167,421 +1570,353 @@
 % \script<8->{meanwhile s does depend, we can use these facts for the detection and mitigation mechanisms\\ }
 % \end{frame}
 
-% \subsection{Detection Mechanism}
-% \begin{frame}{Detection}
-% \begin{assumption}
-%   We know nominal $\bar{P}_{i}$
-% \end{assumption}
-% \pause
-% \begin{assumption}
-%   Attacker chooses $\tilde{\vec{\lambda}_{i}}=\gamma_{i}(\vec{\lambda}_{i})=T_{i}(k)\vec{\lambda}_{i} $
 
+\subsection{Applying mechanism}
 
-%  \pause $-T_{i}(k)P_{i}\vec{\theta}_{i}-T_{i}(k)\vec{s}_{i}(k)$ $\to$ $-\tilde{P}_{i}\vec{\theta}_{i}-\tilde{\vec{s}_{i}}(k)$
-% \end{assumption}
-% \pause
-% \begin{itemize}
-%   \item We can estimate%
-%         \footnote[1]{Using Recursive Least Squares}
-%         $\hat{P}_{i}$ and $\widehat{\tilde{\vec{s}}}_{i}(k)$ such as:
-%         \begin{equation*}
-%           \label{eq:lambdafuntheta_tilde}
-%           \tilde{\vec{\lambda}_{i}}=\gamma_{i}(\vec{\lambda}_{i}(\vec{\theta}_{i}))=-\widehat{\tilde{P}_{i}}(k)\vec{\theta}_{i}-\widehat{\tilde{\vec{s}}}_{i}(k)
-%         \end{equation*}
-% \pause
-% \item If $\widehat{\tilde{{P}}}_{i}(k)\neq\bar{{P}}_{i}$ $\to$ Attack
-% \end{itemize}
-% \script<1->{For the attack detection, let's assume we know the nominal P, called P bar \\ }
-% \script<2->{And we also assume the attacker chooses a linear attack where the lambda sent is equal to a matrix T times the original lambda which yields the formula shown \\ }
-% \script<3->{with modified P and s, called P tilde and s tilde\\ }
-% \script<4->{Now we can estimate P tilde and s tilde for a given negotiation in time k\\ }
-% \script<5->{and if the estimated P tilde is different from the nominal P, then there is an attack\\ }
+\begin{frame}{Example}
+  \begin{exampleblock}{District Heating of 4 Distinct Houses Under Power Scarcity}
+    \begin{itemize}
+            \pause
+      \item 4 distinct rooms modeled using 3R-2C
+            \pause
+      \item Initial temperature under $20^{o}\mathrm{C}$
+            \pause
+      \item Not enough power to achieve setpoint $\left({\sum_{i=1}^{4} \vec{u}_{i}(k)\leq4\mathrm{kW}}\right)$
+            \pause
+      \item Simulated for a period of ${5} \mathrm{h}$
+            \pause
+      \item ZOH ${T_{s}=0.25\mathrm{h}}$
+            \pause
+      \item 3 scenarios
+            \begin{enumerate}
+              \item Nominal
+              \item Agent I non cooperative from k>6 with T=4*I
+              \item Similar but with secure algorithm
+            \end{enumerate}
+    \end{itemize}
+  \end{exampleblock}
+  \script<1->{We give an academic example of the temperature control of 4 distinct rooms under power scarcity\\}
+  \script<2->{The 4 rooms are distinct using the 3 resistor 2 capacitor model\\}
+  \script<3->{the initial temperature of all rooms is under 20 degrees celsius, which is the final setpoint\\}
+  \script<4->{But they are under power scarcity that prevents them from reaching the setpoint\\}
+  \script<5->{we simulate for a period of 5h\\}
+  \script<6->{with sampling time of 15 minutes\\}
+  \script<7->{3 scenarios are simulated, the nominal, one where agent 1 presents non cooperative behavior from k greater than 6, and another with the selfish behavior and the secure mechanism activated\\}
+\end{frame}
 
-% \end{frame}
+\begin{frame}{Results}{Temporal}
+  \begin{minipage}[c]{.5\linewidth}
+    \begin{figure}[t]
+      \centering
+      %\includegraphics[width=\textwidth]{AirTempAndDecisionVariable.pdf}
+      % \caption{Temperature in room I and the decision variable $E_{I}(k)$}\label{fig:response3Scenarios}
+    \end{figure}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[c]{.45\linewidth}
+    \begin{itemize}
+      \item[N] Nominal
+      \item[S] Selflish behavior
+      \item[C] selfish behavior with Correction
+    \end{itemize}\pause
+  \end{minipage}
+  \script<1->{In the figure we see the air temperature and the estimation error for room 1\\}
+  \script<2->{The nominal behavior is in orange, and as said it cannot reach the setpoint, in blue\\}
+  \script<3->{When the room presents selfish behavior (in blue), it reduces its cost and get closer to the setpoint, we see that the attack increases the error\\}
+  \script<4->{Now, for the case with correction (the red dots), even if it attacks the system, the temperature is close to its nominal value\\}
+\end{frame}
 
-% \begin{frame}{About Estimation}
-%   \centering
-%   \begin{itemize}
-%     \item We estimate $\hat{P}_{i}$ and $\widehat{\tilde{\vec{s}}}_{i}(k)$ simultaneously using Recursive Least Squares
-%           \pause
-%     \item Problem: Estimation during negotiation fails
-%           \pause
-%           \begin{itemize}
-%             \item Consecutive $\vec{\lambda}_{i}^{p}$ and $\vec{\theta}_{i}^{p}$ are linearly dependent $\to$ low input excitation
-%           \end{itemize}
-%           \pause
-%     \item Solution: Send sequence of random values of $\vec{\theta}_{i}$ until estimates converge
-%   \end{itemize}
-% \script<1->{In order to estimate the modified P and s, we use recursive least squares\\ }
-% \script<2->{The problem of estimating the value during a normal negotiation is that it fails\\ }
-% \script<3->{Consecutive lambdas and thetas are linearly dependent, since they are calculate via the projected subgradient method, which gives us low input excitation\\ }
-% \script<4->{In order to increase the input excitation we send a sequence of random theta until the convergence is attained\\ }
-% \end{frame}
-
-% \begin{frame}{Detection}{In detail}
-%   \pause
-%   \begin{itemize}
-%     \item Error ${E_{i}(k) =\|\widehat{\tilde{P}}_{i}(k)-\bar{P}_{i}\|_{F}}$
-%           \pause
-%     \item Create threshold $\epsilon_{P}$
-%           \pause
-%     \item Indicator ${d_{i}\in\{0,1\}}$ detects the attack in agent $i$.
-%           \pause
-%     \item $d_{i}=1$ if $E_{i}(k)>\epsilon_{P}$, $0$ otherwise
-%   \end{itemize}
-% \script<1->{So, let's detail the detection mechanism.\\ }
-% \script<2->{First we calculate the norm of the error between the estimated P and the nominal. (Here we use the Frobenius norm)\\ }
-% \script<3->{Then, we create a threshold epsilon p\\ }
-% \script<4->{and finally we create an indicator d $i$ for the attack of agent $i$\\ }
-% \script<5->{It is equal to 1 if the error is greater than the threshold, indicating an attack or 0 otherwise\\ }
-% \end{frame}
-
-% \subsection{Mitigation Mechanism}
-
-% \begin{frame}{Mitigation}
-%   \begin{itemize}
-%     \item Main idea: Reconstruct $\vec{\lambda}_{i}$ and use in negotiation
-%   \end{itemize}
-%   \pause
-%   \begin{assumption}
-%     We suppose ${\tilde{\vec{\lambda}}_{i}=\vec{0}}$ only if ${\vec{\lambda}_{i}=\vec{0}}$, which implies $T_{i}(k)$ invertible.
-% \end{assumption}\pause
-% \begin{itemize}
-%   \item Estimate the inverse of $T_{i}(k)$
-%         \begin{equation*}
-%           {\widehat{T_{i}(k)^{-1}}=\bar{P}_{i}\widehat{\tilde{P}_{i}}(k)^{-1}}
-%         \end{equation*}
-%         \pause
-%   \item Reconstruct $\vec{\lambda}_{i}$
-%         \begin{equation*}
-%           {\vec{\lambda}_{i}}_{\mathrm{rec}}=\widehat{T_{i}(k)^{-1}} \tilde{\vec{\lambda}_{i}} =-\bar{P}_{i}\vec{\theta}_{i}-\widehat{{T_{i}(k)^{-1}}}\widehat{\tilde{\vec{s}}}_{i}(k)
-%         \end{equation*}
-
-% \end{itemize}
-% \script<1->{Now, for the mitigation the main idea is to reconstruct the original lambda from the estimated parameters and use it in the negotiation\\ }
-% \script<2->{We suppose the agent wants to decrease its cost, and the lambda sent is only equal to zero if the original is equal to zero. which implies the matrix T is invertible\\ }
-% \script<3->{We can estimate the inverse of T, by using the estimate of P tilde and the nominal value of P like in this equation\\ }
-% \script<4->{With the estimate of the inverse of T and the estimate of s tilde, we can reconstruct the original lambda\\ }
-% \end{frame}
-
-% \subsection{Complete Mechanism}
-
-% \begin{frame}{Complete Mechanism}
-%   \begin{minipage}[c]{.45\linewidth}
-%     \begin{figure}[b]
-%       \centering
-%       \scalebox{.7}{\footnotesize \def\svgwidth{12cm}
-%       \input{../img/diagQuantSafe2.pdf_tex}}
-%       % \caption{Scheme for Secure DMPC}\label{fig:schemeSafeQuantity}
-%     \end{figure}
-%   \end{minipage}
-%   \pause
-%   \hfill
-%   \begin{minipage}[c]{.45\linewidth}
-%     Two phases:
-%     \pause
-%     \begin{enumerate}
-%       \item Detect which agents are non-cooperative
-%             \pause
-%       \item Reconstruct $\vec{\lambda}_{i}$ and use in negotiation
-%     \end{enumerate}
-%   \end{minipage}
-% \script<1->{The complete mechanism is equivalent to add a supervisor for each agent inside the coordinator\\ }
-% \script<2->{The mechanism is divided into the two phases, }
-% \script<3->{first we detect which agents are non-cooperative }
-% \script<4->{and then reconstruct the lambda i s and use in the usual negotiation\\ }
-% \end{frame}
-
-% % \begin{frame}
-% % \SetKwBlock{negotPhase}{ Negotiation Phase:}{}
-% % \SetKwBlock{detectPhase}{ Detection Phase:}{}
-% % \scalebox{.8}{  \begin{algorithm}[H]
-% %     \DontPrintSemicolon
-% %     \detectPhase{
-% %     $h:=0$\;
-% %     \Repeat{
-% %     $\|\eta_{i}^{h}-\eta^{h-1}\|\leq\epsilon$
-% %   }{
-% %     Coordinator sets random $\vec{\theta}_{i}^{(h+1)}$ \;
-% %     Subsystems solve~\eqref{eq:DOP_local}, and send $\vec{\lambda}^{\star}_{i}(\vec{\theta}^{(h)})$\;
-% %     Coordinator estimates $\widehat{\tilde{P}}_{i}(k)^{(h)}$ and $\widehat{\tilde{\vec{s}}}_{i}(k)^{(h)}$ \;
-% %     $h:=h+1$\;
-% %   }
-% %     Coordinator computes $d_{i}$ using~\eqref{eq:2}\;
-% %   }
-% %     \negotPhase{
-% %     Coordinator initializes $\vec{\theta}^{(0)}$ \;
-% %     $p:=0$\;
-
-% %     \Repeat{$\|\vec{\theta}^{(p)} -\vec{\theta}^{(p-1)}\|\leq\epsilon$}{
-% %     Subsystems solve~\eqref{eq:DOP_local}, and send $\vec{\lambda}^{\star}_{i}(\vec{\theta}\p)$\;
-
-% %     Coordinator updates allocation~\eqref{eq:thetaNegot} using adequate versions of $\vec{\lambda}_{i}$ for each agent: $\vec{\lambda}_{i}^{\star}(\vec{\theta}\p)$, if $d_{i}=0$ and ${\vec{\lambda}_{i}}_{\mathrm{rec}}$, if ${d_{i}=1}$\;
-% %     $p:=p+1$
-% %   }}
-% %     \caption{Secure DMPC.}\label{alg:safeDMPC}
-% %   \end{algorithm}
-% %   }
-% % \end{frame}
-
-% \begin{frame}{Secure DMPC}
-%   \begin{figure}[h]
-%     \centering
-%   \scalebox{.55}{
-%     \begin{tikzpicture}[font=\small,thick,node distance=.6cm and 6cm]
-%       \draw[loosely dashed,
-%       minimum width=2.5cm,
-%       minimum height=1cm] (8cm,1cm) -- (8cm,-10cm);
-
-%       \node[] at (5cm,0cm) {\Large \alert<2>{Detection Phase}};
-%       \node[] at (11cm,0cm) {\Large \alert<3>{Negotiation Phase}};
-
-%       \node[draw,
-%       rounded rectangle,
-%       fill=gray!90!black!50,
-%       alt=<{4}>{fill=supelecRed!90,text=white},
-%       minimum width=2.5cm,
-%       minimum height=1cm] (block1) {Start};
-
-%       \node[draw,
-%       trapezium,
-%       trapezium left angle = 65,
-%       trapezium right angle = 115,
-%       trapezium stretches,
-%       align=center,
-%       fill=supelecRed!10,
-%       alt=<{5}>{fill=supelecRed!90,text=white},
-%       below=of block1,
-%       minimum width=3.5cm,
-%       minimum height=1cm
-%       ] (block2) { Coordinator sends \\random $\vec{\theta}_{i}^{(h)}$};
-
-%       \node[draw,
-%       trapezium,
-%       trapezium left angle = 65,
-%       trapezium right angle = 115,
-%       trapezium stretches,
-%       align=center,
-%       fill=supelecRed!10,
-%       alt=<{6}>{fill=supelecRed!90,text=white},
-%       below=of block2,
-%       minimum width=3.5cm,
-%       minimum height=1cm
-%       ] (block3) { Agents send \\ $\vec{\lambda}_{i}^{(h)}(\vec{\theta}_{i}^{(h)})$};
-
-%       \node[draw,
-%       trapezium,
-%       trapezium left angle = 65,
-%       trapezium right angle = 115,
-%       trapezium stretches,
-%       align=center,
-%       below=of block3,
-%       fill=supelecRed!10,
-%       alt=<{7}>{fill=supelecRed!90,text=white},
-%       minimum width=3.5cm,
-%       minimum height=1cm
-%       ] (block4) { Coordinator estimate parameters};
-
-%       \node[draw,
-%       diamond,
-%       below=of block4,
-%       minimum width=2.5cm,
-%       fill=supelecRed!50,
-%       alt=<{8}>{fill=supelecRed!90,text=white},
-%       align=center,
-%       inner sep=0] (block5) { Estimates\\ converge?};
-
-%       \node[draw,
-%       trapezium,
-%       trapezium left angle = 65,
-%       trapezium right angle = 115,
-%       trapezium stretches,
-%       align=center,
-%       fill=supelecRed!10,
-%       alt=<{9}>{fill=supelecRed!90,text=white},
-%       right=1cm of block5,
-%       minimum width=3.5cm,
-%       minimum height=1cm
-%       ] (block6) { Coordinator detects \\selfish agents};
-
-%       \node[coordinate,right=6.cm of block2] (block12) {};
-
-%       \node[draw,
-%       trapezium,
-%       trapezium left angle = 65,
-%       trapezium right angle = 115,
-%       trapezium stretches,
-%       align=center,
-%       right=of block12,
-%       fill=supelecRed!10,
-%       alt=<{10}>{fill=supelecRed!90,text=white},
-%       minimum width=3.5cm,
-%       minimum height=1cm
-%       ] (block7) { Coordinator sends \\$\vec{\theta}_i^{(h)}$};
-%       \node[draw,
-%       trapezium,
-%       trapezium left angle = 65,
-%       trapezium right angle = 115,
-%       trapezium stretches,
-%       align=center,
-%       fill=supelecRed!10,
-%       alt=<{11}>{fill=supelecRed!90,text=white},
-%       below=of block7,
-%       minimum width=3.5cm,
-%       minimum height=1cm
-%       ] (block8) { Agents send \\$\vec{\lambda}_i(\vec{\theta}_{i}^{(h)})$};
-
-%       \node[draw,
-%       trapezium,
-%       trapezium left angle = 65,
-%       trapezium right angle = 115,
-%       trapezium stretches,
-%       align=center,
-%       fill=supelecRed!10,
-%       alt=<{12}>{fill=supelecRed!90,text=white},
-%       below=of block8,
-%       minimum width=3.5cm,
-%       minimum height=1cm
-%       ] (block9) { Coordinator updates \\allocation accordingly};
-
-%       \node[draw,
-%       diamond,
-%       below=of block9,
-%       minimum width=2.5cm,
-%       fill=supelecRed!50,
-%       alt=<{13}>{fill=supelecRed!90,text=white},
-%       align=center,
-%       inner sep=0] (block10) { Negotiation\\ converges?};
-
-%       \node[draw,
-%       rounded rectangle,
-%       below=of block10,
-%       fill=gray!90!black!50,
-%       alt=<{14}>{fill=supelecRed!90,text=white},
-%       minimum width=2.5cm,
-%       minimum height=1cm,] (block11) { Apply first control};
-
-%       \draw[-latex] (block1) edge (block2)
-%       (block2) edge (block3)
-%       (block3) edge (block4)
-%       (block4) edge (block5);
-
-%       \draw[-latex] (block7) edge (block8)
-%       (block8) edge (block9)
-%       (block9) edge (block10);
-
-%       \draw[-latex] (block5) -- (block6)
-%       node[pos=0.4,fill=white,inner sep=0]{Yes};
-
-%       \draw[-latex] (block10) -- (block11)
-%       node[pos=0.4,fill=white,inner sep=0]{Yes};
-
-%       \draw[-latex] (block6) -| ($(block7.west) - (3cm,0)$) -- (block7.west);
-
-%       \draw[-latex] (block10) -| ($(block7.east) + (1.5cm,0)$)
-%       node[pos=0.25,fill=white,inner sep=0]{No} -- (block7.east);
-
-%       \draw[-latex] (block5) -| ($(block2.west) - (1.5cm,0)$)
-%       node[pos=0.25,fill=white,inner sep=0]{No} -- (block2.west);
-%     \end{tikzpicture}
-%     }
-%     % \caption{Secure DMPC}\label{fig:secureDMPC}
-%   \end{figure}
-%   \script<1->{Now, for the complete secure DMPC algorithm, as said it is divided into two phases\\ }
-%   \script<2->{The Detection phase \\ }
-%   \script<3->{and the negotiation phase\\ }
-%   \script<5->{The coordinator sends random theta i\\ }
-%   \script<6->{The agents send dual variable lambda i\\ }
-%   \script<7->{The coordinator estimates the parameters P and s tilde\\ }
-%   \script<8->{when the estimates converge\\ }
-%   \script<9->{The coordinator detects which agents are non-cooperative\\ }
-%   \script<10->{then the negotiation phase begins, the coordinator sends the theta i\\ }
-%   \script<11->{the agents send the dual variable lambda i\\ }
-%   \script<12->{and the coordinator updates the allocation accordingly using the reconstructed lambda or the one sent by the agent\\ }
-%   \script<13->{and once the negotiation converges\\ }
-%   \script<14->{each agent applies the first control\\ }
-
-% \end{frame}
-
-% \section{Results}
-% \script{Now, for some results}
-% \begin{frame}{Example}
-%   \begin{exampleblock}{Temperature Control of 4 Distinct Rooms Under Power Scarcity}
-%     \begin{itemize}
-%             \pause
-%       \item 4 distinct rooms modeled using 3R-2C
-%             \pause
-%       \item Initial temperature under $20^{o}\mathrm{C}$
-%             \pause
-%       \item Not enough power to achieve setpoint $\left({\sum_{i=1}^{4} \vec{u}_{i}(k)\leq4\mathrm{kW}}\right)$
-%             \pause
-%       \item Simulated for a period of ${5} \mathrm{h}$
-%             \pause
-%       \item ZOH ${T_{s}=0.25\mathrm{h}}$
-%             \pause
-%       \item 3 scenarios
-%             \begin{enumerate}
-%               \item Nominal
-%               \item Agent I non cooperative from k>6 with T=4*I
-%               \item Similar but with secure algorithm
-%             \end{enumerate}
-%     \end{itemize}
-%   \end{exampleblock}
-%   \script<1->{We give an academic example of the temperature control of 4 distinct rooms under power scarcity\\}
-%   \script<2->{The 4 rooms are distinct using the 3 resistor 2 capacitor model\\}
-%   \script<3->{the initial temperature of all rooms is under 20 degrees celsius, which is the final setpoint\\}
-%   \script<4->{But they are under power scarcity that prevents them from reaching the setpoint\\}
-%   \script<5->{we simulate for a period of 5h\\}
-%   \script<6->{with sampling time of 15 minutes\\}
-%   \script<7->{3 scenarios are simulated, the nominal, one where agent 1 presents non cooperative behavior from k greater than 6, and another with the selfish behavior and the secure mechanism activated\\}
-% \end{frame}
-
-% \begin{frame}{Results}{Temporal}
-%   \begin{minipage}[c]{.5\linewidth}
-%     \begin{figure}[t]
-%       \centering
-%       %\includegraphics[width=\textwidth]{AirTempAndDecisionVariable.pdf}
-%       % \caption{Temperature in room I and the decision variable $E_{I}(k)$}\label{fig:response3Scenarios}
-%     \end{figure}
-%   \end{minipage}
-%   \hfill
-%   \begin{minipage}[c]{.45\linewidth}
-%     \begin{itemize}
-%       \item[N] Nominal
-%       \item[S] Selflish behavior
-%       \item[C] selfish behavior with Correction
-%     \end{itemize}\pause
-%   \end{minipage}
-%   \script<1->{In the figure we see the air temperature and the estimation error for room 1\\}
-%   \script<2->{The nominal behavior is in orange, and as said it cannot reach the setpoint, in blue\\}
-%   \script<3->{When the room presents selfish behavior (in blue), it reduces its cost and get closer to the setpoint, we see that the attack increases the error\\}
-%   \script<4->{Now, for the case with correction (the red dots), even if it attacks the system, the temperature is close to its nominal value\\}
-% \end{frame}
-
-% \begin{frame}
-% \frametitle{Results}
-%   \begin{table}[t]
-%   \centering
-%   \caption{Comparison of costs $J_{i}^{N}$ and $J_{G}^{N}$}\label{tab:costsGlobalLocal}
-%   \begin{tabular}[t]{cccc} \toprule
-%     Agent  & Nominal & Selfish & Selfish + correction\\
-%     \midrule
-%     I      & 103  &  64  & 104  \\
-%     II     &  73  &  91  &  73  \\
-%     III    & 100  & 123  & 101  \\
-%     IV     & 132  & 154  & 131  \\
-%     Global & 408  & 442  & 409  \\
-%     \bottomrule
-%   \end{tabular}
-%   \pause
-%   \script<1->{Now, if we compare the costs for each scenario we see how the cost of agent 1 decreases when it attacks, while the cost of other agents increase.\\}
-%   \script<2->{When the secure algorithm is activated the costs are very close to the original ones. So }
-% \end{table}
-
-% \end{frame}
-
+\begin{frame}
+\frametitle{Results}
+  \begin{table}[t]
+  \centering
+  \caption{Comparison of costs $J_{i}^{N}$ and $J_{G}^{N}$}\label{tab:costsGlobalLocal}
+  \begin{tabular}[t]{cccc} \toprule
+    Agent  & Nominal & Selfish & Selfish + correction\\
+    \midrule
+    I      & 103  &  64  & 104  \\
+    II     &  73  &  91  &  73  \\
+    III    & 100  & 123  & 101  \\
+    IV     & 132  & 154  & 131  \\
+    Global & 408  & 442  & 409  \\
+    \bottomrule
+  \end{tabular}
+  \pause
+  \script<1->{Now, if we compare the costs for each scenario we see how the cost of agent 1 decreases when it attacks, while the cost of other agents increase.\\}
+  \script<2->{When the secure algorithm is activated the costs are very close to the original ones. So }
+\end{table}
+\end{frame}
 
 \section{Resilient Primal Decomposition-based dMPC using Artificial Scarcity}
+\subsection{Relaxing some assumptions}
+\begin{frame}
+  \frametitle{Analysing}
+  \begin{equation}
+  \label{eq:lambdafuntheta}
+  \begin{aligned}
+    \lambdaik=
+    \begin{cases}
+      -\Plinineq\thetaik-\sikineq,&\text{if}\ \thetaik \in\set{R}_{\lambdai}^{n}\\
+      \qquad\quad \vdots&\qquad\quad \vdots\\
+      -\Plinineq[i][2^{\nineq}-1]\thetaik-\sikineq[i][2^{\nineq}-1],&\text{if}\ \thetaik \in\set{R}_{\lambdai}^{2^{\nineq}-1}\\
+    \end{cases}
+  \end{aligned}.
+\end{equation}
+\end{frame}
+\subsection{Adapting the algorithm}
+\begin{frame}{Artificial Scarcity}
+  \centering
+  \begin{minipage}{0.4\textwidth}
+    \begin{figure}[h]
+      \centering
+      \begin{tikzpicture}
+        \def\height{3}
+        \def\length{5}
+        \node at (0,0) {} coordinate (p0)  ++(0:\length*2.4/5) coordinate (p1) ;
+        \node at (0,0) {} ++(90:\height*2.7/5) coordinate (p2) ;
+
+        \draw[black] (p2) ++(-1:5) coordinate (p3);
+        \draw[black] (p1) ++(80:3) coordinate (p4);
+        \coordinate (p6) at (p3|-p4);
+
+        \coordinate (p5) at (intersection cs:first line={(p2)--(p3)}, second line={(p1)--(p4)});
+        \path[fill=gray!20] (p6) -- (p4) -- (p5) -- (p3);
+        \draw[black] (p2) -- (p3);
+        \draw[black] (p1) -- (p4);
+
+        \draw[-latex] (0,-.1) - - (0,\height) node[left]{$\elem[2]{\thetai}$};
+        \draw[-latex] (-.1,0) - - (\length,0) node[below]{$\elem[1]{\thetai}$};
+
+        \node[draw,circle,minimum width=1cm] at (\length*.375,\height*0.3) {$\thetairestricted$};
+      \end{tikzpicture}
+      \caption{Ball $\set{B}(\thetairestricted,r)$.}\label{fig:ball_around_theta_restricted}
+    \end{figure}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.4\textwidth}
+    \begin{figure}[h]
+      \centering
+      \begin{tikzpicture}
+        \def\height{3}
+        \def\length{5}
+        \node at (0,0) {} coordinate (p0)  ++(0:\length*2.4/5) coordinate (p1) ;
+        \node at (0,0) {} ++(90:\height*2.7/5) coordinate (p2) ;
+
+        \draw[black] (p2) ++(-1:5) coordinate (p3);
+        \draw[black] (p1) ++(80:3) coordinate (p4);
+        \coordinate (p6) at (p3|-p4);
+
+        \coordinate (p5) at (intersection cs:first line={(p2)--(p3)}, second line={(p1)--(p4)});
+        \path[fill=gray!20] (p6) -- (p4) -- (p5) -- (p3);
+        \draw[black] (p2) -- (p3);
+        \draw[black] (p1) -- (p4);
+
+        \draw[-latex] (0,-.1) - - (0,\height) node[left]{$\elem[2]{\thetai}$};
+        \draw[-latex] (-.1,0) - - (\length,0) node[below]{$\elem[1]{\thetai}$};
+
+        \node[draw,circle,minimum width=2.5cm] at (\length*.375,\height*0.3) {$\thetairestricted$};
+      \end{tikzpicture}
+      \caption{Ball $\set{B}(\thetairestricted,r)$ traversing zones.}\label{fig:ball_around_theta_restricted_traversing}
+    \end{figure}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}{Expectation Maximization}
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../img/resilient_ineq/pwa.pdf}
+    \caption{Gaussian Mixture for a 1D PWA function with 2 modes.}\label{fig:affine_gaussian_mixture}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Expectation Maximization}{Algorithm}
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../img/resilient_ineq/pwa.pdf}
+    \caption{Gaussian Mixture for a 1D PWA function with 2 modes.}\label{fig:affine_gaussian_mixture}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Complete algorithm}{RPdMPC-AS}
+  \begin{figure}[h]
+    \centering
+  \scalebox{.55}{
+    \begin{tikzpicture}[font=\small,thick,node distance=.6cm and 6cm]
+      \draw[loosely dashed,
+      minimum width=2.5cm,
+      minimum height=1cm] (8cm,1cm) -- (8cm,-10cm);
+
+      \node[] at (5cm,0cm) {\Large \alert<2>{Detection Phase}};
+      \node[] at (11cm,0cm) {\Large \alert<3>{Negotiation Phase}};
+
+      \node[draw,
+      rounded rectangle,
+      fill=gray!90!black!50,
+      alt=<{4}>{fill=supelecRed!90,text=white},
+      minimum width=2.5cm,
+      minimum height=1cm] (block1) {Start};
+
+      \node[draw,
+      trapezium,
+      trapezium left angle = 65,
+      trapezium right angle = 115,
+      trapezium stretches,
+      align=center,
+      fill=supelecRed!10,
+      alt=<{5}>{fill=supelecRed!90,text=white},
+      below=of block1,
+      minimum width=3.5cm,
+      minimum height=1cm
+      ] (block2) { Coordinator sends \\random $\vec{\theta}_{i}^{(h)}$};
+
+      \node[draw,
+      trapezium,
+      trapezium left angle = 65,
+      trapezium right angle = 115,
+      trapezium stretches,
+      align=center,
+      fill=supelecRed!10,
+      alt=<{6}>{fill=supelecRed!90,text=white},
+      below=of block2,
+      minimum width=3.5cm,
+      minimum height=1cm
+      ] (block3) { Agents send \\ $\vec{\lambda}_{i}^{(h)}(\vec{\theta}_{i}^{(h)})$};
+
+      \node[draw,
+      trapezium,
+      trapezium left angle = 65,
+      trapezium right angle = 115,
+      trapezium stretches,
+      align=center,
+      below=of block3,
+      fill=supelecRed!10,
+      alt=<{7}>{fill=supelecRed!90,text=white},
+      minimum width=3.5cm,
+      minimum height=1cm
+      ] (block4) { Coordinator estimate parameters};
+
+      \node[draw,
+      diamond,
+      below=of block4,
+      minimum width=2.5cm,
+      fill=supelecRed!50,
+      alt=<{8}>{fill=supelecRed!90,text=white},
+      align=center,
+      inner sep=0] (block5) { Estimates\\ converge?};
+
+      \node[draw,
+      trapezium,
+      trapezium left angle = 65,
+      trapezium right angle = 115,
+      trapezium stretches,
+      align=center,
+      fill=supelecRed!10,
+      alt=<{9}>{fill=supelecRed!90,text=white},
+      right=1cm of block5,
+      minimum width=3.5cm,
+      minimum height=1cm
+      ] (block6) { Coordinator detects \\selfish agents};
+
+      \node[coordinate,right=6.cm of block2] (block12) {};
+
+      \node[draw,
+      trapezium,
+      trapezium left angle = 65,
+      trapezium right angle = 115,
+      trapezium stretches,
+      align=center,
+      right=of block12,
+      fill=supelecRed!10,
+      alt=<{10}>{fill=supelecRed!90,text=white},
+      minimum width=3.5cm,
+      minimum height=1cm
+      ] (block7) { Coordinator sends \\$\vec{\theta}_i^{(h)}$};
+      \node[draw,
+      trapezium,
+      trapezium left angle = 65,
+      trapezium right angle = 115,
+      trapezium stretches,
+      align=center,
+      fill=supelecRed!10,
+      alt=<{11}>{fill=supelecRed!90,text=white},
+      below=of block7,
+      minimum width=3.5cm,
+      minimum height=1cm
+      ] (block8) { Agents send \\$\vec{\lambda}_i(\vec{\theta}_{i}^{(h)})$};
+
+      \node[draw,
+      trapezium,
+      trapezium left angle = 65,
+      trapezium right angle = 115,
+      trapezium stretches,
+      align=center,
+      fill=supelecRed!10,
+      alt=<{12}>{fill=supelecRed!90,text=white},
+      below=of block8,
+      minimum width=3.5cm,
+      minimum height=1cm
+      ] (block9) { Coordinator updates \\allocation accordingly};
+
+      \node[draw,
+      diamond,
+      below=of block9,
+      minimum width=2.5cm,
+      fill=supelecRed!50,
+      alt=<{13}>{fill=supelecRed!90,text=white},
+      align=center,
+      inner sep=0] (block10) { Negotiation\\ converges?};
+
+      \node[draw,
+      rounded rectangle,
+      below=of block10,
+      fill=gray!90!black!50,
+      alt=<{14}>{fill=supelecRed!90,text=white},
+      minimum width=2.5cm,
+      minimum height=1cm,] (block11) { Apply first control};
+
+      \draw[-latex] (block1) edge (block2)
+      (block2) edge (block3)
+      (block3) edge (block4)
+      (block4) edge (block5);
+
+      \draw[-latex] (block7) edge (block8)
+      (block8) edge (block9)
+      (block9) edge (block10);
+
+      \draw[-latex] (block5) -- (block6)
+      node[pos=0.4,fill=white,inner sep=0]{Yes};
+
+      \draw[-latex] (block10) -- (block11)
+      node[pos=0.4,fill=white,inner sep=0]{Yes};
+
+      \draw[-latex] (block6) -| ($(block7.west) - (3cm,0)$) -- (block7.west);
+
+      \draw[-latex] (block10) -| ($(block7.east) + (1.5cm,0)$)
+      node[pos=0.25,fill=white,inner sep=0]{No} -- (block7.east);
+
+      \draw[-latex] (block5) -| ($(block2.west) - (1.5cm,0)$)
+      node[pos=0.25,fill=white,inner sep=0]{No} -- (block2.west);
+    \end{tikzpicture}
+    }
+    % \caption{Secure DMPC}\label{fig:secureDMPC}
+  \end{figure}
+  \script<1->{Now, for the complete secure DMPC algorithm, as said it is divided into two phases\\ }
+  \script<2->{The Detection phase \\ }
+  \script<3->{and the negotiation phase\\ }
+  \script<5->{The coordinator sends random theta i\\ }
+  \script<6->{The agents send dual variable lambda i\\ }
+  \script<7->{The coordinator estimates the parameters P and s tilde\\ }
+  \script<8->{when the estimates converge\\ }
+  \script<9->{The coordinator detects which agents are non-cooperative\\ }
+  \script<10->{then the negotiation phase begins, the coordinator sends the theta i\\ }
+  \script<11->{the agents send the dual variable lambda i\\ }
+  \script<12->{and the coordinator updates the allocation accordingly using the reconstructed lambda or the one sent by the agent\\ }
+  \script<13->{and once the negotiation converges\\ }
+  \script<14->{each agent applies the first control\\ }
+
+\end{frame}
+
+\subsection{Results}
 
 \section*{Summary}
 % \begin{frame}{Summary}
@@ -1698,6 +2033,38 @@
 
 \end{frame}
 
+\begin{frame}{Conditions}{\hyperlink{analysis_deprived_systems}{\beamerreturnbutton{back}}}
+  \hypertarget{condition_transform_equality}{}
 
+  One way to ensure this, is to make the original constraint~\eqref{eq:linear_constraint} to have at most as many rows as columns, i.e., $\card{\vec{u}_{\max}}\leq n_{u}$, although it may be a little restrictive.
+\end{frame}
+
+\begin{frame}{$\theta$ dynamics}{\hyperlink{analysis_continued}{\beamerreturnbutton{back}}}
+  \hypertarget{theta_dynamics}{}
+  \begin{equation*}
+    \vec{\theta}\pplusone=\mathcal{A}_{\theta}\vec{\theta}\p+\mathcal{\vec{B}}_{\theta}[k]
+  \end{equation*}
+  where
+  \begin{equation*}
+    \mathcal{A}_{\theta}=\left[
+      \begin{matrix}
+        I-\frac{M-1}{M}\rho\p \Plin[1] & \frac{1}{M}\rho\p \Plin[2]&\dots&\frac{1}{M}\rho\p \Plin[M]\\
+        \frac{1}{M}\rho\p \Plin[1]&I-\frac{M-1}{M}\rho\p \Plin[2]&\dots&\frac{1}{M}\rho\p \Plin[M]\\
+        \vdots&\vdots&\ddots&\vdots\\
+        \frac{1}{M}\rho\p \Plin[1]&\frac{1}{M}\rho\p \Plin[2]&\dots&I-\frac{M-1}{M}\rho\p \Plin[M]\\
+      \end{matrix}
+    \right]
+  \end{equation*}
+  \begin{equation*}
+    \mathcal{\vec{B}}_{\theta}[k]=\left[
+      \begin{matrix}
+        -\frac{M-1}{M}\rho\p \vec{s}_{1}[k]+\frac{1}{M}\rho\p \vec{s}_{2}[k]\dots-\frac{1}{M}\rho\p \vec{s}_{M}[k]\\
+        \frac{1}{M}\rho\p \vec{s}_{1}[k]-\frac{M-1}{M}\rho\p \vec{s}_{2}[k] \dots-\frac{1}{M}\rho\p \vec{s}_{M}[k]\\
+        \vdots\\
+        \frac{1}{M}\rho\p \vec{s}_{1}[k]+\frac{1}{M}\rho\p \vec{s}_{2}[k]\dots-\frac{M-1}{M}\rho\p \vec{s}_{M}[k]\\
+      \end{matrix}
+    \right]
+  \end{equation*}
+\end{frame}
 
 \end{document}
