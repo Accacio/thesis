@@ -78,17 +78,17 @@
     \def\optim{}
   }
   \IfValueTF{#5}{
-    \vec{#2}_{#3}\optim{}[#4|#5]
+    {\vec{#2}_{#3}}\optim{}[#4|#5]
   }{
     \IfValueTF{#4}{
-      \vec{#2}_{#3}\optim{}[#4]
+      {\vec{#2}_{#3}}\optim{}[#4]
     }
     {
     \IfValueTF{#3}{
-      \vec{#2}_i\optim{}[#3]
+      {\vec{#2}_i}\optim{}[#3]
     }
     {
-      \vec{#2}_i\optim{}[k]
+      {\vec{#2}_i}\optim{}[k]
     }
     }
   }
@@ -151,8 +151,14 @@
 \newcommand{\optuseq}{\mpcvec*{u}[ ][k:k+\predhorz-1][k]}
 \newcommand{\Uik}{\mpcvec{U}}
 \newcommand{\optUik}{\mpcvec*{U}}
-\newcommand{\optuncUik}{\mpcvec*{\mathring{U}}}
-\newcommand{\optuncU}{{\mathring{\vec{U}}^{\star}}}
+
+
+\newcommand{\unconstrained}[1]{\mathring{#1}}
+\newcommand{\modified}[1]{\accentset{\text{mod}}{#1}}
+\newcommand{\reconstructed}[1]{\accentset{\text{rec}}{#1}}
+
+\newcommand{\optuncUik}{\unconstrained{\vec{U}}^{\star}_i[k]}
+\newcommand{\optuncU}{{\unconstrained{\vec{U}}^{\star}}}
 
 \newcommand{\vik}{\mpcvec{v}}
 \newcommand{\wik}{\mpcvec{w}}
@@ -174,8 +180,6 @@
 \newcommand{\lambdaikstar}{\mpcvec*{\lambda}}
 \newcommand{\lambdai}[1][i]{\vec{\lambda}_{#1}}
 % \newcommand{\modified}[1]{\underaccent{\sim}{#1}}
-\newcommand{\modified}[1]{\accentset{\text{mod}}{#1}}
-\newcommand{\reconstructed}[1]{\accentset{\text{rec}}{#1}}
 \newcommand{\lambdaimodified}{\modified{\vec{\lambda}}_{i}}
 \newcommand{\lambdamodified}{\modified{\vec{\lambda}}}
 \newcommand{\lambdaireconstructed}{\reconstructed{\vec{\lambda}}_{i}}
