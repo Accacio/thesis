@@ -1,35 +1,6 @@
 \documentclass[aspectratio=169]{beamer}
-\usepackage{animate}
-\usepackage{colortbl}
+
 \input{preamble}
-
-\definecolor{mpc_agent}{RGB}{243, 146, 0} % logo necsys
-\colorlet{mpc_agent}{supelecRed!90}
-\definecolor{mpc_coordinator}{RGB}{235, 235, 235}
-\colorlet{mpc_coordinator}{supelecRed!10}
-\definecolor{mpc_green}{RGB}{98, 160, 98}
-
-\newcommand{\tikzmark}[1]{\tikz[baseline={(#1.base)},overlay,remember picture] \node[outer sep=0pt, inner sep=0pt] (#1) {\phantom{A}};}
-
-\newcommand{\booksymbol}{\lower4pt\hbox{\pgfuseimage{beamericonbook}}}
-\tikzset{%
-  show controls/.style={
-    postaction={
-      decoration={
-        show path construction,
-        curveto code={
-          \draw [blue]
-          (\tikzinputsegmentfirst) -- (\tikzinputsegmentsupporta)
-          (\tikzinputsegmentlast) -- (\tikzinputsegmentsupportb);
-          \fill [red, opacity=0.5]
-          (\tikzinputsegmentsupporta) circle [radius=.2ex]
-          (\tikzinputsegmentsupportb) circle [radius=.2ex];
-        }
-      },
-      decorate
-    }}}
-
-
 
 \setbeameroption{show notes on second screen}
 \draft
@@ -100,7 +71,7 @@
   \script{I'm Rafael Accácio and I'm going to present my work on the security of distributed model predictive control under false data injection.}
 \end{frame}
 
-\begin{frame}{Context}{Requirements evolve with time}
+\begin{frame}{Context}{\raisebox{0.1cm}{\scalebox{0.5}{\faQuoteLeft\ }}Necessity is the mother of invention\raisebox{0.1cm}{\scalebox{0.5}{\ \faQuoteRight}}}
   % \only<6>{
   % Smart City\\}
   \only<1>{
@@ -341,7 +312,7 @@
           \begin{itemize}
             \item Complexity of calculation
             \item Topology (Geographical distribution)
-            \item Flexibility (Add remove parts)
+            \item Flexibility (Add/remove parts)
             \item Privacy
           \end{itemize}
     \item Solution: Divide and Conquer (distributed MPC)
@@ -355,14 +326,14 @@
 \begin{frame}{Distributed Model Predictive Control}{It is about communication}
   \begin{itemize}
     \item<2-> We break the MPC into multiple
-    \item<3-> Make them Communicate \only<4->{But how?}
+    \item<3-> Make them Communicate \only<4->{, But how?}
           \begin{itemize}
-            \item<5-> Multiple topologies and classifications\onslide<10->{\footnote{\footnotesize\visible<10->{\booksymbol~\citetitle{MaestreEtAl2014}}}}
+            \item<5-> Many flavors to choose from\onslide<10->{\footnote{\footnotesize\visible<10->{\booksymbol~\citetitle{MaestreEtAl2014}}}}
                   \begin{itemize}[<+(5)->]
                     \item \alert<11>{Hierarchical}/Anarchical
                     \item Sequential/Parallel
                     \item \alert<11>{Synchronous}/Asynchronous
-                    \item unidirectional/\alert<11>{bidirectional}
+                    \item \alert<11>{Bidirectional}/Unidirectional
                     \item ...
                   \end{itemize}
           \end{itemize}
@@ -503,74 +474,15 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
       }}
   \end{minipage}
   \begin{tikzpicture}[overlay, remember picture,decoration={brace,amplitude=2pt}]
-    \node[] at (-2,3) {\includegraphics<6>[width=.35\textwidth]{nazare/0.png}};
-    \node[] at (-2,3) {\includegraphics<7>[width=.35\textwidth]{nazare/12.png}};
-    \node[] at (-2,3) {\includegraphics<8>[width=.35\textwidth]{nazare/42.png}};
-    \node[] at (-2,3) {\includegraphics<9>[width=.35\textwidth]{nazare/64.png}};
+  %   \node[] at (-2,3) {\includegraphics<6>[width=.35\textwidth]{nazare/0.png}};
+  %   \node[] at (-2,3) {\includegraphics<7>[width=.35\textwidth]{nazare/12.png}};
+    \node[] at (-1.5,3) {\includegraphics<8>[width=.3\textwidth]{nazare/42.png}};
+    \node[] at (-1.5,3) {\includegraphics<9>[width=.3\textwidth]{nazare/64.png}};
   \end{tikzpicture}%
   \script<1>{However, the solution will depend on the horizon, the number of constraints, and sizes of input and states, increasing the complexity of the calculation }
   \script<2>{A strategy to alleviate is to distribute the calculation whenever possible. And there are many ways to divide it as the book shows.}
   \script<3>{Here we opt for a hierarchical strategy where we use multiple MPCs and an agent to coordinate and manage the coupling aspects of the problem.}
 \end{frame}
-
-\begin{frame}{Distributed Model Predictive Control}
-  \centering
-  \begin{minipage}[c]{.45\linewidth}
-    \begin{figure}
-      \centering
-      \only<1,2>{
-        \begin{tikzpicture}[font=\small,thick,node distance=.6cm and 6cm]
-          \node[draw,
-          rectangle,
-          trapezium stretches,
-          align=center,
-          fill=supelecRed!10,
-          alt=<{1}>{fill=supelecRed!90,text=white},
-          minimum width=3.5cm,
-          minimum height=4cm
-          ] (block1) {\only<2>{d}MPC};
-        \end{tikzpicture}
-      }%
-      \only<3->{
-        \begin{tikzpicture}[font=\small,thick,node distance=.2cm and 2cm,
-          mpcSmall/.style={
-            draw,
-            rectangle,
-            align=center,
-            fill=mpc_agent,
-            minimum width=2.cm,
-            minimum height=.4cm,
-            inner sep=.1cm},
-          coordinator/.style={
-            draw,
-            rectangle,
-            align=center,
-            fill=supelecRed!10,
-            minimum width=1cm,
-            minimum height=4cm
-          } ]
-
-          \node[mpcSmall] (blockM) {MPC M};
-
-          \node[coordinator, anchor= north west] (coordinator) at ($(blockM.north east) + (.5,0)$) {\rotatebox{90}{Coordinator}};
-
-          \node[mpcSmall, anchor=south east] (block1) at ($(coordinator.south west) + (-.5,0)$) {MPC 1};
-          \node[mpcSmall, above=of block1] (block2) {MPC 2};
-          \node[mpcSmall, above=of block2] (block3) {MPC 3};
-          \node[mpcSmall, above=of block3] (block4) {MPC 4};
-          \node[above=.2cm of block4] (ellips) {\vdots};
-
-          \draw[latex-latex] (block1.east) -- (block1.east -| coordinator.west);
-          \draw[latex-latex] (block2.east) -- (block2.east -| coordinator.west);
-          \draw[latex-latex] (block3.east) -- (block3.east -| coordinator.west);
-          \draw[latex-latex] (block4.east) -- (block4.east -| coordinator.west);
-          \draw[latex-latex] (blockM.east) -- (blockM.east -| coordinator.west);
-        \end{tikzpicture}
-      }%
-    \end{figure}
-  \end{minipage}
-\end{frame}
-
 
 \begin{frame}{Distributed Model Predictive Control}{Optimization Frameworks}
   \begin{minipage}[c]{.45\linewidth}
@@ -581,25 +493,32 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
         coordinator/.style={fill=mpc_coordinator, minimum height=0.6180*3cm, minimum width=6cm},
         ]
 
-        \node[draw, mpcSmall] (block1) {\small Agent 1};
+        \node[draw, mpcSmall] (block1) {\small MPC 1};
         \node[fill=none, draw=none, right=of block1,] (mult) {\bf $\dots$};
-        \node[draw, mpcSmall, fill=mpc_agent, right=of mult,] (blockM) {\small Agent M};
-        \node[draw, coordinator, below=of mult,] (coordinator) {Coordinator};
+        \node[draw, mpcSmall, fill=mpc_agent, right=of mult,] (blockM) {\small MPC M};
+        \onslide<2->{\node[draw, coordinator, below=of mult,] (coordinator) {Coordinator};}
 
-        \draw[-latex,line width=1pt] (block1.south)+(0.4,.0) -- ( coordinator.north -| {$(block1.south)+(0.4,.0)$}) node [right,midway] {$\lambda_{1}$};
-        \draw[latex-,line width=1pt] (block1.south)+(-0.4,0) -- (  coordinator.north -| {$(block1.south)+(-0.4,0)$}) node [left,midway] {$\theta_{1}$};
-        \draw[-latex,line width=1pt] (blockM.south)+(0.4,.0) -- ( coordinator.north -| {$(blockM.south)+(0.4,.0)$}) node [right,midway] {$\lambda_{M}$};
-        \draw[latex-,line width=1pt] (blockM.south)+(-0.4,0) -- (  coordinator.north -| {$(blockM.south)+(-0.4,0)$}) node [left,midway] {$\theta_{M}$};
+        \onslide<3->{
+        \draw[-latex,line width=1pt] (block1.south)+(0.4,.0) -- ( coordinator.north -| {$(block1.south)+(0.4,.0)$}) node [right,midway] {};
+        \draw[latex-,line width=1pt] (block1.south)+(-0.4,0) -- (  coordinator.north -| {$(block1.south)+(-0.4,0)$}) node [left,midway] {};
+        \draw[-latex,line width=1pt] (blockM.south)+(0.4,.0) -- ( coordinator.north -| {$(blockM.south)+(0.4,.0)$}) node [right,midway] {};
+        \draw[latex-,line width=1pt] (blockM.south)+(-0.4,0) -- (  coordinator.north -| {$(blockM.south)+(-0.4,0)$}) node [left,midway] {};
+        }
       \end{tikzpicture}
     \end{figure}
   \end{minipage}
   \hfill
   \begin{minipage}[c]{.5\linewidth}
-    \begin{itemize}
-      \item<1-> Agents solve local problems\tikzmark{a}
-      \item<2-> Variables are updated
+    \begin{itemize}[<+(1)->]
+      \item Coordinator $\to$ Hierarchical
+      \item Bidirectional
+      \item No delay $\to$ Synchronous
     \end{itemize}
-    \onslide<3>{
+    \begin{itemize}[<+(1)->]
+      \item Agents solve local problems\tikzmark{a}
+      \item Variables are updated
+    \end{itemize}
+    \onslide<7>{
       \begin{tikzpicture}[overlay, remember picture,decoration={brace,amplitude=2pt}]
         \draw[decorate,thick] (a.north east) --+ (0,-1) node[midway, right=0.1cm,text=black,text width = 2in] {Until\\ Convergence};
       \end{tikzpicture}%
@@ -611,52 +530,132 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
 \begin{frame}{Distributed Model Predictive Control}
   Negotiation works if agents comply.\\\pause
   But what if some agents are ill-intentioned and attack the system?\\~\\\pause
-  \begin{itemize}
-    \item What are the consequences of an attack?\pause
+  \begin{itemize}[<+->]
+    \item How can an agent attack?
+    \item What are the consequences of an attack?
     \item Can we mitigate the effects?
   \end{itemize}
+\centering
+\onslide<+->{~\\~\\Let's have a preview!}
 \end{frame}
 
-\begin{frame}{Consequence of Attack}
-  \begin{overlayarea}{\textwidth}{.5\textwidth}
-    \begin{itemize}[<+(1)->]
-      \item Ex. Optimization with one constraint
-            \begin{itemize}[<+(1)->]
-              \item Attack dislocates optimum value
+\begin{frame}{How can a non-cooperative agent attack?}{Literature}
+\begin{minipage}[c]{.4\linewidth}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[font=\small,thick,node distance=3*0.6180cm and 0.6180cm,every node/.style=rectangle,
+        mpcSmall/.style={fill=mpc_agent, minimum height=0.6180*2cm, minimum width=2cm,text=white},
+        coordinator/.style={fill=mpc_coordinator, minimum height=0.6180*3cm, minimum width=6cm},
+        ]
+
+        \only<1->{\node[draw, mpcSmall] (block1) {\small MPC 1};}
+        \only<10->{\node[draw, mpcSmall,fill=white,path picture={\node at (path picture bounding box.center) {\includegraphics[height=1.5cm]{chaplin.png}};}] (block1) {\small };}
+        \node[fill=none, draw=none, right=of block1,] (mult) {\bf $\dots$};
+        \node[draw, mpcSmall, fill=mpc_agent, right=of mult] (blockM) {\small MPC M};
+        \node[draw, coordinator, below=of mult,] (coordinator) {Coordinator};
+
+        \draw[-latex,line width=1pt] (block1.south)+(0.4,.0) -- ( coordinator.north -| {$(block1.south)+(0.4,.0)$}) node [right,midway] {};
+        \draw[latex-,line width=1pt] (block1.south)+(-0.4,0) -- (  coordinator.north -| {$(block1.south)+(-0.4,0)$}) node [left,midway] {};
+        \draw[-latex,line width=1pt] (blockM.south)+(0.4,.0) -- ( coordinator.north -| {$(blockM.south)+(0.4,.0)$}) node [right,midway] {};
+        \draw[latex-,line width=1pt] (blockM.south)+(-0.4,0) -- (  coordinator.north -| {$(blockM.south)+(-0.4,0)$}) node [left,midway] {};
+      \end{tikzpicture}
+    \end{figure}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[c]{.5\linewidth}
+  \begin{itemize}[<+(1)->]
+    \item \cite{VelardeEtAl2017a,ChanfreutEtAl2018} present attacks
+          \begin{itemize}
+            \item Objective function\tikzmark{a}
+                  \begin{itemize}
+                    \item Selfish Attack
+                    \item Fake weights
+                    \item Fake reference
+                  \end{itemize}
+            \item Fake constraints
+            \item Liar agent \note<.>{(use control different from the agreed)}
+          \end{itemize}
+  \end{itemize}
+  \end{minipage}
+  \onslide<+(1)->{
+    \begin{tikzpicture}[overlay, remember picture,decoration={brace,amplitude=2pt}]
+      \draw[decorate,thick] (a.north east) --+ (0,-2) node[midway, right=0.1cm,text=black,text width = 2in] {Deception Attacks \\\only<+(1)->{ (Internal change)}};
+    \end{tikzpicture}%
+  }
+
+\end{frame}
+
+\begin{frame}{How can a non-cooperative agent attack?}{Our approach}
+\begin{minipage}[c]{.4\linewidth}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[font=\small,thick,node distance=3*0.6180cm and 0.6180cm,every node/.style=rectangle,
+        mpcSmall/.style={fill=mpc_agent, minimum height=0.6180*2cm, minimum width=2cm,text=white},
+        coordinator/.style={fill=mpc_coordinator, minimum height=0.6180*3cm, minimum width=6cm},
+        ]
+
+        \node[draw, mpcSmall] (block1) {\small MPC 1};
+        \node[fill=none, draw=none, right=of block1,] (mult) {\bf $\dots$};
+        \node[draw, mpcSmall, fill=mpc_agent, right=of mult,] (blockM) {\small MPC M};
+        \node[draw, coordinator, below=of mult,] (coordinator) {Coordinator};
+
+        \draw[-latex,line width=1pt] (block1.south)+(0.4,.0) -- ( coordinator.north -| {$(block1.south)+(0.4,.0)$}) node [right,midway] {};
+        \draw[latex-,line width=1pt] (block1.south)+(-0.4,0) -- (  coordinator.north -| {$(block1.south)+(-0.4,0)$}) node [left,midway] {};
+        \draw[-latex,line width=1pt] (blockM.south)+(0.4,.0) -- ( coordinator.north -| {$(blockM.south)+(0.4,.0)$}) node [right,midway] {};
+        \draw[latex-,line width=1pt] (blockM.south)+(-0.4,0) -- (  coordinator.north -| {$(blockM.south)+(-0.4,0)$}) node [left,midway] {};
+      \end{tikzpicture}
+    \end{figure}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[c]{.5\linewidth}
+    \begin{itemize}[<+->]
+      \item We are in coordinator's shoes
+      \item What matters is the interface
+            \begin{itemize}
+              \item Attacker changes communication
+                    \begin{itemize}
+                      \item \alert<.(1)>{False Data Injection}
+                    \end{itemize}
             \end{itemize}
     \end{itemize}
-    \only<2-3>{
+  \end{minipage}
+\end{frame}
+
+
+\begin{frame}{Consequence of an attack}
+  \begin{overlayarea}{\textwidth}{.5\textwidth}
+    \begin{itemize}[<+(1)->]
+      \item Attack modifies optimization problem
+            \begin{itemize}[<+(1)->]
+              \item Optimum value is shifted
+            \end{itemize}
+    \end{itemize}
       \begin{minipage}[t]{.450\linewidth}
-        \only<2-3>{
           \begin{figure}[h]
             \centering
             \includegraphics[width=\textwidth]{../img/resilient_eq/original-minimum.pdf}
             \caption*{Original minimum.}\label{fig:original_minimum}
           \end{figure}
-        }
       \end{minipage}
       \hfill
       \begin{minipage}[t]{.45\linewidth}
-        \only<3>{
           \begin{figure}[h]
             \centering
             \includegraphics[width=\textwidth]{../img/resilient_eq/new-minimum-selfish.pdf}
             \caption*{Minimum after attack.}\label{fig:minimum_after_attack}
           \end{figure}
-        }
       \end{minipage}
-    }
   \end{overlayarea}
 \end{frame}
 
-\begin{frame}{Mitigating effects}
+\begin{frame}{Mitigating the effects}
   \vspace{-1.cm}
   \begin{overlayarea}{\textwidth}{.4\textwidth}
     \begin{itemize}[<+(1)->]
       \item We can recover by
             \begin{itemize}[<+(1)->]
               \item Ignoring attacker
-              \item Recover original behavior
+              \item Recuperating original behavior (at least trying)
             \end{itemize}
     \end{itemize}
       \only<2->{
@@ -684,30 +683,35 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   \end{overlayarea}
 \end{frame}
 
-\begin{frame}{Mitigation}
+\begin{frame}{Classification of mitigation techniques}
   \begin{itemize}
-    \item<2-> Passive \only<4->{(Robust)}
-    \item<3-> Active \only<5->{(Resilient)}
-          \begin{enumerate}
-            \item<6-> Detection/Isolation
-            \item<7-> Mitigation
-          \end{enumerate}
+    \item<2-11> Passive \onslide<4->{(Robust)} \onslide<6->{- 1 mode}
+    \item<3-> \alert<12>{Active \onslide<5->{(Resilient)}} \onslide<7->{- 2 modes\tikzmark{a} }
+  \begin{enumerate}
+    \item<10-> \alert<12>{Detection/Isolation}
+    \item<11-> \alert<12>{Mitigation}
+  \end{enumerate}
   \end{itemize}
+  \onslide<7->{
+  \begin{tikzpicture}[overlay, remember picture,decoration={brace,amplitude=2pt}]
+    \draw[thick,decorate] ($(a.north east) +(.25,-.725)$) --+ (0,1) node[midway, right=0.1cm,text=black,align=left] {\only<8->{Attack free}\\\only<9->{When attack detected}};
+  \end{tikzpicture}
+  }
 \end{frame}
 
 \begin{frame}{State of art}{Security dMPC}
   \begin{table}[H]
-    \resizebox{1.\textwidth}{!}{
-      \begin{tabular}[h]{l!{\vrule}cc<{\onslide<3->}c<{\onslide<4->}c<{\onslide<5->}c<{\onslide}}
+    \resizebox{.9\textwidth}{!}{
+      \begin{tabular}[h]{l!{\vrule}cc<{\onslide<4->}c<{\onslide<4->}c<{\onslide}}
         \toprule
-        & Decomposition & Present vulnerabilities?  & Resilient/Robust & Detection & Mitigation\\
+        & Decomposition & Resilient/Robust & Detection & Mitigation\\
         \midrule
-        \alert<2>{\cite{VelardeEtAl2017a}}\\ \cite{MaestreEtAl2021} & Dual & Yes & Robust (Scenario) & NA & NA\\\\
-        \cite{VelardeEtAl2017b} \\ \cite{VelardeEtAl2018} & Dual & Yes & Robust (f-robust) & NA & NA\\\\
-        \alert<2>{\cite{ChanfreutEtAl2018}} & Jacobi-Gauß & Yes & -- & -- & --\\\\
-        \cite{AnandutaEtAl2018}\\\cite{AnandutaEtAl2019}\\\cite{AnandutaEtAl2020} & Dual & Yes & Resilient& Analyt./Learn. & Disconnect (Robustness)\\\\
+        \alert<2>{\cite{VelardeEtAl2017a}}\\ \cite{MaestreEtAl2021} & Dual &  Robust (Scenario) & NA & NA\\\\
+        \cite{VelardeEtAl2017b} \\ \cite{VelardeEtAl2018} & Dual &  Robust (f-robust) & NA & NA\\\\
+        \alert<2>{\cite{ChanfreutEtAl2018}} & Jacobi-Gauß &  -- & -- & --\\\\
+        \cite{AnandutaEtAl2018}\\\cite{AnandutaEtAl2019}\\\cite{AnandutaEtAl2020} & Dual &  Resilient& Analyt./Learn. & Disconnect (Robustness)\\\\
         \midrule
-        \only<6->{\\[-\normalbaselineskip]\rowcolor{ietrRed!10}}Our & \alert<7->{Primal} & Yes & \alert<8->{Resilient} & Active Analyt./Learn. & Data reconstruction\\
+        \only<5->{\\[-\normalbaselineskip]\rowcolor{ietrRed!10}}Our & \alert<6->{Primal} &  \alert<7->{Resilient} & Active Analyt./Learn. & \alert<8->{Data reconstruction}\\
         \bottomrule
       \end{tabular}
     }
@@ -745,20 +749,54 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
 
 \subsection{What is the Primal Decomposition?}
 
-\begin{frame}{Distributed Model Predictive Control}{Primal Decomposition | Quantity Decomposition | Resource Allocation}
-  \begin{itemize}
-    \item<2-> Objective function is sum of local ones with different variables
-    \item<3-> Constraints coupling some variables
-  \end{itemize}
-  \vspace{.5cm}
-  \onslide<4->{Decompose original problem using primal problem into subproblems}
+\begin{frame}{Primal Decomposition }{or Quantity Decomposition | or Resource Allocation}
+  \begin{minipage}[c]{.45\linewidth}
+    \begin{itemize}
+      \item<2-> Objective is sum of local ones
+      \item<3-> Constraints couple variables
+    \end{itemize}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[c]{.45\linewidth}
+    \onslide<1-4>{
+      \begin{equation*}
+        \begin{matrix}
+          \minimize\limits_{\vec{u}_{1},\dots,\vec{u}_{M}} & \alert<2>{\sum\limits_{i\in\set{M}}J_{i}(\vec{x}_{i},\vec{u}_{i})}\\
+          \alert<3>{\mathrm{s.t.}} &\alert<3>{\sum\limits_{i\in\set{M}}\vec{h}_{i}(\vec{x}_{i},\vec{u}_{i})\preceq \vec{u}_{\text{total}}}
+        \end{matrix}
+      \end{equation*}
+    }
+  \end{minipage}
 
-  \begin{itemize}
-    \item<5-> A quantity is allocated for each local agent
-    \item<6-> They solve local problems with allocated value
-    \item<7-> They communicate if the quantity is sufficient
-    \item<8-> Allocation is updated respecting global constraint
-  \end{itemize}
+  \begin{minipage}[c]{.5\linewidth}
+    \begin{enumerate}
+      \item<5-> Allocate a part for each agent
+      \item<6-> They solve local problems and
+      \item<7-> communicate how dissatisfied
+      \item<8-> Allocation is updated \onslide<9->{\\(respecting global constraint)}
+    \end{enumerate}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[c]{.45\linewidth}
+    \onslide<4->{
+      \begin{equation*}
+        \begin{matrix}
+          \minimize\limits_{\vec{u}_{i}} & J_{i}(\vec{x}_{i},\vec{u}_{i})\\
+          {\mathrm{s.~ t.}} &{\vec{h}_{i}(\vec{x}_{i},\vec{u}_{i})\preceq \alert<5>{\vec{\theta}_{i}}} \onslide<7->{\alert<7>{: \vec{\lambda}_{i}}}
+        \end{matrix}
+      \end{equation*}
+    }
+    \onslide<8->{
+      \begin{equation*}
+        \vec{\theta}[k]\pplusone=\onslide<9->{\Proj^{\tikzmark{sets}\set{S}}(}\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p\onslide<9->{)}
+      \end{equation*}
+    }
+  \end{minipage}
+  \onslide<4>{
+    \begin{tikzpicture}[overlay, remember picture]
+      \draw[->] (-2.,2) -- +(0,-.5) node[midway,right=0.25cm] {For each $i\in\set{M}$};
+    \end{tikzpicture}
+  }
 \end{frame}
 
 \begin{frame}{Quantity Decomposition | Resource Allocation}
@@ -880,7 +918,9 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
 
 \begin{frame}{Quantity Decomposition | Resource Allocation}
   \centering
+  Until everybody is equally dissatisfied
   % \centering
+
   \begin{minipage}{0.45\textwidth}
     \begin{figure}
       \includegraphics[width=\textwidth]{../img/example_primal_decomposition/example_theta.pdf}
@@ -895,234 +935,116 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   \end{minipage}
 \end{frame}
 
+% \begin{frame}{Distributed Model Predictive Control}{In our case}
+%   \begin{minipage}{0.45\textwidth}
+%     \begin{assumptions}
+%       \begin{itemize}[<+(1)->]
+%         \item Sum of \alert<2>{Quadratic} objectives
+%         \item Linear subsystems
+%         \item Coupled by the inputs
+%       \end{itemize}
+%     \end{assumptions}
+%   \end{minipage}
+%   \quad
+%   \begin{minipage}{0.45\textwidth}
+%     \onslide<5-6>{
+%       \begin{equation*}
+%         \begin{matrix}
+%           \small
+%           \minimize\limits_{\vec{U}_{1}[k],\dots, \vec{U}_{M}[k]} &
+%                                                                     \sum\limits_{i\in\set{M}}\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]&\\
+%           \mathrm{subject~ to} & \sum\limits_{i\in\set{M}}\bar{\Gamma}_{i}\vec{U}_{i}[k] \preceq {\vec{U}}_{\text{max}}
+%         \end{matrix}
+%       \end{equation*}
+%     }
+%   \end{minipage}
 
-\begin{frame}{Distributed Model Predictive Control}{In more detail}
-  \vspace{1cm}
-  \begin{overlayarea}{\textwidth}{.5\textwidth}
-    \begin{itemize}
-      \item Decompose \structure<2>{original problem} using primal problem
-            \begin{itemize}[<+(2)->]
-              \item Objective function is sum of local objective functions
-              \item Linear subsystems coupled by input constraints
-            \end{itemize}
-    \end{itemize}
-    \vspace{1cm}
-    \only<2>{
-      \begin{equation*}
-        \begin{matrix}
-          \minimize\limits_{\vec{u}[0:\predhorz-1|k]} & J(\vec{x}[0|k],\vec{u}[0:\predhorz-1|k])&\\
-          \mathrm{subject~ to} &
-                                 \left.
-                                 \begin{matrix}
-                                   \vec{x}_{i}[\xi|k]=f(\vec{x}_{i}[\xi-1|k],\vec{u}_{i}[\xi-1|k])\\
-                                   g_{i}(\vec{x}[\xi-1|k],\vec{u}[\xi-1|k])\leq0\\
-                                   h_{j}(\vec{x}[\xi-1|k],\vec{u}[\xi-1|k])=0\\
-                                 \end{matrix}
-          \right\}
-          \begin{aligned}
-            &\forall \xi\in\{1,\dots,\alert<5>{\predhorz}\}\\
-            &\forall i\in\{1,\dots,m\}\\
-            &\forall j\in\{1,\dots,p\}
-          \end{aligned}
-        \end{matrix}
-      \end{equation*}
-    }
-    \only<3-4>{
-      \begin{equation*}
-        \begin{matrix}
-          \minimize\limits_{\vec{u}[0:\predhorz-1|k]} &\sum\limits_{i\in\set{M}} \sum\limits_{\xi\in\set{N}}\left[\norm{\tikzmark{a}\vec{v}_i[\xi|k]}^{2}_{Q_i}+\norm{\vec{u}_i[\xi-1|k]}^{2}_{R_i}\right]&\\
-          \mathrm{subject~ to} &
-                                 \left.
-                                 \begin{matrix}
-                                   \vec{x}[\xi|k]=A_{i}\vec{x}[\xi-1|k]+B_{i}\vec{u}[\xi-1|k]\\
-                                   \sum\limits_{i\in\set{M}}\Gamma_{i}\vec{u}_{i}[\xi|k]\leq\vec{u}_{\mathrm{\max}}
-                                 \end{matrix}
-          \right\}
-          \begin{aligned}
-            &\forall i\in\set{M}\\
-            &\forall \xi\in\set{N}\\
-          \end{aligned}
-        \end{matrix}
-      \end{equation*}
-    }
-    \only<5>{
-      \begin{equation*}
-        \begin{matrix}
-          \minimize\limits_{\vec{U}_{1}[k],\dots, \vec{U}_{M}[k]} &
-                                                                    \sum\limits_{i\in\set{M}}\left[\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\right]&\\
-          \mathrm{subject~ to} & \sum\limits_{i\in\set{M}}\left[\bar{\Gamma}_{i}\vec{U}_{i}[k]\right] \preceq {\vec{U}}_{\text{max}}
-        \end{matrix}
-      \end{equation*}
-    }
+%   \onslide<8>{
+%     \begin{tikzpicture}[overlay, remember picture]
+%       \usebeamercolor{framesubtitle}
+%       \draw[bg,fill=bg] (6.25,1.5) rectangle +(7.,-2.6);
+%     \end{tikzpicture}
+%   }
+%   \begin{minipage}{0.45\textwidth}
+%     \begin{itemize}[<+(2)->]
+%       \item Local problems
+%       \item Update function
+%     \end{itemize}
+%   \end{minipage}
+%   \quad
+%   \begin{minipage}{0.45\textwidth}
+%     \onslide<6->{
+%       \begin{equation*}
+%         \begin{matrix}
+%           \small
+%           \minimize\limits_{\vec{U}_{i}[k]}&\frac{1}{2}\norm{\vec{U}_{1}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]\\
+%           \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \preceq \tikzmark{theta1}{\mpcvec{\theta}[i][k]}{{:\mpcvec{\lambda}[i][k]}}
 
-    \only<3>{
-      \begin{tikzpicture}[overlay, remember picture]
-        \draw[latex-,thick] (a) .. controls +(.5,.5) and +(-0.5,-1.0) .. +(4.5,1) node[above=.25cm,align=center,anchor=center,text=black,text width = 2in] {E.g. ${v_{i}=w_{i}-x_{i}}$};
-      \end{tikzpicture}%
-    }
-  \end{overlayarea}
-  \vfill
-  \script<1->{An example of decomposition method is the Quantity decomposition where a semi-decomposable problem with a global coupling constraints can be decomposed into }
-  \script<2->{multiple sub-problems, which can be solved in parallel, and a master problem which corresponds to the initial problem. \\ Those coupling constraints are replaced by local constraints with an allocation theta i. }
-  \script<3->{The allocation for each sub-problem is updated by a projected subgradient method solving the master problem, thus the original problem. The subgradient used in this method is the dual variable associated to the coupling constraints}
-  \script<4->{We can represent the sub-problems as agents and the master problem as a coordinator. The coordinator sends the allocations for each agent, which responds with a dual variable. }
-\end{frame}
+%         \end{matrix}
+%       \end{equation*}
+%     }
+%     \onslide<7->{
+%       \begin{equation*}
+%         \vec{\theta}[k]\pplusone=\Proj^{\tikzmark{sets}\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p)
+%       \end{equation*}
+%     }
+%   \end{minipage}
+%   \onslide<6>{
+%     \begin{tikzpicture}[overlay, remember picture]
+%       \draw[->] (-2.,2.) -- +(0,-.5) node[midway,right=0.25cm] {For each $i\in\set{M}$};
+%     \end{tikzpicture}
+%   }
 
-\begin{frame}{Distributed Model Predictive Control}{In more detail (Continued)}
-  \begin{overlayarea}{\textwidth}{.5\textwidth}
-    \begin{itemize}[<+(1)->]
-      \item We need to divide the cake
-      \item Get the dissatisfaction of each agent
-      \item Update the partition
-      \item Make sure the cake we are dividing the hole cake
-    \end{itemize}
-
-    \vspace{1cm}
-    % \onslide<2->{
-    %   \begin{minipage}[c]{.4\linewidth}
-    %     \scalebox{0.75}{
-    %       \begin{equation*}
-    %         \begin{matrix}
-    %           \minimize\limits_{\vec{U}_{1}[k]}&\frac{1}{2}\norm{\vec{U}_{1}[k]}^{2}_{H_{1}} + {\vec{f}_{1}[k]}^{T}\vec{U}_{1}[k]\\
-    %           \mathrm{subject~ to} & \bar{\Gamma}_{1}\vec{U}_{1}[k] \preceq \tikzmark{theta1}\alert<2>{\mpcvec{\theta}[1][k]}:\mpcvec{\lambda}[1][k]
-    %           \\
-    %                                            &\vdots&
-    %           \\
-    %           \minimize\limits_{\vec{U}_{M}[k]}&\frac{1}{2}\norm{\vec{U}_{M}[k]}^{2}_{H_{M}} + {\vec{f}_{M}[k]}^{T}\vec{U}_{M}[k]\\
-    %           \mathrm{subject~ to} & \bar{\Gamma}_{M}\vec{U}_{M}[k] \preceq \tikzmark{thetam}\alert<2>{\mpcvec{\theta}[M][k]}:\mpcvec{\lambda}[M][k]
-    %         \end{matrix}
-    %       \end{equation*}
-    %     }
-    %   \end{minipage}
-    %   \hfill
-    %   \begin{minipage}[c]{.4\linewidth}
-    %     \onslide<3->{
-    %       \begin{equation*}
-    %         \label{eq:projectedSubgradient_lambda}
-    %         \vec{\theta}[k]\pplusone=\Proj^{\tikzmark{sets}\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p)
-    %       \end{equation*}
-    %     }
-    %   \end{minipage}
-    % }
-    % \only<9>{
-    % \begin{tikzpicture}[overlay, remember picture]
-    %   \draw[-latex,thick] ($(thetam) + (0.1,0.25)$) .. controls +(1.5,.5) and +(-0.0,-1.5) .. +(2.725,.75) .. controls +(0,2) and +(0,-1.5) .. +(6.5,3) coordinate (ends)   node[above=.25cm,align=center,anchor=center,text=black,text width = 2in] {${{\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k]\preceq \vec{U}_{\max}}}}$};
-    %   \draw[-latex,thick] ($(theta1) + (0.1,0.25)$) .. controls +(1.5,.275) and +(-0.0,-1.0) .. (ends) node[above=.25cm,align=center,anchor=center,text=black,text width = 2in] {};
-    %   \draw[-latex,thick] (sets) .. controls +(.5,.5) and +(-0.0,-1.0) .. (ends) node[above=.25cm,align=center,anchor=center,text=black,text width = 2in] {};
-    % \end{tikzpicture}%
-    % }
-    % \only<10>{
-    %   \begin{tikzpicture}[overlay, remember picture]
-    %     \draw[draw,line width=0cm] ($(thetam) + (0.1,0.25)$)  +(6.5,3) node[above=.25cm,align=center,anchor=center,text=black,text width = 2in] {${{\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k]\preceq \vec{U}_{\max}}}}$};
-    %   \end{tikzpicture}%
-    % }
-  \end{overlayarea}
-\end{frame}
+%   \script<1->{An example of decomposition method is the Quantity decomposition where a semi-decomposable problem with a global coupling constraints can be decomposed into }
+%   \script<2->{multiple sub-problems, which can be solved in parallel, and a master problem which corresponds to the initial problem. \\ Those coupling constraints are replaced by local constraints with an allocation theta i. }
+%   \script<3->{The allocation for each sub-problem is updated by a projected subgradient method solving the master problem, thus the original problem. The subgradient used in this method is the dual variable associated to the coupling constraints}
+%   \script<4->{We can represent the sub-problems as agents and the master problem as a coordinator. The coordinator sends the allocations for each agent, which responds with a dual variable. }
+% \end{frame}
 
 \subsection{How can an agent attack?}
-\begin{frame}{How can a non-cooperative agent attack?}{Literature}
 
-  \begin{itemize}
-    \item<1-> \cite{VelardeEtAl2017a,ChanfreutEtAl2018} present some kinds of attacks
-          \begin{itemize}
-            \item<2-> Objective function\tikzmark{a}
-                  \begin{itemize}
-                    \item<3-> Selfish Attack
-                    \item<4-> Fake weights
-                    \item<5-> Fake reference
-                  \end{itemize}
-            \item<6-> Fake constraints
-            \item<7-> Liar agent (use different control)
-          \end{itemize}
-  \end{itemize}
-  \onslide<8>{
-    \begin{tikzpicture}[overlay, remember picture,decoration={brace,amplitude=2pt}]
-      \draw[decorate,thick] (a.north east) --+ (0,-2) node[midway, right=0.1cm,text=black,text width = 2in] {Deception Attacks\\ (False Data Injection)};
-    \end{tikzpicture}%
-  }
-
-\end{frame}
 
 \begin{frame}{How can a non-cooperative agent attack?}{Our approach}
-  \begin{overlayarea}{\textwidth}{.2\textwidth}
-    \begin{minipage}[t]{.6\linewidth}
+    \begin{minipage}[c]{.35\linewidth}
+      \scalebox{.8}{
+        \begin{tikzpicture}[font=\small,thick,node distance=3*0.6180cm and 1.cm,every node/.style=rectangle,
+          mpcSmall/.style={fill=mpc_agent, minimum height=0.6180*2cm, minimum width=2cm,text=white},
+          coordinator/.style={fill=mpc_coordinator, minimum height=0.6180*3cm, minimum width=7cm},
+          ]
+
+          \node[draw, mpcSmall] (block1) {\small MPC 1};
+          \node[fill=none, draw=none, right=of block1,] (mult) {\bf $\dots$};
+          \node[draw, mpcSmall, fill=mpc_agent, right=of mult,] (blockM) {\small MPC M};
+          \node[draw, coordinator, below=of mult,] (coordinator) {Coordinator};
+
+          \only<-3>{\draw[-latex,line width=1pt] (block1.south)+(0.4,.0) -- ( coordinator.north -| {$(block1.south)+(0.4,.0)$}) node (lambda1) [right,midway] {$\alert<3>{\lambda_{1}}$};}
+          \only<4->{\draw[-latex,line width=1pt] (block1.south)+(0.4,.0) -- ( coordinator.north -| {$(block1.south)+(0.4,.0)$}) node (lambda1) [right,midway] {$\alert<4->{\tilde{\lambda}_{1}}$};}
+          % \only<3->{\node[draw, mpcSmall,] (block1) {};}
+          \only<3->{\node[draw,minimum height=0.6180*1.75cm, minimum width=1.75cm,path picture={\node at (path picture bounding box.center) {\includegraphics[height=1.5cm]{dick_dastardly.jpg}};}] at ($(lambda1)+(1.2,0)$) {};}
+
+          \draw[latex-,line width=1pt] (block1.south)+(-0.4,0) -- (  coordinator.north -| {$(block1.south)+(-0.4,0)$}) node [left,midway] {$\theta_{1}$};
+          \draw[-latex,line width=1pt] (blockM.south)+(0.4,.0) -- ( coordinator.north -| {$(blockM.south)+(0.4,.0)$}) node [right,midway] {$\lambda_{M}$};
+          \draw[latex-,line width=1pt] (blockM.south)+(-0.4,0) -- (  coordinator.north -| {$(blockM.south)+(-0.4,0)$}) node [left,midway] {$\theta_{M}$};
+        \end{tikzpicture}
+      }
+    \end{minipage}
+    \hfill
+    \begin{minipage}[c]{.5\linewidth}
+      \begin{overlayarea}{\textwidth}{0.4\textwidth}
       \begin{itemize}
-        \item<1-> $\vec{\lambda}_{i}$ is the only interface with coordination
-        \item<2-> $\vec{\lambda}_{i}$ depends on the parameters of the system
-        \item<3-> Malicious agent sends a different $\vec{\lambda}_{i}$
+        \item<1-> $\vec{\lambda}_{i}$ is the only interface
+        \item<2-> $\vec{\lambda}_{i}$ depends on local parameters
+        \item<3-> Malicious agent modifies $\vec{\lambda}_{i}$
       \end{itemize}
       \centering
       \only<4->{$\tilde{\vec{\lambda}}_{i}=\gamma_{i}(\vec{\lambda}_{i})$\\}
+    \end{overlayarea}
     \end{minipage}
-    \hfill
-    \begin{minipage}[t]{.3\linewidth}
-      \begin{figure}
-        \centering
-        \visible<3->{\includegraphics[width=\textwidth,trim=2cm 2 20 4,clip]{dick_dastardly.jpg}}
-      \end{figure}
-    \end{minipage}
-  \end{overlayarea}
   \script<2->{How can an agent attack the system? Its only interface with the coordination is lambda}
   \script<3->{so we suppose it attacks by sending a different $lambda_i$, modified by a function $gamma_i$ of $lambda_i$ }
 \end{frame}
 
-\subsection{Consequences}
-\begin{frame}{Example}
-  \centering
-  \only<1->{Let's suppose $\gamma_{i}(\vec{\lambda}_{i})=T_{i}\vec{\lambda}_i$}\\
-  \begin{minipage}[c]{.45\linewidth}
-    \begin{figure}[!t]
-      \centering
-      \begin{tikzpicture}
-        \visible<5->{\node (0,0){\includegraphics[width=\textwidth]{changeOfJ.pdf}};}
-        \usebeamercolor{alerted text}
-        \draw<6>[rounded corners,fg,thick] (-2.3,2.5) rectangle +(.5,-5);
-        \draw<7>[rounded corners,fg,thick] (2.3,2.5) rectangle +(.75,-5);
-      \end{tikzpicture}
-    \end{figure}
-  \end{minipage}
-  \hfill
-  \begin{minipage}[c]{.45\linewidth}
-    \only<2->{
-      \begin{exampleblock}{4 distinct agents}
-        \begin{itemize}
-          \item<3-> Agent 1 is non-cooperative\\
-          \item<4-> It uses $\tilde{\vec{\lambda}}_{1}=\gamma_{1}(\vec{\lambda}_{1})=\tau_{1}I\vec{\lambda}_{1}$
-        \end{itemize}
-      \end{exampleblock}
-    }
-  \end{minipage}
-  \script<1->{We give an example of 4 agents negotiating }
-  \script<2->{Agent 1 is non-cooperative\\ }
-  \script<3->{It uses a linear cheating function gamma tau times identity times the original lambda i\\ }
-  \script<3->{In the figure we can see the cost functions for each agent, we see that agent 1 cost decreases if we increase tau, but the overall cost is increased, The minimum value of the global cost is when \\ }
-  \script<4->{tau is equal to one. If tau is close to zero it increases its cost and if tau is too high\\ }
-  \script<5->{it can turn the negotiation unstable \\ }
-\end{frame}
-
-
-
-
-\begin{frame}{Strategy}
-  \begin{itemize}
-    \item<1-> Recover original behavior
-          \begin{itemize}
-            \item<2-> Invert effects of function $\gamma_{i}(\vec{\lambda}_{i})$
-          \end{itemize}
-  \end{itemize}
-
-  \begin{itemize}
-    \item<3-> Is $\gamma_{i}(\vec{\lambda}_{i})$ invertible?
-          \begin{itemize}
-            \item<4-> Not necessarily, but let's reason
-          \end{itemize}
-          \centering
-  \end{itemize}
-
-\end{frame}
-
-\begin{frame}{Is $\gamma_{i}(\vec{\lambda}_{i})$ invertible?}{Unidimensional Case}
-  \centering
+\begin{frame}{How does an agent lie?}{Liar, Liar, Pants of fire}
   \begin{minipage}[c]{.4\linewidth}
     \definecolor{mycolor1}{rgb}{0.47000,0.12000,0.22000}%
     \begin{tikzpicture}[domain=0:2]
@@ -1130,9 +1052,9 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
       \draw[-latex] (-0.2,0) -- (4.2,0) node[below] {$\lambda$};
       \draw[-latex] (0,-0.2) -- (0,4.2) node[left] {$\gamma(\lambda)$};
       \node[below left] (0,0) {0};
-      \only<4>{\draw[red] (0,0) circle (0.1);}
+      \only<6>{\draw[red] (0,0) circle (0.1);}
 
-      \only<6->{\draw[color=gray,dashed,domain=0:4] plot (\x,\x);}
+      \only<7->{\draw[color=gray,dashed,domain=0:4] plot (\x,\x);}
 
       % \x r means to convert '\x' from degrees to _r_adians:
       \only<7-8>{\draw[color=mycolor1,domain=0:.85] plot (\x,{exp(1.7*\x)-1+0.2*sin(25*\x r)}) node[right] {};}
@@ -1143,247 +1065,349 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   \end{minipage}
   \hfill
   \begin{minipage}[c]{.5\linewidth}
-    \begin{itemize}
-      \item<2-> $\lambda\ge 0$ means dissatisfaction
-      \item<3-> $\lambda=0$ means complete satisfaction
-            \begin{itemize}
-              \item<4-> $\gamma(\lambda)=0\iff \lambda=0$
-            \end{itemize}
+    \begin{itemize}[<+(1)->]
+      \item $\lambda\ge 0$ means dissatisfaction
+      \item $\lambda=0$ means complete satisfaction
     \end{itemize}
-    \onslide<5->{
-      \begin{assumptions}
-        \begin{itemize}
-          \item<6-> Attacker is greedy $\gamma(\lambda)>\lambda$
-          \item<7-> But not smart \onslide<8->{$\lambda_{b}>\lambda_{a}\to\gamma(\lambda_{b})>\gamma(\lambda_{a})$}
-        \end{itemize}
-      \end{assumptions}
-    }
+    \pause
+    \begin{assumptions}
+      \begin{itemize}[<+(1)->]
+        \item Attacker is not naïve
+              \begin{itemize}
+                \item $\gamma(\lambda)=0\rightarrow \lambda=0$
+              \end{itemize}
+        \item Attacker is greedy $\gamma(\lambda)>\lambda$
+        \item Really greedy \pause
+              $\lambda_{b}>\lambda_{a}\to\gamma(\lambda_{b})>\gamma(\lambda_{a})$
+      \end{itemize}
+    \end{assumptions}
+    \begin{itemize}[<+->]
+      \item Invertible
+      \item If linear $\to \exists T^{-1}$
+    \end{itemize}
   \end{minipage}
 \end{frame}
 
-\begin{frame}{Is $\gamma_{i}(\vec{\lambda}_{i})$ invertible?}{Linear Multidimensional Case}
+\subsection{Consequences}
+
+\begin{frame}{Example}
   \centering
-  \begin{itemize}
-    \item<1-> $\gamma(\lambda)=T\lambda$
-    \item<2-> $T\lambda=0 \iff \lambda=0 \onslide<3->{\to \exists T^{-1}}$
-    \item<4-> Each agent could choose different $T_{i}$ each time \only<5->{$\to$ $T_{i}[k]$}
-  \end{itemize}
+  \begin{minipage}[c]{.4\linewidth}
+    \begin{figure}[!t]
+      \centering
+      \begin{tikzpicture}
+        \visible<5->{\node (0,0){\includegraphics[width=\textwidth]{changeOfJ.pdf}};}
+        \usebeamercolor{alerted text}
+        \draw<6>[rounded corners,fg,thick] (-2.1,2.) rectangle +(.5,-4);
+        \draw<8>[rounded corners,fg,thick] (1.9,2.) rectangle +(.75,-4);
+      \end{tikzpicture}
+    \end{figure}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[c]{.5\linewidth}
+    \onslide<2->{
+      \begin{exampleblock}{4 distinct agents}
+        \begin{itemize}
+          \item<3-> Agent 1 is non-cooperative\\
+          \item<4-> It uses $\tilde{\vec{\lambda}}_{1}=\gamma_{1}(\vec{\lambda}_{1})=\tau_{1}I\vec{\lambda}_{1}$
+        \end{itemize}
+      \end{exampleblock}
+    }
+    \begin{itemize}[<+(4)->]
+      \item We can observe 3 things
+            \begin{itemize}[<+(4)->]
+              \item Global minimum when $\tau_{1}=1$
+              \item Agent 1 benefits if $\tau_{1}$ increases (inverse otherwise)
+              \item All collapses if too greedy
+            \end{itemize}
+    \end{itemize}
+  \end{minipage}
+  \script<1->{We give an example of 4 agents negotiating }
+  \script<2->{Agent 1 is non-cooperative\\ }
+  \script<3->{It uses a linear cheating function gamma tau times identity times the original lambda i\\ }
+  \script<3->{In the figure we can see the cost functions for each agent, we see that agent 1 cost decreases if we increase tau, but the overall cost is increased, The minimum value of the global cost is when \\ }
+  \script<4->{tau is equal to one. If tau is close to zero it increases its cost and if tau is too high\\ }
+  \script<5->{it can turn the negotiation unstable \\ }
 \end{frame}
 
+\begin{frame}{}
+  \begin{itemize}[<+(1)->]
+    \item But can we mitigate these effects?
+    \item Yes! \pause (At least in some cases)
+  \end{itemize}
 
-\begin{frame}{Strategy}
-  \begin{itemize}
-    \item Recover original behavior
-          \begin{itemize}
-            \item Invert effects of function $\gamma_{i}(\vec{\lambda}_{i})$ \onslide<2->{$\to$ Estimate $T_{i}[k]^{-1}$}
-          \end{itemize}
-    \item<3-> But how? \onslide<4>{Analyzing the system}
+  \begin{itemize}[<+(1)->]
+    \item Let's start slowly
   \end{itemize}
 \end{frame}
 
 \section{Resilient Primal Decomposition-based dMPC for deprived systems}
 \subsection{Analyzing deprived systems}
-\begin{frame}{What are deprived systems?}
+
+\begin{frame}{What are deprived systems?}{TL;DR: Systems where all constraints are active}
+  \pause
   \centering
-  \begin{equation*}
-    \begin{matrix}
-      \alert<2-3>{\minimize\limits_{\vec{U}_{i}[k]}}&\alert<2-3>{\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]}\\
-      \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \preceq \thetaik:\lambdaik
-    \end{matrix}
-  \end{equation*}
-  \begin{itemize}
-    \item<3-> Unconstrained solution $\optuncUik=-H_{i}^{-1}\vec{f}_{i}[k]$
-    \item<4-> Deprived if constraints are active $\to$ $\bar{\Gamma}_{i}\optuncUik\succ \thetaik, \forall k$
-          \begin{itemize}
-            \item<5-> Solution projected onto boundaries (equality constraints)
-          \end{itemize}
-  \end{itemize}
-  \begin{figure}[h]
-    \centering
-    \visible<6->{
-      \begin{tikzpicture}
-        \visible<6-7>{\node at (0,0) {\includegraphics[width=.3\textwidth]{../img/resilient_eq/original-minimum_no_dots.pdf}};}
-        \visible<8>{\node at (0,0) {\includegraphics[width=.3\textwidth]{../img/resilient_eq/original-minimum.pdf}};}
-        \visible<7->{\draw[fill] (0.2,1.3) circle (.05) node[below] {$\optuncUik$};}
-        \visible<8->{\draw[] (-0.35,0.15)  node[below,blue] {$U_{i}^{\star}[k]$};}
-      \end{tikzpicture}
-    }
-  \end{figure}
+  \hspace{-1cm}
+  % \begin{overlayarea}{\textwidth}{.5\textwidth}
+    \begin{minipage}[t]{.55\linewidth}
+      \begin{itemize}[<+(1)->]
+        \item Unconstrained Solution $\optuncUik$
+        \item All constraints active = Scarcity
+              \begin{itemize}
+                \item Solution projected onto boundary
+                \item Same as with equality constraints\footnotemark
+
+              \end{itemize}
+      \end{itemize}
+
+    \end{minipage}
+    \quad
+    \begin{minipage}[t]{.35\linewidth}
+      \small
+      \onslide<2->{
+      \begin{equation*}
+        \begin{matrix}
+          \alert<3-4>{\minimize\limits_{\vec{U}_{i}[k]}}&\alert<3-4>{\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]}\\
+          \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \preceq \thetaik:\lambdaik
+        \end{matrix}
+      \end{equation*}
+      }
+    \end{minipage}
+
+    \begin{minipage}[c]{.55\linewidth}
+      \begin{figure}[h]
+        \centering
+        \visible<2->{
+          \begin{tikzpicture}
+            \visible<1-4>{\node at (0,0) {\includegraphics[width=.5\textwidth]{../img/resilient_eq/original-minimum_no_dots.pdf}};}
+            \visible<5->{\node at (0,0) {\includegraphics[width=.5\textwidth]{../img/resilient_eq/original-minimum.pdf}};}
+            \visible<3->{\draw[fill] (0.2,1.2) circle (.05) node[below] {$\optuncUik$};}
+            \visible<5->{\draw[fill,mpc_green!55!black] (-0.375,0.125) circle (0.075)  node[below=0.1cm,mpc_green!55!black] {$U_{i}^{\star}[k]$};}
+          \end{tikzpicture}
+        }
+      \end{figure}
+    \end{minipage}
+
+    \onslide<6->{\footnotetext{Under some conditions \hypertarget<6->{analysis_deprived_systems}{}
+  \hyperlink<6->{condition_transform_equality}{\beamergotobutton{see here}} }}
+  % \end{overlayarea}
 \end{frame}
 
 \begin{frame}{Deprived Systems}{But why?}
   \centering
-  \begin{itemize}
-    \item<2-> No Scarcity \onslide<3->{$\to$ All constraints satisfied} \onslide<4->{ $\to$ No coordination needed}
-    \item<5-> Scarcity $\to$ Competition \onslide<6->{$\to$ Consensus/Compromise} \onslide<7->{(or cheating {\color{red}\faUserSecret})}
-  \end{itemize}
+  \begin{minipage}[t]{.45\linewidth}
+    \begin{itemize}
+      \item<+(1)-> No Scarcity
+            \begin{itemize}[<+(1)->]
+              \item[$\to$] All constraints satisfied
+              \item[$\to$] No coordination needed
+              \item[$\to$] No incentive to cheat
+            \end{itemize}
+    \end{itemize}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{.45\linewidth}
+    \begin{itemize}[<+(1)->]
+      \item Scarcity
+            \begin{itemize}[<+(1)->]
+              \item[$\to$] Competition
+              \item[$\to$] Consensus/Compromise
+              \item[$\to$] Agents may cheat {\color{red}\faUserSecret}
+            \end{itemize}
+    \end{itemize}
+  \end{minipage}
 \end{frame}
 
 \begin{frame}{Deprived Systems}{Analysis}
-  \begin{itemize}
-    \item<2-> We can transform inequality constraints into equality ones\footnote{Under some conditions \hypertarget<2->{analysis_deprived_systems}{}
-          \hyperlink<2->{condition_transform_equality}{\beamergotobutton{see here}} }
-    \item<3-> Solution is analytical and trivial.
-          \begin{itemize}
-            \item<4-> If we solve for $\lambda_{i}$
-          \end{itemize}
-  \end{itemize}
-  \centering
-  \begin{equation*}
-    \begin{matrix}
-      {\minimize\limits_{\vec{U}_{i}[k]}}&{\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]}\\
-      \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \only<1>{\geq}\only<2->{=} \thetaik:\lambdaik
-    \end{matrix}
-  \end{equation*}
+  \begin{minipage}[t]{.45\textwidth}
+    \begin{assumptions}
+      \begin{itemize}[<+(1)->]
+        \item Quadratic local problems
+        \item Scarcity
+      \end{itemize}
+    \end{assumptions}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.45\textwidth}
+    \centering
+    \onslide<2->{
+      \begin{equation*}
+        \small
+        \begin{matrix}
+          {\minimize\limits_{\vec{U}_{i}[k]}}&{\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]}\\
+          \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \only<1-3>{\preceq}\only<4->{\alert<4>{=}} \thetaik:\lambdaik \\
+                                             &\\
+          \onslide<3->{
+                                             & \bar{\Gamma}_{i}\optuncUik \preceq\thetaik
+                                               }
+        \end{matrix}
+      \end{equation*}
+    }
+  \end{minipage}
 
-  \onslide<4->{
-    \vspace{-.5cm}
-    \begin{equation*}
-      \lambdaik=-\Plin\thetaik-\sik
-    \end{equation*}
-  }
-  \onslide<5->{
-    where \alert<7>{$\Plin={(\linearcoefi)}^{-1}$}} \onslide<6->{and  \alert<8>{$\sik=\Plin\bar{\Gamma}_{i}H_{i}^{-1}\vec{f}_{i}[k]$}.
-  }
-  \note{
-    One can notice, that the solution embeds information not only of the objective function and the reference and state (presence of $H_{i}$ and $\vec{f}_{i}[k]$), but also of the constraints (presence of $\bar{\Gamma}_{i}$ and $\thetaik$).
-    So, changes in these parameters affect the resulting value of $\lambdaik$.
+  \vspace{-.5cm}
+  \begin{minipage}[c]{.5\textwidth}
+    \begin{itemize}[<+(1)->]
+      \item Transform into equality constraints
+      \item Solution is analytical
+    \end{itemize}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[c]{0.4\textwidth}
+    \onslide<6->{
+      \begin{equation*}
+        \lambdaik=-\alert<7>{\Plin}\thetaik-\alert<8>{\sik}
+      \end{equation*}
+    }
+    \begin{itemize}[<+(2)->]
+      \item $\Plin$ is time invariant \tikzmark{a}
+      \item $\sik$ is time variant
+    \end{itemize}
+  \end{minipage}
+  \onslide<9->{
+  \begin{tikzpicture}[overlay, remember picture,decoration={brace,amplitude=2pt}]
+    \draw[thick,decorate] ($(a.north east) +(-4,-1)$) --+ (0,1) node[midway, left=0.1cm,text=black] {(local parameters unknown by coordinator)};
+  \end{tikzpicture}%
   }
 \end{frame}
 
-\begin{frame}{Deprived Systems}{Analysis (Continued)}
+\begin{frame}{Deprived Systems}{Analysis (Negotiation)}
   \centering
-  ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k] \only<1>{\leq}\only<2->{=} \vec{U}_{\max}}}$
+  \begin{itemize}
+    \item<1-> Update expression \onslide<2->{also becomes analytical}
+    \item<3-> If we input $\lambdaik=-{\Plin}\thetaik-{\sik}$ \onslide<4->{$\to$ DTS with forced input }
+  \end{itemize}
   \begin{overlayarea}{\textwidth}{.1\textwidth}
     \centering
     \begin{equation*}
       \only<1>{\vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p)}
-      \only<2->{\thetai\pplusone=\thetai\p+\rho\p\left(\lambdai\p\tikzmark{lambdai}-\frac{1}{M}\sum_{j=1}^{M}\vec{\lambda}_j\p\tikzmark{lambdaj}\right),\forall i\in\set{M}}
+      \only<2-3>{\thetai\pplusone=\thetai\p+\rho\p\left(\lambdai\p\tikzmark{lambdai}-\frac{1}{M}\sum_{j=1}^{M}\vec{\lambda}_j\p\tikzmark{lambdaj}\right),\forall i\in\set{M}}
+      \only<4>{\vec{\theta}\pplusone=\mathcal{A}_{\theta}\vec{\theta}\p+\mathcal{\vec{B}}_{\theta}[k] \text{ \hyperlink{theta_dynamics}{\beamergotobutton{see here}}}}
     \end{equation*}
-    \begin{equation*}
-      \only<5>{\vec{\theta}\pplusone=\mathcal{A}_{\theta}\vec{\theta}\p+\mathcal{\vec{B}}_{\theta}[k] \text{ \hyperlink{theta_dynamics}{\beamergotobutton{see here}}}}
-    \end{equation*}
-    \hypertarget<5>{analysis_continued}{}
+    \hypertarget<4->{analysis_continued}{}
   \end{overlayarea}
-  \only<3->{
-    \begin{tikzpicture}[overlay, remember picture]
-      \only<3-4>{\draw[-latex,thick] ($(lambdai) + (-0.2,0.25)$) .. controls +(0.0,1.5) and +(-0.0,-1.5) .. +(4.5,2) coordinate (ends);}
-      \only<4->{\node[above=.25cm,align=center,anchor=center,text=black,text width = 2in] at (ends) {$\lambdaik=-\Plin\thetaik-\sik$};}
-      \only<3-4>{\draw[-latex,thick] ($(lambdaj) + (-0.2,0.25)$) .. controls +(0.0,1.5) and +(-0.0,-1.5) .. (ends) node[above=.25cm,align=center,anchor=center,text=black,text width = 2in] {};}
-    \end{tikzpicture}%
-  }
 \end{frame}
 
-
 \begin{frame}{Deprived Systems}{Under attack!}
-  \begin{itemize}
-    \item<1-> Normal behavior
-          \begin{equation*}
-            \lambdaik=-\Plin\thetaik-\sik,
-          \end{equation*}
-    \item<2-> Under attack
-          \begin{equation*}
-            \onslide<2->{\tilde{\vec{\lambda}}_{i}=T_{i}[k]\vec{\lambda}_{i}}\onslide<3->{=-T_{i}\Plin\thetaik-T_{i}\sik}
-          \end{equation*}
-          \begin{equation*}
-            \onslide<4->{\lambdaicheat=-\Plintilde\thetaik-\tilde{\vec{s}}_{i}[k]}
-          \end{equation*}
-          \begin{equation*}
-            \only<5->{\vec{\theta}\pplusone=\alert<6>{\tilde{\mathcal{A}}_{\theta}[k]}\vec{\theta}\p+\tilde{\mathcal{\vec{B}}}_{\theta}[k]}
-          \end{equation*}
-  \end{itemize}
+  \begin{minipage}[t]{.45\linewidth}
+    \begin{itemize}
+      \item<1-> Normal behavior
+            \begin{itemize}
+              \item<2-> Affine solution
+                    \begin{equation*}
+                      \lambdaik=-\Plin\thetaik-\sik
+                    \end{equation*}
+            \end{itemize}
+    \end{itemize}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{.45\linewidth}
+    \begin{itemize}
+      \item<3-> Under attack \onslide<4->{$\to$ $\lambdaicheat=\Tik\lambdai$}
+            \begin{itemize}
+              \item<6-> Parameters modified
+            \end{itemize}
+    \end{itemize}
+    \only<5->{
+      \begin{equation*}
+        \only<5>{\lambdaicheat=-\Tik\Plin\thetaik-\Tik\sik}
+        \only<6->{\lambdaicheat=-\Plintilde\thetaik-\siktilde}
+      \end{equation*}
+    }
+  \end{minipage}
+  \onslide<7->{
+    \centering
+    \begin{itemize}
+      \item New dynamics \onslide<8->{(Possibly Unstable)}
+    \end{itemize}
+    \begin{equation*}
+      \vec{\theta}\pplusone=\alert<8>{\tilde{\mathcal{A}}_{\theta}[k]}\vec{\theta}\p+\tilde{\mathcal{\vec{B}}}_{\theta}[k]
+    \end{equation*}
+    \begin{itemize}
+      \item<9-> But wait! \onslide<10->{$\Plin$ is not supposed to change!} \item<11-> Change $\to$ Probably an Attack! \onslide<12->{Let's take advantage of this!}
+    \end{itemize}
+  }
 \end{frame}
 
 \subsection{Building an algorithm}
 
 \begin{frame}{Detection Mechanism}
-  \begin{itemize}
-    \item<2-> $\bar{P}_{i}$ is time invariant
-  \end{itemize}
-  \onslide<3->{
+  \onslide<2->{
     \begin{assumption}
       We know nominal $\bar{P}_{i}$
     \end{assumption}
   }
   \begin{itemize}
-    \item<4-> We can estimate%
-          \footnote[1]{Using Recursive Least Squares}
+    \item<4-> If we estimate%
+          \footnote[1]{Using Recursive Least Squares for example}
           $\hat{P}_{i}[k]$ and $\widehat{\tilde{\vec{s}}}_{i}[k]$ such as:
           \begin{equation*}
             \label{eq:lambdafuntheta_tilde}
-            \tilde{\vec{\lambda}_{i}}=\gamma_{i}(\vec{\lambda}_{i}(\vec{\theta}_{i}))=-\widehat{\tilde{P}_{i}}[k]\vec{\theta}_{i}-\widehat{\tilde{\vec{s}}}_{i}[k]
+            \lambdaicheat=-\Plintildeestimate\thetai-\siktildeestimate
           \end{equation*}
-    \item<5-> If $\widehat{\tilde{{P}}}_{i}[k]\neq\bar{{P}}_{i}$ \onslide<6->{$\to$ Attack}
+    \item<5-> If $\norm{\Plintildeestimate-\Plinnominal}_{F}>\epsilon_{P}$ \onslide<6->{$\to$ Attack}
+    \item<7-> Ok, but how can we estimate $\Plintildeestimate$?
   \end{itemize}
   \script<1->{For the attack detection, let's assume we know the nominal P, called P bar \\ }
   \script<2->{And we also assume the attacker chooses a linear attack where the lambda sent is equal to a matrix T times the original lambda which yields the formula shown \\ }
   \script<3->{with modified P and s, called P tilde and s tilde\\ }
   \script<4->{Now we can estimate P tilde and s tilde for a given negotiation in time k\\ }
   \script<5->{and if the estimated P tilde is different from the nominal P, then there is an attack\\ }
-
 \end{frame}
-
-
-\begin{frame}{Detection}{In detail}
-  \pause
-  \begin{itemize}
-    \item Error ${E_{i}[k] =\|\widehat{\tilde{P}}_{i}[k]-\bar{P}_{i}\|_{F}}$
-          \pause
-    \item Create threshold $\epsilon_{P}$
-          \pause
-    \item Indicator ${d_{i}\in\{0,1\}}$ detects the attack in agent $i$.
-          \pause
-    \item $d_{i}=1$ if $E_{i}[k]>\epsilon_{P}$, $0$ otherwise
-  \end{itemize}
-  \script<1->{So, let's detail the detection mechanism.\\ }
-  \script<2->{First we calculate the norm of the error between the estimated P and the nominal. (Here we use the Frobenius norm)\\ }
-  \script<3->{Then, we create a threshold epsilon p\\ }
-  \script<4->{and finally we create an indicator d $i$ for the attack of agent $i$\\ }
-  \script<5->{It is equal to 1 if the error is greater than the threshold, indicating an attack or 0 otherwise\\ }
-\end{frame}
-
-
 
 \begin{frame}{Estimating \small $\Plintildeestimate$}
   \centering
-  \begin{itemize}
-    \item We estimate $\Plintildeestimate$ and $\siktildeestimate$ simultaneously using Recursive Least Squares
-          \pause
-    \item Problem: Estimation during negotiation fails
-          \pause
+  \begin{itemize}[<+(1)->]
+    \item We need to estimate $\Plintildeestimate$ and $\siktildeestimate$ simultaneously
+    \item Challenge: Estimation during negotiation fails
           \begin{itemize}
-            \item Consecutive $\vec{\lambda}_{i}^{p}$ and $\vec{\theta}_{i}^{p}$ are linearly dependent $\to$ low input excitation
+            \item Update function couples $\vec{\theta}_{i}^{p}$ and $\vec{\lambda}_{i}^{p}$ $\to$ low input excitation
           \end{itemize}
-          \pause
-    \item Solution: Send sequence of random\footnote{A random signal has persistent excitation of any order (\visible<4->{\booksymbol~\citetitle{AstroemWittenmark1989}})} values of $\vec{\theta}_{i}$ until estimates converge
-          \pause
-    \item We can reduce number of parameters estimated ($\Plintildeestimate\in\symmetric$)
+    \item Solution: Send a random\footnote{A random signal has persistent excitation of any order (\visible<.(1)->{\booksymbol~\citetitle{AstroemWittenmark1989}})} sequence to increase excitation.
+
   \end{itemize}
-  \script<1->{In order to estimate the modified P and s, we use recursive least squares\\ }
-  \script<2->{The problem of estimating the value during a normal negotiation is that it fails\\ }
-  \script<3->{Consecutive lambdas and thetas are linearly dependent, since they are calculate via the projected subgradient method, which gives us low input excitation\\ }
-  \script<4->{In order to increase the input excitation we send a sequence of random theta until the convergence is attained\\ }
+
+  % \begin{itemize}
+  %   \item How many?
+  %   \item Until estimates converge (\# of estimated parameters\footnote{In noiseless conditions with fixed parameters})
+  %   \item We can reduce number of parameters estimated ($\Plintildeestimate\in\symmetric$)
+  % \end{itemize}
+  % \script<1->{In order to estimate the modified P and s, we use recursive least squares\\ }
+  % \script<2->{The problem of estimating the value during a normal negotiation is that it fails\\ }
+  % \script<3->{Consecutive lambdas and thetas are linearly dependent, since they are calculate via the projected subgradient method, which gives us low input excitation\\ }
+  % \script<4->{In order to increase the input excitation we send a sequence of random theta until the convergence is attained\\ }
 \end{frame}
 
+\begin{frame}{Classification of mitigation techniques}
+  \begin{itemize}
+    \item Active (Resilient)
+          \begin{enumerate}
+            \item Detection/Isolation \onslide<1->{{\color{mpc_green}\faCheck}}
+            \item Mitigation \onslide<2->{\color{mpc_agent}\faQuestionCircle}
+          \end{enumerate}
+  \end{itemize}
+\end{frame}
 
 \begin{frame}{Mitigation mechanism}{Reconstructing $\vec{\lambda}_{i}$}
-  \begin{itemize}
-    \item Estimate $T_{i}[k]^{-1}$
+  \begin{itemize}[<+->]
+    \item We now have $\Plintildeestimate$
+          \begin{itemize}
+            \item Since $\Plintilde=\Tik\Plinnominal$
+            \item We can recover $\Tik^{-1}$
           \begin{equation*}
-            {\widehat{T_{i}[k]^{-1}}=\bar{P}_{i}\widehat{\tilde{P}_{i}}[k]^{-1}}
+            \widehat{\Tik^{-1}}=\Plin\Plintildeestimate^{-1}
           \end{equation*}
-          \pause
+          \end{itemize}
     \item Reconstruct $\vec{\lambda}_{i}$
           \begin{equation*}
             \lambdaireconstructed=-\Plinnominal\thetai-\Tikinvestimate\siktildeestimate
           \end{equation*}
-          \pause
     \item Choose adequate version for coordination
           \begin{equation*}
             \lambdaimodified=
             \begin{cases}
-              \lambdaicheat, &\text{if } d_{i}=0\\
-              \lambdaireconstructed, &\text{if }d_{i}=1\\
+              \lambdaireconstructed, &\text{if attack detected}\\
+              \lambdaicheat, &\text{otherwise}\\
             \end{cases}
           \end{equation*}
   \end{itemize}
@@ -1409,9 +1433,9 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
           \node[draw, mpcSmall, fill=mpc_agent, right=of mult,] (blockM) {\small Agent M};
           \node[draw, coordinator, below=of mult,] (coordinator) {Coordinator};
 
-          \node[draw, supervisor,anchor=north west] at (coordinator.north west) {\small Supervisor 1};
+          \only<2->{\node[draw, supervisor,anchor=north west] at (coordinator.north west) {\small Supervisor 1};
           \node[draw, supervisor,anchor=north east] at (coordinator.north east) {\small Supervisor M};
-
+}
           \draw[-latex,line width=1pt] (block1.south)+(0.4,.0) -- ( coordinator.north -| {$(block1.south)+(0.4,.0)$}) node [right,midway] {$\lambda_{1}$};
           \draw[latex-,line width=1pt] (block1.south)+(-0.4,0) -- (  coordinator.north -| {$(block1.south)+(-0.4,0)$}) node [left,midway] {$\theta_{1}$};
           \draw[-latex,line width=1pt] (blockM.south)+(0.4,.0) -- ( coordinator.north -| {$(blockM.south)+(0.4,.0)$}) node [right,midway] {$\lambda_{M}$};
@@ -1421,16 +1445,18 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
       % \caption{Scheme for Secure DMPC}\label{fig:schemeSafeQuantity}
     \end{figure}
   \end{minipage}
-  \pause
+  % \pause
   \hfill
   \quad
   \hfill
   \begin{minipage}[c]{.6\linewidth}
-    Two phases:
-    \pause
-    \begin{enumerate}
+    \begin{itemize}[<+(1)->]
+      \item Supervise exchanges by inquiring the agents
+      \item Estimate how they will behave
+    \end{itemize}
+    \pause Two Phases \pause
+    \begin{enumerate}[<+->]
       \item Detect which agents are non-cooperative
-            \pause
       \item Reconstruct $\vec{\lambda}_{i}$ and use in negotiation
     \end{enumerate}
   \end{minipage}
@@ -1439,38 +1465,6 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   \script<3->{first we detect which agents are non-cooperative }
   \script<4->{and then reconstruct the lambda i s and use in the usual negotiation\\ }
 \end{frame}
-
-% % % \begin{frame}
-% % %   \SetKwBlock{negotPhase}{ Negotiation Phase:}{}
-% % %   \SetKwBlock{detectPhase}{ Detection Phase:}{}
-% % %   \scalebox{.8}{  \begin{algorithm}[H]
-% % %     \DontPrintSemicolon
-% % %     \detectPhase{
-% % %     $h:=0$\;
-% % %     \Repeat{
-% % %     $\|\eta_{i}^{h}-\eta^{h-1}\|\leq\epsilon$
-% % %   }{
-% % %     Coordinator sets random $\vec{\theta}_{i}^{(h+1)}$ \;
-% % %     Subsystems solve~\eqref{eq:DOP_local}, and send $\vec{\lambda}^{\star}_{i}(\vec{\theta}^{(h)})$\;
-% % %     Coordinator estimates $\widehat{\tilde{P}}_{i}(k)^{(h)}$ and $\widehat{\tilde{\vec{s}}}_{i}(k)^{(h)}$ \;
-% % %     $h:=h+1$\;
-% % %   }
-% % %     Coordinator computes $d_{i}$ using~\eqref{eq:2}\;
-% % %   }
-% % %     \negotPhase{
-% % %     Coordinator initializes $\vec{\theta}^{(0)}$ \;
-% % %     $p:=0$\;
-
-% % %     \Repeat{$\|\vec{\theta}^{(p)} -\vec{\theta}^{(p-1)}\|\leq\epsilon$}{
-% % %     Subsystems solve~\eqref{eq:DOP_local}, and send $\vec{\lambda}^{\star}_{i}(\vec{\theta}\p)$\;
-
-% % %     Coordinator updates allocation~\eqref{eq:thetaNegot} using adequate versions of $\vec{\lambda}_{i}$ for each agent: $\vec{\lambda}_{i}^{\star}(\vec{\theta}\p)$, if $d_{i}=0$ and ${\vec{\lambda}_{i}}_{\mathrm{rec}}$, if ${d_{i}=1}$\;
-% % %     $p:=p+1$
-% % %   }}
-% % %     \caption{Secure DMPC.}\label{alg:safeDMPC}
-% % %   \end{algorithm}
-% % % }
-% % % \end{frame}
 
 \begin{frame}{Complete algorithm}{RPdMPC-DS}
   \begin{figure}[h]
@@ -1652,15 +1646,6 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
 \end{frame}
 
 \subsection{Applying mechanism}
-\newcommand\encircle[1]{%
-  \usebeamerfont*{item projected}%
-  \usebeamercolor[bg]{item projected}%
-  \begin{pgfpicture}{-1ex}{0ex}{1ex}{2ex}
-    \pgfpathcircle{\pgfpoint{0pt}{.75ex}}{1.2ex}
-    \pgfusepath{fill}
-    \pgftext[base]{\color{fg}#1}
-  \end{pgfpicture}%
-}
 
 \begin{frame}{Example}
   \begin{minipage}[c]{.35\textwidth}
@@ -1675,12 +1660,12 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
         \draw[latex-,line width=1pt] (house1) -- (medium.center);
         \draw[latex-,line width=1pt] (house2) -- (medium.center);
         \draw[latex-,line width=1pt] (house3) -- (medium.center);
-        \draw[latex-,line width=1pt] (house4) -- (medium.center) node[above,midway] {\large $\vec{u}_{i}(t)$};
+        \draw[latex-,line width=1pt] (house4) -- (medium.center) node[above,midway] {\Huge $\vec{u}_{i}(t)$};
         \draw[color=black,fill=mpc_coordinator,] (medium) circle [radius=.2cm];
 
-        \node[latex-,line width=7pt] at ($(house4) +(-1,1)$) {\large $w_{i}(t)$};
-        \node[latex-,line width=7pt] at ($(house4)$) {$\vec{x}_{i}(t)$};
-        \node[below=of house3] {$\left({\sum_{i=1}^{4} \vec{u}_{i}(k)\leq4\mathrm{kW}}\right)$};
+        \node[latex-,line width=7pt] at ($(house4) +(-1.5,1)$) {\Huge $w_{i}(t)$};
+        \node[latex-,line width=7pt] at ($(house4) +(0,-1.5)$) {\Huge $\vec{x}_{i}(t)$};
+        % \node[below=of house3] {$\left({\sum_{i=1}^{4} \vec{u}_{i}(k)\leq4\mathrm{kW}}\right)$};
 
       \end{tikzpicture}
     }
@@ -1688,22 +1673,17 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   \hfill
   \begin{minipage}[c]{.6\textwidth}
     \begin{exampleblock}{District Heating Network (4 Houses)}
-      \begin{itemize}
-              \pause
-        \item Houses modeled using 3R-2C
-              \pause
+      \begin{itemize}[<+(1)->]
+        \item Houses modeled using 3R-2C (monozone)
         \item Not enough power
-              \pause
-        \item Period of ${5} \mathrm{h}$ (${T_{s}=0.25\mathrm{h}}$)
-              \pause
+        \item Period of ${5} \mathrm{h}$
         \item 3 scenarios
-              \pause
               \begin{itemize}
-                \item[\encircle{N}] Nominal \pause
-                \item[\encircle{C}] Agent I cheats (dMPC) \pause
+                \item[\encircle{N}] Nominal
+                \item[\encircle{C}] Agent I cheats (dMPC)
                 \item[\encircle{S}] Agent I cheats (RPdMPC-DS)
-              \end{itemize}\pause
-        \item $T_{1}=\left[\input{../data/resilient_eq/triche_matrix_I}\right],\text{ if }k> 5$
+              \end{itemize}
+        % \item $T_{1}=\left[\input{../data/resilient_eq/triche_matrix_I}\right],\text{ if }k> 5$
       \end{itemize}
     \end{exampleblock}
   \end{minipage}
@@ -1717,16 +1697,26 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
 \end{frame}
 
 \begin{frame}{Results}{Temporal}
-  \begin{figure}[h]
-    \centering
-    \includegraphics[width=.5\textwidth]{../img/resilient_eq/ErrorWX_command_normErrH.pdf}
-    \caption*{Temperature in house I and the variable $E_{I}(k)$ for different scenarios.\\ {\encircle{N}} Nominal, {\encircle{S}} Selflish behavior, {\encircle{C}} Selfish + Correction}
-  \end{figure}
-
-  \script<1->{In the figure we see the air temperature and the estimation error for room 1\\}
-  \script<2->{The nominal behavior is in orange, and as said it cannot reach the setpoint, in blue\\}
-  \script<3->{When the room presents selfish behavior (in blue), it reduces its cost and get closer to the setpoint, we see that the attack increases the error\\}
-  \script<4->{Now, for the case with correction (the red dots), even if it attacks the system, the temperature is close to its nominal value\\}
+  \centering
+  \begin{minipage}[t]{.45\linewidth}
+    \begin{figure}[h]
+      \centering
+      \includegraphics[width=1.\textwidth]{../img/resilient_eq/ErrorWX_command_normErrH.pdf}
+      \caption*{Temperature in house I. \\Error $E_{I}(k)$.\\ {\encircle{N}} Nominal, {\encircle{S}} Selflish, {\encircle{C}} Corrected}
+    \end{figure}
+  \end{minipage}
+  \only<3->{
+  \begin{minipage}[t]{.50\linewidth}
+    \begin{itemize}[<+(2)->]
+      \item[\encircle{S}]  Temperature close to reference
+      \item[\encircle{C}] Temperature close to \encircle{N}
+    \end{itemize}
+  \end{minipage}
+  }
+  \script<1>{In the figure we see the air temperature and the estimation error for house 1\\}
+  \script<2>{The nominal behavior is in magenta, and as said it cannot reach the setpoint, in blue\\}
+  \script<3>{When the room presents selfish behavior (in orange), it reduces its cost and get closer to the setpoint, we see that the attack increases the error\\}
+  \script<4>{Now, for the case with correction (the black dots), even if it attacks the system, the temperature is close to its nominal value\\}
 \end{frame}
 
 \begin{frame}{Results}{Costs}
@@ -1748,9 +1738,15 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
 
 \section{Resilient Primal Decomposition-based dMPC using Artificial Scarcity}
 \subsection{Relaxing some assumptions}
+
 \begin{frame}{Relaxing scarcity assumption}
+  \begin{itemize}[<+(1)->]
+    \item Let's relax the scarcity assumption
+    \item And add some local constraints
+    \item Similarly we have the local problems \onslide<+(1)->{and update}
+  \end{itemize}
   \centering
-  \onslide<2->{
+  \onslide<2-3>{
     \begin{minipage}[c]{.45\textwidth}
 
       \begin{equation*}
@@ -1760,7 +1756,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
             \minimize\limits_{\vec{U}[k]} &
                                             \frac{1}{2}\norm{\vec{U}[k]}^{2}_{H} + {\vec{f}[k]}^{T}\vec{U}[k] &\\
             \mathrm{subject~ to} & \bar{\Gamma}\vec{U}[k]\preceq {\vec{U}}_{\text{max}} \\
-                                          & \alert<3>{\vec{U}[k]\in \set{U}}
+                                          \onslide<3>{& \alert<3>{\vec{U}[k]\in \set{U}}}
           \end{matrix}
         \end{aligned}
       \end{equation*}
@@ -1782,7 +1778,6 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
       \begin{equation*}
         \vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p)
       \end{equation*}
-      ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k]\preceq \vec{U}_{\max}}}$
     }
   \end{minipage}
 \end{frame}
