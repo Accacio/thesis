@@ -749,56 +749,6 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
 
 \subsection{What is the Primal Decomposition?}
 
-\begin{frame}{Primal Decomposition }{or Quantity Decomposition | or Resource Allocation}
-  \begin{minipage}[c]{.45\linewidth}
-    \begin{itemize}
-      \item<2-> Objective is sum of local ones
-      \item<3-> Constraints couple variables
-    \end{itemize}
-  \end{minipage}
-  \hfill
-  \begin{minipage}[c]{.45\linewidth}
-    \onslide<1-4>{
-      \begin{equation*}
-        \begin{matrix}
-          \minimize\limits_{\vec{u}_{1},\dots,\vec{u}_{M}} & \alert<2>{\sum\limits_{i\in\set{M}}J_{i}(\vec{x}_{i},\vec{u}_{i})}\\
-          \alert<3>{\mathrm{s.t.}} &\alert<3>{\sum\limits_{i\in\set{M}}\vec{h}_{i}(\vec{x}_{i},\vec{u}_{i})\preceq \vec{u}_{\text{total}}}
-        \end{matrix}
-      \end{equation*}
-    }
-  \end{minipage}
-
-  \begin{minipage}[c]{.5\linewidth}
-    \begin{enumerate}
-      \item<5-> Allocate a part for each agent
-      \item<6-> They solve local problems and
-      \item<7-> communicate how dissatisfied
-      \item<8-> Allocation is updated \onslide<9->{\\(respecting global constraint)}
-    \end{enumerate}
-  \end{minipage}
-  \hfill
-  \begin{minipage}[c]{.45\linewidth}
-    \onslide<4->{
-      \begin{equation*}
-        \begin{matrix}
-          \minimize\limits_{\vec{u}_{i}} & J_{i}(\vec{x}_{i},\vec{u}_{i})\\
-          {\mathrm{s.~ t.}} &{\vec{h}_{i}(\vec{x}_{i},\vec{u}_{i})\preceq \alert<5>{\vec{\theta}_{i}}} \onslide<7->{\alert<7>{: \vec{\lambda}_{i}}}
-        \end{matrix}
-      \end{equation*}
-    }
-    \onslide<8->{
-      \begin{equation*}
-        \vec{\theta}[k]\pplusone=\onslide<9->{\Proj^{\tikzmark{sets}\set{S}}(}\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p\onslide<9->{)}
-      \end{equation*}
-    }
-  \end{minipage}
-  \onslide<4>{
-    \begin{tikzpicture}[overlay, remember picture]
-      \draw[->] (-2.,2) -- +(0,-.5) node[midway,right=0.25cm] {For each $i\in\set{M}$};
-    \end{tikzpicture}
-  }
-\end{frame}
-
 \begin{frame}{Quantity Decomposition | Resource Allocation}
   \centering
   \begin{minipage}{.45\linewidth}
@@ -916,10 +866,61 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   \script<7->{then the negotiation ends and each agent applies the first element of the control found}
 \end{frame}
 
+\begin{frame}{Primal Decomposition }{or Quantity Decomposition | or Resource Allocation}
+  \begin{minipage}[c]{.45\linewidth}
+    \begin{itemize}
+      \item<2-> Objective is sum of local ones
+      \item<3-> Constraints couple variables
+    \end{itemize}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[c]{.45\linewidth}
+    \onslide<1-4>{
+      \begin{equation*}
+        \begin{matrix}
+          \minimize\limits_{\vec{u}_{1},\dots,\vec{u}_{M}} & \alert<2>{\sum\limits_{i\in\set{M}}J_{i}(\vec{x}_{i},\vec{u}_{i})}\\
+          \alert<3>{\mathrm{s.t.}} &\alert<3>{\sum\limits_{i\in\set{M}}\vec{h}_{i}(\vec{x}_{i},\vec{u}_{i})\preceq \vec{u}_{\text{total}}}
+        \end{matrix}
+      \end{equation*}
+    }
+  \end{minipage}
+
+  \begin{minipage}[c]{.5\linewidth}
+    \begin{enumerate}
+      \item<5-> Allocate $\thetai$ for each agent
+      \item<6-> They solve local problems and
+      \item<7-> Send dual variable $\lambdai$
+      \item<8-> Allocation is updated \onslide<9->{\\(respecting global constraint)}
+    \end{enumerate}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[c]{.45\linewidth}
+    \onslide<4->{
+      \begin{equation*}
+        \begin{matrix}
+          \minimize\limits_{\vec{u}_{i}} & J_{i}(\vec{x}_{i},\vec{u}_{i})\\
+          {\mathrm{s.~ t.}} &{\vec{h}_{i}(\vec{x}_{i},\vec{u}_{i})\preceq \alert<5>{\vec{\theta}_{i}}} \onslide<7->{\alert<7>{: \vec{\lambda}_{i}}}
+        \end{matrix}
+      \end{equation*}
+    }
+    \onslide<8->{
+      \begin{equation*}
+        \vec{\theta}[k]\pplusone=\onslide<9->{\Proj^{\tikzmark{sets}\set{S}}(}\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p\onslide<9->{)}
+      \end{equation*}
+    }
+  \end{minipage}
+  \onslide<4>{
+    \begin{tikzpicture}[overlay, remember picture]
+      \draw[->] (-2.,2) -- +(0,-.5) node[midway,right=0.25cm] {For each $i\in\set{M}$};
+    \end{tikzpicture}
+  }
+\end{frame}
+
 \begin{frame}{Quantity Decomposition | Resource Allocation}
   \centering
   Until everybody is equally dissatisfied
   % \centering
+  \vspace{1cm}
 
   \begin{minipage}{0.45\textwidth}
     \begin{figure}
@@ -1072,18 +1073,18 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
     \pause
     \begin{assumptions}
       \begin{itemize}[<+(1)->]
-        \item Attacker is not naïve
+        \item Attacker satisfied only if it really is
               \begin{itemize}
                 \item $\gamma(\lambda)=0\rightarrow \lambda=0$
               \end{itemize}
         \item Attacker is greedy $\gamma(\lambda)>\lambda$
-        \item Really greedy \pause
+        \item Attack is monotonically increasing \pause
               $\lambda_{b}>\lambda_{a}\to\gamma(\lambda_{b})>\gamma(\lambda_{a})$
       \end{itemize}
     \end{assumptions}
     \begin{itemize}[<+->]
       \item Invertible
-      \item If linear $\to \exists T^{-1}$
+      \item If $\lambdaicheat=\Tik\lambdai$ $\to \exists \Tik^{-1}$
     \end{itemize}
   \end{minipage}
 \end{frame}
@@ -1136,60 +1137,63 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
     \item Yes! \pause (At least in some cases)
   \end{itemize}
 
-  \begin{itemize}[<+(1)->]
-    \item Let's start slowly
-  \end{itemize}
 \end{frame}
 
 \section{Resilient Primal Decomposition-based dMPC for deprived systems}
 \subsection{Analyzing deprived systems}
 
-\begin{frame}{What are deprived systems?}{TL;DR: Systems where all constraints are active}
-  \pause
+\begin{frame}{What are deprived systems?}{}
   \centering
-  \hspace{-1cm}
+  \onslide<+(1)->{Systems whose optimal solution has all constraints active}
+
   % \begin{overlayarea}{\textwidth}{.5\textwidth}
-    \begin{minipage}[t]{.55\linewidth}
-      \begin{itemize}[<+(1)->]
-        \item Unconstrained Solution $\optuncUik$
-        \item All constraints active = Scarcity
-              \begin{itemize}
-                \item Solution projected onto boundary
-                \item Same as with equality constraints\footnotemark
+  \begin{minipage}[t]{.55\linewidth}
+    \begin{itemize}[<+(2)->]
+      \item Unconstrained Solution $\optuncUik$
+      \item $\bar{\Gamma}_{i}\optuncUik \succeq\thetaik$ $\to$ Scarcity
+            \begin{itemize}
+              \item Solution projected onto boundary
+              \item Same as with equality constraints\footnotemark
 
-              \end{itemize}
-      \end{itemize}
+            \end{itemize}
+    \end{itemize}
 
-    \end{minipage}
-    \quad
-    \begin{minipage}[t]{.35\linewidth}
-      \small
-      \onslide<2->{
+  \end{minipage}
+  \quad
+  \begin{minipage}[t]{.35\linewidth}
+    \small
+    \onslide<3->{
       \begin{equation*}
         \begin{matrix}
-          \alert<3-4>{\minimize\limits_{\vec{U}_{i}[k]}}&\alert<3-4>{\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]}\\
-          \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \preceq \thetaik:\lambdaik
+          \alert<4-5>{\minimize\limits_{\vec{U}_{i}[k]}}&\alert<4-5>{\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]}\\
+          \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \only<-6>{\preceq}\only<7->{\alert<7>{=}} \thetaik:\lambdaik
         \end{matrix}
       \end{equation*}
+    }
+  \end{minipage}
+
+  \begin{minipage}[c]{.3\linewidth}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[c]{.3\linewidth}
+    \begin{figure}[h]
+      \centering
+      \visible<3->{
+        \begin{tikzpicture}
+          \visible<2-5>{\node at (0,0) {\includegraphics[width=1.\textwidth]{../img/resilient_eq/original-minimum_no_dots.pdf}};}
+          \visible<6->{\node at (0,0) {\includegraphics[width=1.\textwidth]{../img/resilient_eq/original-minimum.pdf}};}
+          \visible<4->{\draw[fill] (0.2,1.2) circle (.05) node[below] {$\optuncUik$};}
+          \visible<6->{\draw[fill,mpc_green!55!black] (-0.375,0.125) circle (0.075)  node[below=0.1cm,mpc_green!55!black] {$U_{i}^{\star}[k]$};}
+        \end{tikzpicture}
       }
-    \end{minipage}
+    \end{figure}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[c]{.3\linewidth}
+  \end{minipage}
 
-    \begin{minipage}[c]{.55\linewidth}
-      \begin{figure}[h]
-        \centering
-        \visible<2->{
-          \begin{tikzpicture}
-            \visible<1-4>{\node at (0,0) {\includegraphics[width=.5\textwidth]{../img/resilient_eq/original-minimum_no_dots.pdf}};}
-            \visible<5->{\node at (0,0) {\includegraphics[width=.5\textwidth]{../img/resilient_eq/original-minimum.pdf}};}
-            \visible<3->{\draw[fill] (0.2,1.2) circle (.05) node[below] {$\optuncUik$};}
-            \visible<5->{\draw[fill,mpc_green!55!black] (-0.375,0.125) circle (0.075)  node[below=0.1cm,mpc_green!55!black] {$U_{i}^{\star}[k]$};}
-          \end{tikzpicture}
-        }
-      \end{figure}
-    \end{minipage}
-
-    \onslide<6->{\footnotetext{Under some conditions \hypertarget<6->{analysis_deprived_systems}{}
-  \hyperlink<6->{condition_transform_equality}{\beamergotobutton{see here}} }}
+  \onslide<6->{\footnotetext{Under some conditions \hypertarget<6->{analysis_deprived_systems}{}
+      \hyperlink<6->{condition_transform_equality}{\beamergotobutton{see here}} }}
   % \end{overlayarea}
 \end{frame}
 
@@ -1230,70 +1234,48 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   \hfill
   \begin{minipage}[t]{0.45\textwidth}
     \centering
-    \onslide<2->{
+    \onslide<+(1)->{
       \begin{equation*}
         \small
         \begin{matrix}
           {\minimize\limits_{\vec{U}_{i}[k]}}&{\frac{1}{2}\norm{\vec{U}_{i}[k]}^{2}_{H_{i}} + {\vec{f}_{i}[k]}^{T}\vec{U}_{i}[k]}\\
-          \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] \only<1-3>{\preceq}\only<4->{\alert<4>{=}} \thetaik:\lambdaik \\
+          \mathrm{subject~ to} & \bar{\Gamma}_{i}\vec{U}_{i}[k] = \thetaik:\lambdaik \\
                                              &\\
-          \onslide<3->{
-                                             & \bar{\Gamma}_{i}\optuncUik \preceq\thetaik
-                                               }
         \end{matrix}
       \end{equation*}
     }
   \end{minipage}
 
+  \begin{itemize}[<+(1)->]
+    \item Solution is analytical \onslide<+(1)->{and affine}
+          \onslide<+(1)->{
+          \begin{equation*}
+            \lambdaik=-\alert<.(2)>{\Plin}\thetaik-\alert<.(3)>{\sik}
+          \end{equation*}
+          }
+  \end{itemize}
+
   \vspace{-.5cm}
-  \begin{minipage}[c]{.5\textwidth}
-    \begin{itemize}[<+(1)->]
-      \item Transform into equality constraints
-      \item Solution is analytical
-    \end{itemize}
-  \end{minipage}
   \hfill
-  \begin{minipage}[c]{0.4\textwidth}
-    \onslide<6->{
-      \begin{equation*}
-        \lambdaik=-\alert<7>{\Plin}\thetaik-\alert<8>{\sik}
-      \end{equation*}
-    }
-    \begin{itemize}[<+(2)->]
+  \begin{minipage}[t]{.45\linewidth}
+    \begin{itemize}[<+(1)->]
       \item $\Plin$ is time invariant \tikzmark{a}
       \item $\sik$ is time variant
     \end{itemize}
   \end{minipage}
-  \onslide<9->{
-  \begin{tikzpicture}[overlay, remember picture,decoration={brace,amplitude=2pt}]
-    \draw[thick,decorate] ($(a.north east) +(-4,-1)$) --+ (0,1) node[midway, left=0.1cm,text=black] {(local parameters unknown by coordinator)};
-  \end{tikzpicture}%
+  \onslide<+(1)->{
+    \begin{tikzpicture}[overlay, remember picture,decoration={brace,amplitude=2pt}]
+      \draw[thick,decorate] ($(a.north east) +(-4,-1)$) --+ (0,1) node[midway, left=0.1cm,text=black] {(local parameters unknown by coordinator)};
+    \end{tikzpicture}%
   }
-\end{frame}
-
-\begin{frame}{Deprived Systems}{Analysis (Negotiation)}
-  \centering
-  \begin{itemize}
-    \item<1-> Update expression \onslide<2->{also becomes analytical}
-    \item<3-> If we input $\lambdaik=-{\Plin}\thetaik-{\sik}$ \onslide<4->{$\to$ DTS with forced input }
-  \end{itemize}
-  \begin{overlayarea}{\textwidth}{.1\textwidth}
-    \centering
-    \begin{equation*}
-      \only<1>{\vec{\theta}[k]\pplusone=\Proj^{\set{S}}(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p)}
-      \only<2-3>{\thetai\pplusone=\thetai\p+\rho\p\left(\lambdai\p\tikzmark{lambdai}-\frac{1}{M}\sum_{j=1}^{M}\vec{\lambda}_j\p\tikzmark{lambdaj}\right),\forall i\in\set{M}}
-      \only<4>{\vec{\theta}\pplusone=\mathcal{A}_{\theta}\vec{\theta}\p+\mathcal{\vec{B}}_{\theta}[k] \text{ \hyperlink{theta_dynamics}{\beamergotobutton{see here}}}}
-    \end{equation*}
-    \hypertarget<4->{analysis_continued}{}
-  \end{overlayarea}
 \end{frame}
 
 \begin{frame}{Deprived Systems}{Under attack!}
   \begin{minipage}[t]{.45\linewidth}
-    \begin{itemize}
-      \item<1-> Normal behavior
+    \begin{itemize}[<+->]
+      \item Normal behavior
             \begin{itemize}
-              \item<2-> Affine solution
+              \item Affine solution
                     \begin{equation*}
                       \lambdaik=-\Plin\thetaik-\sik
                     \end{equation*}
@@ -1303,30 +1285,23 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   \hfill
   \begin{minipage}[t]{.45\linewidth}
     \begin{itemize}
-      \item<3-> Under attack \onslide<4->{$\to$ $\lambdaicheat=\Tik\lambdai$}
+      \item<+-> Under attack \onslide<+->{$\to$ $\lambdaicheat=\Tik\lambdai$}
             \begin{itemize}
-              \item<6-> Parameters modified
+              \item<.(2)-> Parameters modified
             \end{itemize}
     \end{itemize}
-    \only<5->{
+    \only<.(1)->{
       \begin{equation*}
-        \only<5>{\lambdaicheat=-\Tik\Plin\thetaik-\Tik\sik}
-        \only<6->{\lambdaicheat=-\Plintilde\thetaik-\siktilde}
+        \only<.(1)>{\lambdaicheat=-\Tik\Plin\thetaik-\Tik\sik}
+        \only<+(1)->{\lambdaicheat=-\Plintilde\thetaik-\siktilde}
       \end{equation*}
     }
   \end{minipage}
-  \onslide<7->{
-    \centering
-    \begin{itemize}
-      \item New dynamics \onslide<8->{(Possibly Unstable)}
-    \end{itemize}
-    \begin{equation*}
-      \vec{\theta}\pplusone=\alert<8>{\tilde{\mathcal{A}}_{\theta}[k]}\vec{\theta}\p+\tilde{\mathcal{\vec{B}}}_{\theta}[k]
-    \end{equation*}
-    \begin{itemize}
-      \item<9-> But wait! \onslide<10->{$\Plin$ is not supposed to change!} \item<11-> Change $\to$ Probably an Attack! \onslide<12->{Let's take advantage of this!}
-    \end{itemize}
-  }
+  \centering
+  \begin{itemize}
+    \item<+(1)-> But wait! \onslide<+(1)->{$\Plin$ is not supposed to change!}
+    \item<+(1)-> Change $\to$ Probably an Attack! \onslide<+(1)->{Let's take advantage of this!}
+  \end{itemize}
 \end{frame}
 
 \subsection{Building an algorithm}
