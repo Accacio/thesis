@@ -1,62 +1,150 @@
-
 \usepackage[hyperref,backend=biber,
-  % Exemples de styles: alphabetic, ieee, nature, numeric, verbose-trad1 (en utilisant \footcite{}).
-  % https://www.overleaf.com/learn/latex/Biblatex_bibliography_styles
+% Exemples de styles: alphabetic, ieee, nature, numeric, verbose-trad1 (en utilisant \footcite{}).
+% https://www.overleaf.com/learn/latex/Biblatex_bibliography_styles
 style=alphabetic,
 % backref=true,
 % backrefstyle=three,
-  ]{biblatex}
-
-% \includeonlyframes{current}
-\usepackage{pgfpages}
-\usepackage{xargs}
-\usepackage{fontawesome}
-\usepackage{subfig}
-\usepackage{mathabx}
-
+]{biblatex}
 
 \newif\ifwebcast
 \webcastfalse
 \newcommand{\webcast}{\webcasttrue}
 % \webcast
 % \newcommand<>{\script}[1]{\note#2{{#1}}}
-\newcommand<>{\script}[1]{\note{\only#2{#1}}}
+% \newcommand<>{\script}[1]{\note{\only#2{#1}}}
+\def\script{\note}
 
 \definecolor{supelecRed}{RGB}{120,30,56}
 \definecolor{supelecPurple}{RGB}{104,95,115}
 \usetheme{Thesis}
 
+\usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{tikz}
-\usepackage{animate}
+\usepackage{bm}
+\usepackage{ulem}
+\usepackage{parcolumns}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage[french]{isodate}
+\usepackage[ruled,noend,algo2e]{algorithm2e}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern} % Assurer une bonne impression!
+\usepackage{tikz} % tikz est utilise pour tracer des boites, par exemple
+\usepackage{pgfplots}
+\usepackage{fix-cm}
+\usepackage{grffile}
+\usepackage{pgfpages}
+\usepackage{xparse}
 
+\usepackage{pifont} % Pour utiliser des symboles divers.
+\usepackage{color}
+\usepackage{comment}
+\usepackage{xargs}
+\usepackage[author={Accacio}]{pdfcomment}
+
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{mathbbol}
+
+\usepackage{eucal}
+
+\usepackage{subcaption}
+\usepackage{caption}
+\captionsetup{justification=centering}
+\usepackage{float}
+\usepackage{array}
+
+\usepackage{xr}
+\usepackage{subfiles}
+\usepackage[math]{blindtext}
+\usepackage{ifthen} % Entrer valeurs bool\'{e}ennes et autres options
+\usepackage{csquotes} % Assurer les guillemets français
+
+\usepackage{nicefrac,xfrac}
+\usepackage{etoolbox}
+\usepackage{fontawesome}
+\usepackage{mathabx}
+
+\usepackage{animate}
+\usepackage{colortbl}
+
+\definecolor{mpc_agent}{RGB}{243, 146, 0} % logo necsys
+\colorlet{mpc_agent}{supelecRed!90}
+\definecolor{mpc_coordinator}{RGB}{235, 235, 235}
+\colorlet{mpc_coordinator}{supelecRed!10}
+\definecolor{mpc_green}{RGB}{98, 160, 98}
+\newcommand\encircle[1]{%
+  {
+  \usebeamerfont*{item projected}%
+  \usebeamercolor[bg]{item projected}%
+  \begin{pgfpicture}{-1ex}{0ex}{1ex}{2ex}
+    \pgfpathcircle{\pgfpoint{0pt}{.75ex}}{1.4ex}
+    \pgfusepath{fill}
+    \pgftext[base]{\color{fg}#1}
+  \end{pgfpicture}%
+  }
+}
+
+\newcommand{\tikzmark}[1]{\tikz[baseline={(#1.base)},overlay,remember picture] \node[outer sep=0pt, inner sep=0pt] (#1) {\phantom{A}};}
+
+\newcommand{\booksymbol}{\lower4pt\hbox{\pgfuseimage{beamericonbook}}}
+\tikzset{%
+  show controls/.style={
+    postaction={
+      decoration={
+        show path construction,
+        curveto code={
+          \draw [blue]
+          (\tikzinputsegmentfirst) -- (\tikzinputsegmentsupporta)
+          (\tikzinputsegmentlast) -- (\tikzinputsegmentsupportb);
+          \fill [red, opacity=0.5]
+          (\tikzinputsegmentsupporta) circle [radius=.2ex]
+          (\tikzinputsegmentsupportb) circle [radius=.2ex];
+        }
+      },
+      decorate
+    }}}
+
+\usetikzlibrary{graphs,quotes,graphs.standard}
+\usetikzlibrary{plotmarks}
+\usetikzlibrary{arrows.meta}
+\usepgfplotslibrary{patchplots}
 \usetikzlibrary{calc,shapes,positioning}
 \usetikzlibrary{math}
 \usetikzlibrary{overlay-beamer-styles}
-\usepackage{pgfplots}
-\usepackage{amssymb}
+\tikzset{
+  graphs/nodes={draw,circle,inner sep=1pt},
+  <->/.style={latex-latex},
+  ->/.style={-latex},
+  <-/.style={latex-},
+}
+\usetikzlibrary {chains}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{3d}
+\usetikzlibrary{perspective}
+\usetikzlibrary{calc,shapes,positioning,intersections}
+\usetikzlibrary{overlay-beamer-styles}
  \usetikzlibrary{plotmarks}
   \usetikzlibrary{arrows.meta}
-  \usepgfplotslibrary{patchplots}
-  \usepackage{grffile}
-\usepackage{booktabs}       % filenames
-% or whatever
-
-\usepackage[utf8]{inputenc}
-% or whatever
+\usetikzlibrary{babel} % to correct problem with babel
 
 % \usepackage{times}
-\usepackage[T1]{fontenc}
 % Or whatever. Note that the encoding and the font should match. If T1
 % does not look nice, try deleting the line with the fontenc.
 \graphicspath{{../img/}}
-\usepackage{bm}
-\usepackage[ruled,noend]{algorithm2e}
+
+\usepackage{amssymb}
+\usepackage{accents}
+
 \SetKwRepeat{Do}{do}{while}
 
 \input{../tex/math}
 
 \newtheorem{assumption}{Assumption}%[numberby]
+\newtheorem{assumptions}[assumption]{Assumptions}
 
 \newif\ifdebug%
 \newcommand{\draft}{\debugtrue}
