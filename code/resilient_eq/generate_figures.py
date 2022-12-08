@@ -68,6 +68,7 @@ corrected = sio.loadmat("../../data/resilient_eq/dmpc4rooms_chSetpoint__0_selfis
 
 # exit()
 
+color_map = ['#ff7f0e','#FF9C45',  '#1f77b4','#7CBCE9','#1ca02c','#65E474']
 # print(nominal['umin'])
 # print(nominal['umax'])
 
@@ -88,6 +89,27 @@ lambda_hist=nominal['lambdaHist']
 # nominal_err=nominal['norm_err']
 # nominal_u=nominal['uHist'][0]
 
+lambda_hist_corrected=corrected['lambdaHist']
+theta_hist_corrected=corrected['theta']
+# theta_hist_corrected=
+# lastp=corrected['lastp'][0]
+print(np.shape(theta_hist_corrected))
+
+fig, axs = plt.subplots(1, 1,figsize=(7, 3),facecolor=(.0, .0, .0, .0))
+axs.plot(np.arange(0,200),np.transpose(theta_hist_corrected[0,0:200,0,0]),color_map[0])
+axs.plot(np.arange(0,200),np.transpose(theta_hist_corrected[1,0:200,0,0]),color_map[1])
+axs.plot(np.arange(0,200),np.transpose(theta_hist_corrected[0,0:200,0,1]),color_map[2])
+axs.plot(np.arange(0,200),np.transpose(theta_hist_corrected[1,0:200,0,1]),color_map[3])
+axs.plot(np.arange(0,200),np.transpose(theta_hist_corrected[0,0:200,0,2]),color_map[4])
+axs.plot(np.arange(0,200),np.transpose(theta_hist_corrected[1,0:200,0,2]),color_map[5])
+
+plt.xlabel('Negotiation step ($p$)',usetex=True,fontsize=16)
+plt.xticks(fontsize = 20)
+plt.yticks(fontsize = 20)
+plt.legend((  '$\\theta_{1_1}$', '$\\theta_{1_2}$', '$\\theta_{2_1}$', '$\\theta_{2_2}$','$\\theta_{3_1}$', '$\\theta_{3_2}$'),loc='upper right',ncol=3,fontsize=16)
+
+plt.savefig(outputFolder + "estimation_random_theta.pdf",bbox_inches='tight',facecolor=fig.get_facecolor())
+plt.savefig(outputFolder + "estimation_random_theta.png",bbox_inches='tight',facecolor=fig.get_facecolor())
 
 # exit()
 # selfish_Wt=selfish['Wt']
@@ -223,6 +245,13 @@ with open('../../data/resilient_eq/table_costs_all_houses_error.tex', 'w') as f:
     print("III & $", round(nominal_III,1),"$ & $",round(selfish_III,1),"$ ($", round(100*(selfish_III-nominal_III)/nominal_III,1),"$)& $",round(corrected_III,1),"$ ($",round(100*(corrected_III-nominal_III)/nominal_III,1) ,"$)\\\\",file=f)
     print("IV & $", round(nominal_IV,1),"$ & $",round(selfish_IV,1),"$ ($", round(100*(selfish_IV-nominal_IV)/nominal_IV,1),"$)& $",round(corrected_IV,1),"$ ($",round(100*(corrected_IV-nominal_IV)/nominal_IV,1) ,"$)\\\\",file=f)
     print("Global & $", round(nominal_global,1),"$ & $",round(selfish_global,1),"$ ($", round(100*(selfish_global-nominal_global)/nominal_global,1),"$)& $",round(corrected_global,1),"$ ($",round(100*(corrected_global-nominal_global)/nominal_global,1) ,"$)",file=f)
+
+with open('../../data/resilient_eq/table_costs_all_houses_error_norm.tex', 'w') as f:
+    print("I      &  $", round(100*(selfish_I-nominal_I)/nominal_I,3),               "$ & $",round(100*(corrected_I-nominal_I)/nominal_I,3),               " $\\\\",file=f)
+    print("II     &  $", round(100*(selfish_II-nominal_II)/nominal_II,3),            "$ & $",round(100*(corrected_II-nominal_II)/nominal_II,3),            " $\\\\",file=f)
+    print("III    &  $", round(100*(selfish_III-nominal_III)/nominal_III,3),         "$ & $",round(100*(corrected_III-nominal_III)/nominal_III,3),         " $\\\\",file=f)
+    print("IV     &  $", round(100*(selfish_IV-nominal_IV)/nominal_IV,3),            "$ & $",round(100*(corrected_IV-nominal_IV)/nominal_IV,3),            " $\\\\",file=f)
+    print("Global &  $", round(100*(selfish_global-nominal_global)/nominal_global,3),"$ & $",round(100*(corrected_global-nominal_global)/nominal_global,3)," $",file=f)
 
 # with open('/dev/stdout', 'w') as f:
 #     print("I & $", round(nominal_I,1),"$ & $",round(selfish_I,1),"$ ($", round(100*(selfish_I-nominal_I)/nominal_I,1),"$)& $",round(corrected_I,1),"$ ($",100*round((corrected_I-nominal_I)/nominal_I,1) ,"$)\\\\",file=f)

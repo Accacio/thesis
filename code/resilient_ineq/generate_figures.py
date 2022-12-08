@@ -83,6 +83,8 @@ corrected_xt=corrected['xt']
 corrected_err=corrected['norm_err']
 corrected_u=corrected['uHist'][0]
 
+
+
 with open('../../data/resilient_ineq/initial_states.tex', 'w') as f:
     print("$\\vec{x}_{\\text{I}}[0]=[" , latex_matrix(nominal_xt[:,0,0]), "]\T$,", file=f)
     print("$\\vec{x}_{\\text{II}}[0]=[" , latex_matrix(nominal_xt[:,0,1]), "]\T$,", file=f)
@@ -154,6 +156,14 @@ with open('../../data/resilient_ineq/table_costs_all_houses_error.tex', 'w') as 
     print("III & $", round(nominal_III,1),"$ & $",round(selfish_III,1),"$ ($", round(100*(selfish_III-nominal_III)/nominal_III,1),"$)& $",round(corrected_III,1),"$ ($",round(100*(corrected_III-nominal_III)/nominal_III,1) ,"$)\\\\",file=f)
     print("IV & $", round(nominal_IV,1),"$ & $",round(selfish_IV,1),"$ ($", round(100*(selfish_IV-nominal_IV)/nominal_IV,1),"$)& $",round(corrected_IV,1),"$ ($",round(100*(corrected_IV-nominal_IV)/nominal_IV,1) ,"$)\\\\",file=f)
     print("Global & $", round(nominal_global,1),"$ & $",round(selfish_global,1),"$ ($", round(100*(selfish_global-nominal_global)/nominal_global,1),"$)& $",round(corrected_global,1),"$ ($",round(100*(corrected_global-nominal_global)/nominal_global,1) ,"$)",file=f)
+
+with open('../../data/resilient_ineq/table_costs_all_houses_error_norm.tex', 'w') as f:
+    print("I      &  $", round(100*(selfish_I-nominal_I)/nominal_I,3),               "$ & $",round(100*(corrected_I-nominal_I)/nominal_I,3),               " $\\\\",file=f)
+    print("II     &  $", round(100*(selfish_II-nominal_II)/nominal_II,3),            "$ & $",round(100*(corrected_II-nominal_II)/nominal_II,3),            " $\\\\",file=f)
+    print("III    &  $", round(100*(selfish_III-nominal_III)/nominal_III,3),         "$ & $",round(100*(corrected_III-nominal_III)/nominal_III,3),         " $\\\\",file=f)
+    print("IV     &  $", round(100*(selfish_IV-nominal_IV)/nominal_IV,3),            "$ & $",round(100*(corrected_IV-nominal_IV)/nominal_IV,3),            " $\\\\",file=f)
+    print("Global &  $", round(100*(selfish_global-nominal_global)/nominal_global,3),"$ & $",round(100*(corrected_global-nominal_global)/nominal_global,3)," $",file=f)
+
 
 with open('/dev/stdout', 'w') as f:
     print("I & $", round(nominal_I,1),"$ & $",round(selfish_I,1),"$ ($", round(100*(selfish_I-nominal_I)/nominal_I,1),"$)& $",round(corrected_I,1),"$ ($",100*round((corrected_I-nominal_I)/nominal_I,1) ,"$)\\\\",file=f)
@@ -435,6 +445,9 @@ plt.savefig(outputFolder + "control_poster" +  ".png",bbox_inches='tight',faceco
 # axs[3].plot(np.arange(1,simK+1),np.sum(selfish_J,axis=1),'-',drawstyle='steps-post') # error line
 # axs[3].plot(np.arange(1,simK+1),np.sum(corrected_J,axis=1),'-',drawstyle='steps-post') # error line
 # axs[3].legend(( 'N', 'S','C'),loc='bottom right',ncol=3,fontsize=16)
+
+
+
 
 # plt.show()
 sys.exit()
