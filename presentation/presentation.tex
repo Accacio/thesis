@@ -1292,8 +1292,8 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
     \end{itemize}
     \only<.(1)->{
       \begin{equation*}
-        \only<.(1)>{\lambdaicheat=-\Tik\Plin\thetaik-\Tik\sik}
-        \only<+(1)->{\lambdaicheat=-\Plintilde\thetaik-\siktilde}
+        \only<.(1)>{\lambdaicheat[k]=-\Tik\Plin\thetaik-\Tik\sik}
+        \only<+(1)->{\lambdaicheat[k]=-\Plintilde\thetaik-\siktilde}
       \end{equation*}
     }
   \end{minipage}
@@ -1318,7 +1318,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
           $\hat{P}_{i}[k]$ and $\widehat{\tilde{\vec{s}}}_{i}[k]$ such as:
           \begin{equation*}
             \label{eq:lambdafuntheta_tilde}
-            \lambdaicheat=-\Plintildeestimate\thetai-\siktildeestimate
+            \lambdaicheat[k]=-\Plintildeestimate\thetai-\siktildeestimate
           \end{equation*}
     \item<5-> If $\norm{\Plintildeestimate-\Plinnominal}_{F}>\epsilon_{P}$ \onslide<6->{$\to$ Attack}
     \item<7-> Ok, but how can we estimate $\Plintildeestimate$?
@@ -1742,8 +1742,6 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   % \onslide<.(2)->{& \alert<.(2)>{\vec{U}_{i}[k]\in \set{U}_{i}}}
 \end{frame}
 
-
-
 \begin{frame}{Analyzing System}{Solution for $\lambda_{i}[k]$}
   \centering
   Instead of having one single affine solution
@@ -1759,9 +1757,9 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
       \begin{aligned}
         \lambdaik=
         \begin{cases}
-          {-\Plinineq\thetaik-\sikineq},&\text{if}\ \thetaik \in\set{R}_{\lambdai}^{0}\tikzmark{a}\\
+          {-\Plinineq\thetaik-\sikineq},&\text{if}\ \thetaik \in\alert<.(3)>{\set{R}_{\lambdai}^{0}}\tikzmark{a}\\
           \qquad\quad \vdots&\qquad\quad \vdots\\
-          -\Plinineq[i][2^{\nineq}-1]\thetaik-\sikineq[i][2^{\nineq}-1],&\text{if}\ \thetaik \in\set{R}_{\lambdai}^{2^{\nineq}-1}\\
+          -\Plinineq[i][2^{\nineq}-1]\thetaik-\sikineq[i][2^{\nineq}-1],&\text{if}\ \thetaik \in\alert<.(3)>{\set{R}_{\lambdai}^{2^{\nineq}-1}}\\
         \end{cases}
       \end{aligned}
     \end{equation*}
@@ -1769,8 +1767,6 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   \onslide<+(1)->{
     \alert<+>{Still the $\Plinineq[i][n]$ are time independent}
   }
-
-
 \end{frame}
 
 \begin{frame}{Analyzing System}{Solution for $\lambda_{i}[k]$ (Continued)}
@@ -2311,7 +2307,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   \visible<+(1)->{
   \begin{figure}[h]
     \centering
-    \includegraphics[width=.45\textwidth]{back_to_future.png}
+    \includegraphics[width=.4\textwidth]{back_to_future.png}
   \end{figure}
   }
 \end{frame}
@@ -2358,72 +2354,72 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
 
 
 
-% \begin{frame}[allowframebreaks]
-% % \bibliographystyle{apalike}
-% % \bibliography{../tex/bibliography}
-%   \frametitle<presentation>{For Further Reading}
+\begin{frame}[allowframebreaks]
+% \bibliographystyle{apalike}
+% \bibliography{../tex/bibliography}
+  \frametitle<presentation>{For Further Reading}
 
-% %   \begin{thebibliography}{10}
+%   \begin{thebibliography}{10}
 
-% %   \beamertemplatebookbibitems % Start with overview books.
-% %   \bibitem{MaestreEtAl2014}
-% %   J.~M. Maestre, R.~R. Negenborn \emph{et~al.}
-% %   \newblock \emph{{D}istributed {M}odel {P}redictive {C}ontrol made easy}.\hskip 1em plus 0.5em minus 0.4em\relax
-% %   \newblock Springer, 2014, vol.~69.
+%   \beamertemplatebookbibitems % Start with overview books.
+%   \bibitem{MaestreEtAl2014}
+%   J.~M. Maestre, R.~R. Negenborn \emph{et~al.}
+%   \newblock \emph{{D}istributed {M}odel {P}redictive {C}ontrol made easy}.\hskip 1em plus 0.5em minus 0.4em\relax
+%   \newblock Springer, 2014, vol.~69.
 
-% %   \beamertemplatearticlebibitems
-% %   % Followed by interesting articles. Keep the list short.
+%   \beamertemplatearticlebibitems
+%   % Followed by interesting articles. Keep the list short.
 
-% % \bibitem{VelardeEtAl2017a}
-% % P.~Velarde, J.~M. Maestre, H.~Ishii, and R.~R. Negenborn,
-% % \newblock ``Scenario-based
-% % defense mechanism for distributed model predictive control,''
-% % \newblock \emph{2017
-% %   IEEE 56th Annual Conference on Decision and Control (CDC)}.\hskip 1em plus
-% %   0.5em minus 0.4em\relax IEEE, Dec 2017, pp. 6171--6176.
-% \setbeamertemplate{bibliography item}[book]
-% \printbibliography[type=book,title={Books}]
-% \setbeamertemplate{bibliography item}[article]
-% \printbibliography[type={article},title={Articles}]
-% \printbibliography[type={inproceedings},title={Articles}]
-% % \end{thebibliography}
+% \bibitem{VelardeEtAl2017a}
+% P.~Velarde, J.~M. Maestre, H.~Ishii, and R.~R. Negenborn,
+% \newblock ``Scenario-based
+% defense mechanism for distributed model predictive control,''
+% \newblock \emph{2017
+%   IEEE 56th Annual Conference on Decision and Control (CDC)}.\hskip 1em plus
+%   0.5em minus 0.4em\relax IEEE, Dec 2017, pp. 6171--6176.
+\setbeamertemplate{bibliography item}[book]
+\printbibliography[type=book,title={Books}]
+\setbeamertemplate{bibliography item}[article]
+\printbibliography[type={article},title={Articles}]
+\printbibliography[type={inproceedings},title={Articles}]
+% \end{thebibliography}
 
-%     \script{As a recommended reading I give a book about distributed MPC and an article with another secure dmpc algorithm based in another decomposition method. That's all\\}
+    \script{As a recommended reading I give a book about distributed MPC and an article with another secure dmpc algorithm based in another decomposition method. That's all\\}
 
-% \end{frame}
+\end{frame}
 
-% \begin{frame}{Conditions}{\hyperlink{analysis_deprived_systems}{\beamerreturnbutton{back}}}
-%   \hypertarget{condition_transform_equality}{}
+\begin{frame}{Conditions}{\hyperlink{analysis_deprived_systems}{\beamerreturnbutton{back}}}
+  \hypertarget{condition_transform_equality}{}
 
-%   One way to ensure this, is to make the original constraint~\eqref{eq:linear_constraint} to have at most as many rows as columns, i.e., $\card{\vec{u}_{\max}}\leq n_{u}$, although it may be a little restrictive.
-% \end{frame}
+  One way to ensure this, is to make the original constraint~\eqref{eq:linear_constraint} to have at most as many rows as columns, i.e., $\card{\vec{u}_{\max}}\leq n_{u}$, although it may be a little restrictive.
+\end{frame}
 
-% \begin{frame}{$\theta$ dynamics}{\hyperlink{analysis_continued}{\beamerreturnbutton{back}}}
-%   \hypertarget{theta_dynamics}{}
-%   \begin{equation*}
-%     \vec{\theta}\pplusone=\mathcal{A}_{\theta}\vec{\theta}\p+\mathcal{\vec{B}}_{\theta}[k]
-%   \end{equation*}
-%   where
-%   \begin{equation*}
-%     \mathcal{A}_{\theta}=\left[
-%       \begin{matrix}
-%         I-\frac{M-1}{M}\rho\p \Plin[1] & \frac{1}{M}\rho\p \Plin[2]&\dots&\frac{1}{M}\rho\p \Plin[M]\\
-%         \frac{1}{M}\rho\p \Plin[1]&I-\frac{M-1}{M}\rho\p \Plin[2]&\dots&\frac{1}{M}\rho\p \Plin[M]\\
-%         \vdots&\vdots&\ddots&\vdots\\
-%         \frac{1}{M}\rho\p \Plin[1]&\frac{1}{M}\rho\p \Plin[2]&\dots&I-\frac{M-1}{M}\rho\p \Plin[M]\\
-%       \end{matrix}
-%     \right]
-%   \end{equation*}
-%   \begin{equation*}
-%     \mathcal{\vec{B}}_{\theta}[k]=\left[
-%       \begin{matrix}
-%         -\frac{M-1}{M}\rho\p \vec{s}_{1}[k]+\frac{1}{M}\rho\p \vec{s}_{2}[k]\dots-\frac{1}{M}\rho\p \vec{s}_{M}[k]\\
-%         \frac{1}{M}\rho\p \vec{s}_{1}[k]-\frac{M-1}{M}\rho\p \vec{s}_{2}[k] \dots-\frac{1}{M}\rho\p \vec{s}_{M}[k]\\
-%         \vdots\\
-%         \frac{1}{M}\rho\p \vec{s}_{1}[k]+\frac{1}{M}\rho\p \vec{s}_{2}[k]\dots-\frac{M-1}{M}\rho\p \vec{s}_{M}[k]\\
-%       \end{matrix}
-%     \right]
-%   \end{equation*}
-% \end{frame}
+\begin{frame}{$\theta$ dynamics}{\hyperlink{analysis_continued}{\beamerreturnbutton{back}}}
+  \hypertarget{theta_dynamics}{}
+  \begin{equation*}
+    \vec{\theta}\pplusone=\mathcal{A}_{\theta}\vec{\theta}\p+\mathcal{\vec{B}}_{\theta}[k]
+  \end{equation*}
+  where
+  \begin{equation*}
+    \mathcal{A}_{\theta}=\left[
+      \begin{matrix}
+        I-\frac{M-1}{M}\rho\p \Plin[1] & \frac{1}{M}\rho\p \Plin[2]&\dots&\frac{1}{M}\rho\p \Plin[M]\\
+        \frac{1}{M}\rho\p \Plin[1]&I-\frac{M-1}{M}\rho\p \Plin[2]&\dots&\frac{1}{M}\rho\p \Plin[M]\\
+        \vdots&\vdots&\ddots&\vdots\\
+        \frac{1}{M}\rho\p \Plin[1]&\frac{1}{M}\rho\p \Plin[2]&\dots&I-\frac{M-1}{M}\rho\p \Plin[M]\\
+      \end{matrix}
+    \right]
+  \end{equation*}
+  \begin{equation*}
+    \mathcal{\vec{B}}_{\theta}[k]=\left[
+      \begin{matrix}
+        -\frac{M-1}{M}\rho\p \vec{s}_{1}[k]+\frac{1}{M}\rho\p \vec{s}_{2}[k]\dots-\frac{1}{M}\rho\p \vec{s}_{M}[k]\\
+        \frac{1}{M}\rho\p \vec{s}_{1}[k]-\frac{M-1}{M}\rho\p \vec{s}_{2}[k] \dots-\frac{1}{M}\rho\p \vec{s}_{M}[k]\\
+        \vdots\\
+        \frac{1}{M}\rho\p \vec{s}_{1}[k]+\frac{1}{M}\rho\p \vec{s}_{2}[k]\dots-\frac{M-1}{M}\rho\p \vec{s}_{M}[k]\\
+      \end{matrix}
+    \right]
+  \end{equation*}
+\end{frame}
 
 \end{document}
