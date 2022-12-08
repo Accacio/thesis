@@ -2158,7 +2158,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
 
 \end{frame}
 
-\subsection{Results}
+\subsection{Applying mechanism}
 
 \begin{frame}{Example}
   \begin{minipage}[c]{.35\textwidth}
@@ -2202,11 +2202,23 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
 \end{frame}
 
 \begin{frame}{Results}{Temporal}
-  \begin{figure}[h]
+  \centering
+  \begin{minipage}[c]{.45\linewidth}
+ \begin{figure}[h]
     \centering
-    \includegraphics[width=.5\textwidth,trim=0 .3cm 0 .2cm,clip]{../img/resilient_ineq/ErrorWX_command_normErrH.pdf}
+    \includegraphics[width=1.\textwidth,trim=0 .3cm 0 .2cm,clip]{../img/resilient_ineq/ErrorWX_command_normErrH.pdf}
     \caption*{Temperature in house I. \\Error  $E_{I}(k)$.\\ {\encircle{N}} Nominal, {\encircle{S}} Selflish {\encircle{C}} Corrected}
   \end{figure}
+  \end{minipage}
+  \only<2->{
+    \begin{minipage}[c]{.50\linewidth}
+      \begin{figure}[h]
+        \centering
+        \reflectbox{\includegraphics[width=.5\textwidth,trim=0 .3cm 0 .2cm,clip]{../img/mutley.jpg}}
+      \end{figure}
+    \end{minipage}
+  }
+
 \end{frame}
 
 % \begin{frame}{Results}{Temporal (Continued)}
@@ -2304,6 +2316,15 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   }
 \end{frame}
 
+\begin{frame}{Open question Future Directions}
+    \begin{itemize}[<+(1)->]
+      \item Partial/incremental reconstruction of cheating matrix
+      \item Study of robustness + noise
+      \item Resilient strategy with soft constraints 
+      \item Recursive EM (or alternative)
+      \item ...
+    \end{itemize}
+\end{frame}
 
 \appendix
 
