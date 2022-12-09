@@ -2,7 +2,7 @@
 
 \input{preamble}
 
-\setbeameroption{show notes on second screen}
+% \setbeameroption{show notes on second screen}
 \draft
 % \webcast
 \setbeamercolor{alerted text}{fg=supelecRed!20!red!80}
@@ -318,7 +318,7 @@
     \item Solution: Divide and Conquer (distributed MPC)
           \begin{itemize}
             \item Break calculation
-            \item Make Systems Communicate
+            \item Make systems communicate
           \end{itemize}
   \end{itemize}
 \end{frame}
@@ -326,7 +326,7 @@
 \begin{frame}{Distributed Model Predictive Control}{It is about communication}
   \begin{itemize}
     \item<2-> We break the MPC into multiple
-    \item<3-> Make them Communicate \only<4->{, But how?}
+    \item<3-> Make them communicate\only<4->{. But how?}
           \begin{itemize}
             \item<5-> Many flavors to choose from\onslide<10->{\footnote{\footnotesize\visible<10->{\booksymbol~\citetitle{MaestreEtAl2014}}}}
                   \begin{itemize}[<+(5)->]
@@ -484,7 +484,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   \script<3>{Here we opt for a hierarchical strategy where we use multiple MPCs and an agent to coordinate and manage the coupling aspects of the problem.}
 \end{frame}
 
-\begin{frame}{Distributed Model Predictive Control}{Optimization Frameworks}
+\begin{frame}{Distributed Model Predictive Control}{Communication Frameworks}
   \begin{minipage}[c]{.45\linewidth}
     \begin{figure}[H]
       \centering
@@ -493,28 +493,35 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
         coordinator/.style={fill=mpc_coordinator, minimum height=0.6180*3cm, minimum width=6cm},
         ]
 
-        \node[draw, mpcSmall] (block1) {\small MPC 1};
-        \node[fill=none, draw=none, right=of block1,] (mult) {\bf $\dots$};
-        \node[draw, mpcSmall, fill=mpc_agent, right=of mult,] (blockM) {\small MPC M};
-        \onslide<2->{\node[draw, coordinator, below=of mult,] (coordinator) {Coordinator};}
+        \visible<1>{
+          % \node[ mpcSmall,fill=none] (block1) {\small MPC 1};
+          \node[mpcSmall, draw, minimum width=6cm,right=-1cm] (mult) {\small MPC};
+          \node[mpcSmall, fill=none, right=of mult,] (blockM) {\small MPC M};
+        }
+        \visible<2->{
+          \node[draw, mpcSmall] (block1) {\small MPC 1};
+          \node[fill=none, draw=none, right=of block1,] (mult) {\bf $\dots$};
+          \node[draw, mpcSmall, fill=mpc_agent, right=of mult,] (blockM) {\small MPC M};
+        }
+        \onslide<3->{\node[draw, coordinator, below=of mult,] (coordinator) {Coordinator};}
 
-        \onslide<3->{
-        \draw[-latex,line width=1pt] (block1.south)+(0.4,.0) -- ( coordinator.north -| {$(block1.south)+(0.4,.0)$}) node [right,midway] {};
-        \draw[latex-,line width=1pt] (block1.south)+(-0.4,0) -- (  coordinator.north -| {$(block1.south)+(-0.4,0)$}) node [left,midway] {};
-        \draw[-latex,line width=1pt] (blockM.south)+(0.4,.0) -- ( coordinator.north -| {$(blockM.south)+(0.4,.0)$}) node [right,midway] {};
-        \draw[latex-,line width=1pt] (blockM.south)+(-0.4,0) -- (  coordinator.north -| {$(blockM.south)+(-0.4,0)$}) node [left,midway] {};
+        \onslide<4->{
+          \draw[-latex,line width=1pt] (block1.south)+(0.4,.0) -- ( coordinator.north -| {$(block1.south)+(0.4,.0)$}) node [right,midway] {};
+          \draw[latex-,line width=1pt] (block1.south)+(-0.4,0) -- (  coordinator.north -| {$(block1.south)+(-0.4,0)$}) node [left,midway] {};
+          \draw[-latex,line width=1pt] (blockM.south)+(0.4,.0) -- ( coordinator.north -| {$(blockM.south)+(0.4,.0)$}) node [right,midway] {};
+          \draw[latex-,line width=1pt] (blockM.south)+(-0.4,0) -- (  coordinator.north -| {$(blockM.south)+(-0.4,0)$}) node [left,midway] {};
         }
       \end{tikzpicture}
     \end{figure}
   \end{minipage}
   \hfill
   \begin{minipage}[c]{.5\linewidth}
-    \begin{itemize}[<+(1)->]
+    \begin{itemize}[<+(2)->]
       \item Coordinator $\to$ Hierarchical
       \item Bidirectional
       \item No delay $\to$ Synchronous
     \end{itemize}
-    \begin{itemize}[<+(1)->]
+    \begin{itemize}[<+(2)->]
       \item Agents solve local problems\tikzmark{a}
       \item Variables are updated
     \end{itemize}
@@ -630,21 +637,23 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
               \item Optimum value is shifted
             \end{itemize}
     \end{itemize}
-      \begin{minipage}[t]{.450\linewidth}
-          \begin{figure}[h]
-            \centering
-            \includegraphics[width=\textwidth]{../img/resilient_eq/original-minimum.pdf}
-            \caption*{Original minimum.}\label{fig:original_minimum}
-          \end{figure}
-      \end{minipage}
-      \hfill
+    \begin{minipage}[t]{.450\linewidth}
+      \begin{figure}[h]
+        \centering
+        \includegraphics[width=\textwidth]{../img/resilient_eq/original-minimum.pdf}
+        \caption*{Original minimum.}\label{fig:original_minimum}
+      \end{figure}
+    \end{minipage}
+    \hfill
+    \visible<+(-1)->{
       \begin{minipage}[t]{.45\linewidth}
-          \begin{figure}[h]
-            \centering
-            \includegraphics[width=\textwidth]{../img/resilient_eq/new-minimum-selfish.pdf}
-            \caption*{Minimum after attack.}\label{fig:minimum_after_attack}
-          \end{figure}
+        \begin{figure}[h]
+          \centering
+          \includegraphics[width=\textwidth]{../img/resilient_eq/new-minimum-selfish.pdf}
+          \caption*{Minimum after attack.}\label{fig:minimum_after_attack}
+        \end{figure}
       \end{minipage}
+    }
   \end{overlayarea}
 \end{frame}
 
@@ -711,7 +720,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
         \alert<2>{\cite{ChanfreutEtAl2018}} & Jacobi-Gauß &  -- & -- & --\\\\
         \cite{AnandutaEtAl2018}\\\cite{AnandutaEtAl2019}\\\cite{AnandutaEtAl2020} & Dual &  Resilient& Analyt./Learn. & Disconnect (Robustness)\\\\
         \midrule
-        \only<5->{\\[-\normalbaselineskip]\rowcolor{ietrRed!10}}Our & \alert<6->{Primal} &  \alert<7->{Resilient} & Active Analyt./Learn. & \alert<8->{Data reconstruction}\\
+        \only<5->{\\[-\normalbaselineskip]\rowcolor{ietrRed!10}}\LARGE Our &\LARGE \alert<6->{Primal} & \LARGE \alert<7->{Resilient} & \LARGE Active Analyt./Learn. & \LARGE \alert<8->{Data reconstruction}\\
         \bottomrule
       \end{tabular}
     }
@@ -740,6 +749,10 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   % \tableofcontents
   \tableofcontents[subsectionstyle=hide/hide/hide,pausesections]
   % You might wish to add the option [pausesections]
+  \begin{itemize}[<+(1)->]
+    \item \encircle{1} and \encircle{2} yielded \cite{NogueiraEtAl2021} (SysTol'21)
+    \item \encircle{3} yielded \cite{NogueiraEtAl2022} (NecSys'22)
+  \end{itemize}
   \script<1->{To respond this this presentation is divided into 3 parts.}
   \script<1->{First we present the decomposition and its vulnerabilites, }
   \script<2->{We propose a resilient method for two kind of systems with increasing complexities.}
@@ -749,7 +762,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
 
 \subsection{What is the Primal Decomposition?}
 
-\begin{frame}{Quantity Decomposition | Resource Allocation}
+\begin{frame}{Primal Decomposition}{or Quantity Decomposition | or Resource Allocation}
   \centering
   \begin{minipage}{.45\linewidth}
     \begin{figure}
@@ -866,7 +879,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   \script<7->{then the negotiation ends and each agent applies the first element of the control found}
 \end{frame}
 
-\begin{frame}{Primal Decomposition }{or Quantity Decomposition | or Resource Allocation}
+\begin{frame}{Primal Decomposition }{In detail}
   \begin{minipage}[c]{.45\linewidth}
     \begin{itemize}
       \item<2-> Objective is sum of local ones
@@ -916,7 +929,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   }
 \end{frame}
 
-\begin{frame}{Quantity Decomposition | Resource Allocation}
+\begin{frame}{Example}
   \centering
   Until everybody is equally dissatisfied
   % \centering
@@ -1339,7 +1352,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   \begin{itemize}[<+(1)->]
     \item Challenge: Online estimation during negotiation fails
           \begin{itemize}
-            \item Update function couples $\vec{\theta}_{i}^{p}$ and $\vec{\lambda}_{i}^{p}$ $\to$ low input excitation
+            \item Update function couples $\vec{\theta}_{i}^{p}$ and $\vec{\lambda}_{i}^{p}$ \onslide<+(1)->{$\to$ low input excitation}
           \end{itemize}
     \item Solution: Send a random\footnote{A random signal has persistent excitation of any order (\visible<.(1)->{\booksymbol~\citetitle{AstroemWittenmark1989}})} sequence to increase excitation until convergence.
   \end{itemize}
@@ -1757,9 +1770,9 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
       \begin{aligned}
         \lambdaik=
         \begin{cases}
-          {-\Plinineq\thetaik-\sikineq},&\text{if}\ \thetaik \in\alert<.(3)>{\set{R}_{\lambdai}^{0}}\tikzmark{a}\\
+          {-\Plinineq\thetaik-\sikineq},&\text{if}\ \thetaik \in\alert<.(2)>{\set{R}_{\lambdai}^{0}}\tikzmark{a}\\
           \qquad\quad \vdots&\qquad\quad \vdots\\
-          -\Plinineq[i][2^{\nineq}-1]\thetaik-\sikineq[i][2^{\nineq}-1],&\text{if}\ \thetaik \in\alert<.(3)>{\set{R}_{\lambdai}^{2^{\nineq}-1}}\\
+          -\Plinineq[i][2^{\nineq}-1]\thetaik-\sikineq[i][2^{\nineq}-1],&\text{if}\ \thetaik \in\alert<+(1)>{\set{R}_{\lambdai}^{2^{\nineq}-1}}\\
         \end{cases}
       \end{aligned}
     \end{equation*}
@@ -1884,53 +1897,60 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   \centering
   \begin{assumption}
     \onslide<+(1)->{
-      We known a point $\thetairestricted$ which activates all constraints\footnote{If we have local constraints, we suppose this point respects them. }
+      We know a point $\thetairestricted$ which activates all constraints\onslide<+(1)->{\footnote{If we have local constraints, we suppose this point respects them.}}
     }
   \end{assumption}
+
   \onslide<+(1)->{
-    \begin{minipage}[t]{.4\linewidth}
+    \begin{minipage}[c]{.4\linewidth}
       \begin{figure}[h]
         \centering
-        \begin{tikzpicture}[every node/.style={align=center}]
-          \def\height{3}
-          \def\length{5}
-          \node at (0,0) {} coordinate (p0)  ++(0:\length*2.4/5) coordinate (p1) ;
-          \node at (0,0) {} ++(90:\height*2.7/5) coordinate (p2) ;
+        \scalebox{.9}{
+          \begin{tikzpicture}[every node/.style={align=center}]
+            \def\height{3}
+            \def\length{5}
+            \node at (0,0) {} coordinate (p0)  ++(0:\length*2.4/5) coordinate (p1) ;
+            \node at (0,0) {} ++(90:\height*2.7/5) coordinate (p2) ;
 
-          \draw[black] (p2) ++(-1:5) coordinate (p3);
-          \draw[black] (p1) ++(80:3) coordinate (p4);
-          \coordinate (p6) at (p3|-p4);
+            \draw[black] (p2) ++(-1:5) coordinate (p3);
+            \draw[black] (p1) ++(80:3) coordinate (p4);
+            \coordinate (p6) at (p3|-p4);
 
-          \coordinate (p5) at (intersection cs:first line={(p2)--(p3)}, second line={(p1)--(p4)});
-          \only<+->{\onslide\path[fill=gray!20] (p1) -- (0,0) -- (p2) -- (p5);}
+            \coordinate (p5) at (intersection cs:first line={(p2)--(p3)}, second line={(p1)--(p4)});
+            \only<+->{\onslide\path[fill=gray!20] (p1) -- (0,0) -- (p2) -- (p5);}
 
-          \draw[black] (p2) -- (p3);
-          \draw[black] (p1) -- (p4);
+            \draw[black] (p2) -- (p3);
+            \draw[black] (p1) -- (p4);
 
-          \draw[-latex] (0,-.1) - - (0,\height) node[left]{$\elem[2]{\thetai}$};
-          \draw[-latex] (-.1,0) - - (\length,0) node[below]{$\elem[1]{\thetai}$};
-          \only<-.>{
-            \node at (\length*1.2/5,\height*1.25/5) {$\elem[1]{\lambdai}\neq0$\\$\elem[2]{\lambdai}\neq0$};
-            \node at (\length*1.2/5,\height*3.8/5) {$\elem[1]{\lambdai}=0$\\$\elem[2]{\lambdai}\neq0$};
-            \node at (\length*4/5,\height*1.25/5) {$\elem[1]{\lambdai}\neq0$\\$\elem[2]{\lambdai}=0$};
-            \node at (\length*4/5,\height*3.8/5) {$\elem[1]{\lambdai}=0$\\$\elem[2]{\lambdai}=0$};
-          }
-          \only<+(1)>{\node[draw,circle,minimum width=1cm] at (\length*.375,\height*0.3) {$\thetairestricted$};}
-          \only<+(1)->{\node[draw,circle,minimum width=2.5cm] at (\length*.375,\height*0.3) {$\thetairestricted$};}
-        \end{tikzpicture}
+            \draw[-latex] (0,-.1) - - (0,\height) node[left]{$\elem[2]{\thetai}$};
+            \draw[-latex] (-.1,0) - - (\length,0) node[below]{$\elem[1]{\thetai}$};
+            \only<-.>{
+              \node at (\length*1.2/5,\height*1.25/5) {$\elem[1]{\lambdai}\neq0$\\$\elem[2]{\lambdai}\neq0$};
+              \node at (\length*1.2/5,\height*3.8/5) {$\elem[1]{\lambdai}=0$\\$\elem[2]{\lambdai}\neq0$};
+              \node at (\length*4/5,\height*1.25/5) {$\elem[1]{\lambdai}\neq0$\\$\elem[2]{\lambdai}=0$};
+              \node at (\length*4/5,\height*3.8/5) {$\elem[1]{\lambdai}=0$\\$\elem[2]{\lambdai}=0$};
+            }
+            \only<.(3)-.(4)>{\node[draw,circle,minimum width=1cm] at (\length*.375,\height*0.3) {$\thetairestricted$};}
+            \only<.(5)->{\node[draw,circle,minimum width=2.5cm] at (\length*.375,\height*0.3) {$\thetairestricted$};}
+          \end{tikzpicture}
+        }
       \end{figure}
-
     \end{minipage}
-\only<+(1)->{
-    \begin{minipage}[t]{.55\linewidth}
-      \begin{itemize}[<+->]
-        \item How to known the radius?
-      \begin{itemize}
-        \item We don't.
-        \item Let's estimate $\Plinineqtildeestimate$ nonetheless
-      \end{itemize}
-      \end{itemize}
-    \end{minipage}
+    \hfill
+    \only<+(1)->{
+      \begin{minipage}[c]{.55\linewidth}
+        \begin{itemize}
+          \item<+-> Generate points close to $\thetairestricted$
+          \item<+(1)-> Estimate $\Plinineqtildeestimate$
+        \end{itemize}
+        \begin{itemize}
+          \item<+(1)-> How to known the radius?
+                \begin{itemize}
+                  \item<+(1)-> We don't.
+                \end{itemize}
+          \item<+(1)-> How to estimate $\Plinineqtildeestimate$ nonetheless?
+        \end{itemize}
+      \end{minipage}
     }
   }
 \end{frame}
@@ -2297,18 +2317,21 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
           \begin{itemize}
             \item Straightforward if system is scarce
             \item If not scarce we try to force it artifically
+                  \begin{itemize}
+                    \item However solution is PWA and we need special estimation method
+                  \end{itemize}
           \end{itemize}
   \end{itemize}
 
   \begin{itemize}[<+(1)->]
-    \item But what if scarcity information is not available even artificially?
+    \item What if complete scarcity information is not available? \onslide<+(1)->{Not even artificially?}
   \end{itemize}
 
   \visible<+(1)->{
-  \begin{figure}[h]
-    \centering
-    \includegraphics[width=.4\textwidth]{back_to_future.png}
-  \end{figure}
+    \begin{figure}[h]
+      \centering
+      \includegraphics[width=.4\textwidth]{back_to_future.png}
+    \end{figure}
   }
 \end{frame}
 
@@ -2327,7 +2350,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
 \begin{frame}[plain]
   \centering
   \vfill
-  Thank you!
+  Questions? Comments?
   \vfill
   \begin{minipage}[t]{.45\linewidth}
     \small
@@ -2351,8 +2374,6 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
       \script{If you want to see the simulations of this paper we have a github repository, and if you want to send me an email about this paper or this presentation you can flash the QR code in the right. Thank you!\\}
 
 \end{frame}
-
-
 
 \begin{frame}[allowframebreaks]
 % \bibliographystyle{apalike}
@@ -2385,13 +2406,82 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
 % \end{thebibliography}
 
     \script{As a recommended reading I give a book about distributed MPC and an article with another secure dmpc algorithm based in another decomposition method. That's all\\}
-
 \end{frame}
 
 \begin{frame}{Conditions}{\hyperlink{analysis_deprived_systems}{\beamerreturnbutton{back}}}
   \hypertarget{condition_transform_equality}{}
 
-  One way to ensure this, is to make the original constraint~\eqref{eq:linear_constraint} to have at most as many rows as columns, i.e., $\card{\vec{u}_{\max}}\leq n_{u}$, although it may be a little restrictive.
+  One way to ensure this, is to make the original constraints to form a cone.
+
+  \vspace{1cm}
+  \begin{minipage}[c]{.3\linewidth}
+    \begin{figure}[H]
+      \centering
+      \scalebox{0.9}{
+        \begin{tikzpicture}
+          \def\ang{-35}
+          \def\vecmag{.25}
+          \node at (0,0) {} coordinate(p1) ++(\ang:2.5) coordinate(p2) ++(\ang-90:1.5) coordinate(p3) ++(\ang-180:2.5) coordinate(p4);
+
+          \path (p1) -- (p2) coordinate[pos=-0.2](a1l) coordinate[pos=1.2](a1r) coordinate[pos=0.8](m12);
+          \draw[-latex] (a1l) -- (m12) -- ([turn] -90:0.5) node[left]{$\vec{\eta}_1$};
+          \draw  (m12) -- (a1r);
+
+          \path (p3) -- (p4) coordinate[pos=-0.2](a3l) coordinate[pos=1.2](a3r) coordinate[pos=0.8](m34);
+          \draw[-latex] (a3l) -- (m34) -- ([turn] -90:0.5) node[right]{$\vec{\eta}_2$};
+          \draw  (m34) -- (a3r);
+
+        \end{tikzpicture}
+      }
+      \caption*{No intersection}\label{fig:non_feasible}
+    \end{figure}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[c]{.3\linewidth}
+    \begin{figure}[h]
+      \centering
+      \scalebox{0.9}{
+        \begin{tikzpicture}
+          \def\ang{25}
+          \def\vecmag{.5}
+          \node at (0,0) {} coordinate(p1) ++(\ang:2.5) coordinate(p2) ++(\ang-90:1.) coordinate(p3) ++(\ang-180:2.5) coordinate(p4);
+          \path[fill=gray!20] (p1) -- (p2) -- (p3) -- (p4);
+          \node at (barycentric cs:p1=1,p2=1,p3=1,p4=1) {$\mathcal{P}$};
+
+          \path (p1) -- (p2) coordinate[pos=-0.2](a1l) coordinate[pos=1.2](a1r) coordinate[pos=0.5](m12);
+          \draw[-latex] (a1l) -- (m12) -- ([turn] 90:0.5) node[right]{$\vec{\eta}_1$};
+          \draw  (m12) -- (a1r);
+
+          \path (p3) -- (p4) coordinate[pos=-0.2](a3l) coordinate[pos=1.2](a3r) coordinate[pos=0.5](m34);
+          \draw[-latex] (a3l) -- (m34) -- ([turn] 90:0.5) node[right]{$\vec{\eta}_2$};
+          \draw  (m34) -- (a3r);
+        \end{tikzpicture}
+      }
+      \caption*{$\vecangle{\vec{\eta}_{1}}{\vec{\eta}_{2}}=180^{o}$}\label{fig:parallel_only_one_active}
+    \end{figure}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[c]{.3\linewidth}
+    \begin{figure}[h]
+      \centering
+      \scalebox{0.9}{
+        \begin{tikzpicture}
+          \node at (0,0) {} coordinate(p1) ++(15:2.5) coordinate(p2) ++(-45:2.5) coordinate(p3) ++ (-195:4.0) coordinate(p4);
+          \path[fill=gray!20] (p1) -- (p2) -- (p3);
+          \node at (barycentric cs:p1=1,p2=1,p3=1) {$\mathcal{P}$};
+
+          \foreach \X [count=\Y] in {2,...,4}
+          {
+            \path (p\Y) -- (p\X) coordinate[pos=-0.2](a\Y{}l) coordinate[pos=1.2](a\Y{}r) coordinate[pos=0.5](m\Y\X);
+            \draw[-latex] (a\Y{}l) -- (m\Y\X) -- ([turn]90:.5) node[right]{$\vec{\eta}_\Y$};
+            \draw (m\Y\X) -- (a\Y{}r);
+          }
+        \end{tikzpicture}
+      }
+      \caption*{A $3$-sided polyhedron.}\label{fig:triangle_inequality}
+    \end{figure}
+  \end{minipage}
+
 \end{frame}
 
 \begin{frame}{$\theta$ dynamics}{\hyperlink{analysis_continued}{\beamerreturnbutton{back}}}
