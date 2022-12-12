@@ -569,7 +569,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
       \end{tikzpicture}
     \end{figure}
   \end{minipage}
-  \hfill
+  \hspace{.5cm}
   \begin{minipage}[c]{.5\linewidth}
     \begin{itemize}[<+(1)->]
       \item \cite{VelardeEtAl2017a,ChanfreutEtAl2018} present attacks
@@ -663,7 +663,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
       \item We can recover by
             \begin{itemize}[<+(1)->]
               \item Ignoring attacker
-              \item Recuperating original behavior (at least trying)
+              \item Recover original behavior (at least trying)
             \end{itemize}
     \end{itemize}
       \only<2->{
@@ -1120,7 +1120,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
 \begin{frame}{}
   \begin{itemize}[<+(1)->]
     \item But can we mitigate these effects?
-    \item Yes! \pause (At least in some cases)
+    \item Yes! (At least in some cases)
   \end{itemize}
 
 \end{frame}
@@ -1243,11 +1243,9 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
 
   \begin{itemize}[<+(1)->]
     \item Solution is analytical and affine
-          \onslide<+(1)->{
           \begin{equation*}
             \lambdaik=-\alert<.(2)>{\Plin}\thetaik-\alert<.(3)>{\sik}
           \end{equation*}
-          }
   \end{itemize}
 
   \vspace{-.5cm}
@@ -1294,7 +1292,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   \end{minipage}
   \centering
   \begin{itemize}
-    \item<+(1)-> But wait! \onslide<+(1)->{$\Plin$ is not supposed to change!}
+    \item<+(1)-> But wait! $\Plin$ is not supposed to change!
     \item<+(1)-> Change $\to$ Probably an Attack! \onslide<+(1)->{Let's take advantage of this!}
   \end{itemize}
 \end{frame}
@@ -1399,9 +1397,9 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
           supervisor/.style={fill=mpc_green, minimum height=0.6180*3*0.3cm, minimum width=2cm},
           ]
 
-          \node[draw, mpcSmall,] (block1) {\small Agent 1};
+          \node[draw, mpcSmall,] (block1) {\small MPC 1};
           \node[fill=none, draw=none, right=of block1,] (mult) {\bf $\dots$};
-          \node[draw, mpcSmall, fill=mpc_agent, right=of mult,] (blockM) {\small Agent M};
+          \node[draw, mpcSmall, fill=mpc_agent, right=of mult,] (blockM) {\small MPC M};
           \node[draw, coordinator, below=of mult,] (coordinator) {Coordinator};
 
           \only<2->{\node[draw, supervisor,anchor=north west] at (coordinator.north west) {\small Supervisor 1};
@@ -1476,7 +1474,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
         trapezium stretches,
         align=center,
         fill=supelecRed!10,
-        alt=<{6}>{fill=supelecRed!90,text=white},
+        alt=<{5}>{fill=supelecRed!90,text=white},
         below=of block2,
         minimum width=3.5cm,
         minimum height=1cm
@@ -1490,7 +1488,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
         align=center,
         below=of block3,
         fill=supelecRed!10,
-        alt=<{7}>{fill=supelecRed!90,text=white},
+        alt=<{5}>{fill=supelecRed!90,text=white},
         minimum width=3.5cm,
         minimum height=1cm
         ] (block4) { Coordinator estimates parameters};
@@ -1500,7 +1498,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
         below=of block4,
         minimum width=2.5cm,
         fill=supelecRed!50,
-        alt=<{8}>{fill=supelecRed!90,text=white},
+        alt=<{5}>{fill=supelecRed!90,text=white},
         align=center,
         inner sep=0] (block5) { Estimates\\ converge?};
 
@@ -1511,7 +1509,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
         trapezium stretches,
         align=center,
         fill=supelecRed!10,
-        alt=<{9}>{fill=supelecRed!90,text=white},
+        alt=<{6}>{fill=supelecRed!90,text=white},
         right=1cm of block5,
         minimum width=3.5cm,
         minimum height=1cm
@@ -1527,7 +1525,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
         align=center,
         right=of block12,
         fill=supelecRed!10,
-        alt=<{10}>{fill=supelecRed!90,text=white},
+        % alt=<{10}>{fill=supelecRed!90,text=white},
         minimum width=3.5cm,
         minimum height=1cm
         ] (block7) { Coordinator sends \\$\vec{\theta}_i^{(h)}$};
@@ -1538,7 +1536,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
         trapezium stretches,
         align=center,
         fill=supelecRed!10,
-        alt=<{11}>{fill=supelecRed!90,text=white},
+        % alt=<{11}>{fill=supelecRed!90,text=white},
         below=of block7,
         minimum width=3.5cm,
         minimum height=1cm
@@ -1551,7 +1549,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
         trapezium stretches,
         align=center,
         fill=supelecRed!10,
-        alt=<{12}>{fill=supelecRed!90,text=white},
+        alt=<{8}>{fill=supelecRed!90,text=white},
         below=of block8,
         minimum width=3.5cm,
         minimum height=1cm
@@ -1562,7 +1560,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
         below=of block9,
         minimum width=2.5cm,
         fill=supelecRed!50,
-        alt=<{13}>{fill=supelecRed!90,text=white},
+        % alt=<{13}>{fill=supelecRed!90,text=white},
         align=center,
         inner sep=0] (block10) { Negotiation\\ converges?};
 
@@ -1570,7 +1568,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
         rounded rectangle,
         below=of block10,
         fill=gray!90!black!50,
-        alt=<{14}>{fill=supelecRed!90,text=white},
+        % alt=<{14}>{fill=supelecRed!90,text=white},
         minimum width=2.5cm,
         minimum height=1cm,] (block11) { Apply first control};
 
@@ -1600,19 +1598,19 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
     }
     % \caption{Secure DMPC}\label{fig:secureDMPC}
   \end{figure}
-  \script<1->{Talk about RLS and convergence guaranteed, since it is linear and there is no noise. Now, for the complete secure DMPC algorithm, as said it is divided into two phases\\ }
-  \script<2->{The Detection phase \\ }
-  \script<3->{and the negotiation phase\\ }
-  \script<5->{The coordinator sends random theta i\\ }
-  \script<6->{The agents send dual variable lambda i\\ }
-  \script<7->{The coordinator estimates the parameters P and s tilde\\ }
-  \script<8->{when the estimates converge\\ }
-  \script<9->{The coordinator detects which agents are non-cooperative\\ }
-  \script<10->{then the negotiation phase begins, the coordinator sends the theta i\\ }
-  \script<11->{the agents send the dual variable lambda i\\ }
-  \script<12->{and the coordinator updates the allocation accordingly using the reconstructed lambda or the one sent by the agent\\ }
-  \script<13->{and once the negotiation converges\\ }
-  \script<14->{each agent applies the first control\\ }
+  % \script<1->{Talk about RLS and convergence guaranteed, since it is linear and there is no noise. Now, for the complete secure DMPC algorithm, as said it is divided into two phases\\ }
+  % \script<2->{The Detection phase \\ }
+  % \script<3->{and the negotiation phase\\ }
+  % \script<5->{The coordinator sends random theta i\\ }
+  % \script<6->{The agents send dual variable lambda i\\ }
+  % \script<7->{The coordinator estimates the parameters P and s tilde\\ }
+  % \script<8->{when the estimates converge\\ }
+  % \script<9->{The coordinator detects which agents are non-cooperative\\ }
+  % \script<10->{then the negotiation phase begins, the coordinator sends the theta i\\ }
+  % \script<11->{the agents send the dual variable lambda i\\ }
+  % \script<12->{and the coordinator updates the allocation accordingly using the reconstructed lambda or the one sent by the agent\\ }
+  % \script<13->{and once the negotiation converges\\ }
+  % \script<14->{each agent applies the first control\\ }
 
 \end{frame}
 
@@ -1648,6 +1646,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
         \item Houses modeled using 3R-2C (monozone)
         \item Not enough power
         \item Period of ${5} \mathrm{h}$ ($T_{s}=0.25h$ $\to k=\{1\mathbin{:}20\}$)
+        \item Prediction horizon ($\predhorz =4$)
         \item 3 scenarios
               \begin{itemize}
                 \item[\encircle{N}] Nominal
@@ -1754,13 +1753,13 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
         \begin{cases}
           {-\Plinineq\thetaik-\sikineq},&\text{if}\ \thetaik \in\alert<.(2)>{\set{R}_{\lambdai}^{0}}\tikzmark{a}\\
           \qquad\quad \vdots&\qquad\quad \vdots\\
-          -\Plinineq[i][2^{\nineq}-1]\thetaik-\sikineq[i][2^{\nineq}-1],&\text{if}\ \thetaik \in\alert<+(1)>{\set{R}_{\lambdai}^{2^{\nineq}-1}}\\
+          -\Plinineq[i][Z]\thetaik-\sikineq[i][Z],&\text{if}\ \thetaik \in\alert<+(1)>{\set{R}_{\lambdai}^{Z}}\\
         \end{cases}
       \end{aligned}
     \end{equation*}
   }
   \onslide<+(1)->{
-    \alert<+>{Still the $\Plinineq[i][n]$ are time independent}
+    \alert<+>{Still the $\Plinineq[i][z]$ are time independent}
   }
 \end{frame}
 
@@ -1818,7 +1817,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
       \begin{cases}
         \alert<4>{-\Plinineq\thetaik-\sikineq},&\text{if}\ \thetaik \in\set{R}_{\lambdai}^{0}\tikzmark{a}\\
         \qquad\quad \vdots&\qquad\quad \vdots\\
-        \alert<5>{-\Plinineq[i][2^{\nineq}-1]\thetaik-\sikineq[i][2^{\nineq}-1]},&\text{if}\ \thetaik \in\set{R}_{\lambdai}^{2^{\nineq}-1}\\
+        \alert<5>{-\Plinineq[i][Z]\thetaik-\sikineq[i][Z]},&\text{if}\ \thetaik \in\set{R}_{\lambdai}^{Z}\\
       \end{cases}
     \end{aligned}
   \end{equation*}
@@ -1827,18 +1826,18 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
       \draw[<-,thick] ($(a.north east) +(1,0)$) --+ (0,-2) node[midway, right=0.1cm,text=black,text width = 2in] {Scarcity};
     \end{tikzpicture}%
   }
-  \onslide<3->{
-    \begin{tikzpicture}[overlay, remember picture,decoration={brace,amplitude=2pt}]
-      \draw[->,thick] ($(a.north east) +(3,0)$) --+ (0,-2) node[midway, right=0.1cm,text=black,text width = 2in] {Sparsity};
-    \end{tikzpicture}%
-  }
+  % \onslide<3->{
+  %   \begin{tikzpicture}[overlay, remember picture,decoration={brace,amplitude=2pt}]
+  %     \draw[->,thick] ($(a.north east) +(3,0)$) --+ (0,-2) node[midway, right=0.1cm,text=black,text width = 2in] {Sparsity};
+  %   \end{tikzpicture}%
+  % }
   \begin{equation*}
     \begin{matrix}
-      \onslide<4->{
+      \onslide<3->{
       \text{All constraints active}&-\Plinineq\thetaik-\sikineq & \to &-\Plin\thetaik-\sik \\
       }
-      \onslide<5->{
-      \text{None constraints active}&-\Plinineq[i][2^{\nineq}-1]\thetaik-\sikineq[i][2^{\nineq}-1] & \to & \0
+      \onslide<4->{
+      \text{None constraints active}&-\Plinineq[i][Z]\thetaik-\sikineq[i][Z] & \to & \0
                                                                           }
     \end{matrix}
   \end{equation*}
@@ -1870,7 +1869,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
       \begin{cases}
         -\Plinineqtilde      \thetaik-\sikineqtilde      ,&\text{if }\thetaik\in\set{R}^{0}\tikzmark{a}\\
         \qquad\quad \vdots&\qquad\quad \vdots\\
-        -\Plinineqtilde[i][2^{\nineq}-1]\thetaik-\sikineqtilde[i][2^{\nineq}-1],&\text{if}\ \thetaik \in\set{R}_{\lambdai}^{2^{\nineq}-1}\\
+        -\Plinineqtilde[i][Z]\thetaik-\sikineqtilde[i][Z],&\text{if}\ \thetaik \in\set{R}_{\lambdai}^{Z}\\
       \end{cases}
   \end{equation*}
   }
@@ -1953,8 +1952,8 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
     \item We give multiple observations $\thetai^{o}[k]$ and $\lambdaicheat^{o}[k]$
     \item At each step we calculate
           \begin{enumerate}
-            \item[\encircle{E}] the probability of each $(\Plinineqtildeestimate[i][n],\sikineqtildeestimate[i][n])$ having generated each $\lambdaicheat^{o}[k]$
-            \item[\encircle{M}] new estimates $(\Plinineqtildeestimate[i][n],\sikineqtildeestimate[i][n])$ based on the probabilities
+            \item[\encircle{E}] the probability of each $(\Plinineqtildeestimate[i][z],\sikineqtildeestimate[i][z])$ having generated each $\lambdaicheat^{o}[k]$
+            \item[\encircle{M}] new estimates $(\Plinineqtildeestimate[i][z],\sikineqtildeestimate[i][z])$ based on the probabilities
           \end{enumerate}
   \end{itemize}
 
@@ -2195,6 +2194,7 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
         \item Houses modeled using 3R-2C
         \item \only<1>{Not enough power}\only<2->{\st{Not enough power} (Change $(\vec{x}_{0},\vec{w}_{0})$)}
         \item Period of ${5} \mathrm{h}$ ($T_{s}=0.25h$ $\to k=\{1\mathbin{:}20\}$)
+        \item Prediction horizon ($\predhorz =4$)
         \item 3 scenarios
               \begin{itemize}
                 \item[\encircle{N}] Nominal
@@ -2299,15 +2299,15 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
 \begin{frame}{Conclusion}{Recap}
   \begin{itemize}[<+(1)->]
     \item Insights from the analysis of the solutions of the optimization problems:
-          \begin{itemize}
+          \begin{enumerate}
             \item Sensibilities are constant when there is no cheating
             \item They may change when system is attacked
-          \end{itemize}
+          \end{enumerate}
 
     \item Exploiting the scarcity of resources, we find how to invert the attack
           \begin{itemize}
             \item Straightforward if system is completely deprived
-            \item If not, we try to force it artifically
+            \item If not, we try to force it artificially
                   \begin{itemize}
                     \item However, solution is PWA and we need special estimation method
                   \end{itemize}
@@ -2326,12 +2326,12 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
   }
 \end{frame}
 
-\begin{frame}{Open question Future Directions}
+\begin{frame}{Future Directions}
     \begin{itemize}[<+->]
-      \item Reconstruction of cheating matrix with partial/incremental scarcity
-      \item Study of robustness/Error Propagation + noise
-      \item Resilient strategy with soft constraints 
-      \item Recursive EM (or alternative)
+      \item Reconstruction of cheating matrix with partial scarcity
+      \item Study of robustness/Error Propagation + Add noise
+      \item Resilient strategy with soft constraints (QoS constraints)
+      \item Recursive EM (or alternative method)
       \item ...
     \end{itemize}
 \end{frame}
@@ -2501,6 +2501,32 @@ let \p1=(\tikztostart), \p2=(\tikztotarget), \n1={veclen(\y2-\y1,\x2-\x1)} in
       \end{matrix}
     \right]
   \end{equation*}
+\end{frame}
+
+\begin{frame}{Parameters estimated depending on Prediction Horizon $\predhorz$}
+  \# constraints depend on \# global constraints $c$ and prediction horizon $\predhorz$
+
+  \begin{itemize}
+    \item Number of Regions = $2^{\predhorz c}$
+    \item Parameters in each region = Matrix $\Plinineq[i][z]$ = ${(\predhorz c)}^{2}$ + vector $\sikineq[i][z]$ = $\predhorz c$
+          \begin{itemize}
+                  \item Total $({(\predhorz c)}^{2}+\predhorz c)2^{\predhorz c}$
+          \end{itemize}
+  \end{itemize}
+
+  Some examples
+  \begin{itemize}
+    \item 1 constraint
+          \begin{itemize}
+            \item $\predhorz = 3$ $\to$ 96 elements
+            \item $\predhorz = 4$ $\to$ 320 elements
+          \end{itemize}
+  \end{itemize}
+
+  \begin{remark}
+    We can reduce number of elements estimated from $\Plinineq[i][z]$ if we assume $\Plinineq[i][z]\in\symmetric$
+    New total $\to$ $({(\predhorz c)}^{2}+3\predhorz c)2^{\predhorz c-1}$
+  \end{remark}
 \end{frame}
 
 \end{document}

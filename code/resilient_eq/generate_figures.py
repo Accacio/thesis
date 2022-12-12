@@ -247,11 +247,11 @@ with open('../../data/resilient_eq/table_costs_all_houses_error.tex', 'w') as f:
     print("Global & $", round(nominal_global,1),"$ & $",round(selfish_global,1),"$ ($", round(100*(selfish_global-nominal_global)/nominal_global,1),"$)& $",round(corrected_global,1),"$ ($",round(100*(corrected_global-nominal_global)/nominal_global,1) ,"$)",file=f)
 
 with open('../../data/resilient_eq/table_costs_all_houses_error_norm.tex', 'w') as f:
-    print("I      &  $", round(100*(selfish_I-nominal_I)/nominal_I,3),               "$ & $",round(100*(corrected_I-nominal_I)/nominal_I,3),               " $\\\\",file=f)
-    print("II     &  $", round(100*(selfish_II-nominal_II)/nominal_II,3),            "$ & $",round(100*(corrected_II-nominal_II)/nominal_II,3),            " $\\\\",file=f)
-    print("III    &  $", round(100*(selfish_III-nominal_III)/nominal_III,3),         "$ & $",round(100*(corrected_III-nominal_III)/nominal_III,3),         " $\\\\",file=f)
-    print("IV     &  $", round(100*(selfish_IV-nominal_IV)/nominal_IV,3),            "$ & $",round(100*(corrected_IV-nominal_IV)/nominal_IV,3),            " $\\\\",file=f)
-    print("Global &  $", round(100*(selfish_global-nominal_global)/nominal_global,3),"$ & $",round(100*(corrected_global-nominal_global)/nominal_global,3)," $",file=f)
+    print("I      &  $", round(100*(selfish_I-nominal_I)/nominal_I,2),               "$ & $",round(100*(corrected_I-nominal_I)/nominal_I,2),               " $\\\\",file=f)
+    print("II     &  $", round(100*(selfish_II-nominal_II)/nominal_II,2),            "$ & $",round(100*(corrected_II-nominal_II)/nominal_II,2),            " $\\\\",file=f)
+    print("III    &  $", round(100*(selfish_III-nominal_III)/nominal_III,2),         "$ & $",round(100*(corrected_III-nominal_III)/nominal_III,2),         " $\\\\",file=f)
+    print("IV     &  $", round(100*(selfish_IV-nominal_IV)/nominal_IV,2),            "$ & $",round(100*(corrected_IV-nominal_IV)/nominal_IV,2),            " $\\\\",file=f)
+    print("Global &  $", round(100*(selfish_global-nominal_global)/nominal_global,2),"$ & $",round(100*(corrected_global-nominal_global)/nominal_global,2)," $",file=f)
 
 # with open('/dev/stdout', 'w') as f:
 #     print("I & $", round(nominal_I,1),"$ & $",round(selfish_I,1),"$ ($", round(100*(selfish_I-nominal_I)/nominal_I,1),"$)& $",round(corrected_I,1),"$ ($",100*round((corrected_I-nominal_I)/nominal_I,1) ,"$)\\\\",file=f)
