@@ -9,7 +9,7 @@
 
 The decompositions shown in the last chapters work in normal conditions, but we can analyze more interesting cases, such as when systems do not behave nominally.
 
-In this chapter, we discuss briefly the causes of anomalous behaviors, how they can happen, and the primary means used in the literature to mitigate their effects.
+This chapter briefly discusses the causes of anomalous behaviors, how they can happen, and the primary means used in the literature to mitigate their effects.
 
 \minitoc%
 
@@ -20,29 +20,29 @@ There are two primary causes for a system not to perform as nominally expected: 
 The main difference between these two is \emph{intention}; while faults happen unintentionally, uncoordinated and with no objective, attacks happen intentionally, usually coordinated having a malicious objective.
 
 \begin{remark}
-  A non-expected behavior can also be observed when there are modeling errors, i.e., the theoretical model used to describe the system does not correspond to the real system.
-  In this case, the system did not change its behavior, but the expectation that was false.
-  So, for the time being we will ignore modeling errors and assume they do not cause the non-nominal behaviors.
+  A non-expected behavior can also be observed when there are modeling errors, i.e., the theoretical model used to describe the system does not correspond to the actual system.
+  In this case, the system did not change its behavior, but the expectation was false.
+  So, for the time being, we will ignore modeling errors and assume they do not cause non-nominal behaviors.
 \end{remark}
 
 Both faults and attacks can deviate the overall system from its nominal optimal behavior, but the most severe effect they can produce is a complete breakdown.
-In \cps{}, as the systems are connected to physical components, a malfunction can provoke a great impact on the population, since some of the systems can control important
-aspects of modern life, as water and energy supply.
+In \cps{}, as the systems are connected to physical components, a malfunction can provoke a great impact on the population since some of the systems can control important
+aspects of modern life, such as water and energy supply.
 
-That's why we are interested in assuring the normal operation of such systems.
+That is why we are interested in assuring the normal operation of such systems.
 
 \section{Security}\label{sec:security}
-Security alludes to the safe and reliable operation of a system even under unexpected circumstances, such as faults and attacks.
-To understand security of \cps{}, we can first borrow some definitions from cyber-security and then extend them to \cps{}.
+Security alludes to a system's safe and reliable operation even under unexpected circumstances, such as faults and attacks.
+To understand the security of \cps{}, we can first borrow some definitions from cyber-security and then extend them to \cps{}.
 
 Computer systems are usually described in terms of data and resources, and \emph{cyber-security} is ensured by three pillars: \CIA{} of such components~\cite{Bishop2005}.
 
 \paragraph{Confidentiality} refers to how undisclosed the data and resources are.
-Sometimes parts of the system need to be secret and only accessible for a selected group.
-Be it for privacy reasons, to avoid disclose personal info, for instance, or even to prevent the exposition of possible vulnerabilities of the system (a pop culture example can be the Death Star Plans on the Star Wars Saga).
+Sometimes parts of the system must be secret and only accessible to a selected group.
+Be it for privacy reasons, to avoid disclosing personal info, or even to prevent the exposition of possible system vulnerabilities (a pop culture example can be the Death Star Plans on the Star Wars Saga).
 
 \paragraph{Integrity} means how trustworthy the data and resources are.
-For example, a new equipment is more trustworthy than an old one. For data traffic, the integrity of the communication may be divided into the integrity of the information sent/received (data integrity) and integrity of identity of the source/recipient (called authentication).
+For example, new equipment is more trustworthy than old ones. For data traffic, the integrity of the communication may be divided into the integrity of the information sent/received (data integrity) and the integrity of identifying the source/recipient (called authentication).
 
 \paragraph{Availability} relates to how accessible to use the data and resources are when desired.
 For example, if one control is given to a system, it should be applied to it, and equally, if we need data from a sensor, it must be able to send it.
@@ -52,37 +52,41 @@ The vulnerabilities of a system can compromise any of the three pillars, sometim
 
 \section{Vulnerabilities in \cps{}}
 
-As it is known, \cps{} have its components in both Cyber and Physical domains.
-So, as in computer systems, we can divide them into data (the immaterial part) and resources (the material part). We can also divide them into more specific parts such as: \textbf{Transducers}, which are sensors and actuators (as motors, valves, cameras, antennae, thermocouples etc.);
-\textbf{Channels}, used for communication (wires, air, tubes etc); \textbf{Connectors}, which connect components by transmitting some physical quantity (wires, circuit traces, cables, water pipes, etc.);
-the \textbf{Software}, which is the logic used to operate the physical components (code, \plc{} logic etc.); and the \textbf{Controller}, which is the hardware running the software (\plc{}s, micro-controllers, computers etc.).
+As it is known, \cps{} have components in both Cyber and Physical domains.
+So, as in computer systems, we can divide them into data (the immaterial part) and resources (the material part). We can also divide them into more specific parts such as: \textbf{Transducers}, which are sensors and actuators (as motors, valves, cameras, antennae, thermocouples, etc.);
+\textbf{Channels}, used for communication (wires, air, tubes, etc.); \textbf{Connectors}, which connect components by transmitting some physical quantity (wires, circuit traces, cables, water pipes, etc.);
+the \textbf{Software}, which is the logic used to operate the physical components (code, \plc{} logic, etc.); and the \textbf{Controller}, which is the hardware running the software (\plc{}s, micro-controllers, computers etc.).
 
 ~\\Each one of the aforementioned components represents a source of vulnerability.
-\\\textbf{Transducers} can be targets of sabotage, for instance an attacker can use a cold object to disrupt thermostat readings to increase the temperature of a room. But the components may also deteriorate with time, which can eventually cause a fault.
-\textbf{Channels} and \textbf{connectors} can as well be targets of sabotage, as someone can interfere on the transmission to observe the traffic to gather information or intentionally interrupt it. But interruptions and corruptions might be caused by natural accidents such solar flares (causing radio blackouts) or as trees knocking down electricity cables or sharks eating underwater cables.
-\textbf{Software} can also be a source of vulnerability due to \emph{bugs}, which can interrupt the normal functioning or even let a \emph{hacker} gain total control of the system.
+\\\textbf{Transducers} can be targets of sabotage.
+For instance, an attacker can use a cold object to disrupt thermostat readings to increase the temperature of a room.
+Nevertheless, the components may also deteriorate with time, which can eventually cause a fault.
+\textbf{Channels} and \textbf{connectors} can as well be targets of sabotage, as someone can interfere with the transmission to observe the traffic to gather information or intentionally interrupt it.
+Regardless, interruptions and corruptions might be caused by natural accidents such as solar flares (causing radio blackouts), trees knocking down electricity cables, or sharks eating underwater cables.
+\textbf{Software} can also be a source of vulnerability due to \emph{bugs}, which can interrupt normal functioning or even let a \emph{hacker} gain total control of the system.
 The \textbf{controller}, if not well dimensioned (computing capacity), can also be a vulnerability.
 If it receives more requisitions than expected, the system will be overloaded and will cease to respond.
 
 It is worth emphasizing that in a \iot{} context, almost all sensors and actuators have embedded controllers and software, which can also be sources of vulnerabilities themselves.
 
-Attackers can discover some of those vulnerabilities and use them in their favor. Due to this adversary behavior, in this work we will concentrate on attacks, mentioning faults eventually.
+Attackers can discover some of those vulnerabilities and use them in their favor. Due to this adversary behavior, in this work we will concentrate on attacks, eventually mentioning faults.
 
 \section{Attacks in \cps{}}\label{sec:attacks}
 
 From the definition of cyber-attacks~\cite{Bishop2005} and other
-definitions used in this chapter, we can define an attack as an ill-intentioned action which uses vulnerabilities of a cyber-physical system to violate its security.
-The perpetrator of the action is called attacker.
+definitions used in this chapter, we can define an \textbf{attack} as an ill-intentioned action that uses vulnerabilities of a cyber-physical system to violate its security.
+The perpetrator of the action is called \textbf{the attacker}.
 
 In a computer context~\cite{Bishop2005}, \Citeauthor{Bishop2005} divides cyber-attacks into ``four broad classes'':
 disclosure, deception, disruption and usurpation.
 \textbf{Disclosure} is the unauthorized access to information (break of confidentiality).
-\textbf{Deception} tries to deceit making false data pass as true (break of data integrity).
-\textbf{Disruption} interrupts or prevents the system to work correctly (break of availability). And \textbf{usurpation} is the unauthorized control of the system (break of authenticity).
+\textbf{Deception} tries to deceit, making false data pass as true (break of data integrity).
+\textbf{Disruption} interrupts or prevents the system from working correctly (break of availability).
+Furthermore, \textbf{usurpation} is the unauthorized control of the system (break of authenticity).
 
 In a \cps{}/control context~\cite{CardenasEtAl2008}, normally only the first 3 categories are used, calling them Deception, Disclosure, and~\DoS{} instead of disruption.
 Sometimes, for instance~\cite{AminEtAl2009}, authors use only deception and \DoS{} to divided attacks, probably because disclosure attacks do not affect performance.
-But as we are we going to see following, depending on the attacker disclosure attacks when combined with others can create some sneaky attacks.
+However, as we will see, depending on the attacker, disclosure attacks combined with other kinds of attacks can create some sneaky attacks.
 
 This model of categorization is usually called the \DDD{} model, and authors in \cps{} also add physical attacks~\cite{DibajiEtAl2019}.
 To demonstrate the \DDD{} model, the components of \cps{} are abstracted into 4 different parts: the physical system to be controlled, the controller, the communication channels, and the information trafficking by them  (as seen in Fig.~\ref{fig:cps_abstraction}).
@@ -105,11 +109,11 @@ To demonstrate the \DDD{} model, the components of \cps{} are abstracted into 4 
 \caption[General abstraction of CPS.]{General abstraction of \cps{}. (Adpated from~\cite{CardenasEtAl2008,AminEtAl2009})}\label{fig:cps_abstraction}
 \end{figure}
 
-In the diagram, $u$ corresponds to the control inputs calculated by the controller to be applied in the physical system by the actuators and $y$ corresponds to the outputs of the systems transmitted by the sensors.
+In the diagram, $u$ is the control input, which the controller calculates. The input is then applied in the physical system by the actuators. Moreover, $y$ corresponds to the systems' outputs transmitted by the sensors.
 
-Due to the networked nature of the systems, we modify the scheme to also model the communication between systems.
-In Fig.~\ref{fig:networked_cps_abstraction} we represent all other systems as a single entity called network with which the system may communicate.
-We also add two other signals, which represent the information shared with the network, $I_{\text{in}}$ is information received from all other systems and $I_{\text{out}}$ is the information send to all other systems.
+Due to the networked nature of the systems, we modify the scheme also to model the communication between systems.
+In Fig.~\ref{fig:networked_cps_abstraction}, we represent all other systems as a single entity called ``network'' with which the system may communicate.
+We also add two other signals, which represent the information shared with the network, $I_{\text{in}}$ is information received from all other systems, and $I_{\text{out}}$ is the information sent to all other systems.
 
 \begin{figure}[h]
   \centering
@@ -144,15 +148,15 @@ We also add two other signals, which represent the information shared with the n
   \caption{General abstraction of networked \cps{}.}\label{fig:networked_cps_abstraction}
 \end{figure}
 
-Using this general networked control system scheme, the \DDD{} model can be characterized by where and how the attack happen.
-In Fig.~\ref{fig:attacks_networked_cps} we can see multiple kinds of attacks enumerated from A1 to A13.
-The attacks from A1 to A4 are disclosure attacks, which happen in the information level. The attacker observes the traffic, maybe to a posterior use.
+While using this general networked control system scheme, the \DDD{} model can be characterized by where and how the attack happens.
+In Fig.~\ref{fig:attacks_networked_cps}, we can see multiple kinds of attacks enumerated from A1 to A13.
+The attacks from A1 to A4 are disclosure attacks, which happen at the information level. The attacker observes the traffic, maybe to a posterior use.
 This attack is also known as a \textbf{snooping} or \textbf{eavesdropping} attack.
 A5 to A8 represent deception attacks.
-The attacks also happen in the information level, but the attacker changes the signals to a modified version (here represented by a \~{} above the variable name).
-The attacks from A10 to A12 are disruption (or \textbf{\DoS{}}) attacks, where the attacker attacks the communication channel, momentarily or not preventing the communication between two entities.
-And A13 are physical attacks, where the physical system is attacked.
-In this attack, the attacker change physically the behavior of the system.
+The attacks also happen at the information level, but the attacker changes the signals to a modified version (here represented by a \~{} above the variable name).
+The attacks from A10 to A12 are disruption (or \textbf{\DoS{}}) attacks, where the attacker attacks the communication channel, momentarily or not preventing communication between two entities.
+Furthermore, A13 are physical attacks, where the physical system is attacked.
+In this attack, the attacker physically changes the behavior of the system.
 
 \begin{figure}[h]
   \centering
@@ -230,21 +234,21 @@ In this attack, the attacker change physically the behavior of the system.
 \end{figure}
 
 As argued in~\cite{CardenasEtAl2008}, to accomplish attacks A13, attackers need physical access to the plant.
-Or the attackers need to be close to the plant themselves, or they use a teleoperated machine that is near the plant.
-The risks involved into trespassing and interacting with the machine, or planting a machine can be discouraging for the attacker, since they can injure themselves or may be identified.
-The attacks A1-A12, on the other hand, may present less risk since the attacker need only to have access to the communication channel.
-\\For instance, nowadays as communication may happen through internet, attackers could snoop some information from the comfort of their houses.
-They can use an open-source ``packet sniffer'' such as wireshark\footnote{\url{https://www.wireshark.org}}, which can read different protocols including the Fieldbus family.
-Many of the distributed control systems use protocols from this family, for example PROFIBUS and PROFINET (used for \scada{} architectures connecting \plcs{}, \HMIs{} and Supervisors Interfaces), CAN (used for automobiles) and others.
+Alternatively, the attackers need to be close to the plant, or they use a teleoperated machine near the plant.
+The risks involved in trespassing and interacting with the machine or planting a machine can discourage the attacker since they can injure themselves or be identified.
+Attacks A1-A12, on the other hand, may present less risk since the attacker need only to have access to the communication channel.
+\\For instance, nowadays, as communication may happen through the internet, attackers could snoop on some information from the comfort of their houses.
+They can use an open-source ``packet sniffer'' such as wireshark\footnote{\url{https://www.wireshark.org}}, which can read different protocols, including the Fieldbus family.
+Many of the distributed control systems use protocols from this family, for example, PROFIBUS and PROFINET (used for \scada{} architectures connecting \plcs{}, \HMIs{} and Supervisors Interfaces), CAN (used for automobiles), and others.
 
-In~\cite{TeixeiraEtAl2015}, the authors stress that the attacks not necessarily happen purely.
-For instance an attacker could record the information trafficking in the communication channel (disclosure attack) to replay it in a future time, deceiving controllers and supervisors (deception attack) generating some kind of input in the system which can be harmful for the physical system.
+In~\cite{TeixeiraEtAl2015}, the authors stress that the attacks do not necessarily happen purely.
+For instance, an attacker could record the information trafficking in the communication channel (disclosure attack) to replay it in a future time, deceiving controllers and supervisors (deception attack) and generating some kind of input in the system which can be harmful for the physical system.
 This attack is commonly known as \textbf{Replay attack}~\cite{ZhuMartinez2014}.
-One of the classic examples of this attack in the pop culture is heist movies, such as Ocean's Eleven, where the protagonists record the video feed of surveillance cameras to deceive security guards.
-These kind of attack exemplify how deception attacks can be subtler and more ingenious than \DoS{} attacks, as stressed in~\cite{MoSinopoli2009}.
+One of the classic examples of this attack in pop culture is heist movies, such as Ocean's Eleven, where the protagonists record the video feed of surveillance cameras to deceive security guards.
+This kind of attack exemplifies how deception attacks can be subtler and more ingenious than \DoS{} attacks, as stressed in~\cite{MoSinopoli2009}.
 
-In~\cite{TeixeiraEtAl2015} the authors also emphasize how the knowledge of control and physical aspects of \cps{} (sensors, actuators and plant dynamics) can be advantageous for an attacker.
-So, instead of using purely the \DDD{} model, \citeauthor{TeixeiraEtAl2015}~\cite{TeixeiraEtAl2015} proposed an attack space with 3 orthogonal dimensions: Model Knowledge, Disruption resources and Disclosure resources as seen in Fig.~\ref{fig:3_dimensions_attack}.
+In~\cite{TeixeiraEtAl2015}, the authors also emphasize how the knowledge of control and physical aspects of \cps{} (sensors, actuators, and plant dynamics) can be advantageous for an attacker.
+So, instead of using the \DDD{} model purely, \citeauthor{TeixeiraEtAl2015}~\cite{TeixeiraEtAl2015} proposed an attack space with 3 orthogonal dimensions: Model Knowledge, Disruption resources, and Disclosure resources as seen in Fig.~\ref{fig:3_dimensions_attack}.
 
 \usetikzlibrary{3d}
 \usetikzlibrary{perspective}
@@ -333,22 +337,24 @@ To illustrate, we can populate the attack space with some attacks, some already 
   \caption[Attack space and some attacks.]{Attack space and some attacks. (Adpated from~\cite{TeixeiraEtAl2015})}\label{fig:3_dimensions_attack_with_attacks}
 \end{figure}
 
-In~\textbf{\DoS{} attacks} the attacker interrupts the communication between entities directly by attacking the communication channel~\cite{SunYang2019,ZhaoEtAl2020,YangEtAl2019} or by making more requisitions to the controller than it can expect, this is also called~\textbf{spamming} or \textbf{jamming}.
-Such attack causing what we call \textbf{packet drops}~\cite{ChenEtAl2021}.
-Depending on the scale of the system (computational power), attackers may coordinate multiple computational units (usually geographically distributed) to make the requests, this is called a \dDoS{}~\cite{WangLu2013,HussainEtAl2021}.
+In~\textbf{\DoS{} attacks}, the attacker interrupts the communication between entities directly by attacking the communication channel~\cite{SunYang2019,ZhaoEtAl2020,YangEtAl2019} or by making more requisitions to the controller than it can expect, this is also called~\textbf{spamming} or \textbf{jamming}.
+Such attacks cause what we call \textbf{packet drops}~\cite{ChenEtAl2021}.
+Depending on the scale of the system (computational power), attackers may coordinate multiple computational units (usually geographically distributed) to make the requests.
+This is called a \dDoS{}~\cite{WangLu2013,HussainEtAl2021}.
 \begin{remark}
   Observe that packet drops may also occur in some unreliable networks, sometimes called \textbf{lossy networks}.
-  The study of communication in such networks is important since wireless communication (profusely used nowadays) usually present packet loss and acknowledgment to reception of packets with protocols such \tcpip{} needs synchronization which for some use cases may increase drastically delays~\cite{BofEtAl2019}.
+  The study of communication in such networks is important since wireless communication (profusely used nowadays) usually presents packet loss and acknowledgment to the reception of packets with protocols such \tcpip{} needs synchronization, which for some use cases may increase drastically delays~\cite{BofEtAl2019}.
 
 \end{remark}
 
-In \textbf{Topology attacks}, the attackers manipulate the topology of the system or misleads the control to believe the system is under a different topology (with false-data). Such attacks are done by changing the state of devices like switches and breakers~\cite{KimTong2013,WuEtAl2016,ZhangEtAl2021b}.
+In \textbf{Topology attacks}, the attackers manipulate the system's topology or mislead the control to believe the system is under a different topology (with false data).
+Such attacks are done by changing the state of devices like switches and breakers~\cite{KimTong2013,WuEtAl2016,ZhangEtAl2021b}.
 \\In a \textbf{Software Modification attack}, the attacker modifies the software used in the controller, as done by the attackers in the Stuxnet attack~\cite{Langner2011}.
-\\In \textbf{\fdi{} attacks}, the attacker sends a false data to the controller or the plant, usually with some insight about the functioning of the system~\cite{PasqualettiEtAl2013}.
-In an example shown in~\cite{TeixeiraEtAl2015}, the attackers objective is to inject a constant bias so it can affect the steady state value of the variables in the system.
+\\In \textbf{\fdi{} attacks}, the attacker sends false data to the controller or the plant, usually with some insight about the functioning of the system~\cite{PasqualettiEtAl2013}.
+In an example shown in~\cite{TeixeiraEtAl2015}, the attacker's objective is to inject a constant bias so it can affect the steady state value of the variables in the system.
 \\In \textbf{Covert attacks}, the attacker fabricates new control and output signals to be fed to the plant and the controller.
-For this the attacker uses a double of the plant (model) and all signals which are available.
-This way the convert controller can choose a different reference and since the dynamics are close enough to the plant, the attack may go unnoticed (stealth attack)~\cite{Smith2015,HoehnZhang2016,BarboniEtAl2020} (See Fig.~\ref{fig:covert_attack})
+For this, the attacker uses a double of the plant (model) and all available signals.
+This way, the covert controller can choose a different reference, and since the dynamics are close enough to the plant, the attack may go unnoticed (stealth attack)~\cite{Smith2015,HoehnZhang2016,BarboniEtAl2020} (See Fig.~\ref{fig:covert_attack})
 
 \begin{figure}[h]
   \centering
@@ -402,125 +408,132 @@ This way the convert controller can choose a different reference and since the d
 \caption[Covert agent.]{Covert agent. Adpated from~\cite{Smith2015,BarboniEtAl2020}.}\label{fig:covert_attack}
 \end{figure}
 
-As we will soon discuss, to counter these attacks sometimes we use detectors of anomalous behaviors which tries to detect a change in the dynamics of the system (plant plus controller)~\cite{TeixeiraEtAl2012,TeixeiraEtAl2015,HoehnZhang2016}, more generically an attack that can go unnoticed under these detectors is called a \textbf{Zero Dynamics Attack}.
+As we will soon discuss, to counter these attacks, sometimes we use detectors of anomalous behaviors which try to detect a change in the system's dynamics (plant plus controller)~\cite{TeixeiraEtAl2012,TeixeiraEtAl2015,HoehnZhang2016}.
+More generically, an attack that can go unnoticed under these detectors is called a \textbf{Zero Dynamics Attack}.
 
-The cited attacks are not extensive but gives a background of the more usual attacks presented in the literature.
+The cited attacks are not extensive but give a background of the more usual attacks presented in the literature.
 Other attacks can be seen in~\cite{TeixeiraEtAl2015,ZhangEtAl2021b} and all other cited works in this chapter.
 
 \section{Attacks in \dmpc{}}\label{sec:attacks_in_dmpc}
-As pointed in~\cite{ArauzEtAl2021}, although cyber-physical security has been studied in \mpc{} frameworks~\cite{SunYang2019,FranzeEtAl2022}, the \dmpc{} community has not yet studied it sufficiently.
-While many decompositions methods are discussed, the agents usually are considered cooperative and no vulnerabilities are explored.
-But some effort has been made in the recent years to explore the vulnerabilities of some decompositions methods, noticeably dual decomposition~\cite{VelardeEtAl2017b,VelardeEtAl2017a,VelardeEtAl2018,AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} (which is the most widely used decomposition) and Jacobi-Gauß decomposition~\cite{ChanfreutEtAl2018}.
+As pointed out in~\cite{ArauzEtAl2021}, although cyber-physical security has been studied in \mpc{} frameworks~\cite{SunYang2019,FranzeEtAl2022}, the \dmpc{} community has not yet studied it sufficiently.
+While many decompositions methods are discussed, the agents usually are considered cooperative, and no vulnerabilities are explored.
+However, some effort has been made in recent years to explore the vulnerabilities of some decompositions methods, noticeably dual decomposition~\cite{VelardeEtAl2017b,VelardeEtAl2017a,VelardeEtAl2018,AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} (which is the most widely used decomposition) and Jacobi-Gauß decomposition~\cite{ChanfreutEtAl2018}.
 
-In all these works the attacks are not originated from an external agent.
-One (or a group) of the agents  behave non-cooperatively and tries to steer de decomposition based on a objective, be it to destabilize the system or to benefit a group of agents.
-These kinds of attacks are called \textbf{inter-agent attacks} and sometimes considered as \textbf{insider attacks} (as if someone with sufficient access rights has taken control).
-Usually the objectives of the attacker are accomplished by deception attacks.
+In all these works, the attacks are not originated from an external agent.
+One (or a group) of the agents behave non-cooperatively and tries to steer de decomposition based on an objective, be it to destabilize the system or to benefit a group of agents.
+These kinds of attacks are called \textbf{inter-agent attacks} and are sometimes considered as \textbf{insider attacks} (as if someone with sufficient access rights has taken control).
+Usually, the objectives of the attacker are accomplished by deception attacks.
 
 The mentioned works present \fdi{} attacks, which they categorize based on where in the optimization problem the deception occurs.
-\\\textbf{Selfish attack} is when the attacker modify its local objective function (usually multiplying it by a positive constant) so it can be more penalized, which causes all other agents to increase the efforts to balance this disadvantage and decrease the local cost of the attacker.
-\\In \textbf{Fake weights attacks}, the non-cooperative agent uses different weights in its local objective function. A selfish attack can be viewed as a specific case of this kind of attack.
+\\\textbf{Selfish attack} is when the attacker modifies its local objective function (usually multiplying it by a positive constant), so it can be more penalized.
+This change causes all other agents to increase their efforts to balance this disadvantage and decrease the local cost of the attacker.
+\\In \textbf{Fake weights attacks}, the non-cooperative agent uses different weights in its local objective function.
+A selfish attack can be viewed as a specific case of this kind of attack.
 \\Supposing the agents follow a reference, in a \textbf{false reference attack} the malicious agent uses a different value of reference to calculate its local objective function.
 \\For a \textbf{fake constraints attack}, the attacker uses different constraints when solving its local optimization problem.
-\\The authors call a \textbf{``liar'' agent attack} when, after the negotiation is finished as usual, the attacker uses a control different from the agreed one.
+\\The authors call a \textbf{``liar'' agent attack} when, after the negotiation is finished, the attacker uses a control different from the agreed one.
 
-In \textbf{this work}, we choose to also study \textbf{\fdi{} attacks}, but using other approach for security.
+In \textbf{this work}, we also choose to study \textbf{\fdi{} attacks} but use another approach for security.
 \section{Securing \cps{}}\label{sec:maintaining_security}
-The first thing to remember is that nothing is safe and everything can be potentially attacked.
+The first thing to remember is that nothing is safe, and everything can be potentially attacked.
 The initial step is to assess the risks and see which parts of your system you trust.
-Some parts of the system can be more \emph{vulnerable} to \emph{threats}, i.e. some components have more probability of being attacked or to suffer from faults.
-As a second measure, we usually protect this components that have more probability of presenting an anomalous behavior~\cite{Bishop2005} in order to prevent such behaviors.
-In~\cite{WangLu2013} some risk assessment methods for smart-grids are presented.
+Some parts of the system can be more \emph{vulnerable} to \emph{threats}, i.e. some components have more probability of being attacked or suffering from faults.
+As a second measure, we usually protect these components with more probability of presenting an anomalous behavior~\cite{Bishop2005} to prevent such behaviors.
+In~\cite{WangLu2013}, some risk assessment methods for smart grids are presented.
 
 \paragraph{Prevention} To prevent anomalous behaviors, we secure the vulnerable components.
 Some examples follow.
-Tampering of \emph{physical components} is prevented by \emph{enclosing} them by walls and doors with \emph{access control} and adding \emph{monitoring devices} (cameras and alarms)~\cite{CardenasEtAl2008,DingEtAl2018}, persuading the attacker to not approach such components.
-Faults due to \emph{deterioration} are prevented usually by a \emph{periodical preventive maintenance}~\cite{ChenEtAl2021}, and substitution of deteriorated components by new ones.
+Tampering of \emph{physical components} is prevented by \emph{enclosing} them by walls and doors with \emph{access control} and adding \emph{monitoring devices} (cameras and alarms)~\cite{CardenasEtAl2008,DingEtAl2018}, persuading the attacker not to approach such components.
+Faults due to \emph{deterioration} are usually prevented by a \emph{periodical preventive maintenance}~\cite{ChenEtAl2021}, and substitution of deteriorated components by new ones.
 Attacks and faults caused by \emph{software vulnerabilities} may be prevented by \emph{corrective patches} that are sent to all users of the software to correct the bugs.
 Another method is \emph{software rejuvenation}~\cite{AlonsoEtAl2012,GriffioenEtAl2020}, where the system is refreshed with a trusted copy of the original software periodically, useful when there is a chance the software was corrupted.
-For communication/transmission, we increase the robustness of the mean, by using better cables with insulation and braided shields for example.
-To secure exchanges usually \emph{cryptography} is used to ensure data integrity and authenticity of agents~\cite{DingEtAl2018}. Other option to secure data is the
-\emph{blockchain} (mentioned in~\ref{sec:drawbacks}), which the proper conception can protect against deception attacks or data corruption.
-Other method to prevent deception attacks is to use a game-theoretic approach~\cite{MaestreEtAl2011,ZhuMartinez2011} which may also disincentivizes the attacker from being greedy since it knows that potentially all other agents could also be greedy. This approach can result in suboptimality.
+For communication/transmission, we increase the robustness of the mean by using better cables with insulation and braided shields, for example.
+To secure exchanges, usually, \emph{cryptography} is used to ensure data integrity and authenticity of agents~\cite{DingEtAl2018}.
+Another option to secure data is the \emph{blockchain} (mentioned in~\ref{sec:drawbacks}), which the proper conception can protect against deception attacks or data corruption.
+Another method to prevent deception attacks is to use a game-theoretic approach~\cite{MaestreEtAl2011,ZhuMartinez2011} which may also disincentivize the attacker from being greedy since it knows that potentially all other agents could also be greedy.
+This approach can result in suboptimality.
 
-~\\If prevention fails it is need to have another strategy to maintain security.
+~\\If prevention fails, it needs to have another strategy to maintain security.
 In the literature, those strategies are usually accompanied by one of two words: robustness and resilience.
 Although both terms are generally used interchangeably in the literature, here we make a distinction.
-\textbf{Robustness} can be defined as the ability to withstand perturbations without change in function~\cite{Jen2003}. \textbf{Resilience} is the ability to maintain an accepted level of operational normalcy in  response  to  disturbances,  including  threats  of  an unexpected and malicious nature~\cite{Rieger2010}.
+\textbf{Robustness} can be defined as the ability to withstand perturbations without change in function~\cite{Jen2003}. \textbf{Resilience} is the ability to maintain an acceptable level of operational normalcy in response to disturbances,  including threats of an unexpected and malicious nature~\cite{Rieger2010}.
 
-Here we interpret robust methods as more passive strategies, while resilient methods are more adaptive, active in order to reestablish a more optimal behavior.
-So we can divide the security methods into two categories: active and passive
+Here we interpret robust methods as passive strategies, while resilient methods are active and adaptive to reestablish a more optimal behavior.
+So we can divide the security methods into two categories: active and passive.
 
 \subsection{Passive strategies}\label{sec:protecting_against_attacks}
-Passive methods are usually based on robust control, where the control law implemented does not change in presence of faults or attacks.
+Passive methods are usually based on robust control, where the control law implemented does not change in the presence of faults or attacks.
 It can maintain satisfactory performance (with loss of optimality) if values of some project variables are inside a given safety range or if a certain maximum number of components present anomalous behaviors.
 
-The majority of the robust strategies is used for \ftc{}, however, depending on the similarities between faults and the attacks, some robust control approaches can be used, as indicated in~\cite{TeixeiraEtAl2015,DingEtAl2018,ArauzEtAl2021}.
+The majority of the robust strategies is used for \ftc{}.
+However, depending on the similarities between faults and the attacks, some robust control approaches can be used, as indicated in~\cite{TeixeiraEtAl2015,DingEtAl2018,ArauzEtAl2021}.
 
 For example, a \fdi{} attack could change the value of a variable just as a fault or malfunction could add a disturbance on the signal, so some passive \ftc{} techniques such as the one shown in~\cite{VahidNaghaviEtAl2014} could also be used provided that the data injected respects the bounds set by the method,
 
-Another example is in distribution grids where there is a N-1 static security index, which indicates how stable the grid is even if 1 component present a failure (or is disconnected)~\cite{QianEtAl2022}.
+Another example is in distribution grids where there is a N-1 static security index, which indicates how stable the grid is even if 1 component presents a failure (or is disconnected)~\cite{QianEtAl2022}.
 So, for a system said N-1 safe, if a component is attacked (a \DoS{} for example) the system still can present satisfactory performance.
-\citeauthor{VelardeEtAl2018} in~\cite{VelardeEtAl2017b,VelardeEtAl2018} used a similar solution based on f-robustness of graphs\footnote{Graph maintain connectivity even if a number $f$ of agents is disconnected}~\cite{DibajiIshii2015,WangIshii2019} for robust \dmpc{} based on dual decomposition. During each step of the negotiation, extreme values (the f biggest and smallest values) are ignored.
+\citeauthor{VelardeEtAl2018} in~\cite{VelardeEtAl2017b,VelardeEtAl2018} used a similar solution based on f-robustness of graphs\footnote{Graph maintain connectivity even if a number $f$ of agents is disconnected}~\cite{DibajiIshii2015,WangIshii2019} for robust \dmpc{} based on dual decomposition.
+During each negotiation step, extreme values (the f biggest and smallest) are ignored.
 
 Yet another strategy is the one in~\cite{VelardeEtAl2017a,MaestreEtAl2021}, where trustworthy historical scenarios (\mpc{} trajectories) with known occurrence probabilities are stored and used to solve the problem together with the current calculation, which may not be so reliable due to attacks.
 
 \subsection{Active strategies}\label{sec:protecting_against_attacks}
 
-For other specific kinds of anomalous behaviors, e.g.\ more ingenious attacks such as replay attacks or covert attacks, some resilient methods need to be created.
+For other specific kinds of anomalous behaviors, e.g., \ more ingenious attacks such as replay attacks or covert attacks, some resilient methods need to be created.
 The active methods are usually bi-modal.
-When there is no attack it behave in some way, and when an attack happens it changes its behavior.
+When there is no attack, it behave in some way, and when an attack happens, it changes its behavior.
 
-In order to identify an anomalous behavior, first we need some prior information about the normal behavior of the system, for example the dynamics of certain variables, bounds or any other useful information.
-With this knowledge we can supervise the threatened components and create monitors.
-This part is called the \textbf{Detection} phase, where the attack can be detected through the monitors/detectors and sometimes there is an isolation step, in which the misbehaving component/agent is identified.
-In some specific cases the isolation can occur during the detection phase.
+In order to identify an anomalous behavior, first, we need some prior information about the normal behavior of the system, for example, the dynamics of certain variables, bounds, or any other useful information.
+With this knowledge, we can supervise the threatened components and create monitors.
+This part is called the \textbf{Detection} phase, where the attack can be detected through the monitors/detectors.
+Sometimes there is an isolation step in which the misbehaving component/agent is identified.
+In some specific cases, the isolation can occur during the detection phase.
 
-Once an attack is detected, the control law changes in order to mitigate the effects of the anomalous behavior.
-This is called the \textbf{Mitigation} or \textbf{Recovery} phase.
+Once an attack is detected, the control law changes to mitigate the anomalous behavior's effects.
+This stage is called the \textbf{Mitigation} or \textbf{Recovery} phase.
 
 \subsection{Detection}
 
 The detection phase techniques can be categorized in some ways.
-For example depending if an additional signal to the monitored data is added (\textbf{active detection}) or not (\textbf{passive detection}).
+For example, depending on if an additional signal to the monitored data is added (\textbf{active detection}) or not (\textbf{passive detection}).
 
-The techniques can also be divided by they use event-triggered approaches or not.
-We give the works in~\cite{SunYang2019,HuEtAl2021,SunEtAl2022} as examples of event-triggered methods, but this work do not focus on this kind of methods.
+The techniques can also be divided by whether they use event-triggered approaches.
+We give the works in~\cite{SunYang2019,HuEtAl2021,SunEtAl2022} as examples of event-triggered methods, but this work does not focus on this kind of method.
 
-Other categorization is if the monitoring devices use analytical knowledge of the system or use learning methods.
+Another categorization is if the monitoring devices use analytical knowledge of the system or use learning methods.
 
-For active detection we can mention the \emph{watermarking} where a (pseudo) random authentication signal is superimposed to the monitored signal we want to secure~\cite{MoSinopoli2009,MoEtAl2015,SatchidanandanKumar2017,KshetriVoas2017,LuciaEtAl2021}, it can protect against replay attacks since with the knowledge of the random seed it is possible to have a unique timestamp.
+For active detection, we can mention the \emph{watermarking} where a (pseudo) random authentication signal is superimposed to the monitored signal we want to secure~\cite{MoSinopoli2009,MoEtAl2015,SatchidanandanKumar2017,KshetriVoas2017,LuciaEtAl2021}, it can protect against replay attacks since with the knowledge of the random seed it is possible to have a unique timestamp.
 
 Some passive and analytical examples can be the observators used in~\cite{HoehnZhang2016} or residues of state dynamics~\cite{TeixeiraEtAl2015,BoemEtAl2020}, which can be associated with hypothesis testing~\cite{MoSinopoli2009} ($\chi^{2}$ detectors), or other
 set membership detection as in~\cite{FortiEtAl2016} or~\cite{MaestreEtAl2018} for instance.
 Some more examples are seen in~\cite{PasqualettiEtAl2012,PasqualettiEtAl2013,ZhangEtAl2021a,ArauzEtAl2021}.
 
 For learning methods we can reference~\cite{AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} which uses
-a bayesian approach to learn bounds and detect suspect agents.
-Other example is training neural networks/deep learning to create detectors. In~\cite{HussainEtAl2021} the authors train a convolutional neural network to detect 91\% of \dDoS{} attacks of a certain kind.
+a bayesian approach to learning bounds and detecting suspect agents.
+Another example is training neural networks/deep learning to create detectors. In~\cite{HussainEtAl2021}, the authors train a convolutional neural network to detect 91\% of \dDoS{} attacks of a certain kind.
 
 In~\cite{BraunEtAl2020,BraunEtAl2020a}, the authors use an optimization problem in order to identify which part of the system has been attacked.
 
-Another method could be using coalitional control~\cite{ChanfreutEtAl2021} which can potentially cluster healthy agents and detect changes in topologies.
+Another method could be using coalitional control~\cite{ChanfreutEtAl2021}, which can potentially cluster healthy agents and detect changes in topologies.
 
 \begin{remark}\label{rem:bounds_and_error}
-As stated in~\cite{ArauzEtAl2021} is important to observe that when choosing a bound to detect anomalous behaviors there are false positives associated.
+As stated in~\cite{ArauzEtAl2021} is important to observe that when choosing a bound to detect anomalous behaviors, there are false positives associated.
 \end{remark}
 
 \subsection{Mitigation/Recovery}
-The recovery phase consists in the damage control, changing the system accordingly to reestablish normal behavior.
+The recovery phase consists of damage control, changing the system accordingly to reestablish normal behavior.
 
-The main recovery option is immediate substitution of the malfunctioning (or attacked) components by their redundancy (if there is) to prevent further consequences.
-Then we fix the component for a later reuse (if possible).
+The main recovery option is the immediate substitution of the malfunctioning (or attacked) components by their redundancy (if there is) to prevent further consequences.
+Then we fix the component for later reuse (if possible).
 
 If an immediate substitution is not possible, the control law is changed.
-The component is disconnected and we use some robust strategies which can mitigate the effects of the anomalous behavior.
-This strategies make the system to behave not exactly as originally intend, but in an satisfactory suboptimal way, until we can restore normalcy.
+The component is disconnected, and we use some robust strategies to mitigate anomalous behavior's effects.
+These strategies make the system behave not precisely as initially intended but in a satisfactory suboptimal way until we can restore normalcy.
 Examples can be~\cite{MaestreEtAl2018} in which tube-based \mpc{} to robustify against disturbances inside a safety set.
 And similarly to~\cite{VelardeEtAl2018}, in~\cite{AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020} the authors base their solution on f-local graph robustness, where suspect agents are ignored during the \dmpc{} negotiation.
 
-Another option is to use adaptive strategies which tries to estimate variables or sets and compensate the disturbances caused by the anomalous behaviors~\cite{YangEtAl2022,LuEtAl2020}.
+Another option is to use adaptive strategies, which try to estimate variables or sets and compensate for the disturbances caused by the anomalous behaviors~\cite{YangEtAl2022,LuEtAl2020}.
 
-This last strategy is the one used in \textbf{this work}, which will be detailed in the next chapters.
+This last strategy is used in \textbf{this work}, which will be detailed in the following chapters.
 \end{document}
 
