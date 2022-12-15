@@ -7,23 +7,23 @@
 We’re so glad you could attend\\ Come inside! Come inside!}
 {\textit{Karn Evil 9: 1st Impression, Pt. 2}\\\textsc{Emerson, Lake \& Palmer}}
 
-The increase of computation power and dissemination of computing devices in recent years ($\sim$ 15 years) is undeniable.
-Devices with same (or greater) computation power that took the man to the moon is today in a hand's reach and many are used to control machines everywhere.
+The increase in computation power and dissemination of computing devices in recent years ($\sim$ 15 years) is undeniable.
+Devices with the same (or greater) computation power that took man to the moon are within a hand's reach today. Many are used to control machines everywhere.
 
-With this increase on computation power, we can now solve some problems that were not solvable in a reasonable time in the past, thus the \emph{renaissance} of some optimization based methods, such as Neural networks and Artificial Intelligence.
+With this increase in computation power, we can now solve some problems that were not solvable in a reasonable time in the past. Thus the \emph{renaissance} of some optimization-based methods, such as Neural networks and Artificial Intelligence.
 
-For other more common methods, such \mpclong{} (\mpcshort)~\cite{GarciaEtAl1989}, this development meant solving more significant problems in less time, sometimes even in real-time~\cite{BesselmannEtAl2008}, and using small computation units smaller than coins~\cite{BanguraMahony2014}.
+For other more common methods, such \mpclong{} (\mpcshort)~\cite{GarciaEtAl1989}, this development meant solving more significant problems in less time. Some of those problems are solved even in real-time~\cite{BesselmannEtAl2008}, using small computation units smaller than coins~\cite{BanguraMahony2014}.
 
-Consequently, the list of possible applications of \mpc{} increased, instead of using for single equipments in petrochemical plants with large time scales, to control system with scale of districts and cities such as \wdns~\cite{ZhangEtAl2021} and \dhns~\cite{TaylorEtAl2021}.
-This presents a gradual insertion of \mpc{} into \cps{}, in which computers and physical machines are tightly coupled.
+Consequently, the list of possible applications of \mpc{} increased. Instead of using it on a single piece of equipment in petrochemical plants with large time scales, we can use it to control systems with the size of districts and cities such as \wdns~\cite{ZhangEtAl2021} and \dhns~\cite{TaylorEtAl2021}.
+This change presents the gradual insertion of \mpc{} into \cps{}, in which computers and physical machines are tightly coupled.
 
-Nevertheless, for some large-scale systems, the calculation with multiple decision variables may still be expensive, needing some subterfuges, such as distributing it into different computation units and making them communicate, to ease the computation.
-As we will see, this strategy is called \dmpc{} and it comes in many flavors.
+Nevertheless, the calculation with multiple decision variables may still be expensive for some large-scale systems. To ease the computation, we need some artifices, such as distributing it into different computation units and making them communicate.
+As we will see, this strategy is called \dmpc{}, and it comes in many flavors.
 
-However, as we will see, not so many studies have been made on the security of the \dmpc{} strategies, when units do not communicate honestly.
+However, as we will see, only a few studies have been made on the security of the \dmpc{} strategies when units do not communicate honestly.
 This work, however, studies what happens when computation units do not work cooperatively in a \dmpc{} framework.
 
-To give a perspective to a general reader on how it can affect the daily life, we present a simple qualitatively example in form of a story. The conclusion will serve as a main take-away of the possible effects of non-cooperative behaviors.
+To give a perspective to a general reader on how it can affect daily life, we present a simple qualitative example in the form of a story. The conclusion will serve as the main takeaway of the possible effects of non-cooperative behaviors.
 \newpage
 \section{When greediness backfires}
 Six o'clock on a Christmas morning.
@@ -41,7 +41,7 @@ What could go wrong?
 It seemed okay-ish until $6$ weeks ago, when the days became shorter and shorter and the air colder and colder.
 
 You climb out of bed and look at your house's central temperature control indicator. The outside temperature is $-5^{o}$C, and the mean temperature inside is $7^{o}$C.
-The thermostat is still on, indicating that the comfortable $23^{o}$C you set yesterday was still saved. However, you see a flashing dim orange light in the corner of your eye. A small LED panel indicating:
+The thermostat is still on, indicating that the comfortable $23^{o}$C you set yesterday was still saved. However, you see a flashing dim orange light in the corner of your eye. A small LED panel indicates:
 \begin{quote}
 ERR706
 \end{quote}
@@ -114,7 +114,7 @@ Fortunately, the program has an open data policy for the period of tests.
 You look into the historical data but have too much data to grasp something valuable.
 A friend gives an idea:
 \begin{quote}
-  -- What if we compare the same day of the week of the last 10 weeks? We can accumulate a loss function that depends on the deviation from the setpoints.
+  -- What if we compare the same day of the week of the last ten weeks? We can accumulate a loss function that depends on the deviation from the setpoints.
   Small values would mean good performance.
 \end{quote}
 
@@ -141,7 +141,7 @@ You plot the points and smooth the curves.
 \end{quote}
 You see the global function increasing after a given day. The increase rate steadily decreased until yesterday, when everything went awry.
 You highlight it by hatching the area in red.
-Your house, the house number $4$, has increased its function. And all other houses too. Wait! House $1$'s function decreases. Well, well, well \textellipsis
+Your house, the house number $4$, has increased its function. And all the other houses too. Wait! House $1$'s function decreases. Well, well, well \textellipsis
 You show the plots to your neighbors, who afterward confront the resident of house number $1$.
 After the indubitable proof, he finally breaks down and tells the truth.
 \begin{quote}
@@ -167,17 +167,17 @@ But first, you must catch up on the lost sleep hours and study the security of \
 Although the example given is ludic, it presents possible effects of attacks and malfunction in a \cps{}: Loss of optimality and eventually breakdown of the control strategy.
 
 While one of them can sometimes be acceptable (depending on the suboptimality), the other is absolutely inadmissible, principally when we are talking about \cps{} that are essential for the population.
-The consequences of non nominal behaviors may impact important parts of the life of the population and can even endangered it.
+The consequences of non-nominal behaviors may impact important parts of the life of the population and can even endanger it.
 
-A bibliometric study~\cite{ZacchiaEtAl2019} shows how awareness on security of \cps{} has been raised.
-This awereness was sadly motivated by many examples of attacks and faults all around the world in the last two decades.
+A bibliometric study~\cite{ZacchiaEtAl2019} shows how awareness of the security of \cps{} has been raised.
+This awareness was sadly motivated by many examples of attacks and faults all around the world in the last two decades.
 Some examples are the Brazilian blackouts in 2010~\cite{Conti2010}, the Stuxnet attack on an Iranian uranium enrichment plant in 2011~\cite{Langner2011}, attacks in Ukrainian Power System in 2016~\cite{Bindra2017} and other~\cite{DingEtAl2018,DibajiEtAl2019}.
 
 The main motivation of this work is the security of \cps{} controlled by \dmpc{}.
 We focus on the cases where the systems are attacked by ill-intentioned agents who change some variables for their own benefit.
 As we will see, these attacks are called \textbf{\fdi{} attacks}.
 
-And using the knowledge gathered throughout the study we want to be able to reduce the effects of the attacks as much as possible.
+And using the knowledge gathered throughout the study, we want to be able to reduce the effects of the attacks as much as possible.
 And to guide us on our quest, we raise some questions:
 
 \simplebox{
@@ -187,34 +187,34 @@ And to guide us on our quest, we raise some questions:
     \item Can we mitigate the effects of the attack?
   \end{itemize}
 }
-This work has as objective to answer these questions, at least for specific cases which will be formally presented.
+This work has as its objective to answer these questions, at least for specific cases which will be formally presented.
 
 To understand and answer those questions, we divide this work into two parts.
 
-\paragraph{Part~\ref{part:mpc_intro}} It serves as a gentle introduction to \dmpc{} design, security and attacks in \cps{} and the choices in this work for each one of those steps.\footnote{A reader accustomed with the theme is refered to Part~\ref{part:safe_dmpc}.}
+\paragraph{Part~\ref{part:mpc_intro}} It serves as a gentle introduction to \dmpc{} design, security, and attacks in \cps{} and the choices in this work for each one of those steps.\footnote{A reader accustomed with the theme is referred to Part~\ref{part:safe_dmpc}.}
 
-For an unfamiliar reader, Chapter~\ref{sec:decomposing_mpc} explains what is a \mpc{} to begin with and shows some of the challenges to decompose it.
-Chapter~\ref{sec:topology_trust} discuss possible topologies used for those decompositions.
-In Chapter~\ref{sec:anomalous} we define anomalous behaviors, categorize them and present some methods used in the literature to prevent and combat them.
+For an unfamiliar reader, Chapter~\ref{sec:decomposing_mpc} explains what is a \mpc{} to begin with and shows some of the challenges of decomposing it.
+Chapter~\ref{sec:topology_trust} discusses possible topologies used for those decompositions.
+In Chapter~\ref{sec:anomalous}, we define anomalous behaviors, categorize them and present some methods used in the literature to prevent and combat them.
 
 \paragraph{Part~\ref{part:safe_dmpc}} It contains the contributions of this work.
 
 We begin with a brief recapitulation of the choices made in each of the chapters in Part~\ref{part:mpc_intro} and a comparison between the methods in this work and the most adjacent works in the literature.
 \\Chapter~\ref{sec:primal_decomposition} presents the decomposition studied in this work (primal decomposition). We present its vulnerabilities and how they can affect the performance of the system. Here we formalize the example given in the story, giving it a more quantitative approach.
 Once we know the vulnerabilities and possible effects of attacks, we divide the mitigation problem into more manageable parts.
-\\ First in Chapter~\ref{sec:safe_pddmpc_eq}, we analyze an unsophisticated problem, so we can assess the difficulties that can be found when solving the mitigation problem. From the analysis of the problem we propose a detection and mitigation mechanism, followed by an academical example to illustrate its functioning.
-\\Then, in Chapter~\ref{sec:safe_pddmpc_ineq}, we analyze a similar problem but with a twist. As we will see, just one small modification on the initial problem can increase exponentially its complexity.
-From the analysis of the newly-found problem we propose a similar strategy, but with adequate modifications to contain the exponential nature of the problem.
+\\ First, in Chapter~\ref{sec:safe_pddmpc_eq}, we analyze an unsophisticated problem, so we can assess the difficulties that can be found when solving the mitigation problem. From the analysis of the problem, we propose a detection and mitigation mechanism, followed by an academic example to illustrate its functioning.
+\\Then, in Chapter~\ref{sec:safe_pddmpc_ineq}, we analyze a similar problem but with a twist. As we will see, just one small modification to the initial problem can increase its complexity exponentially.
+From the analysis of the newly-found problem, we propose a similar strategy but with adequate modifications to contain the exponential nature of the problem.
 % \todo{\\Finally, we continue in Chapter~\ref{sec:safe_pddmpc_ineq_reconst} the methodology and explore some more properties to create a less conservative strategy.}
-\\We conclude this work in Chapter~\ref{sec:conclusion} with a discussion about the results found during this study, benefits as well as shortcomings. Some of this discussion leads to open questions which can incite new works.
+\\We conclude this work in Chapter~\ref{sec:conclusion} with a discussion about the results found during this study, benefits as well as shortcomings. Some of this discussion leads to open questions that can incite new works.
 
 \subsubsection{Contributions}
 We can list as a minor contribution of this work the study of vulnerabilities of Primal decomposition-based \dmpc{}, which wasn't studied to the best of our knowledge,
-and as main contributions two mitigation strategies for different kind of systems with increasing complexities.
+and as main contributions, two mitigation strategies for different kinds of systems with increasing complexities.
 
 The first strategy, for systems where the total resources available are not enough to satisfy local demands, we call this systems \textbf{Deprived Systems}.
 
-The second one, for a exponentially more complex class of systems, where we assume the local demands respect at least some constraints, which we can use to get scarcity information by means we call \textbf{artificial scarcity}.
+The second one is for an exponentially more complex class of systems, where we assume the local demands respect at least some constraints, which we can use to get scarcity information by means we call \textbf{artificial scarcity}.
 
 % \todo{And finally a more general and complex, when there is no scarcity information available}
 % Since those questions are still open, this work has as objective to discuss these questions by analyzing the recent literature and schematizing the security in decomposition methods for Model Predictive Control passing by the following items:
@@ -241,7 +241,7 @@ All the simulations were done using a PC with
 \item [Processor] Intel(R) Core(TM) i7-8750H CPU @ 2.20GHz
 \item [Memory] 15GiB System memory
 \end{description}
-under an GNU/Linux system based on architecture x86\_64 with
+under a GNU/Linux system based on architecture x86\_64 with
 \begin{description}
     \item[Linux kernel] version 5.4.0-73-generic
     \item[Ubuntu distribution] version \#82~18.04.1-Ubuntu SMP Fri Apr 16 15:10:02 UTC 2021
