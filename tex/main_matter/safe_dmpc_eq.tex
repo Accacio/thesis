@@ -8,7 +8,7 @@
 
 In this chapter, we focus on the analysis of the primal decomposition-based \dmpc{} problem for deprived systems when in the presence of the attack chosen in~\S\ref{sec:anomalous}.
 
-With the knowledge acquired after the analysis, we propose a method to detect the attacks and mitigate its effects.
+With the knowledge acquired after the analysis, we propose a method to detect the attacks and mitigate their effects.
 
 \minitoc
 
@@ -16,7 +16,7 @@ With the knowledge acquired after the analysis, we propose a method to detect th
 \section{Deprived systems under attack}\label{sec:analys-deprived-syst}
 
 Different from~\cite{VelardeEtAl2018,MaestreEtAl2021} which propose robust solutions, we propose a resilient \dmpc{} based on a hybrid of analytical/learning active detection method.
-For this end, we begin with an analysis of the system under attack.
+To this end, we begin with an analysis of the system under attack.
 
 \subsection{Deprived Systems}\label{sec:deprived-systems}
 First we recall the monolithic \mpc{} equivalent problem~\eqref{eq:qp_standard_form}, once more reproduced for the reader's convenience,
@@ -77,13 +77,13 @@ Furthermore, in this chapter, we assume that for all sub-systems, their unconstr
 \begin{equation}
 \bar{\Gamma}_{i}\optuncUik\succ \thetaik, \forall i\in\set{M}, \forall k,
 \end{equation}
-i.e., even if all resources were allocated for a single subsystem, it still could not fulfill its needs.
+i.e., even if all resources were allocated for a single sub-system, it still could not fulfill its needs.
 
 These assumptions mean that the optimal solution for each problem would need more resources (more than $\vec{U}_{\max}$).
 So, the solution to those \qp{} problems is the weighted\footnote{A \qp{} problem can be seen as weighted projection, in which the set measure is weighted by $H$ and the original pointed is translated using $\vec{f}_i[k]$} projection of the unconstrained solutions onto the polytope.
 Thus, projecting onto the perimeter of the polytope.
 
-We assume that given projection solves the inequality constrained problem equivalent to an equality constraint problem
+We assume that the given projection solves the inequality-constrained problem equivalent to an equality-constraint problem
 \begin{equation}
   \label{eq:qp_standard_form_equality}
   \begin{aligned}
@@ -122,13 +122,13 @@ These are the equations we will use for our analysis.
   ${\set{S}=\setbuild{\vec{x}}{\bar{\Gamma}\vec{x}\preceq\vec{U}_{\max}}=\bigcap\limits_{i=1}^{c}}\set{S}_{i}$
   (and conversely for $\bar{\Gamma}_{i}$ and $\thetaik$).
 
-  So, to find the equivalent $\bar{\Gamma}_{\text{eq}}$ (or $\bar{\Gamma}_{i_{\text{eq}}}$) for the equality constraint problem, only the active halfspaces are kept and transformed into intersection of hyperplanes (equality constraint).
+  So, to find the equivalent $\bar{\Gamma}_{\text{eq}}$ (or $\bar{\Gamma}_{i_{\text{eq}}}$) for the equality constraint problem, only the active halfspaces are kept and transformed into the intersection of hyperplanes (equality constraint).
   This computation of active/inactive sets may be costly depending on the number of halfspaces used and the dimensions of the variables.
   Some binary-search-tree and other techniques may be used to increase performance~\cite{SchulzeEtAl2022,AlessioBemporad2009}.
 
-  If we assume the feasible regions of $\bar{\Gamma}$ (and $\bar{\Gamma}_{i}$) to form a cone, if the systems are deprived, $\bar{\Gamma}_{\text{eq}}=\bar{\Gamma}$ (and $\bar{\Gamma}_{i_\text{eq}}=\bar{\Gamma}_i$)\footnote{This can be easily proven geometrically, when a point do not respect any of the inequality constraints the projection onto the cone will be its apex (which coincides with the intersection of the equivalent hyperplanes).}.
+  If we assume the feasible regions of $\bar{\Gamma}$ (and $\bar{\Gamma}_{i}$) to form a cone, if the systems are deprived, $\bar{\Gamma}_{\text{eq}}=\bar{\Gamma}$ (and $\bar{\Gamma}_{i_\text{eq}}=\bar{\Gamma}_i$)\footnote{This can be easily proven geometrically when a point do not respect any of the inequality constraints the projection onto the cone will be its apex (which coincides with the intersection of the equivalent hyperplanes).}.
 
-One way to ensure this, is to make the original constraint~\eqref{eq:linear_constraint} to have at most as many rows as columns, i.e., $\card{\vec{u}_{\max}}\leq n_{u}$, although it may be a little restrictive.
+One way to ensure this is to make the original constraint~\eqref{eq:linear_constraint} to have at most as many rows as columns, i.e., $\card{\vec{u}_{\max}}\leq n_{u}$, although it may be a little restrictive.
 
 So, from now on, we make this assumption and use $\bar{\Gamma}$ and $\bar{\Gamma}_{i}$.
 
@@ -142,21 +142,21 @@ When a system does not suffer from scarcity, the solution of the unconstrained p
 \bar{\Gamma}\optuncU\preceq {\vec{U}}_{\text{max}},\forall k.
 \end{equation}
 
-This way, the elements of $\optuncU$ lie inside the polytope and all the constraints are inactive.
-As a consequence, no projection onto the polytope is needed, since it would result in the same point.
-That means the solution of the constrained problem is the same as the unconstrained, so the problem is in fact unconstrained.
+This way, the elements of $\optuncU$ lie inside the polytope, and all the constraints are inactive.
+As a consequence, no projection onto the polytope is needed since it would result in the same point.
+That means the solution to the constrained problem is the same as the unconstrained, so the problem is, in fact, unconstrained.
 
 Instead of needing to solve the local problems~\eqref{eq:DOP_local_reprise} and use a negotiation to decompose the system, the problem does not need coordination.
-The problem is solved as shown in \S\ref{sec:uncoupled_problems}, i.e., each subsystem solves~\eqref{eq:qp_standard_form_unconstrained_solution} and the solution is already given.
+The problem is solved as shown in \S\ref{sec:uncoupled_problems}, i.e., each sub-system solves~\eqref{eq:qp_standard_form_unconstrained_solution} and the solution is already given.
 
-This case is uninteresting because since the agents do not need to compromise to find a consensus, there is no incentive to attack the system to gain more resources since it would not be used and it would not affect the others, who would be nevertheless satisfied.
-Furthermore, since no negotiation is needed, there is no communication and the agent would need to find other ways to attack the system.
+This case is uninteresting because since the agents do not need to compromise to find a consensus, there is no incentive to attack the system to gain more resources since it would not be used, and it would not affect the others, who would be nevertheless satisfied.
+Furthermore, since no negotiation is needed, there is no communication, and the agent would need to find other ways to attack the system.
 
-When the system suffer from scarcity the agents are forced to compete and compromise, what may result in attacks as shown in \S\ref{sec:primal_decomposition} and their dire consequences.
+When the system suffers from scarcity, the agents are forced to compete and compromise, which may result in attacks as shown in \S\ref{sec:primal_decomposition} and their dire consequences.
 
 \subsection{Analysis of local problems}\label{sec:analysis-local-problems}
 Since the optimization problems~\eqref{eq:example_local_problem_reprise} are \qp{} problems with equality constraints, it is known that they have analytical solution~\cite{BoydVandenberghe2004}.
-To find this solution we usually use the Lagrange duality, so $\lambdaik$ will also have analytical solution in this case.
+To find this solution, we usually use the Lagrange duality, so $\lambdaik$ will also have an analytical solution in this case.
 First, to simplify the notation we define a function $\equalityfunctionname:\R^{\card\vec{U}_{i}[k]}\times \R^{c}$, defined as
 \begin{equation}
   \label{eq:lagrangian_equality}
@@ -218,7 +218,7 @@ As presented in~\cite{BoydVandenberghe2004} and as we can see from inspecting~\e
   \end{matrix}
 \end{equation}
 
-Similarly, using first order \KKT{} condition we make the gradient of $\dualfunction$ vanish
+Similarly, using first-order \KKT{} condition we make the gradient of $\dualfunction$ vanish
 \begin{equation}
 \nabla_{\lambdaik}\dualfunction=0,
 \end{equation}
@@ -238,7 +238,7 @@ Furthermore, because of the quadratic form, the solution is an affine function.
 \end{remark}
 
 \subsection{Analysis of negotiation}\label{sec:analysis-negotiation}
-Using the results of equation~\eqref{eq:example_projectedSubgradient_lambda_reprise}, we can observe the dynamics of $\thetai$ and $\lambdai$ during a negotiation, and from this get some insight for future detection and mitigation methods.
+Using the results of equation~\eqref{eq:example_projectedSubgradient_lambda_reprise}, we can observe the dynamics of $\thetai$ and $\lambdai$ during a negotiation and, from this, get some insight for future detection and mitigation methods.
 
 \subsubsection{Dynamics of $\lambdai$}
 We can analyze the dynamics of $\lambdai$ by substituting
@@ -270,7 +270,7 @@ I-\frac{M-1}{M}\rho\p \Plin[1] & \frac{1}{M}\rho\p \Plin[1]&\dots&\frac{1}{M}\rh
 \right],
 \end{equation}
 which is a \dt{} homogeneous system.
-The system varies with time, since $\rho$ changes with $p$, but usually it vanishes as it approaches infinity, as seen in~\eqref{eq:rho_update}.
+The system varies with time since $\rho$ changes with $p$, but usually, it vanishes as it approaches infinity, as seen in~\eqref{eq:rho_update}.
 So, we can use Lyapunov criteria~\cite[\S8.6]{Hespanha2009}, i.e., the eigenvalues of $\mathcal{A}_{\lambda}$, must be inside the unit circle for the system to be stable.
 For smaller systems, we can use Jury's criteria to test the system~\cite{Jury1962}.
 
@@ -290,7 +290,7 @@ If we suppose the system is under attack, we can use the attack model~\eqref{eq:
   \lambdaicheat[k]=\Tik\lambdaik.
 \end{equation}
 Any agent could be the perpetrator of the attack (potentially multiple agents may attack simultaneously), so we use the model for all agents.
-Remaking the last steps with this attack model we can finally have the dynamics of the attacked system:
+Remaking the last steps with this attack model, we can finally have the dynamics of the attacked system:
 % \begin{equation}
 % \tilde{\lambdai}\pplusone=\Tik\left(-\Plin\left(\thetai\p+\rho\p\left(\lambdaicheat\p-\frac{1}{M}\sum_{j=1}^{M}\tilde{\vec{\lambda}}_{j}\p\right)\right)-\sik\right).
 % \end{equation}
@@ -331,7 +331,7 @@ and substituting $\lambdaik$ by~\eqref{eq:lambda_function_theta}, which yields
  \thetai\pplusone=\thetai\p+\rho\p\left((-\Plin\thetai\p-\sik)-\frac{1}{M}\sum_{j\in\set{M}}(-\Plin[j]\vec{\theta}_{j}\p-\vec{s}_{j}[k])\right),\forall i\in\set{M}.
 \end{equation}
 
-As we can see, we can separate the function into two parts, one which depends on $\thetai$ and other which do not:
+As we can see, we can separate the function into two parts, one which depends on $\thetai$ and the other which does not:
 \begin{equation}
   \label{eq:negotiation_equation_substituting_organizing}
  \thetai\pplusone=\thetai\p+\rho\p\left(-\Plin\thetai\p+\frac{1}{M}\sum_{j\in\set{M}}\Plin[j]\vec{\theta}_{j}\p\right)+\rho\p\left(-\sik+\frac{1}{M}\sum_{j\in\set{M}}\vec{s}_{j}[k]\right),\forall i\in\set{M}.
@@ -374,23 +374,24 @@ So, $1$ is one of the left eigenvalues of the matrix:
   \label{eq:1}
   \1^{T}\mathcal{A}_{\theta}=\1^{T}
 \end{equation}
-As expected the system conserves mass, i.e., the $\theta_{i}$ must respect the global equality constraint.
+As expected, the system conserves mass, i.e., the $\theta_{i}$ must respect the global equality constraint.
 This way, the linear dependence between $\theta_{i}$ is explicit.
-If we analyze the columns, on the other hand, we see that they not sum to $1$.
-This means, if the system converges, not necessarily it will converge in such way the $\theta_{i}$ are equal.
+If we analyze the columns, on the other hand, we see that they do not sum to $1$.
+This means if the system converges, it will not necessarily converge in such a way the $\theta_{i}$ are equal.
 Again, it would be the case if the $\Plin$ were equal.
 
 As we can see, the values of the eigenvalues depend only on the values of $\Plin$ and $\rho\p$.
 Since the $\Plin$ are system parameters, the designer of the control can only tune $\rho\p$.
 
-Once $\rho\p$ is well tuned for the corresponding system, the matrix $\mathcal{A}_{\theta}$ evolves always in the same way.
-So if there is a change in this evolution, it means an the system presents an anomalous behavior.
+Once $\rho\p$ is well tuned for the corresponding system, the matrix $\mathcal{A}_{\theta}$ always evolves in the same way.
+So if there is a change in this evolution, it means the system presents an anomalous behavior.
 
-As can be observed, any disturbance in $\Plin$ (change in objective function or constraints) changes the values of $\mathcal{A}_{\theta}$, thus the system's dynamic. This change may destabilize it if drives the eigenvalues outside the unit circle, as shown in \S\ref{sec:attack-interest}.
-On the other hand, perturbations in $\sik$ (modification of objective function, constraints or state/reference) may change the steady state value (change in $\mathcal{\vec{B}}_{\theta}[k]$).
+As can be observed, any disturbance in $\Plin$ (change in the objective function or constraints) changes the values of $\mathcal{A}_{\theta}$, thus the system's dynamic.
+This change may destabilize it if it drives the eigenvalues outside the unit circle, as shown in \S\ref{sec:attack-interest}.
+On the other hand, perturbations in $\sik$ (modification of objective function, constraints, or state/reference) may change the steady-state value (change in $\mathcal{\vec{B}}_{\theta}[k]$).
 
-If we suppose the system is under attack, we use again the attack model~\eqref{eq:linear_attack_reprise}.
-We suspect all agents and we modify~\eqref{eq:lambda_function_theta} accordingly. Then we substitute it into~\eqref{eq:example_projectedSubgradient_lambda_reprise}.
+If we suppose the system is under attack, we again use the attack model~\eqref{eq:linear_attack_reprise}.
+We suspect all agents, and we modify~\eqref{eq:lambda_function_theta} accordingly. Then we substitute it into~\eqref{eq:example_projectedSubgradient_lambda_reprise}.
 Then, we can have the dynamics of an attacked system
 \begin{equation}
   \label{eq:negotiation_equation_substituting_organizing_tilde}
@@ -426,11 +427,11 @@ This way, the attackers need to compromise between their greediness and not brea
 As one can notice, we could create an anomaly detector by supervising the matrix $\mathcal{A}_{\theta}$.
 Once there is a change in some of the variables (or in its eigenvalues) an anomalous behavior is detected.
 
-Unfortunately, this method gives us only a detection, but not necessarily from which agent the anomaly comes, what could useful for a mitigation algorithm.
+Unfortunately, this method gives us only detection, but not necessarily from which agent the anomaly comes, which could be useful for a mitigation algorithm.
 Besides, if we were to estimate all elements of $\mathcal{A}_{\theta}$, we would need to estimate $M^{2}{(c)}^{2}$ elements\footnote{$M^{2}$ blocks of size ${c}$}.
-Exploiting the known structures of the matrix and their blocks, we could reduce to at least $2M{(\frac{c+{c}^{2}}{2})}$ elements\footnote{($M$ diagonal + $M$ off diagonal) symmetric blocks of size ${c}$ (only upper triangle)}.
+Exploiting the known structures of the matrix and their blocks, we could reduce to at least $2M{(\frac{c+{c}^{2}}{2})}$ elements\footnote{($M$ diagonal + $M$ off-diagonal) symmetric blocks of size ${c}$ (only upper triangle)}.
 
-In the next section, we derive a detection mechanism, also based on estimation, which can not only detect the attacks, but also isolate the perpetrators, estimating only half of the elements cited.
+In the next section, we derive a detection mechanism, also based on estimation, which can not only detect the attacks but also isolate the perpetrators, estimating only half of the elements cited.
 
 \section{A detection mechanism}\label{sec:detection-mechanism}
 
@@ -440,11 +441,11 @@ Using~\eqref{eq:linear_attack_reprise} we can rewrite~\eqref{eq:lambda_function_
 \lambdaicheat[k]=-\Plintilde\thetaik-\tilde{\vec{s}}_{i}[k],
 \end{equation}
 where $\Plintilde=\Tik\Plin$ and $\tilde{\vec{s}}_{i}[k]=\Tik\sik$.
-We can interpret as the cheating matrix $\Tik$ altering both $\Plin$ and $\sik$.
+We can interpret it as if the cheating matrix $\Tik$ alters both $\Plin$ and $\sik$.
 
-Since $\Plin$ is constant, any change between two different negotiations is a consequence of an anomalous behavior, in this case, caused by $\Tik$.
+Since $\Plin$ is constant, any change between two different negotiations is a consequence of anomalous behavior, in this case, caused by $\Tik$.
 
-Using the relationship between $\thetaik$ and $\lambdaik$, we can supervise the exchanges between coordinator and agents, and find estimates $\Plintildeestimate$ and $\siktildeestimate$ such
+Using the relationship between $\thetaik$ and $\lambdaik$, we can supervise the exchanges between coordinator and agents and find estimates $\Plintildeestimate$ and $\siktildeestimate$ such
 \begin{equation}
   \lambdaicheat[k]=-\Plintilde\thetaik-\tilde{\vec{s}}_{i}[k],
 \end{equation}
@@ -460,38 +461,38 @@ and an detection function $d_{i}$:
 \end{equation}
 detecting an attack when the bound is disrespected, i.e., $d_{i}=1$.
 \begin{remark}
-  Observe that as shown in Remark~\ref{rem:bounds_and_error}, the choice of $\epsilon_{\Plin}$ can influence the false-positives.
-  For instance, it needs to be bigger than the estimation error on the attack free scenario.
+  Observe that as shown in Remark~\ref{rem:bounds_and_error}, the choice of $\epsilon_{\Plin}$ can influence the false positives.
+  For instance, it needs to be bigger than the estimation error in the attack-free scenario.
   The calculation of the errors and their propagation is not in the scope of this work.
 \end{remark}
 
 \begin{remark}
-  Observe that if the estimation does not converge, it means the linear relation ceased to exist and there is an anomalous behavior, we can also set the indicator to $1$.
+  Observe that if the estimation does not converge, it means the linear relation ceased to exist, and there is an anomalous behavior, we can also set the indicator to $1$.
 \end{remark}
 
 But yet, we need to estimate $\Plintildeestimate$.
 So, a brief discussion about the estimation follows.
 
 \begin{remark}
-  The nominal values $\Plinnominal$ may be given or estimated using the same method shown next, but using reliable attack-free historical data, for instance, as a cold start of the system.
+  The nominal values $\Plinnominal$ may be given or estimated using the same method shown next but using reliable attack-free historical data, for instance, as a cold start of the system.
 \end{remark}
 
 \subsection{Considerations about parameter estimation}\label{sec:about-estimation}
 As commented, we can supervise the exchanges and gather multiple values of $\thetai$ and $\lambdai$ to serve as an input dataset to the chosen estimation method.
 
-For instance we can choose any of the method in the \LS{} family~\cite{AstroemWittenmark1989}.
-We have chosen \RLS{}, because for the normal \LS{} we would need at least as many input-output tuples $(\thetai,\lambdai)$ as parameters to estimate ($\card\Plin\card\sik$ elements in the worst case).
-However, since the values of $\Plin$ should not vary from one negotiation to other, if we use the last estimation as initial condition for a \RLS{} algorithm, we can gain in the time for estimation convergence.
+For instance, we can choose any method in the \LS{} family~\cite{AstroemWittenmark1989}.
+We have chosen \RLS{} because for the normal \LS{}, we would need at least as many input-output tuples $(\thetai,\lambdai)$ as parameters to estimate ($\card\Plin\card\sik$ elements in the worst case).
+However, since the values of $\Plin$ should not vary from one negotiation to other, if we use the last estimation as the initial condition for a \RLS{} algorithm, we can gain in the time for estimation convergence.
 \begin{remark}
-  Observe that since we are estimating simultaneously $\sik$, which changes w.r.t. time $k$ for smaller systems the difference between convergence times may be negligible.
+  Observe that since we are simultaneously estimating $\sik$, which changes w.r.t. time $k$ for smaller systems, the difference between convergence times may be negligible.
 \end{remark}
 
 In \RLS{}, to estimate a parameter $\rlsparam$, we use a regression model using the inputs and outputs (regressors $\rlssysinput$ and regressands $\rlssysoutput$) that enable us to calculate a residual $\epsilon$.
 This residual, allied with a gain $\rlsgain$, is used to update estimates of $\rlsparam$.
-Since the exact paramater values are not known initially, a initial estimate is used.
+Since the exact parameter values are not known initially, an initial estimate is used.
 To reduce errors caused by the initial estimate and possible discrepant input-output data (noisy data), a forgetting term $\rlsforget$ is used to update the gain $\rlsgain$, forgetting past events and maintaining new ones.
 
-Initially, we use~\eqref{eq:lambda_function_theta_tilde} directly as regression model, transforming it in the usual form
+Initially, we use~\eqref{eq:lambda_function_theta_tilde} directly as a regression model, transforming it into the usual form
 
 \begin{equation}
   \rlssysinput\rlsparam=\rlssysoutput,
@@ -513,7 +514,8 @@ where $\rlsparam$ is the parameter vector we want to estimate ($\Plintildeestima
   \right].
 \end{equation}
 
-Using this methods, we need to estimate all elements of $\Plintildeestimate$ and $\siktildeestimate$, which results into ${c^{2}+c}$ elements. But as the $\Plintildeestimate$ are symmetric, we can estimate only their upper triangle, reducing the number of total estimated elements to ${\frac{c^{2}+3c}{2}}$.
+Using this method, we need to estimate all elements of $\Plintildeestimate$ and $\siktildeestimate$, which results in ${c^{2}+c}$ elements.
+But as the $\Plintildeestimate$ are symmetric, we can estimate only their upper triangle, reducing the number of total estimated elements to ${\frac{c^{2}+3c}{2}}$.
 
 
 Then, we restructure $\rlsparam$ accordingly:
@@ -595,10 +597,10 @@ Algorithm~\ref{alg:update_rls} shows how to calculate a new parameter estimate $
   \caption{Update of \RLS{} to estimate $\Plintildeestimate$ and $\siktildeestimate$ simultaneously.}\label{alg:update_rls}
 \end{algorithm2e}
 
-Observe, that as much we could be tempted to use the algorithm to estimate during the negotiation, such algorithm would not work throughout the negotiation exchanges.
-The fact that $\lambdai$ depends on $\thetai$ and vice-versa makes them both to behave as \dt{} system (as we saw in~\S\ref{sec:analysis-negotiation}).
+Observe that as much we could be tempted to use the algorithm to estimate during the negotiation, such an algorithm would not work throughout the negotiation exchanges.
+The fact that $\lambdai$ depends on $\thetai$ and vice-versa makes them both behave as \dt{} system (as we saw in~\S\ref{sec:analysis-negotiation}).
 This dependency decreases the excitation of the algorithm as the negotiation gets closer to a consensus (converging case) and less new information about the system is given.
-As seen in~\cite{AstroemWittenmark1989}, this makes the solution of the \LS{} problem not unique, regressor matrix becomes singular.
+As seen in~\cite{AstroemWittenmark1989}, this makes the solution of the \LS{} problem not unique, and the regressor matrix becomes singular.
 One way to artificially increase the excitation of the inputs is to change the inputs.
 For instance, the coordinator would supervise the agents by sending $\thetai$ which do not follow~\eqref{eq:example_projectedSubgradient_lambda_reprise}.
 
@@ -606,12 +608,12 @@ We opted to use a random noise as input, and once the estimates converge, we can
 As seen in~\cite[\S3.4]{AstroemWittenmark1989}, a random signal has persistent excitation of any order, i.e., any system will continue to be excited as long the signal is applied.
 
 \begin{remark}
-  Other considerations about initialization of $\rlsparam$ and the choice of forgetting parameter $\rlsforget$ can be made, but is out of the scope of this work.
+  Other considerations about the initialization of $\rlsparam$ and the choice of forgetting parameter $\rlsforget$ can be made but is out of the scope of this work.
 \end{remark}
 
 \subsection{Complete detection technique}\label{sec:compl-detect-algor}
 Using all the pieces presented in the last subsections, we can finally put them together and create a detection algorithm.
-First, we estimate $\Plintildeestimate$ and then we compare the estimate with the nominal value of $\Plin$.
+First, we estimate $\Plintildeestimate$, and then we compare the estimate with the nominal value of $\Plin$.
 We can systematize the detection technique in Algorithm~\ref{alg:detection_rls}.
 
 \begin{algorithm2e}[h]
@@ -639,34 +641,34 @@ We can systematize the detection technique in Algorithm~\ref{alg:detection_rls}.
 \end{algorithm2e}
 
 Once the attackers are identified via function $d_{i}$, we need to mitigate the possible effects of the attack.
-In the next section we considerate some hints on how to mitigate the effects changing minimally the decomposition, and after the analyze we propose a mitigation method.
+In the next section, we consider some hints on how to mitigate the effects while changing the decomposition minimally, and after the analysis, we propose a mitigation method.
 
 \section{Mitigation}\label{sec:mitigation}
 
-The first effect we want to mitigate, is the possible destabilization of matrix $\tilde{\mathcal{A}_{\theta}}[k]$.
+The first effect we want to mitigate is the possible destabilization of matrix $\tilde{\mathcal{A}_{\theta}}[k]$.
 And the second is the drift caused by changes in $\tilde{\mathcal{\vec{B}}}_{\theta}[k]$.
 
-As we saw, in the coordinator's perspective, the attack comes from the modification of $\lambdai$ by the attacking agent.
-So, the first idea is to instead of using the $\lambdai$ received from the attacker, the coordinator uses a modified version, here we denote $\lambdaimodified$.
+As we saw, from the coordinator's perspective, the attack comes from the modification of $\lambdai$ by the attacking agent.
+So, the first idea is that instead of using the $\lambdai$ received from the attacker, the coordinator uses a modified version, here denoted $\lambdaimodified$.
 
-The value of the modified $\lambdaimodified$, depends on the type of mitigation chosen.
+The value of the modified $\lambdaimodified$ depends on the type of mitigation chosen.
 For instance, we can give a simple qualitative example.
 
 \subsubsection{Qualitative example}\label{sec:qualitative-example}
 
 Imagine a simple system composed of two \ltidt{} $1$-dimensional sub-systems, input constrained, controlled using the \dmpc{} framework presented in this work, \qp{} problems
 and all other conditions set in this chapter.
-To facilitate visualization we suppose the prediction horizon is $\predhorz=1$ and the agents have local constraints $\vec{u}_{i}\geq\0$.
+To facilitate visualization, we suppose the prediction horizon is $\predhorz=1$, and the agents have local constraints $\vec{u}_{i}\geq\0$.
 
 If we plot the level curves of the system (Fig.~\ref{fig:original_minimum}), we can see how the unconstrained minimum is projected (weighted projection) onto the hyperplane.
-The projection yields the constrained solution of the problem (blue dot).
+The projection yields the constrained solution to the problem (blue dot).
 \begin{figure}[h]
   \centering
   \includegraphics[width=7cm]{../img/resilient_eq/original-minimum.pdf}
   \caption{Original minimum.}\label{fig:original_minimum}
 \end{figure}
 
-Once one the agents attacks the system using~\eqref{eq:linear_attack_reprise}, the level curves are distorded, as seen in Fig.~\ref{fig:minimum_after_attack}.
+Once one of the agents attacks the system using~\eqref{eq:linear_attack_reprise}, the level curves are distorted, as seen in Fig.~\ref{fig:minimum_after_attack}.
 This distortion changes the projection, resulting in a new constrained solution (in green dot).
 \begin{figure}[h]
   \centering
@@ -674,25 +676,26 @@ This distortion changes the projection, resulting in a new constrained solution 
   \caption{Minimum after attack.}\label{fig:minimum_after_attack}
 \end{figure}
 
-If the attacker is detected, one of our options to mitigate this drift is to substitute the $\lambdaicheat$ received during a negotiation by $\0$.
+If the attacker is detected, one of our options to mitigate this drift is to substitute the $\lambdaicheat$ received during the negotiation by $\0$.
 It can be interpreted as the coordinator punishing the attacker by assuming it will always be satisfied independent of the allocation given.
-The negligence against the attacker will result in it receiving less and less resources. Asymptotically, the system will behave as the attacker was unplugged, since the negotiation will be maintained with the other agents, somehow similar to the examples in~\cite{VelardeEtAl2018,MaestreEtAl2021}.
+The negligence against the attacker will result in it receiving fewer and fewer resources.
+Asymptotically, the system will behave as if the attacker was unplugged since the negotiation will be maintained with the other agents, somehow similar to the examples in~\cite{VelardeEtAl2018,MaestreEtAl2021}.
 
-In Fig.~\ref{fig:minimum_ignoring_attacker}, we see the new level curves and the new solution found (orange dot) when ignoring the attacker.
+In Fig.~\ref{fig:minimum_ignoring_attacker}, we see the new level curves, and the new solution found (orange dot) when ignoring the attacker.
 \begin{figure}[h]
   \centering
   \includegraphics[width=7cm]{../img/resilient_eq/ignoreX.pdf}
   \caption{Optimal value after ignoring attacker.}\label{fig:minimum_ignoring_attacker}
 \end{figure}
 
-Although the idea of punishing the attacker by ignoring it may appear reasonably, since the system is a \cps{}, it may control some amenity that needs a minimal \QoS{}.
+Although the idea of punishing the attacker by ignoring it may appear reasonable, since the system is a \cps{}, it may control some amenity that needs a minimal \QoS{}.
 If we are controlling a \HVAC{} system, for instance, depending on the region of the planet, turning the heat off of the attacker could make the users extremely cold, as in the introductory example in Chapter~\ref{sec:introduction}.
 
-A solution would be to, before the negotiation, allocate minimal resources for the attacker, and then ignore it throughout the negotiation using the remainder of the resources, subtracting the maximum by the allocated for the attacker.
-However, it would be needed to assess somehow what would be the fair amount to give to the attacker, which would not prejudice other agents.
+A solution would be to, before the negotiation, allocate minimal resources for the attacker and then ignore it throughout the negotiation using the remainder of the resources, subtracting the maximum by the allocated for the attacker.
+However, it would be necessary to assess somehow what would be a fair amount to give to the attacker, which would not prejudice other agents.
 
 We propose yet another solution, in which we try to recover the nominal behavior if some assumptions are guaranteed.
-Passing from the level curves of the attacked system (Fig.~\ref{fig:minimum_after_attack}) to the shown in Fig.~\ref{fig:minimum_recovered}, where the new minimum lies in a neighboorhood of the original one (in Fig.~\ref{fig:original_minimum}).
+Passing from the level curves of the attacked system (Fig.~\ref{fig:minimum_after_attack}) to the shown in Fig.~\ref{fig:minimum_recovered}, where the new minimum lies in a neighborhood of the original one (in Fig.~\ref{fig:original_minimum}).
 
 \begin{figure}[h]
   \centering
@@ -732,7 +735,7 @@ And with the estimate $\Tikinvestimate$, we can try to reconstruct $\lambdai$:
   \lambdaireconstructed=-\Plinnominal\thetai-\Tikinvestimate\siktildeestimate
 \end{equation}
 
-So, we can modulate the negotiation algorithm, by using $\lambdaimodified$ choosing what version of $\lambdai$ to choose, i.e.,
+So, we can modulate the negotiation algorithm by using $\lambdaimodified$ choosing what version of $\lambdai$ to choose, i.e.,
 \begin{equation}
   \lambdaimodified=
           \begin{cases}
@@ -742,8 +745,8 @@ So, we can modulate the negotiation algorithm, by using $\lambdaimodified$ choos
 \end{equation}
 
 \begin{remark}
-  Observe that if estimate of $\Plin$ do not converge, we cannot reconstruct $\lambdaik$ so we need to use one of the other options proposed, ignore the attacker, or use minimal allocation.
-  Since it may be difficult to asses the minimal allocation, we ignore the cases when the estimation does not converge.
+  Observe that if the estimates of $\Plin$ do not converge, we cannot reconstruct $\lambdaik$, so we need to use one of the other options proposed, ignore the attacker, or use minimal allocation.
+  Since it may be difficult to assess the minimal allocation, we ignore the cases when the estimation does not converge.
 \end{remark}
 
 \section{Complete safe dMPC for deprived systems}\label{sec:complete-safe-dmpc}
@@ -803,10 +806,10 @@ This example is more complex and based on reality than the others presented so f
 The case studied will be used for the rest of this work with some minor adjustments when needed (inclusion or suppression of assumptions).
 
 \subsection{\dhnlong}\label{sec:case-study}
-We analyze the case of a simple \dhn{} composed of ${M=4}$ distinct small sized houses (called I, II, II and IV).
+We analyze the case of a simple \dhn{} composed of ${M=4}$ distinct small-sized houses (called I, II, II, and IV).
 Each house has state $\vec{x}_{i}$, and a different temperature reference $\vec{w}_{i}(t)$ for the inside air (users have different needs).
 The houses are equipped with convectors, and the total heating power consumed by each house is $\vec{u}_{i}(t)$.
-Since we do not suppose there is any cooling apparatus, the inputs are restricted to be positive, i.e., $\vec{u}_{i}[k]\succeq\0$. Meaning that if the we need to cool the environment, we can only use the thermic properties of the building.
+Since we do not suppose there is any cooling apparatus, the inputs are restricted to be positive, i.e., $\vec{u}_{i}[k]\succeq\0$. Meaning that if we need to cool the environment, we can only use the thermic properties of the building.
 In Fig.~\ref{fig:houses} we see the houses consuming from a centralized heat provider.
 
 \begin{figure}[h]
@@ -831,11 +834,11 @@ In Fig.~\ref{fig:houses} we see the houses consuming from a centralized heat pro
   \caption{District with 4 houses.}\label{fig:houses}
 \end{figure}
 
-To model each house, we can use the 3R-2C monozone model with a window~\cite{GoudaEtAl2002}, where the thermic elements are represented as equivalent electric elements in a 3 resistors, and 2 capacitors electric circuit.
+To model each house, we can use the 3R-2C monozone model with a window~\cite{GoudaEtAl2002}, where the thermic elements are represented as equivalent electric elements in a 3 resistors and 2 capacitors electric circuit.
 The electric circuit is depicted in Fig.~\ref{fig:3R2C_model}.
-Current sources are added to correspond to solar irradiation and the heating power.
+Current sources are added to correspond to solar irradiation and heating power.
 A voltage source represents the temperature outside the house.
-The meaning of each component is given in Tab.~\ref{tab:modelParamMeaning}, and the respective values for each one of the houses is given in Tab.~\ref{tab:modelParam}.
+The meaning of each component is given in Tab.~\ref{tab:modelParamMeaning}, and the respective values for each one of the houses are given in Tab.~\ref{tab:modelParam}.
 
 \begin{figure}[h]
   \centering
@@ -1004,8 +1007,8 @@ $\epsilon_{P}=10^{-4}$.
 \end{figure}
 As expected, the decision variable lies under the threshold $\epsilon_{P}=10^{-4}$ in the nominal scenario.
 But for scenarios S and C, where the agent attacks the system, the detection variable surpasses the threshold, indicating the change of behavior of agent I.
-In scenario S, we can observe the tracking error ${w_{I}-y_{I}}$ reducing when attack is activated, suggesting that the attacker drives the negotiation to get more resources.
-On the other hand, the other agents receive less resources, as we can see the tracking error increase in Fig.~\ref{fig:response_housesII_to_IV_3Scenarios}.
+In scenario S, we can observe the tracking error ${w_{I}-y_{I}}$ reducing when the attack is activated, suggesting that the attacker drives the negotiation to get more resources.
+On the other hand, the other agents receive fewer resources, as we can see the tracking error increase in Fig.~\ref{fig:response_housesII_to_IV_3Scenarios}.
 
 \begin{figure}[h]
   \centering
@@ -1020,13 +1023,13 @@ When the \rpdmpcss{} is activated in scenario C, the temperatures recover behavi
 % \begin{figure}[h]
 %   \centering
 %   \includegraphics[width=7cm]{AirTempAndDecisionVariable.pdf}
-% \caption{Temperature of all houses, and respective references for scenarios N,MS and MC. \todo{remake figure}}\label{fig:response_houses_N_M}
+% \caption{Temperature of all houses, and respective references for scenarios N, MS and MC. \todo{remake figure}}\label{fig:response_houses_N_M}
 % \end{figure}
 % }
 
-We can also compare the accumulate local and global objectives $\Jiacc$ and $\Jacc$ for the scenarios N, C and S in Tab.~\ref{tab:eq_costsGlobalLocal}.
-As expected, when no secure \dmpc{} is applied and the system is attacked, the objective function of the attackers decrease, while the others increase, together with the global objective $\Jacc$.
-However, we can see for the scenarios where the \rpdmpcss{} is activated the objectives are close to the original.
+We can also compare the accumulated local and global objectives $\Jiacc$ and $\Jacc$ for the scenarios N, C, and S in Tab.~\ref{tab:eq_costsGlobalLocal}.
+As expected, when no secure \dmpc{} is applied, and the system is attacked, the objective function of the attackers decreases, while the others increase, together with the global objective $\Jacc$.
+However, we can see for the scenarios where the \rpdmpcss{} is activated, the objectives are close to the original.
 
 \begin{table}[h]
   \centering
@@ -1044,12 +1047,12 @@ However, we can see for the scenarios where the \rpdmpcss{} is activated the obj
 In this chapter, we analyzed the \fdi{} attack proposed for a specific case where the controlled system is under scarcity.
 From the analytical solutions for the local optimization problems, we could assess more directly how the attack influences the optimal solution of the system and the dynamics of the primal decomposition.
 
-The analysis gave us some insight on how to detect the attacks and mitigate given consequences of the attacks.
-And exploiting some assumptions we proposed a secure \dmpc{} algorithm.
-We assess its functioning through the simulation of a \dhn{} under different scenarios, with and without attacks and using the proposed algorithm.
+The analysis gave us some insight into how to detect the attacks and mitigate given consequences of the attacks.
+And exploiting some assumptions, we proposed a secure \dmpc{} algorithm.
+We assess its functioning through the simulation of a \dhn{} under different scenarios, with and without attacks, and using the proposed algorithm.
 
 In the next chapter, we try to relax some of the assumptions used in this chapter.
-As we will see, by alleviating one assumption the problem to solve becomes exponentially more complex.
+As we will see, by alleviating one assumption, the problem to solve becomes exponentially more complex.
 
 
 \end{document}
