@@ -48,8 +48,8 @@ but with ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k]\preceq 
   As seen in~\cite{BoydEtAl2015}, if we have separable constraints sets, such as the $\set{U}_{i}$ in our problem, we can modify the local objectives $\obji$ so \begin{equation*}
     J_{i}(\optthetai)=\infty\text{, if }\vec{U}_{i}^{\star}\notin\dom{\obji}.
   \end{equation*}
-  Since this change modifies the objective functions, it also modifies the corresponding gradients, and $\lambdai$ as consequence.
-  So, this change guides the coordinator to choose $\thetai$ which respect $\dom{\obji}$.
+  Since this change modifies the objective functions, it also modifies the corresponding gradients and $\lambdai$ as consequence.
+  So, this change guides the coordinator to choose $\thetai$, which respect $\dom{\obji}$.
 \end{remark}
 
 In this chapter, we still assume the original constraint~\eqref{eq:linear_constraint} to have at most as many rows as columns and form cones.
@@ -57,12 +57,12 @@ However, we relax one assumption made in \S\ref{sec:deprived-systems}.
 The systems are not necessarily deprived anymore, i.e., the unconstrained solutions
 $\optuncU=-H^{-1}\vec{f}[k]$ and $\optuncUik=-H_{i}^{-1}\vec{f}_{i}[k]$ may or may not respect the constraints.
 
-As we will see in next section, despite the relaxation of this assumption, making the problem more generic, it causes the solution of the local problems exponentially more complex.
+As we will see in the next section, despite the relaxation of this assumption, making the problem more generic causes the solution to the local problems to be exponentially more complex.
 
 \subsection{Impact on local problems' solution}\label{sec:impact-local-problem}
-We can repeat the analysis made in the last chapter to see how the change on assumption influences the solutions of the problem.
+We can repeat the analysis made in the last chapter to see how the change in assumption influences the solutions to the problem.
 
-Although now we have \qp{} problems with inequality constraints, we still can use the same method to find a analytical solution.
+Although now we have \qp{} problems with inequality constraints, we still can use the same method to find an analytical solution.
 
 We similarly define a function $\inequalityfunctionname:\R^{\card\vec{U}_{i}[k]}\times \R^{c}$:
 \begin{equation}
@@ -79,8 +79,8 @@ and use it to put the problem in standard form for inequality constraint \qp{} p
 \end{equation}
 with variables $\lambdaik$ associated to the constraints.
 \begin{remark}
-  Usually we make the distinction between the dual variables associated to the inequality and equality constraints by using different symbols.
-  However, as in the problems we have only one kind, we use the same symbol and by context the reader can distinguish to which kind the symbol corresponds.
+  Usually, we make the distinction between the dual variables associated with the inequality and equality constraints by using different symbols.
+  However, as in the problems, we have only one kind, we use the same symbol, and by context, the reader can distinguish to which kind the symbol corresponds.
 \end{remark}
 
 We can again define the \emph{Lagrangian} function $\lagrangianname : \R^{\card\vec{U}_{i}[k]}\times \R^{c} \times \R^{c} \to \R$ as
@@ -88,8 +88,8 @@ We can again define the \emph{Lagrangian} function $\lagrangianname : \R^{\card\
   \label{eq:lagrangian_equality}
   \lagrangian=\obji(\vec{U}_{i}[k],\thetaik)+\lambdaik^T\inequalityfunction,
 \end{equation}
-which embeds the inequality constraint into the objective function using $\lambdaik$, in this case the lagrangian multiplier for \emph{inequality}.
-Again, since there is only one type of lagrangian multiplier, we will call it simply as the dual variable.
+which embeds the inequality constraint into the objective function using $\lambdaik$, in this case, the lagrangian multiplier for \emph{inequality}.
+Again, since there is only one type of lagrangian multiplier, we will call it simply the dual variable.
 
 \begin{remark}
   The complementary slackness still holds, ${\lambdaikstar}^T\inequalityfunctionname(\vec{U}_{i}^{\star}[k],\thetaik)$ will always be zero.
@@ -103,7 +103,7 @@ We can define the dual function $\dualfunctionname:\R^{c} \times \R^{c} \to \R$ 
 \end{equation}
 but now where $\set{F}=\dom \inequalityfunctionname=\bigcap\limits_{i=1}^{c}\set{H}_{i}$, with $\set{H}_{i}$ being the halfspaces
 ${\set{H}_i=\setbuild{\vec{x}}{\elem[i,\star]{{\bar{\Gamma}}}\vec{x}\leq\elem[i,\star]{\vec{U}_{\max}}}}$.
-Using the first order \KKT{} optimality condition we have
+Using the first order \KKT{} optimality condition, we have
 \begin{equation}
   \nabla_{\vec{U}_{i}[k]}\lagrangian=0
 \end{equation}
@@ -123,7 +123,7 @@ Substituting it in $\lagrangian$ results
 \end{equation}
 which is also concave.
 
-Then, similarly we can find $\lambdaikstar$ by solving an optimization problem.
+Then, similarly, we can find $\lambdaikstar$ by solving an optimization problem.
 However, since we are using inequalities, we can only have $\lambdaik$ positive~\cite{BoydVandenberghe2004}:
 \begin{equation}
   \label{eq:ineq_lambda_equation}
@@ -137,11 +137,11 @@ However, since we are using inequalities, we can only have $\lambdaik$ positive~
 \end{equation}
 
 As we know, by complementary slackness, the value of the elements of $\lambdaik$ being $0$ (or different of $0$) will depend on the status of the corresponding constraint for the unconstrained solution $\optuncUik$.
-So the complete value of $\lambdaik$ will depend of the permutation of the status of the inequality constraint.
+So the complete value of $\lambdaik$ will depend on the permutation of the status of the inequality constraint.
 Depending on the form of the constraints, if we have $\nineq$ constraints, we may have potentially $2^{\nineq}$ permutations.
 \begin{remark}
   Here we say potentially because not necessarily all combinations are possible.
-  In \S\ref{sec:cons-about-stat} we discuss briefly about the number of permutations and show some cases where the number of permutations is not equal to $2^{\nineq}$.
+  In \S\ref{sec:cons-about-stat}, we discuss briefly about the number of permutations and show some cases where the number of permutations is not equal to $2^{\nineq}$.
 \end{remark}
 
 To solve~\eqref{eq:ineq_lambda_equation}, we can use the fact that the status of the constraints depends on the value of $\thetaik$.
@@ -185,7 +185,7 @@ Imagine an example where we have $2$ constraints with associated $\elem[1]{\lamb
 \end{figure}
 
 For any $\thetai$ inside the grey area, the solution to~\eqref{eq:local_problem_equality_standard_notation} will be unconstrained, i.e., the constraints will be inactive.
-Thus, for this case, by definition the value of $\lambdai=\0$.
+Thus, for this case, by definition, the value of $\lambdai=\0$.
 For all other cases, where we know at least one constraint in~\eqref{eq:local_problem_equality_standard_notation} is active, we can remove the constraint in~\eqref{eq:ineq_lambda_equation} for the element of $\lambdai$ corresponding to the active constraint.
 For instance, if all constraints in~\eqref{eq:local_problem_equality_standard_notation} are active, we can remove all constraints of~\eqref{eq:ineq_lambda_equation}, which will result in problem~\eqref{eq:eq_lambda_equation}, whose solution we known already:
 \begin{equation}
@@ -196,7 +196,7 @@ For instance, if all constraints in~\eqref{eq:local_problem_equality_standard_no
 \newcommand{\Plinineqnonzero}[1][\star]{\overset{#1}{\Plin}}
 \newcommand{\sikineqnonzero}[1][\star]{\overset{#1}{\vec{s}_{i}}[k]}
 
-By removing a set of constraints, we can solve a similar problem, but with reduced number of elements in $\thetai$ and $\lambdai$.
+By removing a set of constraints, we can solve a similar problem but with a reduced number of elements in $\thetai$ and $\lambdai$.
 For example, let us suppose the first constraint in~\eqref{eq:local_problem_equality_standard_notation} is inactive.
 We make $\elem[1]{\lambdai}=0$ and set it aside, we remove the corresponding lines of $\bar{\Gamma}_{i}$ and $\thetai$, and then we solve for all other elements of $\lambdai$, removing the remaining constraints in~\eqref{eq:ineq_lambda_equation}. This results in
 \begin{equation}
@@ -209,7 +209,7 @@ If we do this for all partitions, i.e., all possible permutations of active and 
 This result is the base for calculating the solution of the original problem~\eqref{eq:local_problem_equality_standard_notation} as shown in~\cite{BemporadEtAl2002,AlessioBemporad2009}, which is the base for explicit \mpc{}.
 
 However, the equations have different sizes of elements (as many elements as active constraints).
-To make all equations same-sized, we recover the elements of $\lambdai$ set to zero and set aside.
+To make all equations the same-sized, we recover the elements of $\lambdai$ set to zero and set aside.
 If we take the same example, Eq.~\eqref{eq:lambda_function_theta_some_active} would become
 \begin{equation}
   \label{eq:lambda_function_theta_some_active_same_size}
@@ -239,11 +239,11 @@ If we take the same example, Eq.~\eqref{eq:lambda_function_theta_some_active} wo
 \end{equation}
 
 
-To facilitate the notation, let us use a binary representation such if we have $\nineq$ constraints, we use $\nineq$ binary digits to represent their status.
+To facilitate the notation, let us use a binary representation such that if we have $\nineq$ constraints, we use $\nineq$ binary digits to represent their status.
 And we will mark the digits $1$ if the constraint is inactive and $0$ if active, indicating which constraints were removed or kept.
 
 If we retake the $2$-constraints example in Fig.~\ref{fig:constraints_partition_theta}, ${00}_{(2)}$ would represent both constraints active (bottom left quadrant), ${01}_{(2)}$ and ${10}_{(2)}$ represents one of the constraints are active (bottom right and top left quadrants, respectively) and ${11}_{(2)}$ where both constraints are inactive (grey area in top right quadrant).
-We can then use the base 10 to represent such partitions.
+We can then use base 10 to represent such partitions.
 This way~\eqref{eq:lambda_function_theta_some_active_same_size} can be written as
 \begin{equation}
   \label{eq:lambda_function_theta_same_size_coded}
@@ -269,13 +269,13 @@ Here we can begin to regard the change caused by the relaxation, whereas we had 
 
 \begin{remark}\label{rem:sparse_solutions}
   As one may expect, by definition, the $\Plinineq[i][n]$ and $\sikineq[i][n]$ are increasingly sparse.
-  When $n$ increases more constraints are inactive and more blocks are equal to zero, culminating in $\Plinineq[i][2^{\nineq}-1]=0_{c}$ and $\sikineq[i][2^{\nineq}-1]=\0_{c}$.
+  When $n$ increases, more constraints are inactive and more blocks are equal to zero, culminating in $\Plinineq[i][2^{\nineq}-1]=0_{c}$ and $\sikineq[i][2^{\nineq}-1]=\0_{c}$.
 \end{remark}
 \newpage
 \subsubsection{Considerations about status of constraints}\label{sec:cons-about-stat}
-It is important to observe that some there are some sets of constraints in which the permutation is not necessarily $2^{\nineq}$.
+It is important to observe that there are some sets of constraints in which the permutation is not necessarily $2^{\nineq}$.
 
-For example, in some cases there is no partition where all constraints are inactive, i.e., the intersection of halfspaces is empty (see Fig.~\ref{fig:non_feasible}).
+For example, in some cases, there is no partition where all constraints are inactive, i.e., the intersection of halfspaces is empty (see Fig.~\ref{fig:non_feasible}).
 Problems with such constraints are infeasible, thus we ignore them in this work.
 
 \begin{figure}[H]
@@ -349,7 +349,8 @@ We can try to apply the same logic used in \S\ref{sec:analysis-negotiation}, by 
 In this attempt, we can fully contemplate how the relaxation of the assumptions increases the problem's complexity.
 
 The first difficulty is already on the projected subgradient method, which due to the set
-$\set{S}$ being intersection of halfplanes, does not have a straightforward solution as in the equality constraint case~\eqref{eq:example_projectedSubgradient_lambda_reprise}. The solution is found by applying the definition of the Euclidean projection, which is by itself a \qp{} problem
+$\set{S}$ being the intersection of halfplanes, does not have a straightforward solution as in the equality constraint case~\eqref{eq:example_projectedSubgradient_lambda_reprise}.
+The solution is found by applying the definition of the Euclidean projection, which is by itself a \qp{} problem
 
 \begin{equation}
   \Proj^{\set{X}}(\vec{x}_{0})=
@@ -379,7 +380,7 @@ with corresponding dual variable $\vec{\mu}$.
 For notation sake we use $\vec{x}_{0}=\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$.
 
 The problem is solved similarly to how we made in \S\ref{sec:impact-local-problem}.
-Skipping some steps (calculating lagrangians and optimizing for the dual variables) we will find that the solution of $\vec{\mu}$ has the same form that~\eqref{eq:lambdafuntheta}.
+Skipping some steps (calculating lagrangians and optimizing for the dual variables), we will find that the solution of $\vec{\mu}$ has the same form that~\eqref{eq:lambdafuntheta}.
 However, we need to change $\bar{\Gamma}_{i}$ for $I_{c}^{M}$, $H_{i}$ for $I$, and $\vec{f}_{i}$ for $-(\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p)$.
 And the partitions are defined by the active and inactive constraints in $I_{c}^{M}\vec{x}_{0}\preceq \vec{U}_{\max}$.
 
@@ -405,23 +406,23 @@ And when all constraints are inactive ($n=2^{c}-1$), the solution is the same as
 So, we can conclude that the next value $\thetaik\pplusone$ depends on where $\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$ will lie, giving at most $2^{c}$ possibilities.
 In turn, $\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$ depends on the values of each $\lambdaik$, which conversely can have $2^{\nineq}$ different modes each.
 
-As in \S\ref{sec:analysis-negotiation}, when substituting the equations one in another gave us expressions of \dt{} systems, similarly here if we substitute the results for $\lambdaik$ in~\eqref{eq:projection_result_zones} we will have a switched \dt{} systems.
-One with constant (in the same mode) input for $\thetaik$, and conversely a switched homogenous system for the dynamics of $\lambdaik$.
+As in \S\ref{sec:analysis-negotiation}, when substituting the equations, one in another gave us expressions of \dt{} systems, similarly here, if we substitute the results for $\lambdaik$ in~\eqref{eq:projection_result_zones} we will have a switched \dt{} systems.
+One with constant (in the same mode) input for $\thetaik$, and conversely, a switched homogenous system for the dynamics of $\lambdaik$.
 
-If we develop the calculations we can estimate an upper bound on the number of total different permutations $\bar{\epsilon}$, which totals to
+If we develop the calculations, we can estimate an upper bound on the number of total different permutations $\bar{\epsilon}$, which totals to
 \begin{equation}
   \label{eq:1}
   \bar{\epsilon}=\overbrace{2^{c}}^{\text{regions in projection}}\times \underbrace{2^{\nineq}\times \dots \times 2^{{\nineq}}}_{M\times \text{regions in each }\lambdai }=2^{c+M\nineq}.
 \end{equation}
 
 \begin{remark}
-  Probably some of those permutations may not be possible, but still we have exponential growth on the number of modes of the switched systems.
+  Probably some of those permutations may not be possible, but still, we have exponential growth in the number of modes of the switched systems.
   The exact calculation for the regions is not the scope of this work.
 \end{remark}
 
-The case for deprived systems seen in the last chapter, settles the solution of the projection to the case $(0)$, where $\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$ is projected onto the intersection of all halfspaces.
+The case for deprived systems seen in the last chapter settles the solution of the projection to the case $(0)$, where $\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p$ is projected onto the intersection of all halfspaces.
 And due to another assumption (that $\bar{\Gamma}_{i}\optuncUik\succ \thetaik, \forall i\in\set{M}, \forall k$), we fix all $\lambdai$ to the first solution in~\eqref{eq:lambdafuntheta}.
-This consecutive choices of assumptions reduces the total number of switching modes to exactly one, presented by equations~\eqref{eq:negotiation_equation_substituting_organizing_matrix_lambda} and~\eqref{eq:negotiation_equation_substituting_organizing_matrix_theta}, reproduced here.
+This consecutive choice of assumptions reduces the total number of switching modes to exactly one, presented by equations~\eqref{eq:negotiation_equation_substituting_organizing_matrix_lambda} and~\eqref{eq:negotiation_equation_substituting_organizing_matrix_theta}, reproduced here.
 
 \begin{equation}
   \label{eq:negotiation_equation_substituting_organizing_matrix_lambda_reprise}
@@ -435,7 +436,7 @@ This consecutive choices of assumptions reduces the total number of switching mo
 \end{equation}
 
 If we concatenate the binary representations of the modes of the projection and of each local problem, we will have a number with $c+M\nineq$ digits.
-And thus, the solutions in ~\eqref{eq:negotiation_equation_substituting_organizing_matrix_lambda} and~\eqref{eq:negotiation_equation_substituting_organizing_matrix_theta} can be seen as an specific case of the following solutions for the $0$-th modes:
+And thus, the solutions in ~\eqref{eq:negotiation_equation_substituting_organizing_matrix_lambda} and~\eqref{eq:negotiation_equation_substituting_organizing_matrix_theta} can be seen as a specific case of the following solutions for the $0$-th modes:
 \begin{equation}
   \label{eq:negotiation_equation_substituting_organizing_matrix_lambda_switched}
   \vec{\lambda}[k]\pplusone=
@@ -462,7 +463,7 @@ coincide, and are formed by the superposition of the regions $\set{R}_{\lambdai}
 We highlight again that not necessarily all permutations are possible (some regions are empty).
 
 Observe that in some cases, it is straightforward to define the values of the matrices in~\eqref{eq:negotiation_equation_substituting_organizing_matrix_lambda_switched} and~\eqref{eq:negotiation_equation_substituting_organizing_matrix_theta_switched}.
-The $0$-th case, as mentioned, is the same we found in the last chapter, giving
+The $0$-th case, as mentioned, is the same as we found in the last chapter, giving
 $\mathcal{A}_{\vec{\lambda}}^{0}=\mathcal{A}_{\vec{\lambda}}$,
 $\mathcal{A}_{\vec{\theta}}^{0}=\mathcal{A}_{\vec{\theta}}$, and
 $\vec{B}_{\vec{\theta}}^{0}[k]=\vec{B}_{\vec{\theta}}[k]$.
@@ -498,10 +499,10 @@ $\tilde{\mathcal{A}}_{\vec{\theta}}^{0}=\tilde{\mathcal{A}}_{\vec{\theta}}$,
 $\tilde{\vec{B}}_{\vec{\theta}}^{0}[k]=\tilde{\vec{B}}_{\vec{\theta}}[k]$, and all analysis made in the last chapter also holds for this mode.
 
 \begin{remark}\label{rem:cheat_satisfied_problem}
-  One interesting fact we can observe is, for cases where the corresponding $\lambdai$ is already $\0$, the multiplication of $T_{i}$ will not affect its value.
-  A satisfied agent, i.e., an agent whose local problem has same solution than its unconstrained version, has no motive to get more resources, since the allocated resources will satisfy its needs.
+  One interesting fact we can observe is that for cases where the corresponding $\lambdai$ is already $\0$, the multiplication of $T_{i}$ will not affect its value.
+  A satisfied agent, i.e., an agent whose local problem has the same solution as its unconstrained version, has no motive to get more resources since the allocated resources will satisfy its needs.
   So, in the most extreme case, specifically the $N_{\vec{\theta}}$-th mode, we see that
-  even if all agents cheat at the same time, there is no impact on the system, since they are all satisfied, $\lambdai=\0\ \forall i \in \set{M}$, resulting in
+  even if all agents cheat at the same time, there is no impact on the system since they are all satisfied, $\lambdai=\0\ \forall i \in \set{M}$, resulting in
   $\tilde{\mathcal{A}}_{\vec{\lambda}}^{N_{\vec{\lambda}}}=\mathcal{A}_{\vec{\lambda}}^{N_{\vec{\lambda}}}$,
   $\tilde{\mathcal{A}}_{\vec{\theta}}^{N_{\vec{\theta}}}=\mathcal{A}_{\vec{\theta}}^{N_{\vec{\theta}}}$, and
   $\tilde{\vec{B}}_{\vec{\theta}}^{N_{\vec{\theta}}}[k]=\vec{B}_{\vec{\theta}}^{N_{\vec{\theta}}}[k]$.
@@ -509,7 +510,7 @@ $\tilde{\vec{B}}_{\vec{\theta}}^{0}[k]=\tilde{\vec{B}}_{\vec{\theta}}[k]$, and a
 
 \newpage
 We could analyze stability in a case-by-case fashion, seeing what constraints are active/inactive for which agent and how the cheating matrices influence the stability.
-But due to the extension of the analysis (exponential number of cases) we skip it for brevity's sake, and will use a single example, different from the trivial solution, to illustrate how it could be done.
+But due to the extension of the analysis (exponential number of cases), we skip it for brevity's sake and will use a single example, different from the trivial solution, to illustrate how it could be done.
 
 Denoting as the zone (or region) $n$, or the $n$-zone, the non-overlapping polytopes
 defined by ${\set{R}^{n}=\setbuild{\vec{x}}{G_{\vec{\theta}}^{n}[k]\vec{x} \preceq \vec{b}_{\vec{\theta}}^{n}[k]}}$,
@@ -616,7 +617,7 @@ For example, in zone $1$, $\elem[1,1]{T_{i}}$ and $\elem[2,1]{T_{i}}$ are used, 
 
 So, instead of always propagating to the negotiation all the matrix $T_{i}$, as in the case of the last chapter, only the columns related to the active constraints are propagated.
 
-If we have $M=2$ subsystems, one in the $1$-zone and other in the $2$-zone (let us called them agents I and II) and we suppose the solution of the projection is in its $0$-zone, i.e., ${G_{\vec{\mu}}^{0}[k](\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p) \preceq \vec{U}_{\max}^{0}[k]}$, we code the permutation as
+If we have $M=2$ subsystems, one in the $1$-zone and the other in the $2$-zone (let us call them agents I and II), and we suppose the solution of the projection is in its $0$-zone, i.e., ${G_{\vec{\mu}}^{0}[k](\vec{\theta}[k]\p+\rho\p\vec{\lambda}[k]\p) \preceq \vec{U}_{\max}^{0}[k]}$, we code the permutation as
 \begin{equation}
   \underbrace{00}_{\text{projection's zone}}\overbrace{01}^{\text{agent I`s zone}}\underbrace{10}_{\text{agent II's zone}} = 000110_{(2)}=6_{(10)}.
 \end{equation}
@@ -671,27 +672,27 @@ where
   \right]
 \end{equation}
 
-And we can see that, as expected, the columns of $T_{i}$ are propagated to $\mathcal{A}_{\vec{\theta}}$, and may change its dynamics.
+And we can see that, as expected, the columns of $T_{i}$ are propagated to $\mathcal{A}_{\vec{\theta}}$ and may change its dynamics.
 We could do the same for the dynamics of $\lambdai$, but we let this for the reader.
 
-For the overall system dynamics we may use any tools for analysis of hybrid/ switched systems~\cite{BorrelliEtAl2017}.
+For the overall system dynamics, we may use any tools for analysis of hybrid/ switched systems~\cite{BorrelliEtAl2017}.
 
 \begin{remark}
-  Observe that since the matrices $\mathcal{A}_{\vec{\theta}}^{n}$ and $\mathcal{A}_{\vec{\lambda}}^{n}$ may be sparse, the eigenvalue analysis to indicate stability of the mode is accomplished by keeping only the non-zero corresponding blocks.
+  Observe that since the matrices $\mathcal{A}_{\vec{\theta}}^{n}$ and $\mathcal{A}_{\vec{\lambda}}^{n}$ may be sparse, the eigenvalue analysis to indicate the stability of the mode is accomplished by keeping only the non-zero corresponding blocks.
 \end{remark}
 
 As we see, the relaxation of the assumption makes the problem exponentially more complicated.
-In the next section we will discuss ways to adapt the detection and mitigation strategies to overcome the complexity presented.
+In the next section, we will discuss ways to adapt the detection and mitigation strategies to overcome the complexity presented.
 
 \section{Adapting detection and mitigation methods}\label{sec:detection-mitigation}
 
 We propose to use a similar strategy to the one used in the last chapter.
 However, some difficulties arise.
 We do not have one tuple $(\Plin,\sik)$ for each subsystem, but we have $2^{\predhorz c}$ different tuples.
-Here follow proposals on how to counter the difficulties.
+Here are proposals on how to counter the difficulties.
 
 \subsection{Mitigation and artificial scarcity}\label{sec:mitigation_ineq}
-We begin by the end, with the proposal for the mitigation because the proposal follows a straightforward logic and impacts the proposal for the detection, simplifying its solution.
+We begin by the end with the proposal for the mitigation because the proposal follows a straightforward logic and impacts the proposal for the detection, simplifying its solution.
 
 We still want to mitigate the effects of the attack by reconstructing $\lambdai$.
 So, if we assume we can somehow estimate the inverse of the cheating matrix $T_{i}$, which we still assume is invertible (See~\eqref{eq:T_is_invertible}), we can easily try to reconstruct $\lambdai$ by applying
@@ -700,15 +701,15 @@ So, if we assume we can somehow estimate the inverse of the cheating matrix $T_{
   \lambdaireconstructed=\Tikinvestimate \lambdaicheat.
 \end{equation}
 
-However, estimating $\Tikinvestimate$ is a bit more difficult then before.
-We cannot use~\eqref{eq:estimate_T_inverse} anymore (reprised for clarity), since we do not have $\Plin$.
+However, estimating $\Tikinvestimate$ is a bit more difficult than before.
+We cannot use~\eqref{eq:estimate_T_inverse} anymore (reprised for clarity) since we do not have $\Plin$.
 \begin{equation}
   \label{eq:estimate_T_inverse_reprise}
   \tag{\ref*{eq:estimate_T_inverse}}
   {\Tikinvestimate=\Plinnominal{\Plintildeestimate}^{-1}}.
 \end{equation}
 
-If we estimate any $\Plinineq[i][n]$, not necessarily we can invert it.
+If we estimate any $\Plinineq[i][n]$, we cannot necessarily invert it.
 As seen in \S\ref{sec:impact-local-problem}, almost all $\Plinineq[i][n]$ are sparse with rows and columns equal to zero, thus singular.
 The only one that is invertible is $\Plinineq$.
 So if we can estimate $\Plinineqtilde$ and we have a nominal $\Plinineqnominal$ (probably estimated the same way during an attack-free trial), we can estimate $\Tikinvestimate$ similarly:
@@ -717,9 +718,9 @@ So if we can estimate $\Plinineqtilde$ and we have a nominal $\Plinineqnominal$ 
   {\Tikinvestimate=\Plinineqnominal{\Plinineqtildeestimate}^{-1}}.
 \end{equation}
 
-So, we assume that $\Plinineq$ exists and that is possible to estimate it.
+So, we assume that $\Plinineq$ exists and that it is possible to estimate it.
 
-The necessary condition for existence of the $0$-th region ($0$-zone) is that we can choose $\thetai$ such the constraints $\inequalityfunction$ are active for the unconstrained solution $\optuncUik$.
+The necessary condition for the existence of the $0$-th region ($0$-zone) is that we can choose $\thetai$ such that the constraints $\inequalityfunction$ are active for the unconstrained solution $\optuncUik$.
 Since we can only choose $\thetai$ that respects $\dom J_{i}$, to assure feasibility, we assume the unconstrained solution $\optuncU$ and $\optuncUik$ lie inside
 the respective constraint sets
 \begin{align}
@@ -789,13 +790,13 @@ However, one complication arises when choosing the size of the ball around $\the
   \caption{Effects of different radii $r$ when generating points close to $\thetairestricted$.}
 \end{figure}
 
-Therefore, we need an estimation method that can also classify simultaneously the points, indicating to which zone they correspond.
+Therefore, we need an estimation method that can also simultaneously classify the points, indicating to which zone they correspond.
 Then, we take only the parameters that interest us, that is $\Plinineq$.
 
-In \S\ref{sec:cons-about-mult}, we will discuss estimation methods and we describe the proposed method to solve this problem.
+In \S\ref{sec:cons-about-mult}, we will discuss estimation methods, and we describe the proposed method to solve this problem.
 
 \subsection{Detection}\label{sec:detection_ineq}
-For the detection we can use the same logic presented in the last chapter.
+For the detection, we can use the same logic presented in the last chapter.
 
 As we can observe in~\eqref{eq:lambdafuntheta}, the affine parts $\Plinineq[i][n]$ are time-invariant.
 So, if we estimate the affine parts $\Plinineqtildeestimate[i][n]$, we can detect an attack when there is any difference between the estimated and nominal values $\Plinineqnominal[i][n]$.
@@ -815,16 +816,16 @@ detects an attack when the corresponding bound is disrespected, i.e., $\mathfrak
 
 \subsection{Multiple Parameter Estimation}\label{sec:cons-about-mult}
 The problem of estimating affine parameters on a system with a known number of different modes is called in~\cite{LauerBloch2019} as a \emph{\pwa{} regression with fixed modes}.
-The problem is formalized in a optimization problem which we adapt for our case.
+The problem is formalized in an optimization problem which we adapt for our case.
 To find the $\pwaestnumparam$ different parameters $\pwaestparam_{i}$ of the \pwa{} function with non-overlapping regions $\set{R}^{i}$ such $\bigcup_{i=1}^{\pwaestnumparam}\set{R}^{i}=\set{R}$, we take a set of $\pwaestinputsize$ inputs/output tuples $(\pwaestsysinput_{k},\pwaestsysoutput_{k})|_{k\in\{1:\pwaestinputsize\}}\subset\R^{\card{\pwaestsysinput}}\times\R^{\card{\pwaestsysoutput}}$ and solve
 
 \begin{equation}
     \minimize_{\pwaestparam \in \R^{\pwaestnumparam \card{\elem[1,*]{\pwaestsysinput}}}} \frac{1}{\pwaestinputsize} \sum_{k=1}^{\pwaestinputsize} \sum_{j=1}^{\pwaestnumparam} \mathbb{1}_{g\left(\pwaestsysinput_{k}\right)=j} \norm{\norm{\pwaestsysoutput_{k}- \pwaestsysinput_{k}\pwaestparam_{j}}_{1}}.
 \end{equation}
-where $g:\R^{\card{\pwaestsysinput}}\to\{1:\pwaestnumparam\}$ is a linear classification function, which classifies the membership of its argument, returning the corresponding index of the region it is member of.
-The definition of such function can be seen in~\cite{LauerBloch2019}.
+where $g:\R^{\card{\pwaestsysinput}}\to\{1:\pwaestnumparam\}$ is a linear classification function, which classifies the membership of its argument, returning the corresponding index of the region it is a member of.
+The definition of such a function can be seen in~\cite{LauerBloch2019}.
 Observe that since the output of $g$ is an integer ($\{1:\pwaestnumparam\}\subset\Z$), the problem is a \miqp{} program.
-In this work we are not interested in determining the classification functions,  but just the parameters.
+In this work, we are not interested in determining the classification functions but just the parameters.
 
 As commented in~\cite{LauerBloch2019}, since the program is a \miqp{} if we try to solve the problem by brute force (trying all the combinations), the complexity increases exponentially depending on the number of modes $\pwaestnumparam$ and inputs $\pwaestinputsize$.
 So, some clever methods were created to exploit the problem structure, by successively solving different optimization problems for example. Some strategies are listed in~\cite{RollEtAl2004}.
@@ -833,7 +834,7 @@ The most known examples of these strategies are the methods in the \emph{partiti
 The methods in this family solve partition and regression problems successively.
 Notable members of the family are the widely used k-means~\cite{Ferrari-TrecateEtAl2001} and k-medoids~\cite{Bishop2006} methods.
 
-In these methods, estimates of the parameters are used to classify membership of all points, assigning a region to each input, and then, the points are used to solve different regression problems, updating the parameter estimates of their corresponding region.
+In these methods, estimates of the parameters are used to classify the membership of all points, assigning a region to each input, and then, the points are used to solve different regression problems, updating the parameter estimates of their corresponding region.
 
 Another similar method~\cite{Bishop2006}, which can also be categorized in the same family, is the \EM{} method~\cite{DempsterEtAl1977}.
 The \EM{} is the method of choice in this chapter to estimate the parameters needed for the detection and mitigation phases.
@@ -843,25 +844,25 @@ We could have used any of the other methods cited, but we chose \EM{} for it not
 This method is not commonly used by the control community, being more frequently used in the machine learning/data mining areas.
 However, an inspiring example was proposed for the estimation of switched systems in~\cite{NakadaEtAl2005}.
 
-In the next subsection we describe the method more precisely.
+In the next subsection, we describe the method more precisely.
 
 \subsubsection{Expectation Maximization}
 The objective of the \EM{} algorithm is to find, from a set of observable data $\set{B}$, estimators of a set of parameters $\set{P}$ that maximize the log marginal likelihood of the observed data ${\ln\probability{\set{B};\set{P}}}$. The models generally have latent variables (unobservable) in a set $\set{U}$.
 
 The problem is that maximizing ${\ln\probability{\set{B};\set{P}}}$ does not have an analytical solution.
-So, the algorithm solves the optimization problem in a iterative manner.
+So, the algorithm solves the optimization problem in an iterative manner.
 
-Instead of estimating the $\set{P}$ that maximizes ${\ln\probability{\set{B};\set{P}}}$, we find estimates that maximizes the expectation of the complete-data log-likelihood $\ln\probability{\set{B},\set{U};\set{P}}$ w.r.t.
+Instead of estimating the $\set{P}$ that maximizes ${\ln\probability{\set{B};\set{P}}}$, we find estimates that maximize the expectation of the complete-data log-likelihood $\ln\probability{\set{B},\set{U};\set{P}}$ w.r.t.
 the posterior probabilities ${\probability{\set{U}|\set{B};\set{P}}}$.
 
 Though, as we need to have $\set{P}$ to calculate the posterior probabilities, we
-calculate it using a current estimates of $\set{P}$ denoted $\set{P}_{\mathrm{cur}}$.
-And repeating the same strategy with the new found estimate, we can approach the estimates which maximizes the log marginal likelihood.
+calculate it using current estimates of $\set{P}$ denoted $\set{P}_{\mathrm{cur}}$.
+And repeating the same strategy with the newfound estimate, we can approach the estimates which maximize the log marginal likelihood.
 
-The successive steps of calculating the posterior probabilities (expectation) and maximizing the complete-data log-likelihood, gives the method the name Expectation Maximization.
+The successive steps of calculating the posterior probabilities (expectation) and maximizing the complete-data log-likelihood give the method the name Expectation Maximization.
 These steps provide a monotonic increase of the log-marginal likelihood at each iteration, yielding guaranteed convergence for a local maximum.
 
-The iterative algorithm can be resumed in Algorithm~\ref{alg:em}.
+The iterative algorithm can be summarized in Algorithm~\ref{alg:em}.
 
 \SetKwBlock{Estep}{ E step:}{}
 \SetKwBlock{Mstep}{ M step:}{}
@@ -890,7 +891,7 @@ The iterative algorithm can be resumed in Algorithm~\ref{alg:em}.
 
 \subsubsection{Adapting the problem to use the method}
 Since the \EM{} is a probabilistic method, we need to have a probabilistic regression model, which is not our case.
-The idea is to incorporate probabilistic behavior to our model~\eqref{eq:lambdafuntheta}.
+The idea is to incorporate probabilistic behavior into our model~\eqref{eq:lambdafuntheta}.
 
 As the method will be used for all agents at every negotiation, we drop the subscript $i$ and the time dependency $[k]$, simplifying the notation.
 
@@ -901,7 +902,7 @@ The input and response can be organized in ${\random{\Theta},\random{\Lambda}\in
 The tuple ${(\random{\Theta},\random{\Lambda})}$ is the observable data $\set{B}$.
 
 Since each $\randomvec{\theta}_{o}$ belongs to a given region, we associate a variable $z\in\set{Z}=\{0\until Z-1\}$ which indicates the number of a zone.
-We can construct then our regression model as
+We can then construct our regression model as
 
 \begin{equation}\label{eq:linear_cheating_random}
   \randomvec{\lambda}_{o}=
@@ -912,9 +913,9 @@ We can construct then our regression model as
   \end{cases}.
 \end{equation}
 
-In~\cite{FariaSoromenho2010}, a somehow similar model is called \emph{mixture of linear regressions}, but since we are using \pwa{} functions, which have linear and constant terms, we will called the model \emph{mixture of affine regressions}.
+In~\cite{FariaSoromenho2010}, a somehow similar model is called \emph{mixture of linear regressions}, but since we are using \pwa{} functions, which have linear and constant terms, we will call the model \emph{mixture of affine regressions}.
 
-Since we don't known the partitions or the belonging of each observed point, we associate the index $z$ of each observation ${(\randomvec{\lambda}_{o}, \randomvec{\theta}_{o})}$ to a latent random variable ${\random{z}_{o}}$.
+Since we don't know the partitions or the belonging of each observed point, we associate the index $z$ of each observation ${(\randomvec{\lambda}_{o}, \randomvec{\theta}_{o})}$ to a latent random variable ${\random{z}_{o}}$.
 We can organize the $\random{z}_{o}$ variables into ${\random{Z}\in\R^{1\times O}}$, which is our set of latent variables $\set{U}$.
 
 We suppose the latent variables $\random{z}_{o}$ follow a categorical prior distribution, with associated probabilities ${\Pi=\{\pi^{z}|z\in\set{Z}\}}$ such
@@ -924,7 +925,7 @@ We suppose the latent variables $\random{z}_{o}$ follow a categorical prior dist
 We can also create a parameter set ${\set{P}=\setbuild{\set{P}^{z}}{z\in\set{Z}}}$, with ${\set{P}^{z}=(\tilde{P}^{z},\tilde{\vec{s}}^{z},\pi^{z})}$.
 
 \begin{remark}
-  We estimate $\pi^{z}$ and $\tilde{\vec{s}}^{z}$ purely for updating the model and constraining the identification of $\tilde{P}^{z}$, since they are not used neither for the detection nor for the mitigation phases.
+  We estimate $\pi^{z}$ and $\tilde{\vec{s}}^{z}$ purely for updating the model and constraining the identification of $\tilde{P}^{z}$, since they are used neither for the detection nor for the mitigation phases.
 \end{remark}
 
 As the coordinator controls the input $\vec{\theta}$, we consider a non-informative improper probability density function~\cite{ChristensenEtAl2010}
@@ -945,7 +946,7 @@ where, following the mixture of affine regressions model~\eqref{eq:linear_cheati
 
 The covariance matrices $\Sigma^{z}$ tend to $0_{c}$, approaching the original values of the original functions in~\eqref{eq:lambdafuntheta}.
 
-An example of the representation of such function for a $1$ dimension \pwa{} function can be seen in Fig.~\ref{fig:affine_gaussian_mixture}, where darker points present more probability then lighter ones.
+An example of the representation of such function for a $1$ dimension \pwa{} function can be seen in Fig.~\ref{fig:affine_gaussian_mixture}, where darker points present more probability than lighter ones.
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.7\textwidth]{../img/resilient_ineq/pwa.pdf}
@@ -966,7 +967,7 @@ We can calculate the expectation of ${\ln\probability{\random{\Theta},\random{\L
 \end{align}
 where ${\alpha_{zo}=\ln{\pi_{z}}+\ln{\mathcal{N}(\randomvec{\lambda}_{o};f(\randomvec{\theta}_{o};\set{P}^{z}),{\Sigma^{z}})}}$.
 
-To facilitate the math, we introduce a variable $\vec{\phi}^{z}$ to embedded the parameters, similar to what we made for the \RLS{} case (\S\ref{sec:about-estimation})
+To facilitate the math, we introduce a variable $\vec{\phi}^{z}$ to embed the parameters, similar to what we made for the \RLS{} case (\S\ref{sec:about-estimation})
 \begin{equation}
   \vec{\phi}^{z}=\left[
       \begin{matrix}
@@ -1004,14 +1005,14 @@ One can observe that~\eqref{eq:mstepestimation} is the solution of a weighted \L
 There are some similarities to the K-planes (k-means) algorithm (see~\cite{BradleyMangasarian2000}), but \EM{} is more compromising.
 Instead of affecting the observed data to a zone with 100\% of certainty (\emph{hard assignment}), \EM{} uses each zone's responsibilities (\emph{soft assignment}).
 
-Other methods as \sEM{} and \CEM{} make a hard choice based on the responsibilities.
+Other methods, such as \sEM{} and \CEM{}, make a hard choice based on the responsibilities.
 \sEM{} chooses at random one of the regions depending on the responsibilities, while \CEM{} chooses the region with greater responsibility.
 
 When estimates $\vec{\phi}_{z}^{\mathrm{new}}$ converge, we can retrieve the estimates $\tilde{P}^{z}$ and $\tilde{\vec{s}}^{z}$, and use them in our detection and mitigation scheme.
 
 \begin{remark}
-  Observe that the parameters indices $z$ do not necessarily converge to the parameters with the same number in~\eqref{eq:lambdafuntheta}, it depends on the initialization of $\set{P}$ and the observation set.
-  For example, if we generate points inside one single region $j$, all $Z$ regions would have the estimated parameter of such region $j$.
+  Observe that the parameters indices $z$ do not necessarily converge to the parameters with the same number in~\eqref{eq:lambdafuntheta} since it depends on the initialization of $\set{P}$ and the observation set.
+  For example, if we generate points inside one single region $j$, all $Z$ regions would have the estimated parameter of the given region $j$.
 \end{remark}
 
 Since the $z$ indices do not necessarily correspond to the ones in~\eqref{eq:lambdafuntheta}, we need to recover the $z$ that corresponds to the $0$-zone.
@@ -1028,15 +1029,15 @@ There are two main possible difficulties with methods of the partional family.
 
 The first is the known slow convergence for some cases~\cite{CeleuxGovaert1992,Bishop2006,BaudryCeleux2015}, depending on the size of the problem. In~\cite{FariaSoromenho2010}, the authors compare the convergence of \EM{} with other variants such \sEM{} and \CEM{}.
 
-The other is the dependability of the solution to the initial estimate conditions, which was already commented in Remark~\ref{rem:em_depends_on_initialization}.
+The other is the dependability of the solution to the initial estimate conditions, which was already commented on in Remark~\ref{rem:em_depends_on_initialization}.
 
 Another issue that we can encounter is the inversion of some variables when working with high orders (notably the covariance $\Sigma$).
-The order depends on the number of observations $O$ and number of zones $Z$, and some variables can come close to be singular.
+The order depends on the number of observations $O$ and a number of zones $Z$, and some variables can come close to being singular.
 
-One way to counteract this effect is to include it on the estimated parameters.
-Another way is to consider the covariance as a diagonal matrix with same values for all entries~\cite{KarlisXekalaki2003}.
-Yet another way is to use the technique called \emph{Simulated annealing}~\cite{CeleuxGovaert1992,OzerovFevotte2010}, where the covariances are initialized with arbitrarily significant values indicating the uncertainty of the parameters and it is reduced at each iteration.
-In this work we used the latter two techniques combined.
+One way to counteract this effect is to include it in the estimated parameters.
+Another way is to consider the covariance as a diagonal matrix with the same values for all entries~\cite{KarlisXekalaki2003}.
+Yet another way is to use the technique called \emph{Simulated annealing}~\cite{CeleuxGovaert1992,OzerovFevotte2010}, where the covariances are initialized with arbitrarily significant values indicating the uncertainty of the parameters, and it is reduced at each iteration.
+In this work, we used the latter two techniques combined.
 
 \subsection{Complete safe dMPC under artificial scarcity}\label{sec:complete-safe-dmpc-ineq}
 Putting together all parts defined in the last sections, we can come up with Algorithm~\ref{alg:safeDMPC}, which resumes the \rpdmpcas{}.
@@ -1075,11 +1076,12 @@ Again we can see all the detection and conditional reconstruction of $\lambdai$ 
 \section{Numerical experiment}\label{sec:numerical-experiment-ineq}
 
 We exemplify the action of the \rpdmpcas{} through an academic example.
-As study case we use the same example of \dhn{} presented in \S\ref{sec:case-study}, with slight modifications to respect the assumptions made in this chapter.
+As a study case, we use the same example of \dhn{} presented in \S\ref{sec:case-study}, with slight modifications to respect the assumptions made in this chapter.
 
 \subsection{Applying \rpdmpcas{}}
 The first assumption to use the \rpdmpcas{} is that the local unconstrained solutions $\optuncUik$ respect the local constraints.
-As noted in \S\ref{sec:case-study}, we do not have cooling apparatus, thus the inputs are restricted to be positive, i.e., $\vec{u}_{i}[k]\succeq\0$, so
+As noted in \S\ref{sec:case-study}, we do not have cooling apparatus.
+Thus the inputs are restricted to be positive, i.e., $\vec{u}_{i}[k]\succeq\0$, so
 we need to force $\optuncUik$ to respect such constraint the $\optuncUik\succeq\0$.
 
 This is accomplished by changing the initial states $\vec{x}_{i}[k]$ and references $\vec{w}_{i}[k]$ such the output $\vec{y}_{i}[k]$ (air temperature inside the house) never surpasses the references, what would yield a solution with negative inputs.
@@ -1088,7 +1090,7 @@ Therefore, we change the initial states to be
 \input{../data/resilient_ineq/initial_states.tex},
 and the references as
 \input{../data/resilient_ineq/references.tex}.
-All other parameters are the same, which when decomposing the \mpc{} problem we have
+All other parameters are the same, which, when decomposing the \mpc{} problem, we have
 \begin{equation}
   \label{eq:houses_artificial_deprived_local_problem}
   \begin{matrix}
@@ -1130,7 +1132,7 @@ are
 Observing Fig.~\ref{fig:response3Scenarios}, we can compare the air temperature in house~I
 with its reference $w_{I}$.
 We can also see in the figure the values of the decision variable ${E_{I}^{(0)}[k]}$ with the threshold $\epsilon_{\Plinineq}$.
-Notice how the reference $w_{I}$ is not reached even in the nominal behavior (in magenta),
+Notice how the reference $w_{I}$ is not reached even in the nominal behavior (in magenta)
 due to initial states and power constraints, indicating that the unconstrained solution $\optuncUik\succeq\0$.
 As expected, the decision variable lies under the threshold ${\epsilon_{\Plinineq}=10^{-4}}$ with values of order ${E_{I}^{N}(k)\approx10^{-10}}$ (no attack detected).
 
@@ -1147,7 +1149,7 @@ As expected, the decision variable lies under the threshold ${\epsilon_{\Plinine
 
 When agent~I attacks the system (in orange), its tracking error
 ${w_{I}-y_{I}}$ decreases, and it almost reaches the reference.
-In Fig.~\ref{fig:response3Scenarios_all_houses}, we see how the resources from house~I were transferred from all other houses, who lose performance.
+In Fig.~\ref{fig:response3Scenarios_all_houses}, we see how the resources from house~I were transferred from all other houses, which lost performance.
 
 In this case, the detection variable surpasses the bound $\epsilon_{\Plinineq}$,
 ${E_{I}^{S}\approx200}$, indicating a change of behavior, a possible attack.
@@ -1155,7 +1157,7 @@ ${E_{I}^{S}\approx200}$, indicating a change of behavior, a possible attack.
 If the proposed resilient algorithm is activated (black dots), the temperatures approach their nominal value $y_{I}^{N}$.
 We can also compare the inputs in Fig.~\ref{fig:control_3Scenarios}.
 When agent~I is selfish, its control increases while other houses' controls decrease,
-displaying a shift on the negotiation, giving more resources to the attacker.
+displaying a shift in the negotiation, and giving more resources to the attacker.
 However, when the correction is activated, it approaches the nominal.
 \begin{figure}[h]
   \centering
@@ -1169,11 +1171,11 @@ However, when the correction is activated, it approaches the nominal.
 % \begin{figure}[h]
 %   \centering
 %   \includegraphics[width=.7\textwidth]{../img/resilient_ineq/__ErrorWX_command_normErrH.pdf}
-% \caption{Temperature in all houses, and respective references for scenarios N,MS and MC. \todo{remake figure}\note{only if i have time, probably not}}\label{fig:response_houses_N_M_as}
+% \caption{Temperature in all houses, and respective references for scenarios N, MS and MC. \todo{remake figure}\note{only if i have time, probably not}}\label{fig:response_houses_N_M_as}
 % \end{figure}
 
 
-Another way to represent performances of our proposition, however more palpably is to compare the accumulate objective functions during the period of simulation for each of the three scenarios (Table~\ref{tab:costsGlobalLocal}).
+Another way to represent the performances of our proposition, however, more palpably is to compare the accumulated objective functions during the period of simulation for each of the three scenarios (Table~\ref{tab:costsGlobalLocal}).
 We also calculate the percentual error ${\frac{J^{i}-J^{N}}{J^{N}}}$ for the cases S and C.
 When agent~I attacks the system, we see a decrease in its objective ($\approx\!-40\%$), degrading the overall performance in $\approx\!+10\%$.
 When the correction mechanism is activated, the absolute percentual error is in the order ${|\frac{J^{C}-J^{N}}{J^{N}}|\leq10^{-8}}$.
@@ -1198,11 +1200,11 @@ We could observe how the complexity of the problem increases exponentially with 
 We created the assumption of artificial scarcity, so we can counter some difficulties and propose detection and mitigation strategies.
 
 However, part of the complexity reappears when estimating parameters.
-Our affine regression model becomes a \pwa{} regression model, and we need to use an adequate estimation method that can estimate parameters using such regression model.
+Our affine regression model becomes a \pwa{} regression model, and we need to use an adequate estimation method that can estimate parameters using such a regression model.
 
-We presented the \em{} algorithm,  which although may be adequate for such estimation, it uses a probabilistic model. We adapt our model to respect its needs and use it to estimate the parameters needed for our detection and mitigation phases.
+We presented the \em{} algorithm,  which, although it may be adequate for such estimation, uses a probabilistic model. We adapt our model to respect its needs and use it to estimate the parameters needed for our detection and mitigation phases.
 
-Finally we presented our resilient algorithm using artificial scarcity and tested it using our \dhn{} study case.
+Finally, we presented our resilient algorithm using artificial scarcity and tested it using our \dhn{} study case.
 
 % \todo{In the next chapter we discuss how to relax the artificial scarcity assumption.\note{if I have time, probably not}}
 
