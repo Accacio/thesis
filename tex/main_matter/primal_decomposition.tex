@@ -11,7 +11,7 @@ We apply the decomposition to the \mpc{} problem we are interested and we give o
 
 Then we present our first contribution, which is the study of the vulnerabilities of this framework and the impact on the \mpc{} control.
 
-We illustrate the effects with a simple academical example, so we can easily grasp observe the possible consequences.
+We illustrate the effects with a simple academic example, so we can easily grasp and observe the possible consequences.
 
 \minitoc
 
@@ -31,9 +31,9 @@ We start from the monolithic \mpc{} equivalent problem presented in~\eqref{eq:qp
     \end{matrix}
   \end{aligned}.
 \end{equation}
-As stated in \S\ref{sec:qp_mpc}, this problem is an input constrained \qp{} problem, which is convex.
+As stated in \S\ref{sec:qp_mpc}, this problem is an input-constrained \qp{} problem, which is convex.
 
-To decompose the problem with the optimization decomposition frameworks shown in~\S\ref{sec:decomp-fram} we assume the objective function of problem~\eqref{eq:qp_standard_form_reprise} to be decomposable into $M$ equally sized parts, which correspond (corresponding sub-systems and sub-problems~\S\ref{sec:distributing_computation_units}) to sub divisions of the initial system~\eqref{eq:large_scale_system_model}.
+To decompose the problem with the optimization decomposition frameworks shown in~\S\ref{sec:decomp-fram}, we assume the objective function of problem~\eqref{eq:qp_standard_form_reprise} to be decomposable into $M$ equally sized parts, which correspond (corresponding sub-systems and sub-problems~\S\ref{sec:distributing_computation_units}) to subdivisions of the initial system~\eqref{eq:large_scale_system_model}.
 The subsystems are ruled by dynamics $(A_{i},B_{i},C_{i})$, and have states $\vec{x}_{i}[k]$, references $\vec{w}_{i}[k]$ and inputs $\vec{u}_{i}[k]$.
 
 Each sub-problem is given an index in set $\set{M}=\{1\mathbin{:}M\}$ and we rewrite~\eqref{eq:qp_standard_form_reprise} as
@@ -102,18 +102,18 @@ ${c=\card{\lambdaik}=\card{\thetaik}=\card{\vec{U}_{\max}}=n_{c}\predhorz}$,
 ${I_{c}^{M}=\kron{\1_{M}\T}{I_{c}}}$,
 and
 $\vec{g}\p[k]$ is a sub-gradient of the objective function of problem in~\eqref{eq:DOP_main} in step $p$.
-The choice of the step length is given such
+The choice of step length is given such
 \[\lim_{p\to\infty}\rho^{(p)}\to0\]
 and
 \[\sum_{p=1}^{\infty}\rho^{(p)}\to\infty.\]
-An usual law is
+A usual law is
 \begin{equation}
   \label{eq:rho_update}
   \rho^{(p)}=\frac{1}{a+bp},
 \end{equation}
 with $a$ and $b$ arbitrarily chosen~\cite{ConejoEtAl2006}.
 
-From~\cite{BoydVandenberghe2004} and~\cite{BoydEtAl2015}, we can derive that the opposite of the dual variables $\lambdaik$ of the local problems are sub-gradients of the local problems and since the objective function of the main problem is a sum of the local objectives, then the $\vec{\lambda}_{i}$ can form a sub-gradient of the main problem.
+From~\cite{BoydVandenberghe2004} and~\cite{BoydEtAl2015}, we can derive that the opposite of the dual variables $\lambdaik$ of the local problems are sub-gradients of the local problems, and since the objective function of the main problem is a sum of the local objectives, then the $\vec{\lambda}_{i}$ can form a sub-gradient of the main problem.
 If we stack the $\vec{\lambda}_{i}[k]$ in $\vec{\lambda}[k]=[\vec{\lambda}_{1}[k];\dots;\vec{\lambda}_{M}[k]]$, it can be used in~\eqref{eq:projectedSubgradient}, yielding
 \begin{equation}
   \label{eq:projectedSubgradient_lambda}
@@ -137,8 +137,8 @@ Using~\eqref{eq:DOP_local} and~\eqref{eq:projectedSubgradient_lambda}, we can al
 
 Since each problem~\eqref{eq:DOP_local} can potentially be solved in parallel, a different computation unit is allocated to solve each problem.
 For the update~\eqref{eq:projectedSubgradient_lambda} the agents need to have the $\lambdaik$ of all other agents to update the $\thetaik$.
-We could create an anarchic solution analog to the one in~\cite{VelardeEtAl2018} where the $\lambdaik$ information circulate among agents and each agent update its own $\thetaik$.
-However, we decide for a more private structure.
+We could create an anarchic solution analog to the one in~\cite{VelardeEtAl2018} where the $\lambdaik$ information circulates among agents, and each agent updates its own $\thetaik$.
+However, we decide on a more private structure.
 We choose to use an \textbf{hierarchic} solution, allocating another agent to aggregate the $\lambdaik$ and coordinate the updates of the $\thetaik$, we called this agent the \emph{coordinator}.
 This way, each agent has only access to its own $\lambdaik$ and $\thetaik$.
 
@@ -189,13 +189,13 @@ We summarize the complete primal decomposition-based \dmpc{} algorithm in Algori
 
 \begin{remark}
   The same decomposition can be used if the coupling constraints are equalities or if there are local constraints for the subsystems.
-  We can change problems~\eqref{eq:DOP_local} and~\eqref{eq:projectedSubgradient_lambda} accordingly to respect such modifications, i.e.\ adding the local constraints to the local problems and changing the inequality constraints to equality ones, including in the set $\set{S}$.
+  We can change problems~\eqref{eq:DOP_local} and~\eqref{eq:projectedSubgradient_lambda} accordingly to respect such modifications, i.e., adding the local constraints to the local problems and changing the inequality constraints to equality ones, including in the set $\set{S}$.
   Examples of each are given in the next section and chapters.
 \end{remark}
 
 \section{Example and Interpretations}\label{sec:example-interpr}
-As a simple numerical example to illustrate the functioning of the algorithm we take $M=3$ \mbox{$1$-dimensional} \siso{} ($n_{x}=1$,$n_{c}=1$) systems coupled by the inputs.
-The systems have no physical meaning but due to their small scale it is easier to visualize.
+As a simple numerical example to illustrate the functioning of the algorithm, we take $M=3$ \mbox{$1$-dimensional} \siso{} ($n_{x}=1$,$n_{c}=1$) systems coupled by the inputs.
+The systems have no physical meaning, but their small scale makes it easier to visualize.
 
 The systems are described by the following \ltidt{} dynamics
 \begin{equation}
@@ -240,9 +240,9 @@ with
 \end{equation}
 The coordinator update function is the same as~\eqref{eq:projectedSubgradient_lambda} but with ${\set{S} = \setbuild{\vec{\theta}[k]}{I_{c}^{M}\vec{\theta}[k] = \vec{U}_{\max}}}$, where $c=2$.
 
-From now on, we remove the $[k]$ indices for convenience, since all calculation is for the same step $k$ unless expressly stated otherwise.
+From now on, we remove the $[k]$ indices for convenience since all calculation is for the same step $k$ unless expressly stated otherwise.
 
-This Euclidean projection can be calculated explicitly yielding
+This Euclidean projection can be calculated explicitly, yielding
 \begin{equation}
   \label{eq:euclidean_projection_equality_solution}
     \vec{\theta}\pplusone=\vec{\theta}\p+\rho\p\vec{\lambda}\p+{I_{c}^M}\T/({I_{c}^M} {I_{c}^M}\T)\left({I_{c}^M}(\vec{\theta}\p-\rho\p\vec{\lambda}\p) -\vec{U}_{\max}\right),
@@ -279,26 +279,26 @@ The dynamics of variables $\vec{\theta}_{i}[0]$ and $\vec{\lambda}_{i}[0]$ durin
     \caption{Evolution of variables during iterative process and control.}\label{fig:example_variables}
 \end{figure}
 We can see in Fig.~\ref{fig:example_state} the evolution of states $x_{i}[k]$ during the simulation.
-As we can perceive, the system cannot achieved the references due to the global coupling constraint, so all agents find a compromise and get as close to the reference as possible.
+As we can perceive, the system cannot achieve the references due to the global coupling constraint, so all agents find a compromise and get as close to the reference as possible.
 
 In Figs.~\ref{fig:example_theta} and~\ref{fig:example_lambda} the sub-systems were color-coded in nuances of orange for agent $1$, of blue for agent $2$, and of green for agent $3$.
-Observe in Fig.~\ref{fig:example_theta} that the agent which has bigger values of $\lambdai$ has a corresponding $\thetai$ which increases with the iterations, and vice versa.
+Observe in Fig.~\ref{fig:example_theta} that the agent who has bigger values of $\lambdai$ has a corresponding $\thetai$ which increases with the iterations and vice versa.
 
-For $\lambdai$ we see it stabilizes when values for corresponding elements of the vector meet.
+For $\lambdai$, we see it stabilizes when values for corresponding elements of the vector meet.
 It is true due to the global equality constraint, whose simple projection onto the intersection of hyperplanes result in~\eqref{eq:example_projectedSubgradient_lambda}.
 Moreover, as one can see, the iterative process converges if ${\thetai\pplusone=\thetai\p}$, which happens when ${\lambdai\p=\frac{1}{M}\sum_{j=1}^{M}\vec{\lambda}_j\p}$.
-Although it may not necessarily be true for the inequality cases it gives us an insight of the functioning of the algorithm.
+Although it may not necessarily be true for the inequality cases, it gives us an insight into the functioning of the algorithm.
 The values of $\thetai$ represent an allocation of the maximum input given to the agents by the coordinator, and $\lambdai$ is a measure of dissatisfaction of each agent to the value allocated.
 So the coordinator has as role to negotiate the values of the allocations so all agents can be equally dissatisfied.
 Due to this process of iterative allocations, other names given for this decomposition are \textbf{resource allocation} and \textbf{quantity decomposition}.
 
-We can create a parallel with the cake-cutting problem~\cite{BramsTaylor1995} where two (or more) agents want to share a cake, dividing it equally so no agent envy the piece of cake of other agent.
-Usually in these kinds of problems, a protocol is created where agents cut successively the cake (or parts of it) and the other agents take parts which they think it is the greater.
-But in those cases usually all agents have the same hunger.
+We can create a parallel with the cake-cutting problem~\cite{BramsTaylor1995} where two (or more) agents want to share a cake, dividing it equally so no agent envies the piece of cake of other agents.
+Usually, in these kinds of problems, a protocol is created where agents cut successively the cake (or parts of it), and the other agents take parts that they think are the greater.
+But in those cases, usually, all agents have the same hunger.
 
-In our case, agents may have different needs, represented by the dynamics of the subsystems (tuples $(A_{i},B_{i})$), the matrices $\bar{\Gamma}_{i}$, state $x_{i}[k]$ and references $w_{i}[k]$.
-So, the coordinator works as a mediator, positioning the cake cutter, showing where it would cut the cake (sending $\thetai$ during the iterative process), listening if the agents would be satisfied with the partition (receiveing $\lambdai$) and adjusting the cake cutter until a consensus is reached.
-Due to this interpretation we call the iterative process as a \textbf{negotiation phase}.
+In our case, agents may have different needs, represented by the dynamics of the sub-systems (tuples $(A_{i},B_{i})$), the matrices $\bar{\Gamma}_{i}$, state $x_{i}[k]$ and references $w_{i}[k]$.
+So, the coordinator works as a mediator, positioning the cake cutter, showing where it would cut the cake (sending $\thetai$ during the iterative process), and listening to see if the agents would be satisfied with the partition (receiving $\lambdai$) and adjusting the cake cutter until a consensus is reached.
+Due to this interpretation, we call the iterative process the \textbf{negotiation phase}.
 
 
 \newpage
@@ -311,14 +311,14 @@ For the equality case shown, it is clear to see that fluctuations in $\thetaik$ 
 An ill-intentioned local agent can exploit those facts to drive the negotiation by means of a \fdi{} attack.
 However, the system could be implemented in such way that the final allocations agreed upon are distributed physically.
 
-With the physical distribution of allocation, \textbf{``Liar'' agent attacks} as in~\cite{VelardeEtAl2017b} are discouraged, since the attacker can not consume more than allocated (which would be beneficial for the attacker).
+With the physical distribution of allocation, \textbf{``Liar'' agent attacks} as in~\cite{VelardeEtAl2017b} are discouraged since the attacker can not consume more than allocated (which would be beneficial for the attacker).
 On the other hand, an attack in which an agent is forced to use less than the allocated would still be possible, but no agent would benefit, given that their allocation would not increase (allocations are fixed at the end of negotiation).
 We will call this kind of attack where an agent is forced to deteriorate its own performance as a \textbf{Hijack agent} attack.
-Moreover, during the following negotiations, the attacked agent would need more and more resources, increasing as consequence their dissatisfaction $\lambdaik$ forcing other agents to share more resources to the attacked agent.
+Moreover, during the following negotiations, the attacked agent would need more and more resources, increasing as a consequence their dissatisfaction $\lambdaik$, forcing other agents to share more resources with the attacked agent.
 
-We use the same example in~\S\ref{sec:example-interpr} but we modify agent $2$, so it does not use the resource allocated (agent does not apply $u_{2}^{\star}[0|k]$).
+We use the same example in~\S\ref{sec:example-interpr}, but we modify agent $2$, so it does not use the resource allocated (the agent does not apply $u_{2}^{\star}[0|k]$).
 In Figs.~\ref{fig:example_liar_lambda1},~\ref{fig:example_liar_lambda5} and~\ref{fig:example_liar_lambda10} we can compare the values of $\vec{\lambda}_{2}$ for different time steps $k$.
-As we see, the values of $\vec{\lambda}_{2}$ increase as the time step $k$ increases, driving as consequence all other values of $\lambdai$ and $\thetai$.
+As we see, the values of $\vec{\lambda}_{2}$ increase as the time step $k$ increases, driving as a consequence all other values of $\lambdai$ and $\thetai$.
 If we compare Fig.~\ref{fig:example_liar_state} with Fig.~\ref{fig:example_state} we see how the performance is degraded for all agents.
 \begin{figure}[h]
   \centering
@@ -350,7 +350,7 @@ If we compare Fig.~\ref{fig:example_liar_state} with Fig.~\ref{fig:example_state
 As illustrated, the change in $\lambdai$ may cause a modification in the consensus and drive the negotiation.
 Seeing that $\lambdai$ form a sub-gradient of the local problems~\eqref{eq:DOP_local}, it is perceivable that they carry information about the local problem, i.e.\ it has somehow embedded in itself information about the $5$-tuple $(H_{i},\vec{f}_{i}[k],\bar{\Gamma}_{i},\thetaik)$ which we will call the complete local information $\set{I}_{i}$.
 So, every attack shown in~\cite{VelardeEtAl2018} (explained in \S\ref{sec:attacks_in_dmpc}) will somehow reflect into a modification in $\lambdai$.
-And in the coordinator's perspective what matters is what it receives.
+And in the coordinator's perspective, what matters is what it receives.
 
 For this reason, we are interested in inter-agent \fdi{} attacks, in which one (or a group) of the agents changes its own $\lambdai$, so it can benefit at the expense of others.
 We suppose that before a negotiation, the attacker chooses a function ${\gamma:\R^{c}\times\R\to \R^{c}}$, which can possibly vary with respect to time $k$, to modify $\lambdai$ before sending it to the coordinator.
@@ -380,7 +380,7 @@ As we will see, even being a simple attack, this attack can have some catastroph
 To illustrate, we take again the same example system in~\S\ref{sec:example-interpr}.
 We modify it so agent $3$ attacks using~\eqref{eq:selfish_attack}.
 We simulate the system for different scenarios.
-At each one of the scenarios agent $3$ uses a different cheating coefficient $\tau_{3}[k]$.
+At each one of the scenarios, agent $3$ uses a different cheating coefficient $\tau_{3}[k]$.
 
 In Fig.~\ref{fig:example_vary_tau_objective} and~\ref{fig:example_vary_tau_objective_detail}, we accumulate the local objective functions
 ${\Jiacc=\sum\limits_{k\in\set{K}}\optobji(\optthetai[k])[k]}$
@@ -396,7 +396,7 @@ and also the total ${\Jacc=\sum\limits_{i\in\set{M}}J_{i}^{\text{acc}}}$ for dif
 Observe (Fig.~\ref{fig:example_vary_tau_objective_detail}) that $\Jacc$ has its least value when $\tau_{3}=1$, i.e., when there is no attack.
 When $\tau_{3}$ increases, the objective function of the attacker ($\Jiacc[3]$) decreases while all other increase.
 We see the opposite happening for values of $\tau_{3}$ between $0$ and $1$.
-In this case the attacker deteriorates its own performance, what would not justify such attack, unless in a hijack scenario.
+In this case, the attacker deteriorates its own performance, which would not justify such an attack unless in a hijack scenario.
 
 \begin{figure}[h]
   \centering
@@ -411,7 +411,7 @@ In this case the attacker deteriorates its own performance, what would not justi
   \caption{Accumulate objective functions for different values of $\tau_{3}$.}\label{fig:example_vary_tau_objective_both}
 \end{figure}
 
-Other fact we can see in Fig.~\ref{fig:example_vary_tau_objective} is in its right side (hatched in red). The objectives seem to find an equilibrium but after a given value of $\tau_{3}$ it increases more and more.
+Another fact we can see in Fig.~\ref{fig:example_vary_tau_objective} is on its right side (hatched in red). The objectives seem to find an equilibrium, but after a given value of $\tau_{3}$, it increases more and more.
 This is caused by a collapse in the negotiation.
 The agents cannot find a consensus anymore.
 To illustrate, we present the negotiation of $\lambdai$ for $4$ different values of $\tau_{3}$ (Figs.~\ref{fig:example_vary_tau_lambda_tau_1} to~\ref{fig:example_vary_tau_lambda_tau_40}).
@@ -439,15 +439,15 @@ To illustrate, we present the negotiation of $\lambdai$ for $4$ different values
     \caption{Evolution of $\lambdai$ during negotiation for $k=5$ with different values of $\tau_{3}$.}\label{fig:example_vary_tau_lambda}
 \end{figure}
 As we can see, as $\tau_{3}$ increases, the negotiation presents a dampened oscillatory behavior.
-The dampening decreases if $\tau_{3}$ continues to rise, until the negotiation oscillates and no consensus is reached, breaking down the \dmpc{} and maybe causing damage to the plant.
+The dampening decreases if $\tau_{3}$ continues to rise until the negotiation oscillates and no consensus is reached, breaking down the \dmpc{} and maybe causing damage to the plant.
 
 \section{Conclusion}\label{sec:conclusion_pd}
-In this chapter, we presented the primal decomposition-based \dmpc{}, and its vulnerabilities.
+In this chapter, we presented the primal decomposition-based \dmpc{} and its vulnerabilities.
 We also provided means by which an ill-intentioned agent could exploit said vulnerabilities and their main effects.
-As we have seen the main consequences are loss in global performance and complete mal-function of the system.
+As we have seen, the main consequences are a loss in global performance and a complete malfunction of the system.
 
-Degradation of global performance, when working with \cps{}, in the best of the scenarios can cause little to no discomfort for a group of users, but an eventual breakdown, may endanger the users.
+Degradation of global performance, when working with \cps{}, in the best of scenarios, can cause little to no discomfort for a group of users, but an eventual breakdown may endanger the users.
 So, we desire to avoid both phenomena whenever possible.
-In the next chapters we will analyze the problem and discuss what we can do to avoid such effects.
+In the next chapters, we will analyze the problem and discuss what we can do to avoid such effects.
 
 \end{document}
