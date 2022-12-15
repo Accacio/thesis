@@ -12,14 +12,14 @@ In this thesis, we studied the security of \cps{} under \dmpc{}.
 In particular, we studied attacks in primal decomposition, which was never studied before to the best of our knowledge.
 
 We began with a general introduction to \mpc{}, showing different \mpc{} problems and presenting the need to decompose them when the systems are large.
-We then presented the optimization decomposition framework, used in various works in different flavors.
+We then presented the optimization decomposition framework, which is used in various works in different flavors.
 We generalize those methods and show the need to divide the computation into different entities.
 
 After we studied the distribution of the computation into those entities, discussing what the designer can choose and the possible communication those entities need to carry out to solve the problems.
-We also discussed the part trust takes when dividing communication between entities, some examples of the real world were given as analogies to ease comprehension.
+We also discussed the part trust took when dividing communication between entities, some examples of the real world were given as analogies to ease comprehension.
 
 We then focused on anomalous behaviors, how they impact the communication of such entities and how they influence the solutions to the problems.
-We began by definitions of such behaviors and security in \cps{}.
+We began with definitions of such behaviors and security in \cps{}.
 We generalized the vulnerabilities of \cps{} to the behaviors above.
 
 After this, we shifted our attention to the most critical types of anomalous behaviors, attacks.
@@ -30,29 +30,29 @@ in its first baby steps (less than 5 years).
 Then, we presented the more usual ways to secure \cps{}, with examples, from the prevention of anomalous behaviors to robust and resilient strategies to mitigate the effects of these behaviors.
 
 We then presented the \mpc{} decomposed using the primal decomposition, not studied under attacks before.
-We presented the decomposition, giving some interpretation to its different steps.
-Finally we presented some of its vulnerabilities and illustrated by an example the effects attacks can produce under this decomposition method.
+We presented the decomposition, giving some interpretation of its different steps.
+Finally, we presented some of its vulnerabilities and illustrated by an example the effects attacks can produce under this decomposition method.
 
 Inspired on reducing the effects of the attacks, we took an attack model and study some strategies on how to recover a nominal behavior.
 
 We created some assumptions to ease the analysis of the system under the given attack model.
-We analyzed the main effects of the attacks and how they are connected with the attack model, by changing slightly its values.
-From these analyses some insights emerged on how to detect the attacks under those assumptions and mitigate their possible effects by reconstructing some variables that were corrupted by the attack.
+We analyzed the main effects of the attacks and how they are connected with the attack model by changing its values slightly.
+From these analyses, some insights emerged on how to detect the attacks under those assumptions and mitigate their possible effects by reconstructing some variables that were corrupted by the attack.
 
 We relaxed then one of those assumptions.
-We studied how the relaxation impacts the complexity of the solutions of the problem.
-We concluded the relaxation increased exponentially the complexity of the problem.
-We again analyzed the attacks under this exponentially more complex problem and we proposed to add some less restraining assumptions to aid to circumvent the complexity of the system.
-With these assumptions we could adapt the detection and mitigation strategies already proposed.
+We studied how the relaxation impacts the complexity of the solutions to the problem.
+We concluded the relaxation increased the complexity of the problem exponentially.
+We again analyzed the attacks under this exponentially more complex problem, and we proposed to add some less restraining assumptions to aid in circumventing the complexity of the system.
+With these assumptions, we could adapt the detection and mitigation strategies already proposed.
 
-% \todo{Observing the problem by a different angle, we perceived other way to construct the proposed mitigation strategies even if we relax the just added assumptions.
-%   In this strategy the reconstruction of the variables is made partially, reconstructing only known corrupted elements.}
+% \todo{Observing the problem from a different angle, we perceived another way to construct the proposed mitigation strategies even if we relax the just added assumptions.
+%   In this strategy, the reconstruction of the variables is made partially, reconstructing only known corrupted elements.}
 
 \subsection{Contributions}
 Apart from the systematization of the regard needed to the design of decomposed \cps{}, we can list the contributions of this work as follow:
 \begin{itemize}
   \item Study of vulnerabilities of Primal decomposition-based \dmpc{}
-  \item Resilient strategies for two complexity increasing different kind of systems
+  \item Resilient strategies for two complexity-increasing different kind of systems
         \begin{itemize}
           \item Deprived systems (where demand is greater than total resources)
           \item Systems with possible artificial scarcity (sensible optimal demand)
@@ -61,21 +61,21 @@ Apart from the systematization of the regard needed to the design of decomposed 
 \end{itemize}
 
 \subsection{Shortcomings}
-The main shortcoming of the approach is its need to some scarcity information of the system.
-First it was given by the nature of the system, having constraints that deprived it from achieving its setpoints.
-Then, although the system was not deprived, the complete scarcity could be imposed by the coordinator, by artificially changing the allocations.
+The main shortcoming of the approach is its need for some scarcity information of the system.
+First, it was given by the nature of the system, having constraints that deprived it of achieving its setpoints.
+Then, although the system was not deprived, the complete scarcity could be imposed by the coordinator by artificially changing the allocations.
 However, we needed to suppose the artificial scarcity point to respect the local constraints.
-The open question is what happens when we cannot impose the complete scarcity, when there are no artificial scarcity points.
+The open question is what happens when we cannot impose complete scarcity, when there are no artificial scarcity points.
 
 \section{Possible Future directions}
-As any research work, many questions emerged during the study and we were cronfronted with many crossroads which obliged us to choose one direction.
+As with any research work, many questions emerged during the study, and we were confronted with many crossroads, which obliged us to choose one direction.
 
 Bearing in mind the shortcomings presented here as well as the choices we list some of those questions and paths not chosen.
 And hope it serves as inspiration for future works.
 We list them in order of least backtracking needed, i.e., how fundamental the changes would need to be to achieve the study.
 \begin{itemize}
-  \item Study of robustness of the resilient strategy under communication noise
-  \item Partial reconstruction of cheating matrix, when $\Plinineqtildeestimate$ is not available
+  \item Study of the robustness of the resilient strategy under communication noise
+  \item Partial reconstruction of the cheating matrix, when $\Plinineqtildeestimate$ is not available
   \item Adaptation of resilient strategy when using soft constraints~\cite{AlessioBemporad2009}
   \item Use recursive \EM{} (or alternative) to estimate parameters
   \item Study of adapting our resilient strategy to use accelerated stop (as in~\cite{DaiEtAl2017})
