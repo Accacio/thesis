@@ -68,7 +68,7 @@ In this work, we concentrate on \qp{} problems, which have quadratic objective f
 Numerous mathematical solvers are apt to solve this kind of problem directly or through equivalent problems.
 We can cite non-extensively some solvers such as MATLAB internal QP solvers\footnote{\url{https://fr.mathworks.com/help/optim/ug/quadprog.html}}, OSQP\footnote{\url{https://osqp.org}}, MOSEK\footnote{\url{https://www.mosek.com}} and ECOS\footnote{\url{https://github.com/embotech/ecos}}.
 
-A commonly quadratic objective function used is
+A commonly used quadratic objective function is
 \begin{equation}
   \label{eq:quadratic_objective_with_sum}
   J(\vec{x}[0|k],\vec{U}[k])=\sum_{i\in\predictionSet}\left[\norm{\mpcvec{v}[ ][i][k]}^{2}_{Q} +\norm{\mpcvec{u}[ ][i-1][k]}^{2}_{R}\right]
@@ -89,7 +89,7 @@ ${ \vec{W}[k]=[\vec{w}[1|k];\dots;\vec{w}[\predhorz|k]] }$ and then~\eqref{eq:qu
 where $\bar{Q}=\kron{I_{\predhorz}}{Q}$ and
 $\bar{R}=\kron{I_{\predhorz}}{R}$.
 
-For the constraints in~\eqref{eq:general_mpc} to be affine or linear, first we suppose the system is linear, and we use a \lti{} model
+For the constraints in~\eqref{eq:general_mpc} to be affine or linear, first, we suppose the system is linear, and we use a \lti{} model
 \begin{equation}\label{eq:large_scale_system_model}
   \begin{array}{rl}
     \vec{x}[k+1]&=A\vec{x}[k]+B\vec{u}[k]\\
@@ -210,7 +210,8 @@ By dividing the objective function by $2$ and ignoring the constant term $c[k]$,
 \end{equation}
 
 \begin{remark}\label{rem:equivalence_problems_not_same_objective}
-  Observe that even though the problems~\eqref{eq:qp_standard_form} and~\eqref{eq:quadratic_objective_compact_batch} are equivalent (same solution), they are not the same problem, so we still need to recalculate the function in~\eqref{eq:quadratic_objective_compact_batch} using the optimal $\vec{U}^{\star}[k]$ found to obtain the correct objective function value.
+  Observe that even though the problems~\eqref{eq:qp_standard_form} and~\eqref{eq:quadratic_objective_compact_batch} are equivalent (same solution), they are not the same problem.
+  So, to obtain the correct objective function value, we still need to recalculate the function in~\eqref{eq:quadratic_objective_compact_batch} using the optimal $\vec{U}^{\star}[k]$ found.
 \end{remark}
 
 Although the solution to such problems can be straightforward (solvers are widely known), and the problems are well structured, in this \textbf{monolithic} form, these problems can be computationally intensive depending on $n_{x}$, $n_{u}$, $n_{c}$ and $\predhorz$.
@@ -228,7 +229,8 @@ For simplicity, the examples in this section divide problems into two sub-proble
 If the sub-problems variables can be partitioned, we can partition the original problem further.
 
 % \begin{remark}
-The examples in this section are decomposed using the primal problem which is the most direct method, other methods exist and will be shortly commented on during this work.
+The examples in this section are decomposed using the primal problem, which is the most direct method.
+Other methods exist and will be shortly commented on during this work.
 % \end{remark}
 
 Be the following problem a general decomposable problem, i.e., the decision variable $\vec{x}$ can be partitioned into two groups of variables $\vec{x}_{1}$ and $\vec{x}_{2}$:
@@ -315,7 +317,7 @@ We called them \emph{complicating} because, without them, the solution would be 
 \subsubsection{Complicating variables}
 For this sub-category, we suppose the variables $\vec{x}_{1}$ and $\vec{x}_{2}$ are not disjoint, i.e., there are some shared variables.
 To force disjointedness, we redivided $\vec{x}$ into $3$ disjoint groups $\vec{x}_{a}$ (present only in sub-problem $1$), $\vec{x}_{b}$ (present only in sub-problem $2$), and $\vec{x}_{ab}$ (present in both sub-problems).
-We suppose $J(\vec{x})$ can be rewritten  as ${J(\vec{x})=J_{1}(\vec{x}_{a},\vec{x}_{ab})+J_{2}(\vec{x}_{b},\vec{x}_{ab})}$, and the constraints can be divided into groups that depend on $\vec{x}_{a}$ and $\vec{x}_{b}$, i.e. $\set{M}_{a}$ and $\set{M}_{b}$ for the inequality constraints and $\set{P}_{a}$ and $\set{P}_{b}$ for the equality ones:
+We suppose $J(\vec{x})$ can be rewritten  as ${J(\vec{x})=J_{1}(\vec{x}_{a},\vec{x}_{ab})+J_{2}(\vec{x}_{b},\vec{x}_{ab})}$, and the constraints can be divided into groups that depend on $\vec{x}_{a}$ and $\vec{x}_{b}$, i.e., $\set{M}_{a}$ and $\set{M}_{b}$ for the inequality constraints and $\set{P}_{a}$ and $\set{P}_{b}$ for the equality ones:
 \begin{equation}\label{eq:general_complicating_variables_optimization_problem}
   \small
   \begin{aligned}
@@ -359,7 +361,7 @@ where $J_{1}(\vec{x}_{a}^{\star},\vec{x}_{ab})$ and $J_{2}(\vec{x}_{b}^{\star},\
     \end{matrix}
 \end{equation}
 \end{subequations}
-Observe that the solutions of~\eqref{eq:general_complicating_variables_optimization_problem_decomposed} depend on a given value of $\vec{x}_{ab}$, thus a coordination between sub-problems is needed to find an optimal $\vec{x}_{ab}^{\star}$ to solve problem~\eqref{eq:general_complicating_variables_optimization_main_problem} and thus the original problem~\eqref{eq:general_complicating_variables_optimization_problem}.
+Observe that the solutions of~\eqref{eq:general_complicating_variables_optimization_problem_decomposed} depend on a given value of $\vec{x}_{ab}$, therefore a coordination between sub-problems is needed to find an optimal $\vec{x}_{ab}^{\star}$ to solve problem~\eqref{eq:general_complicating_variables_optimization_main_problem} and thus the original problem~\eqref{eq:general_complicating_variables_optimization_problem}.
 
 \subsubsection{Complicating Constraints}
 
@@ -466,7 +468,7 @@ sub-problems
     \end{matrix}
 \end{equation}
 \end{subequations}
-whose solution depend on auxiliary variables and need some coordination to find optimal values for those auxiliary variables.
+whose solutions depend on auxiliary variables and need some coordination to find optimal values for those auxiliary variables.
 
 The equivalent problem, we call it \emph{main problem}, while the sub-problems we call them \emph{local problems}, which have some \emph{local constraints}, and part of the \emph{global (coupling) constraints} which depend on auxiliary variables that we call \emph{interface variables}.
 
