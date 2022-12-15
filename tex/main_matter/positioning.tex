@@ -5,55 +5,55 @@
 \chapter*{Choices \& Stance}\label{sec:positioning}
 \epigraph{\centering There are few people, however, who, if you told them a result, would be able to evolve from their own inner consciousness what the steps were which led up to that result.}
 {\textit{A Study in Scarlet}\\ \textsc{Sir Arthur Conan Doyle}}
-As we have seen in the last chapters, there are many steps a designer have to take to design a \cps{} and decompose the \mpc{}.
-And if we are interested in security, some more thinking must be put into it and choices to be made.
+As we have seen in the last chapters, there are many steps a designer has to take to design a \cps{} and decompose the \mpc{}.
+Moreover, if we are interested in security, some more thinking must be put into it, and choices to be made.
 
-In this brief chapter we retrace the steps, recapitulating the choices made for this work, mentioned in the course of the chapters.
-The idea of this chapter is to concentrate them all in one place so a reader can have a better global vision, and know more or less what to expect (or not) from the next chapters.
+In this brief chapter, we retrace the steps, recapitulating the choices made for this work mentioned in the course of the chapters.
+The idea of this chapter is to concentrate them all in one place so a reader can have a better global vision and know more or less what to expect (or not) from the next chapters.
 
 We divide it into two sections.
-The first for the choices regarding the design of the control of the system.
-And the second one for the choices for the security.
+The first is dedicated to the choices regarding the design of the system's control.
+The second one is for the choices for security.
 In the latter, we compare this thesis with the most adjacent works, already presented in Chapter~\ref{sec:anomalous}.
 
 \section*{Control design}
 \paragraph*{Control}\label{sec:control_chosen}
 We model the system as a \textbf{\ltidt{} system} with \textbf{linear input constraints}, and we choose to control it using \textbf{\mpc{}}.
 The objective function used is \textbf{quadratic}, which by consequence produces a \mpc{} that solves a \textbf{\qp{} problem}.
-However, we suppose the problem may have an impact on the calculation if we try to solve it in a monolithic form. We need to \textbf{decompose} it.
+However, we suppose the problem may impact the calculation if we try to solve it in a monolithic form. We need to \textbf{decompose} it.
 
 \paragraph*{Decomposition}\label{sec:decomposition_chosen}
 We choose to use the \textbf{optimization decomposition framework}, shown in~\cite{ConejoEtAl2006,BoydEtAl2015}.
 We suppose the system is \textbf{decomposable} into \textbf{sub-systems} and our original problem is decomposable into \textbf{sub-problems}.
 
-Using the framework, we see the input constraints \textbf{couple} the sub-systems, and as a consequence the sub-problems.
+Using the framework, we see the input constraints \textbf{couple} the sub-systems, and as a consequence, the sub-problems.
 The system is decomposed using the configuration for \textbf{complicating constraints}. Finally, we choose to use a decomposition called \textbf{primal decomposition}, detailed in the next chapter, which needs \textbf{coordination} to find the optimal solution.
 
 \paragraph*{Topology}\label{sec:decomposition_chosen}
-The first choice for the topology of the system was to assume \textbf{correspondence} between sub-systems and sub-problems.
+The first choice for the system's topology was to assume \textbf{correspondence} between sub-systems and sub-problems.
 
 The agents were supposed to form a \textbf{connected} graph, in which the agents can communicate to coordinate the decomposition (\textbf{coordinated control}).
 For some security/trust reasons we choose to use an \textbf{hierarchical} topology, where we \emph{entrust} an agent the role of \textbf{referee}, coordinating the exchanges between other agents.
 
 We suppose the communication is \textbf{bidirectional}, where the agents can communicate with the \textbf{referee} and vice-versa.
-We also suppose the agents communicate \textbf{synchronously}, so we don't have delays on the communication.
+We also suppose the agents communicate \textbf{synchronously}, so we do not have delays in the communication.
 
 \section*{Security}
-For the security, we use~\cite{VelardeEtAl2017b,ChanfreutEtAl2018} as inspiration to demonstrate the \textbf{vulnerabilities of the primal decomposition} method, which were never presented.
+For security, we use~\cite{VelardeEtAl2017b,ChanfreutEtAl2018} as inspiration to demonstrate the \textbf{vulnerabilities of the primal decomposition} method, which were never presented.
 
-As the other most adjacent works, we are only interested in \textbf{inter-agent attacks} of the \textbf{\fdi{}} type, whose exact model is presented in the next chapter.
+As the most adjacent works, we are only interested in \textbf{inter-agent attacks} of the \textbf{\fdi{}} type, whose exact model is presented in the next chapter.
 
 In~\cite{VelardeEtAl2017b,VelardeEtAl2018}, the authors present robust methods based on graph theory, where the attacker is not detected per se, but suspect agents are disconnected or ignored somehow.
-In~\cite{VelardeEtAl2017a,MaestreEtAl2021}, another robust method is used, this time with a scenario-based approach, where suspect sequences receive different weights.
+In~\cite{VelardeEtAl2017a,MaestreEtAl2021}, another robust method is used, this time employing a scenario-based approach, where suspect sequences receive different weights.
 
 We opt, however, as in~\cite{AnandutaEtAl2018,AnandutaEtAl2019,AnandutaEtAl2020},
 for an \textbf{active} \textbf{resilient} approach.
-The strategy is precisely detailed in the next chapters, but for the detection, we use an \textbf{active} method, where we add some data to detect the attacker.
+The strategy is precisely detailed in the next chapters, but we use an \textbf{active} method for the detection, where we add some data to detect the attacker.
 We use a \textbf{hybrid} of \textbf{analytical knowledge} of the decomposition and \textbf{learning methods} to create the detector.
-For the recovery, we use the same \textbf{analytical knowledge} used for the detection to reconstruct some variables and compensate disturbances caused by the attack.
+For the recovery, we use the same \textbf{analytical knowledge} used for the detection to reconstruct some variables and compensate for disturbances caused by the attack.
 
-Duo to the reduced number of adjacent works, we can compile and compare them in a tabular manner.
-In Tab.~\ref{tab:compare_works} we compare them with the methods presented in this thesis.
+Due to the reduced number of adjacent works, we can compile and compare them in a tabular manner.
+In Tab.~\ref{tab:compare_works}, we compare them with the methods presented in this thesis.
 
 \begin{landscape}
   \vspace*{\fill}
